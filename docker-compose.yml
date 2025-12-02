@@ -23,7 +23,7 @@ services:
       - dev
       - prod
     ports:
-      - "6379:6379"
+      - "6370:6379"
     volumes:
       - redis_data:/data
 

@@ -1,0 +1,65 @@
+services:
+  db:
+    image: postgres:16
+    container_name: agimtula_db
+    restart: always
+    profiles:
+      - dev
+      - prod
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    container_name: agimtula_redis
+    restart: always
+    profiles: 
+      - dev
+      - prod
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: sharif780/agimtula_app:latest
+    container_name: agimtula_app
+    restart: always
+    profiles:
+      - prod
+    depends_on:
+      - db
+      - redis
+    env_file:
+      - .env 
+    # environment:
+    #   NODE_ENV: development
+    #   PORT: 3000
+    #   DATABASE_URL: postgres://postgres:password@db:5432/db_name?schema=public
+
+    #   # Seed admin user
+    #   SUPER_ADMIN_EMAIL: admin@example.com
+    #   SUPER_ADMIN_PASSWORD: adminpassword
+    #   SUPER_ADMIN_USERNAME: ADMIN
+
+    #   # JWT Secret
+    #   JWT_SECRET: your_jwt_secret_key_here
+    ports:
+      - "${PORT}:${PORT}"
+    command: pnpm run start:dev
+    # volumes:
+    #   - .:/usr/src/app
+    #   - /usr/src/app/node_modules
+
+volumes:
+  db_data:
+  redis_data:

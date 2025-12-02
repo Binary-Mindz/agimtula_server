@@ -1,0 +1,11 @@
+node_modules
+dist
+scripts/*.sh
+npm-debug.log
+Dockerfile
+docker-compose.yml
+generated
+.env
+*.log
+*.md
+.git

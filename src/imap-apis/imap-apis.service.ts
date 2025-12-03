@@ -11,41 +11,23 @@ interface EmailData {
 
 @Injectable()
 export class ImapApisService implements OnModuleInit {
-  private clients: { email: string; client: ImapFlow }[] = [];
-  private accountInfo = [
-    {
-      host: 'imap.gmail.com',
-      port: 993,
-      auth: {
-        user: 'srka780@gmail.com',
-        pass: 'vaii npas yrac xxwx',
-      },
+  private client = new ImapFlow({
+    host: 'imap.gmail.com',
+    port: 993,
+    auth: {
+      user: 'uforcode123@gmail.com',
+      // pass: 'tlmz fmoy wzhf csu',
+      pass: 'tlmz fmoy wzhf csug',
     },
-    {
-      host: 'imap.gmail.com',
-      port: 993,
-      auth: {
-        user: 'uforcode123@gmail.com',
-        // pass: 'tlmz fmoy wzhf csu',
-        pass: 'tlmz fmoy wzhf csug',
-      },
-    },
-  ];
+  });
   async onModuleInit() {
-    for (const account of this.accountInfo) {
-      const client = new ImapFlow(account);
-      try {
-        await client.connect();
-        // console.log(
-        //   '==================================\n',
-        //   client,
-        //   '\n=====================================',
-        // );
-        this.clients.push({ email: account.auth.user, client });
-      } catch (error) {
-        console.error(`Failed to connect to ${account.auth.user}:`, error);
-      }
+    // for (const account of this.accountInfo) {
+    try {
+      await this.connect(this.client);
+    } catch (error) {
+      console.error(`Failed to connect to :`, error);
     }
+    // }
   }
   async connect(client: ImapFlow) {
     if (!client.usable) {
@@ -88,11 +70,84 @@ export class ImapApisService implements OnModuleInit {
   }
   // Read from all accounts
   async readAllAccounts() {
-    const result: { account: string; emails: number }[] = [];
-    for (const acc of this.clients) {
-      const emails = await this.readAll(acc.client);
-      result.push({ account: acc.email, emails: emails.length });
-    }
-    return result;
+    const emails = await this.readAll(this.client);
+    return emails;
   }
 }
+
+// off site - cron job per account
+// import { Injectable, OnModuleInit } from '@nestjs/common';
+// import { SchedulerRegistry } from '@nestjs/schedule';
+// import { CronJob } from 'cron';
+// import { ImapFlow } from 'imapflow';
+// import { PrismaService } from 'src/config/database/prisma.service';
+
+// @Injectable()
+// export class ImapApisService implements OnModuleInit {
+//   constructor(
+//     private schedulerRegistry: SchedulerRegistry,
+//     private prisma: PrismaService,       // Your DB service
+//   ) {}
+
+//   async onModuleInit() {
+//     await this.loadCronJobsFromDB();
+//   }
+
+//   async loadCronJobsFromDB() {
+//     const accounts = await this.prisma.emailAccount.findMany();
+//     // [{email:"user1@gmail.com", timeupdate:5}, ...]
+
+//     for (const acc of accounts) {
+//       this.createCronForAccount(acc.email, acc.timeupdate);
+//     }
+//   }
+
+//   createCronForAccount(email: string, minutes: number) {
+//     const jobName = `cron_${email}`;
+
+//     // If job already exists, delete it
+//     try {
+//       this.schedulerRegistry.deleteCronJob(jobName);
+//     } catch {}
+
+//     const cron = new CronJob(`*/${minutes} * * * *`, async () => {
+//       console.log(`Running cron for: ${email}`);
+
+//       // TODO: fetch emails for this email (multiple clients)
+//       await this.readEmailByAccount(email);
+//     });
+
+//     this.schedulerRegistry.addCronJob(jobName, cron);
+//     cron.start();
+
+//     console.log(`Cron started for ${email} every ${minutes} min`);
+//   }
+
+//   async readEmailByAccount(email: string) {
+//     // Create IMAP Flow client for each email
+//     const account = await this.prisma.emailAccount.findUnique({
+//       where: { email },
+//     });
+
+//     const client = new ImapFlow({
+//       host: 'imap.gmail.com',
+//       port: 993,
+//       auth: {
+//         user: account.email,
+//         pass: account.password,
+//       },
+//     });
+
+//     await client.connect();
+
+//     const inbox = await client.getMailboxLock('INBOX');
+//     try {
+//       for await (const msg of client.fetch('1:*', { envelope: true })) {
+//         console.log(`[${email}] → ${msg.envelope.subject}`);
+//       }
+//     } finally {
+//       inbox.release();
+//       await client.logout();
+//     }
+//   }
+// }

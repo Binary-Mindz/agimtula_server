@@ -31,7 +31,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: sharif780/agimtula_app:latest
+    image: agimtula:latest
     container_name: agimtula_app
     restart: always
     profiles:

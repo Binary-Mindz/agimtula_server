@@ -45,6 +45,11 @@ export class ImapApisService implements OnModuleInit {
         flags: true,
         bodyStructure: true,
       })) {
+        console.log(`=====================${msg.uid}====================`);
+        console.log(msg.envelope);
+        console.log(msg.bodyStructure);
+        console.log(msg.bodyParts);
+        console.log(`=====================${msg.uid}====================`);
         mails.push({
           uid: msg.uid,
           subject: msg.envelope?.subject,
@@ -65,7 +70,7 @@ export class ImapApisService implements OnModuleInit {
       lock.release();
     }
     return mails.sort((a, b) =>
-      !a.date || !b.date ? 0 : a.date > b.date ? 1 : -1,
+      !a.date || !b.date ? 0 : a.date > b.date ? -1 : 1,
     );
   }
   // Read from all accounts

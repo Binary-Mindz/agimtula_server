@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ImapApisService } from './imap-apis/imap-apis.service';
 
@@ -19,5 +19,15 @@ export class AppController {
     const result = await this.imapApisService.readAllAccounts();
     console.log(result.length);
     return result;
+  }
+
+  @Get('users')
+  async getUsers() {
+    return this.appService.getUsers();
+  }
+
+  @Post('createUser')
+  async createUser() {
+    return this.appService.createUser();
   }
 }

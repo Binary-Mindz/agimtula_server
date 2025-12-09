@@ -9,6 +9,8 @@ model User {
   profilePictureKey String?
   phone String?
   jobTitle String?
+  businessName String?
+  vatNumber String?
 
   language String @default("en")
   timezone String @default("UTC")

@@ -45,6 +45,8 @@ export type UserMinAggregateOutputType = {
   profilePictureKey: string | null
   phone: string | null
   jobTitle: string | null
+  businessName: string | null
+  vatNumber: string | null
   language: string | null
   timezone: string | null
   dateFormat: string | null
@@ -66,6 +68,8 @@ export type UserMaxAggregateOutputType = {
   profilePictureKey: string | null
   phone: string | null
   jobTitle: string | null
+  businessName: string | null
+  vatNumber: string | null
   language: string | null
   timezone: string | null
   dateFormat: string | null
@@ -87,6 +91,8 @@ export type UserCountAggregateOutputType = {
   profilePictureKey: number
   phone: number
   jobTitle: number
+  businessName: number
+  vatNumber: number
   language: number
   timezone: number
   dateFormat: number
@@ -118,6 +124,8 @@ export type UserMinAggregateInputType = {
   profilePictureKey?: true
   phone?: true
   jobTitle?: true
+  businessName?: true
+  vatNumber?: true
   language?: true
   timezone?: true
   dateFormat?: true
@@ -139,6 +147,8 @@ export type UserMaxAggregateInputType = {
   profilePictureKey?: true
   phone?: true
   jobTitle?: true
+  businessName?: true
+  vatNumber?: true
   language?: true
   timezone?: true
   dateFormat?: true
@@ -160,6 +170,8 @@ export type UserCountAggregateInputType = {
   profilePictureKey?: true
   phone?: true
   jobTitle?: true
+  businessName?: true
+  vatNumber?: true
   language?: true
   timezone?: true
   dateFormat?: true
@@ -268,6 +280,8 @@ export type UserGroupByOutputType = {
   profilePictureKey: string | null
   phone: string | null
   jobTitle: string | null
+  businessName: string | null
+  vatNumber: string | null
   language: string
   timezone: string
   dateFormat: string | null
@@ -312,6 +326,8 @@ export type UserWhereInput = {
   profilePictureKey?: Prisma.StringNullableFilter<"User"> | string | null
   phone?: Prisma.StringNullableFilter<"User"> | string | null
   jobTitle?: Prisma.StringNullableFilter<"User"> | string | null
+  businessName?: Prisma.StringNullableFilter<"User"> | string | null
+  vatNumber?: Prisma.StringNullableFilter<"User"> | string | null
   language?: Prisma.StringFilter<"User"> | string
   timezone?: Prisma.StringFilter<"User"> | string
   dateFormat?: Prisma.StringNullableFilter<"User"> | string | null
@@ -334,6 +350,8 @@ export type UserOrderByWithRelationInput = {
   profilePictureKey?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   jobTitle?: Prisma.SortOrderInput | Prisma.SortOrder
+  businessName?: Prisma.SortOrderInput | Prisma.SortOrder
+  vatNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   language?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
   dateFormat?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -359,6 +377,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   profilePictureKey?: Prisma.StringNullableFilter<"User"> | string | null
   phone?: Prisma.StringNullableFilter<"User"> | string | null
   jobTitle?: Prisma.StringNullableFilter<"User"> | string | null
+  businessName?: Prisma.StringNullableFilter<"User"> | string | null
+  vatNumber?: Prisma.StringNullableFilter<"User"> | string | null
   language?: Prisma.StringFilter<"User"> | string
   timezone?: Prisma.StringFilter<"User"> | string
   dateFormat?: Prisma.StringNullableFilter<"User"> | string | null
@@ -381,6 +401,8 @@ export type UserOrderByWithAggregationInput = {
   profilePictureKey?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   jobTitle?: Prisma.SortOrderInput | Prisma.SortOrder
+  businessName?: Prisma.SortOrderInput | Prisma.SortOrder
+  vatNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   language?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
   dateFormat?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -410,6 +432,8 @@ export type UserScalarWhereWithAggregatesInput = {
   profilePictureKey?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   phone?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   jobTitle?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  businessName?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  vatNumber?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   language?: Prisma.StringWithAggregatesFilter<"User"> | string
   timezone?: Prisma.StringWithAggregatesFilter<"User"> | string
   dateFormat?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
@@ -430,6 +454,8 @@ export type UserCreateInput = {
   profilePictureKey?: string | null
   phone?: string | null
   jobTitle?: string | null
+  businessName?: string | null
+  vatNumber?: string | null
   language?: string
   timezone?: string
   dateFormat?: string | null
@@ -452,6 +478,8 @@ export type UserUncheckedCreateInput = {
   profilePictureKey?: string | null
   phone?: string | null
   jobTitle?: string | null
+  businessName?: string | null
+  vatNumber?: string | null
   language?: string
   timezone?: string
   dateFormat?: string | null
@@ -473,6 +501,8 @@ export type UserUpdateInput = {
   profilePictureKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dateFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -495,6 +525,8 @@ export type UserUncheckedUpdateInput = {
   profilePictureKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dateFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -517,6 +549,8 @@ export type UserCreateManyInput = {
   profilePictureKey?: string | null
   phone?: string | null
   jobTitle?: string | null
+  businessName?: string | null
+  vatNumber?: string | null
   language?: string
   timezone?: string
   dateFormat?: string | null
@@ -537,6 +571,8 @@ export type UserUpdateManyMutationInput = {
   profilePictureKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dateFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -558,6 +594,8 @@ export type UserUncheckedUpdateManyInput = {
   profilePictureKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dateFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -584,6 +622,8 @@ export type UserCountOrderByAggregateInput = {
   profilePictureKey?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   jobTitle?: Prisma.SortOrder
+  businessName?: Prisma.SortOrder
+  vatNumber?: Prisma.SortOrder
   language?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
   dateFormat?: Prisma.SortOrder
@@ -609,6 +649,8 @@ export type UserMaxOrderByAggregateInput = {
   profilePictureKey?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   jobTitle?: Prisma.SortOrder
+  businessName?: Prisma.SortOrder
+  vatNumber?: Prisma.SortOrder
   language?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
   dateFormat?: Prisma.SortOrder
@@ -630,6 +672,8 @@ export type UserMinOrderByAggregateInput = {
   profilePictureKey?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   jobTitle?: Prisma.SortOrder
+  businessName?: Prisma.SortOrder
+  vatNumber?: Prisma.SortOrder
   language?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
   dateFormat?: Prisma.SortOrder
@@ -676,6 +720,8 @@ export type UserCreateWithoutEmailsInput = {
   profilePictureKey?: string | null
   phone?: string | null
   jobTitle?: string | null
+  businessName?: string | null
+  vatNumber?: string | null
   language?: string
   timezone?: string
   dateFormat?: string | null
@@ -697,6 +743,8 @@ export type UserUncheckedCreateWithoutEmailsInput = {
   profilePictureKey?: string | null
   phone?: string | null
   jobTitle?: string | null
+  businessName?: string | null
+  vatNumber?: string | null
   language?: string
   timezone?: string
   dateFormat?: string | null
@@ -733,6 +781,8 @@ export type UserUpdateWithoutEmailsInput = {
   profilePictureKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dateFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -754,6 +804,8 @@ export type UserUncheckedUpdateWithoutEmailsInput = {
   profilePictureKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dateFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -777,6 +829,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   profilePictureKey?: boolean
   phone?: boolean
   jobTitle?: boolean
+  businessName?: boolean
+  vatNumber?: boolean
   language?: boolean
   timezone?: boolean
   dateFormat?: boolean
@@ -799,6 +853,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   profilePictureKey?: boolean
   phone?: boolean
   jobTitle?: boolean
+  businessName?: boolean
+  vatNumber?: boolean
   language?: boolean
   timezone?: boolean
   dateFormat?: boolean
@@ -820,6 +876,8 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   profilePictureKey?: boolean
   phone?: boolean
   jobTitle?: boolean
+  businessName?: boolean
+  vatNumber?: boolean
   language?: boolean
   timezone?: boolean
   dateFormat?: boolean
@@ -841,6 +899,8 @@ export type UserSelectScalar = {
   profilePictureKey?: boolean
   phone?: boolean
   jobTitle?: boolean
+  businessName?: boolean
+  vatNumber?: boolean
   language?: boolean
   timezone?: boolean
   dateFormat?: boolean
@@ -851,7 +911,7 @@ export type UserSelectScalar = {
   updated_at?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "email" | "password" | "role" | "profilePicture" | "profilePictureKey" | "phone" | "jobTitle" | "language" | "timezone" | "dateFormat" | "currency" | "twoFactorEnabled" | "status" | "created_at" | "updated_at", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "email" | "password" | "role" | "profilePicture" | "profilePictureKey" | "phone" | "jobTitle" | "businessName" | "vatNumber" | "language" | "timezone" | "dateFormat" | "currency" | "twoFactorEnabled" | "status" | "created_at" | "updated_at", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   emails?: boolean | Prisma.User$emailsArgs<ExtArgs>
 }
@@ -874,6 +934,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     profilePictureKey: string | null
     phone: string | null
     jobTitle: string | null
+    businessName: string | null
+    vatNumber: string | null
     language: string
     timezone: string
     dateFormat: string | null
@@ -1316,6 +1378,8 @@ export interface UserFieldRefs {
   readonly profilePictureKey: Prisma.FieldRef<"User", 'String'>
   readonly phone: Prisma.FieldRef<"User", 'String'>
   readonly jobTitle: Prisma.FieldRef<"User", 'String'>
+  readonly businessName: Prisma.FieldRef<"User", 'String'>
+  readonly vatNumber: Prisma.FieldRef<"User", 'String'>
   readonly language: Prisma.FieldRef<"User", 'String'>
   readonly timezone: Prisma.FieldRef<"User", 'String'>
   readonly dateFormat: Prisma.FieldRef<"User", 'String'>

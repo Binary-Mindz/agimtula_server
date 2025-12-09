@@ -1,12 +1,12 @@
 import { Controller, Get, Post } from '@nestjs/common';
 import { AppService } from './app.service';
-// import { ImapApisService } from './imap-apis/imap-apis.service';
+import { ImapApisService } from './imap-apis/imap-apis.service';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    // private readonly imapApisService: ImapApisService,
+    private readonly imapApisService: ImapApisService,
   ) {}
 
   @Get()
@@ -14,12 +14,12 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  // @Get('getAllInvoice')
-  // async getAllInvoice(): Promise<any> {
-  //   const result = await this.imapApisService.readAllAccounts();
-  //   console.log(result.length);
-  //   return result;
-  // }
+  @Get('getAllInvoice')
+  getAllInvoice() {
+    const result = this.imapApisService.loadCronJobsFromDB();
+    console.log(result);
+    return result;
+  }
 
   @Get('users')
   async getUsers() {

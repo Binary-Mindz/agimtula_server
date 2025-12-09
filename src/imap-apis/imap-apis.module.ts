@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { ImapApisService } from './imap-apis.service';
+// import { ImapApisService } from './imap-apis.service';
 
 @Module({
   controllers: [],
-  providers: [ImapApisService],
-  exports: [ImapApisService],
+  providers: [],
+  exports: [],
 })
 export class ImapApisModule {}

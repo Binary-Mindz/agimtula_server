@@ -51,6 +51,7 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  ForgetPass: 'ForgetPass',
   User: 'User'
 } as const
 
@@ -68,6 +69,17 @@ export const TransactionIsolationLevel = {
 } as const
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
+
+
+export const ForgetPassScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  code: 'code',
+  isVerified: 'isVerified',
+  createdAt: 'createdAt'
+} as const
+
+export type ForgetPassScalarFieldEnum = (typeof ForgetPassScalarFieldEnum)[keyof typeof ForgetPassScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {

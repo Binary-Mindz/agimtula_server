@@ -59,6 +59,13 @@ export class AuthService {
       },
     });
 
+    await this.prisma.email.create({
+      data: {
+        userId: user.id,
+        email: createAuthDto.email,
+      },
+    });
+
     return {
       message: 'User created successfully',
       user: {

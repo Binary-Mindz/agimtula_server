@@ -1,84 +1,86 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
-import { ImapFlow } from 'imapflow';
+// import { Injectable, OnModuleInit } from '@nestjs/common';
+// import { ImapFlow } from 'imapflow';
 
-interface EmailData {
-  uid: number;
-  subject?: string;
-  from?: any;
-  date?: Date;
-  seen: boolean;
-}
+// interface EmailData {
+//   uid: number;
+//   subject?: string;
+//   from?: any;
+//   date?: Date;
+//   seen: boolean;
+// }
 
-@Injectable()
-export class ImapApisService implements OnModuleInit {
-  private client = new ImapFlow({
-    host: 'imap.gmail.com',
-    port: 993,
-    auth: {
-      user: 'uforcode123@gmail.com',
-      // pass: 'tlmz fmoy wzhf csu',
-      pass: 'tlmz fmoy wzhf csug',
-    },
-  });
-  async onModuleInit() {
-    // for (const account of this.accountInfo) {
-    try {
-      await this.connect(this.client);
-    } catch (error) {
-      console.error(`Failed to connect to :`, error);
-    }
-    // }
-  }
-  async connect(client: ImapFlow) {
-    if (!client.usable) {
-      await client.connect();
-    }
-  }
-  // 1. Read ALL emails
-  async readAll(client: ImapFlow): Promise<EmailData[]> {
-    // await this.connect(client);
-    const lock = await client.getMailboxLock('INBOX');
-    const mails: EmailData[] = [];
-    try {
-      for await (const msg of client.fetch('1:*', {
-        envelope: true,
-        flags: true,
-        bodyStructure: true,
-      })) {
-        console.log(`=====================${msg.uid}====================`);
-        console.log(msg.envelope);
-        console.log(msg.bodyStructure);
-        console.log(msg.bodyParts);
-        console.log(`=====================${msg.uid}====================`);
-        mails.push({
-          uid: msg.uid,
-          subject: msg.envelope?.subject,
-          from: msg.envelope?.from,
-          date: msg.envelope?.date,
-          seen: msg.flags?.has('\\Seen') ?? false,
-        });
-        // const { uid, envelope, flags, bodyStructure, id } = msg;
-        // mails.push({
-        //   uid,
-        //   envelope,
-        //   flags: flags?.has('\\Seen') ?? false,
-        //   // bodyStructure,
-        //   id,
-        // });
-      }
-    } finally {
-      lock.release();
-    }
-    return mails.sort((a, b) =>
-      !a.date || !b.date ? 0 : a.date > b.date ? -1 : 1,
-    );
-  }
-  // Read from all accounts
-  async readAllAccounts() {
-    const emails = await this.readAll(this.client);
-    return emails;
-  }
-}
+// @Injectable()
+// export class ImapApisService implements OnModuleInit {
+//   private client = new ImapFlow({
+//     host: 'imap.gmail.com',
+//     port: 993,
+//     auth: {
+//       user: 'uforcode123@gmail.com',
+//       // pass: 'tlmz fmoy wzhf csu',
+//       pass: 'tlmz fmoy wzhf csug',
+//     },
+//   });
+//   async onModuleInit() {
+//     // for (const account of this.accountInfo) {
+//     try {
+//       await this.connect(this.client);
+//     } catch (error) {
+//       console.error(`Failed to connect to :`, error);
+//     }
+//     // }
+//   }
+//   async connect(client: ImapFlow) {
+//     if (!client.usable) {
+//       await client.connect();
+//     }
+//   }
+//   // 1. Read ALL emails
+//   async readAll(client: ImapFlow): Promise<EmailData[]> {
+//     // await this.connect(client);
+//     const lock = await client.getMailboxLock('INBOX');
+//     const mails: EmailData[] = [];
+//     try {
+//       for await (const msg of client.fetch('1:*', {
+//         envelope: true,
+//         flags: true,
+//         bodyStructure: true,
+//       })) {
+//         console.log(`=====================${msg.uid}====================`);
+//         console.log(msg.envelope);
+//         console.log(msg.bodyStructure);
+//         console.log(msg.bodyParts);
+//         console.log(`=====================${msg.uid}====================`);
+//         mails.push({
+//           uid: msg.uid,
+//           subject: msg.envelope?.subject,
+//           from: msg.envelope?.from,
+//           date: msg.envelope?.date,
+//           seen: msg.flags?.has('\\Seen') ?? false,
+//         });
+//         // const { uid, envelope, flags, bodyStructure, id } = msg;
+//         // mails.push({
+//         //   uid,
+//         //   envelope,
+//         //   flags: flags?.has('\\Seen') ?? false,
+//         //   // bodyStructure,
+//         //   id,
+//         // });
+//       }
+//     } finally {
+//       lock.release();
+//     }
+//     return mails.sort((a, b) =>
+//       !a.date || !b.date ? 0 : a.date > b.date ? -1 : 1,
+//     );
+//   }
+//   // Read from all accounts
+//   async readAllAccounts() {
+//     const emails = await this.readAll(this.client);
+//     return emails;
+//   }
+// }
+
+// don't touch below code
 
 // off site - cron job per account
 // import { Injectable, OnModuleInit } from '@nestjs/common';

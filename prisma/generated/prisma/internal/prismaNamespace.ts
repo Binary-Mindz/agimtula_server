@@ -698,6 +698,8 @@ export const UserScalarFieldEnum = {
   profilePictureKey: 'profilePictureKey',
   phone: 'phone',
   jobTitle: 'jobTitle',
+  businessName: 'businessName',
+  vatNumber: 'vatNumber',
   language: 'language',
   timezone: 'timezone',
   dateFormat: 'dateFormat',

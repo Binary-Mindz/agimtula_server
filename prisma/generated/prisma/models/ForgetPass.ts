@@ -228,14 +228,14 @@ export type ForgetPassOrderByWithRelationInput = {
 
 export type ForgetPassWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  email?: string
   AND?: Prisma.ForgetPassWhereInput | Prisma.ForgetPassWhereInput[]
   OR?: Prisma.ForgetPassWhereInput[]
   NOT?: Prisma.ForgetPassWhereInput | Prisma.ForgetPassWhereInput[]
-  email?: Prisma.StringFilter<"ForgetPass"> | string
   code?: Prisma.IntFilter<"ForgetPass"> | number
   isVerified?: Prisma.BoolFilter<"ForgetPass"> | boolean
   createdAt?: Prisma.DateTimeFilter<"ForgetPass"> | Date | string
-}, "id">
+}, "id" | "email">
 
 export type ForgetPassOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -347,6 +347,14 @@ export type ForgetPassMinOrderByAggregateInput = {
 
 export type ForgetPassSumOrderByAggregateInput = {
   code?: Prisma.SortOrder
+}
+
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type BoolFieldUpdateOperationsInput = {

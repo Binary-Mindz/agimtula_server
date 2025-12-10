@@ -9,10 +9,13 @@ import { AccountantDashboardModule } from './accountant-dashboard/accountant-das
 import { UserDashboardModule } from './user-dashboard/user-dashboard.module';
 import { SmtpMailModule } from './config/smtp-mail/smtp-mail.module';
 import { ConfigModule } from '@nestjs/config';
+import { MileageModule } from './user-dashboard/mileage/mileage.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    ScheduleModule.forRoot(),
     DatabaseModule,
     // ImapApisModule,
     AuthModule,
@@ -20,6 +23,7 @@ import { ConfigModule } from '@nestjs/config';
     AccountantDashboardModule,
     UserDashboardModule,
     SmtpMailModule,
+    MileageModule,
   ],
   controllers: [AppController],
   providers: [AppService],

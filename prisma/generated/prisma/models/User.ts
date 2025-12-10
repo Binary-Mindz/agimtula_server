@@ -20,37 +20,14 @@ export type UserModel = runtime.Types.Result.DefaultSelection<Prisma.$UserPayloa
 
 export type AggregateUser = {
   _count: UserCountAggregateOutputType | null
-  _avg: UserAvgAggregateOutputType | null
-  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
 }
 
-export type UserAvgAggregateOutputType = {
-  id: number | null
-}
-
-export type UserSumAggregateOutputType = {
-  id: number | null
-}
-
 export type UserMinAggregateOutputType = {
-  id: number | null
-  firstName: string | null
-  lastName: string | null
-  email: string | null
+  id: string | null
   password: string | null
   role: $Enums.UserRole | null
-  profilePicture: string | null
-  profilePictureKey: string | null
-  phone: string | null
-  jobTitle: string | null
-  businessName: string | null
-  vatNumber: string | null
-  language: string | null
-  timezone: string | null
-  dateFormat: string | null
-  currency: string | null
   twoFactorEnabled: boolean | null
   status: boolean | null
   created_at: Date | null
@@ -58,22 +35,9 @@ export type UserMinAggregateOutputType = {
 }
 
 export type UserMaxAggregateOutputType = {
-  id: number | null
-  firstName: string | null
-  lastName: string | null
-  email: string | null
+  id: string | null
   password: string | null
   role: $Enums.UserRole | null
-  profilePicture: string | null
-  profilePictureKey: string | null
-  phone: string | null
-  jobTitle: string | null
-  businessName: string | null
-  vatNumber: string | null
-  language: string | null
-  timezone: string | null
-  dateFormat: string | null
-  currency: string | null
   twoFactorEnabled: boolean | null
   status: boolean | null
   created_at: Date | null
@@ -82,21 +46,8 @@ export type UserMaxAggregateOutputType = {
 
 export type UserCountAggregateOutputType = {
   id: number
-  firstName: number
-  lastName: number
-  email: number
   password: number
   role: number
-  profilePicture: number
-  profilePictureKey: number
-  phone: number
-  jobTitle: number
-  businessName: number
-  vatNumber: number
-  language: number
-  timezone: number
-  dateFormat: number
-  currency: number
   twoFactorEnabled: number
   status: number
   created_at: number
@@ -105,31 +56,10 @@ export type UserCountAggregateOutputType = {
 }
 
 
-export type UserAvgAggregateInputType = {
-  id?: true
-}
-
-export type UserSumAggregateInputType = {
-  id?: true
-}
-
 export type UserMinAggregateInputType = {
   id?: true
-  firstName?: true
-  lastName?: true
-  email?: true
   password?: true
   role?: true
-  profilePicture?: true
-  profilePictureKey?: true
-  phone?: true
-  jobTitle?: true
-  businessName?: true
-  vatNumber?: true
-  language?: true
-  timezone?: true
-  dateFormat?: true
-  currency?: true
   twoFactorEnabled?: true
   status?: true
   created_at?: true
@@ -138,21 +68,8 @@ export type UserMinAggregateInputType = {
 
 export type UserMaxAggregateInputType = {
   id?: true
-  firstName?: true
-  lastName?: true
-  email?: true
   password?: true
   role?: true
-  profilePicture?: true
-  profilePictureKey?: true
-  phone?: true
-  jobTitle?: true
-  businessName?: true
-  vatNumber?: true
-  language?: true
-  timezone?: true
-  dateFormat?: true
-  currency?: true
   twoFactorEnabled?: true
   status?: true
   created_at?: true
@@ -161,21 +78,8 @@ export type UserMaxAggregateInputType = {
 
 export type UserCountAggregateInputType = {
   id?: true
-  firstName?: true
-  lastName?: true
-  email?: true
   password?: true
   role?: true
-  profilePicture?: true
-  profilePictureKey?: true
-  phone?: true
-  jobTitle?: true
-  businessName?: true
-  vatNumber?: true
-  language?: true
-  timezone?: true
-  dateFormat?: true
-  currency?: true
   twoFactorEnabled?: true
   status?: true
   created_at?: true
@@ -221,18 +125,6 @@ export type UserAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: UserAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: UserSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: UserMinAggregateInputType
@@ -263,36 +155,19 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   _count?: UserCountAggregateInputType | true
-  _avg?: UserAvgAggregateInputType
-  _sum?: UserSumAggregateInputType
   _min?: UserMinAggregateInputType
   _max?: UserMaxAggregateInputType
 }
 
 export type UserGroupByOutputType = {
-  id: number
-  firstName: string
-  lastName: string
-  email: string
+  id: string
   password: string
   role: $Enums.UserRole
-  profilePicture: string | null
-  profilePictureKey: string | null
-  phone: string | null
-  jobTitle: string | null
-  businessName: string | null
-  vatNumber: string | null
-  language: string
-  timezone: string
-  dateFormat: string | null
-  currency: string
   twoFactorEnabled: boolean
   status: boolean
   created_at: Date
   updated_at: Date
   _count: UserCountAggregateOutputType | null
-  _avg: UserAvgAggregateOutputType | null
-  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
 }
@@ -316,128 +191,67 @@ export type UserWhereInput = {
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
-  id?: Prisma.IntFilter<"User"> | number
-  firstName?: Prisma.StringFilter<"User"> | string
-  lastName?: Prisma.StringFilter<"User"> | string
-  email?: Prisma.StringFilter<"User"> | string
+  id?: Prisma.StringFilter<"User"> | string
   password?: Prisma.StringFilter<"User"> | string
   role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
-  profilePicture?: Prisma.StringNullableFilter<"User"> | string | null
-  profilePictureKey?: Prisma.StringNullableFilter<"User"> | string | null
-  phone?: Prisma.StringNullableFilter<"User"> | string | null
-  jobTitle?: Prisma.StringNullableFilter<"User"> | string | null
-  businessName?: Prisma.StringNullableFilter<"User"> | string | null
-  vatNumber?: Prisma.StringNullableFilter<"User"> | string | null
-  language?: Prisma.StringFilter<"User"> | string
-  timezone?: Prisma.StringFilter<"User"> | string
-  dateFormat?: Prisma.StringNullableFilter<"User"> | string | null
-  currency?: Prisma.StringFilter<"User"> | string
   twoFactorEnabled?: Prisma.BoolFilter<"User"> | boolean
   status?: Prisma.BoolFilter<"User"> | boolean
   created_at?: Prisma.DateTimeFilter<"User"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"User"> | Date | string
-  emails?: Prisma.XOR<Prisma.EmailNullableScalarRelationFilter, Prisma.EmailWhereInput> | null
+  email?: Prisma.XOR<Prisma.EmailNullableScalarRelationFilter, Prisma.EmailWhereInput> | null
+  profile?: Prisma.XOR<Prisma.ProfileNullableScalarRelationFilter, Prisma.ProfileWhereInput> | null
+  languages?: Prisma.LanguageListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  firstName?: Prisma.SortOrder
-  lastName?: Prisma.SortOrder
-  email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
-  profilePicture?: Prisma.SortOrderInput | Prisma.SortOrder
-  profilePictureKey?: Prisma.SortOrderInput | Prisma.SortOrder
-  phone?: Prisma.SortOrderInput | Prisma.SortOrder
-  jobTitle?: Prisma.SortOrderInput | Prisma.SortOrder
-  businessName?: Prisma.SortOrderInput | Prisma.SortOrder
-  vatNumber?: Prisma.SortOrderInput | Prisma.SortOrder
-  language?: Prisma.SortOrder
-  timezone?: Prisma.SortOrder
-  dateFormat?: Prisma.SortOrderInput | Prisma.SortOrder
-  currency?: Prisma.SortOrder
   twoFactorEnabled?: Prisma.SortOrder
   status?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
-  emails?: Prisma.EmailOrderByWithRelationInput
+  email?: Prisma.EmailOrderByWithRelationInput
+  profile?: Prisma.ProfileOrderByWithRelationInput
+  languages?: Prisma.LanguageOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
-  id?: number
-  email?: string
+  id?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
-  firstName?: Prisma.StringFilter<"User"> | string
-  lastName?: Prisma.StringFilter<"User"> | string
   password?: Prisma.StringFilter<"User"> | string
   role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
-  profilePicture?: Prisma.StringNullableFilter<"User"> | string | null
-  profilePictureKey?: Prisma.StringNullableFilter<"User"> | string | null
-  phone?: Prisma.StringNullableFilter<"User"> | string | null
-  jobTitle?: Prisma.StringNullableFilter<"User"> | string | null
-  businessName?: Prisma.StringNullableFilter<"User"> | string | null
-  vatNumber?: Prisma.StringNullableFilter<"User"> | string | null
-  language?: Prisma.StringFilter<"User"> | string
-  timezone?: Prisma.StringFilter<"User"> | string
-  dateFormat?: Prisma.StringNullableFilter<"User"> | string | null
-  currency?: Prisma.StringFilter<"User"> | string
   twoFactorEnabled?: Prisma.BoolFilter<"User"> | boolean
   status?: Prisma.BoolFilter<"User"> | boolean
   created_at?: Prisma.DateTimeFilter<"User"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"User"> | Date | string
-  emails?: Prisma.XOR<Prisma.EmailNullableScalarRelationFilter, Prisma.EmailWhereInput> | null
-}, "id" | "email">
+  email?: Prisma.XOR<Prisma.EmailNullableScalarRelationFilter, Prisma.EmailWhereInput> | null
+  profile?: Prisma.XOR<Prisma.ProfileNullableScalarRelationFilter, Prisma.ProfileWhereInput> | null
+  languages?: Prisma.LanguageListRelationFilter
+}, "id" | "id">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  firstName?: Prisma.SortOrder
-  lastName?: Prisma.SortOrder
-  email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
-  profilePicture?: Prisma.SortOrderInput | Prisma.SortOrder
-  profilePictureKey?: Prisma.SortOrderInput | Prisma.SortOrder
-  phone?: Prisma.SortOrderInput | Prisma.SortOrder
-  jobTitle?: Prisma.SortOrderInput | Prisma.SortOrder
-  businessName?: Prisma.SortOrderInput | Prisma.SortOrder
-  vatNumber?: Prisma.SortOrderInput | Prisma.SortOrder
-  language?: Prisma.SortOrder
-  timezone?: Prisma.SortOrder
-  dateFormat?: Prisma.SortOrderInput | Prisma.SortOrder
-  currency?: Prisma.SortOrder
   twoFactorEnabled?: Prisma.SortOrder
   status?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
-  _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
-  _sum?: Prisma.UserSumOrderByAggregateInput
 }
 
 export type UserScalarWhereWithAggregatesInput = {
   AND?: Prisma.UserScalarWhereWithAggregatesInput | Prisma.UserScalarWhereWithAggregatesInput[]
   OR?: Prisma.UserScalarWhereWithAggregatesInput[]
   NOT?: Prisma.UserScalarWhereWithAggregatesInput | Prisma.UserScalarWhereWithAggregatesInput[]
-  id?: Prisma.IntWithAggregatesFilter<"User"> | number
-  firstName?: Prisma.StringWithAggregatesFilter<"User"> | string
-  lastName?: Prisma.StringWithAggregatesFilter<"User"> | string
-  email?: Prisma.StringWithAggregatesFilter<"User"> | string
+  id?: Prisma.StringWithAggregatesFilter<"User"> | string
   password?: Prisma.StringWithAggregatesFilter<"User"> | string
   role?: Prisma.EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
-  profilePicture?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  profilePictureKey?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  phone?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  jobTitle?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  businessName?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  vatNumber?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  language?: Prisma.StringWithAggregatesFilter<"User"> | string
-  timezone?: Prisma.StringWithAggregatesFilter<"User"> | string
-  dateFormat?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  currency?: Prisma.StringWithAggregatesFilter<"User"> | string
   twoFactorEnabled?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   status?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   created_at?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -445,116 +259,61 @@ export type UserScalarWhereWithAggregatesInput = {
 }
 
 export type UserCreateInput = {
-  firstName: string
-  lastName: string
-  email: string
+  id?: string
   password: string
   role?: $Enums.UserRole
-  profilePicture?: string | null
-  profilePictureKey?: string | null
-  phone?: string | null
-  jobTitle?: string | null
-  businessName?: string | null
-  vatNumber?: string | null
-  language?: string
-  timezone?: string
-  dateFormat?: string | null
-  currency?: string
   twoFactorEnabled?: boolean
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
-  emails?: Prisma.EmailCreateNestedOneWithoutUserInput
+  email?: Prisma.EmailCreateNestedOneWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  languages?: Prisma.LanguageCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
-  id?: number
-  firstName: string
-  lastName: string
-  email: string
+  id?: string
   password: string
   role?: $Enums.UserRole
-  profilePicture?: string | null
-  profilePictureKey?: string | null
-  phone?: string | null
-  jobTitle?: string | null
-  businessName?: string | null
-  vatNumber?: string | null
-  language?: string
-  timezone?: string
-  dateFormat?: string | null
-  currency?: string
   twoFactorEnabled?: boolean
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
-  emails?: Prisma.EmailUncheckedCreateNestedOneWithoutUserInput
+  email?: Prisma.EmailUncheckedCreateNestedOneWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  languages?: Prisma.LanguageUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
-  firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  profilePictureKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  language?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
-  dateFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  emails?: Prisma.EmailUpdateOneWithoutUserNestedInput
+  email?: Prisma.EmailUpdateOneWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  languages?: Prisma.LanguageUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  profilePictureKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  language?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
-  dateFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  emails?: Prisma.EmailUncheckedUpdateOneWithoutUserNestedInput
+  email?: Prisma.EmailUncheckedUpdateOneWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  languages?: Prisma.LanguageUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
-  id?: number
-  firstName: string
-  lastName: string
-  email: string
+  id?: string
   password: string
   role?: $Enums.UserRole
-  profilePicture?: string | null
-  profilePictureKey?: string | null
-  phone?: string | null
-  jobTitle?: string | null
-  businessName?: string | null
-  vatNumber?: string | null
-  language?: string
-  timezone?: string
-  dateFormat?: string | null
-  currency?: string
   twoFactorEnabled?: boolean
   status?: boolean
   created_at?: Date | string
@@ -562,21 +321,9 @@ export type UserCreateManyInput = {
 }
 
 export type UserUpdateManyMutationInput = {
-  firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  profilePictureKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  language?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
-  dateFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -584,22 +331,9 @@ export type UserUpdateManyMutationInput = {
 }
 
 export type UserUncheckedUpdateManyInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  profilePictureKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  language?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
-  dateFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -613,48 +347,18 @@ export type UserScalarRelationFilter = {
 
 export type UserCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  firstName?: Prisma.SortOrder
-  lastName?: Prisma.SortOrder
-  email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
-  profilePicture?: Prisma.SortOrder
-  profilePictureKey?: Prisma.SortOrder
-  phone?: Prisma.SortOrder
-  jobTitle?: Prisma.SortOrder
-  businessName?: Prisma.SortOrder
-  vatNumber?: Prisma.SortOrder
-  language?: Prisma.SortOrder
-  timezone?: Prisma.SortOrder
-  dateFormat?: Prisma.SortOrder
-  currency?: Prisma.SortOrder
   twoFactorEnabled?: Prisma.SortOrder
   status?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
 }
 
-export type UserAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-}
-
 export type UserMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  firstName?: Prisma.SortOrder
-  lastName?: Prisma.SortOrder
-  email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
-  profilePicture?: Prisma.SortOrder
-  profilePictureKey?: Prisma.SortOrder
-  phone?: Prisma.SortOrder
-  jobTitle?: Prisma.SortOrder
-  businessName?: Prisma.SortOrder
-  vatNumber?: Prisma.SortOrder
-  language?: Prisma.SortOrder
-  timezone?: Prisma.SortOrder
-  dateFormat?: Prisma.SortOrder
-  currency?: Prisma.SortOrder
   twoFactorEnabled?: Prisma.SortOrder
   status?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -663,202 +367,301 @@ export type UserMaxOrderByAggregateInput = {
 
 export type UserMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  firstName?: Prisma.SortOrder
-  lastName?: Prisma.SortOrder
-  email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
-  profilePicture?: Prisma.SortOrder
-  profilePictureKey?: Prisma.SortOrder
-  phone?: Prisma.SortOrder
-  jobTitle?: Prisma.SortOrder
-  businessName?: Prisma.SortOrder
-  vatNumber?: Prisma.SortOrder
-  language?: Prisma.SortOrder
-  timezone?: Prisma.SortOrder
-  dateFormat?: Prisma.SortOrder
-  currency?: Prisma.SortOrder
   twoFactorEnabled?: Prisma.SortOrder
   status?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
 }
 
-export type UserSumOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-}
-
-export type UserCreateNestedOneWithoutEmailsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutEmailsInput, Prisma.UserUncheckedCreateWithoutEmailsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutEmailsInput
+export type UserCreateNestedOneWithoutProfileInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutProfileInput, Prisma.UserUncheckedCreateWithoutProfileInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProfileInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutEmailsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutEmailsInput, Prisma.UserUncheckedCreateWithoutEmailsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutEmailsInput
-  upsert?: Prisma.UserUpsertWithoutEmailsInput
+export type UserUpdateOneRequiredWithoutProfileNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutProfileInput, Prisma.UserUncheckedCreateWithoutProfileInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProfileInput
+  upsert?: Prisma.UserUpsertWithoutProfileInput
   connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutEmailsInput, Prisma.UserUpdateWithoutEmailsInput>, Prisma.UserUncheckedUpdateWithoutEmailsInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutProfileInput, Prisma.UserUpdateWithoutProfileInput>, Prisma.UserUncheckedUpdateWithoutProfileInput>
+}
+
+export type UserCreateNestedOneWithoutEmailInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutEmailInput, Prisma.UserUncheckedCreateWithoutEmailInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutEmailInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutEmailNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutEmailInput, Prisma.UserUncheckedCreateWithoutEmailInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutEmailInput
+  upsert?: Prisma.UserUpsertWithoutEmailInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutEmailInput, Prisma.UserUpdateWithoutEmailInput>, Prisma.UserUncheckedUpdateWithoutEmailInput>
+}
+
+export type UserCreateNestedOneWithoutLanguagesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLanguagesInput, Prisma.UserUncheckedCreateWithoutLanguagesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLanguagesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutLanguagesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLanguagesInput, Prisma.UserUncheckedCreateWithoutLanguagesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLanguagesInput
+  upsert?: Prisma.UserUpsertWithoutLanguagesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutLanguagesInput, Prisma.UserUpdateWithoutLanguagesInput>, Prisma.UserUncheckedUpdateWithoutLanguagesInput>
 }
 
 export type EnumUserRoleFieldUpdateOperationsInput = {
   set?: $Enums.UserRole
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
-export type UserCreateWithoutEmailsInput = {
-  firstName: string
-  lastName: string
-  email: string
+export type UserCreateWithoutProfileInput = {
+  id?: string
   password: string
   role?: $Enums.UserRole
-  profilePicture?: string | null
-  profilePictureKey?: string | null
-  phone?: string | null
-  jobTitle?: string | null
-  businessName?: string | null
-  vatNumber?: string | null
-  language?: string
-  timezone?: string
-  dateFormat?: string | null
-  currency?: string
   twoFactorEnabled?: boolean
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  email?: Prisma.EmailCreateNestedOneWithoutUserInput
+  languages?: Prisma.LanguageCreateNestedManyWithoutUserInput
 }
 
-export type UserUncheckedCreateWithoutEmailsInput = {
-  id?: number
-  firstName: string
-  lastName: string
-  email: string
+export type UserUncheckedCreateWithoutProfileInput = {
+  id?: string
   password: string
   role?: $Enums.UserRole
-  profilePicture?: string | null
-  profilePictureKey?: string | null
-  phone?: string | null
-  jobTitle?: string | null
-  businessName?: string | null
-  vatNumber?: string | null
-  language?: string
-  timezone?: string
-  dateFormat?: string | null
-  currency?: string
   twoFactorEnabled?: boolean
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  email?: Prisma.EmailUncheckedCreateNestedOneWithoutUserInput
+  languages?: Prisma.LanguageUncheckedCreateNestedManyWithoutUserInput
 }
 
-export type UserCreateOrConnectWithoutEmailsInput = {
+export type UserCreateOrConnectWithoutProfileInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutEmailsInput, Prisma.UserUncheckedCreateWithoutEmailsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutProfileInput, Prisma.UserUncheckedCreateWithoutProfileInput>
 }
 
-export type UserUpsertWithoutEmailsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutEmailsInput, Prisma.UserUncheckedUpdateWithoutEmailsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutEmailsInput, Prisma.UserUncheckedCreateWithoutEmailsInput>
+export type UserUpsertWithoutProfileInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutProfileInput, Prisma.UserUncheckedUpdateWithoutProfileInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutProfileInput, Prisma.UserUncheckedCreateWithoutProfileInput>
   where?: Prisma.UserWhereInput
 }
 
-export type UserUpdateToOneWithWhereWithoutEmailsInput = {
+export type UserUpdateToOneWithWhereWithoutProfileInput = {
   where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutEmailsInput, Prisma.UserUncheckedUpdateWithoutEmailsInput>
+  data: Prisma.XOR<Prisma.UserUpdateWithoutProfileInput, Prisma.UserUncheckedUpdateWithoutProfileInput>
 }
 
-export type UserUpdateWithoutEmailsInput = {
-  firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+export type UserUpdateWithoutProfileInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  profilePictureKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  language?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
-  dateFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  email?: Prisma.EmailUpdateOneWithoutUserNestedInput
+  languages?: Prisma.LanguageUpdateManyWithoutUserNestedInput
 }
 
-export type UserUncheckedUpdateWithoutEmailsInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+export type UserUncheckedUpdateWithoutProfileInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  profilePictureKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  language?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
-  dateFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  email?: Prisma.EmailUncheckedUpdateOneWithoutUserNestedInput
+  languages?: Prisma.LanguageUncheckedUpdateManyWithoutUserNestedInput
 }
 
+export type UserCreateWithoutEmailInput = {
+  id?: string
+  password: string
+  role?: $Enums.UserRole
+  twoFactorEnabled?: boolean
+  status?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  languages?: Prisma.LanguageCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutEmailInput = {
+  id?: string
+  password: string
+  role?: $Enums.UserRole
+  twoFactorEnabled?: boolean
+  status?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  languages?: Prisma.LanguageUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutEmailInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutEmailInput, Prisma.UserUncheckedCreateWithoutEmailInput>
+}
+
+export type UserUpsertWithoutEmailInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutEmailInput, Prisma.UserUncheckedUpdateWithoutEmailInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutEmailInput, Prisma.UserUncheckedCreateWithoutEmailInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutEmailInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutEmailInput, Prisma.UserUncheckedUpdateWithoutEmailInput>
+}
+
+export type UserUpdateWithoutEmailInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  languages?: Prisma.LanguageUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutEmailInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  languages?: Prisma.LanguageUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutLanguagesInput = {
+  id?: string
+  password: string
+  role?: $Enums.UserRole
+  twoFactorEnabled?: boolean
+  status?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  email?: Prisma.EmailCreateNestedOneWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutLanguagesInput = {
+  id?: string
+  password: string
+  role?: $Enums.UserRole
+  twoFactorEnabled?: boolean
+  status?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  email?: Prisma.EmailUncheckedCreateNestedOneWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutLanguagesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutLanguagesInput, Prisma.UserUncheckedCreateWithoutLanguagesInput>
+}
+
+export type UserUpsertWithoutLanguagesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutLanguagesInput, Prisma.UserUncheckedUpdateWithoutLanguagesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutLanguagesInput, Prisma.UserUncheckedCreateWithoutLanguagesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutLanguagesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutLanguagesInput, Prisma.UserUncheckedUpdateWithoutLanguagesInput>
+}
+
+export type UserUpdateWithoutLanguagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  email?: Prisma.EmailUpdateOneWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutLanguagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  email?: Prisma.EmailUncheckedUpdateOneWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+}
+
+
+/**
+ * Count Type UserCountOutputType
+ */
+
+export type UserCountOutputType = {
+  languages: number
+}
+
+export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  languages?: boolean | UserCountOutputTypeCountLanguagesArgs
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserCountOutputType
+   */
+  select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountLanguagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LanguageWhereInput
+}
 
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  firstName?: boolean
-  lastName?: boolean
-  email?: boolean
   password?: boolean
   role?: boolean
-  profilePicture?: boolean
-  profilePictureKey?: boolean
-  phone?: boolean
-  jobTitle?: boolean
-  businessName?: boolean
-  vatNumber?: boolean
-  language?: boolean
-  timezone?: boolean
-  dateFormat?: boolean
-  currency?: boolean
   twoFactorEnabled?: boolean
   status?: boolean
   created_at?: boolean
   updated_at?: boolean
-  emails?: boolean | Prisma.User$emailsArgs<ExtArgs>
+  email?: boolean | Prisma.User$emailArgs<ExtArgs>
+  profile?: boolean | Prisma.User$profileArgs<ExtArgs>
+  languages?: boolean | Prisma.User$languagesArgs<ExtArgs>
+  _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  firstName?: boolean
-  lastName?: boolean
-  email?: boolean
   password?: boolean
   role?: boolean
-  profilePicture?: boolean
-  profilePictureKey?: boolean
-  phone?: boolean
-  jobTitle?: boolean
-  businessName?: boolean
-  vatNumber?: boolean
-  language?: boolean
-  timezone?: boolean
-  dateFormat?: boolean
-  currency?: boolean
   twoFactorEnabled?: boolean
   status?: boolean
   created_at?: boolean
@@ -867,21 +670,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  firstName?: boolean
-  lastName?: boolean
-  email?: boolean
   password?: boolean
   role?: boolean
-  profilePicture?: boolean
-  profilePictureKey?: boolean
-  phone?: boolean
-  jobTitle?: boolean
-  businessName?: boolean
-  vatNumber?: boolean
-  language?: boolean
-  timezone?: boolean
-  dateFormat?: boolean
-  currency?: boolean
   twoFactorEnabled?: boolean
   status?: boolean
   created_at?: boolean
@@ -890,30 +680,20 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
 
 export type UserSelectScalar = {
   id?: boolean
-  firstName?: boolean
-  lastName?: boolean
-  email?: boolean
   password?: boolean
   role?: boolean
-  profilePicture?: boolean
-  profilePictureKey?: boolean
-  phone?: boolean
-  jobTitle?: boolean
-  businessName?: boolean
-  vatNumber?: boolean
-  language?: boolean
-  timezone?: boolean
-  dateFormat?: boolean
-  currency?: boolean
   twoFactorEnabled?: boolean
   status?: boolean
   created_at?: boolean
   updated_at?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "email" | "password" | "role" | "profilePicture" | "profilePictureKey" | "phone" | "jobTitle" | "businessName" | "vatNumber" | "language" | "timezone" | "dateFormat" | "currency" | "twoFactorEnabled" | "status" | "created_at" | "updated_at", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "password" | "role" | "twoFactorEnabled" | "status" | "created_at" | "updated_at", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  emails?: boolean | Prisma.User$emailsArgs<ExtArgs>
+  email?: boolean | Prisma.User$emailArgs<ExtArgs>
+  profile?: boolean | Prisma.User$profileArgs<ExtArgs>
+  languages?: boolean | Prisma.User$languagesArgs<ExtArgs>
+  _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -921,25 +701,14 @@ export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
-    emails: Prisma.$EmailPayload<ExtArgs> | null
+    email: Prisma.$EmailPayload<ExtArgs> | null
+    profile: Prisma.$ProfilePayload<ExtArgs> | null
+    languages: Prisma.$LanguagePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: number
-    firstName: string
-    lastName: string
-    email: string
+    id: string
     password: string
     role: $Enums.UserRole
-    profilePicture: string | null
-    profilePictureKey: string | null
-    phone: string | null
-    jobTitle: string | null
-    businessName: string | null
-    vatNumber: string | null
-    language: string
-    timezone: string
-    dateFormat: string | null
-    currency: string
     twoFactorEnabled: boolean
     status: boolean
     created_at: Date
@@ -1338,7 +1107,9 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  emails<T extends Prisma.User$emailsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$emailsArgs<ExtArgs>>): Prisma.Prisma__EmailClient<runtime.Types.Result.GetResult<Prisma.$EmailPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  email<T extends Prisma.User$emailArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$emailArgs<ExtArgs>>): Prisma.Prisma__EmailClient<runtime.Types.Result.GetResult<Prisma.$EmailPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  profile<T extends Prisma.User$profileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$profileArgs<ExtArgs>>): Prisma.Prisma__ProfileClient<runtime.Types.Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  languages<T extends Prisma.User$languagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$languagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LanguagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1368,22 +1139,9 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
  * Fields of the User model
  */
 export interface UserFieldRefs {
-  readonly id: Prisma.FieldRef<"User", 'Int'>
-  readonly firstName: Prisma.FieldRef<"User", 'String'>
-  readonly lastName: Prisma.FieldRef<"User", 'String'>
-  readonly email: Prisma.FieldRef<"User", 'String'>
+  readonly id: Prisma.FieldRef<"User", 'String'>
   readonly password: Prisma.FieldRef<"User", 'String'>
   readonly role: Prisma.FieldRef<"User", 'UserRole'>
-  readonly profilePicture: Prisma.FieldRef<"User", 'String'>
-  readonly profilePictureKey: Prisma.FieldRef<"User", 'String'>
-  readonly phone: Prisma.FieldRef<"User", 'String'>
-  readonly jobTitle: Prisma.FieldRef<"User", 'String'>
-  readonly businessName: Prisma.FieldRef<"User", 'String'>
-  readonly vatNumber: Prisma.FieldRef<"User", 'String'>
-  readonly language: Prisma.FieldRef<"User", 'String'>
-  readonly timezone: Prisma.FieldRef<"User", 'String'>
-  readonly dateFormat: Prisma.FieldRef<"User", 'String'>
-  readonly currency: Prisma.FieldRef<"User", 'String'>
   readonly twoFactorEnabled: Prisma.FieldRef<"User", 'Boolean'>
   readonly status: Prisma.FieldRef<"User", 'Boolean'>
   readonly created_at: Prisma.FieldRef<"User", 'DateTime'>
@@ -1776,9 +1534,9 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
- * User.emails
+ * User.email
  */
-export type User$emailsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$emailArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Email
    */
@@ -1792,6 +1550,49 @@ export type User$emailsArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    */
   include?: Prisma.EmailInclude<ExtArgs> | null
   where?: Prisma.EmailWhereInput
+}
+
+/**
+ * User.profile
+ */
+export type User$profileArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Profile
+   */
+  select?: Prisma.ProfileSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Profile
+   */
+  omit?: Prisma.ProfileOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProfileInclude<ExtArgs> | null
+  where?: Prisma.ProfileWhereInput
+}
+
+/**
+ * User.languages
+ */
+export type User$languagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Language
+   */
+  select?: Prisma.LanguageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Language
+   */
+  omit?: Prisma.LanguageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LanguageInclude<ExtArgs> | null
+  where?: Prisma.LanguageWhereInput
+  orderBy?: Prisma.LanguageOrderByWithRelationInput | Prisma.LanguageOrderByWithRelationInput[]
+  cursor?: Prisma.LanguageWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LanguageScalarFieldEnum | Prisma.LanguageScalarFieldEnum[]
 }
 
 /**

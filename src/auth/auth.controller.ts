@@ -7,8 +7,6 @@ import {
   Delete,
   ValidationPipe,
   HttpCode,
-  UseGuards,
-  ParseIntPipe,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
@@ -18,10 +16,6 @@ import {
   ResetPass,
   ValidateForgetPass,
 } from './dto/forget-pass-dto';
-import { RolesGuard } from './guards/roles/roles.guard';
-import { JwtAccessGuard } from './guards/jwt/jwt-access.guard';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-// import { UpdateAuthDto } from './dto/update-auth.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -60,13 +54,6 @@ export class AuthController {
   @Get()
   findAll() {
     return this.authService.findAll();
-  }
-
-  @Get(':id')
-  @Roles('ADMIN',"USER")
-  @UseGuards(JwtAccessGuard, RolesGuard)
-  getUserData(@Param('id', ParseIntPipe) id: number) {
-    return this.authService.findOne(id);
   }
 
   // @Patch(':id')

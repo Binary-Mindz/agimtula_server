@@ -1,0 +1,50 @@
+model Profile{
+  id String @id @default(uuid())
+  firstName       String
+  lastName        String
+  profilePicture  String?
+  profilePictureKey String?
+  phone String?
+  jobTitle String?
+  businessName String?
+  vatNumber String?
+
+  userId String @unique
+  // relation
+  user User @relation(fields: [userId] , references: [id])
+
+  @@map("profile")
+}
+
+model Email {
+    id String @id @default(uuid())
+    email String @unique
+    userId String @unique
+    user User @relation(fields: [userId],references: [id])
+
+    @@map("email")
+}
+
+
+model ForgetPass{
+    id String @id @default(ulid())
+
+    email String  @unique
+    code Int
+    isVerified Boolean @default(false)
+
+    createdAt DateTime @default(now())
+
+    @@map("forgetPass")
+}
+
+
+model Language{
+    id String @id @default(uuid())
+    language String
+    isDefault Boolean @default(false)
+    userId String
+    user User @relation(fields:[userId],references:[id])
+
+    @@map("language")
+}

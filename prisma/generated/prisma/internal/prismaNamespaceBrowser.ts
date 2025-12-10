@@ -51,8 +51,10 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  Profile: 'Profile',
   Email: 'Email',
   ForgetPass: 'ForgetPass',
+  Language: 'Language',
   User: 'User'
 } as const
 
@@ -70,6 +72,22 @@ export const TransactionIsolationLevel = {
 } as const
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
+
+
+export const ProfileScalarFieldEnum = {
+  id: 'id',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  profilePicture: 'profilePicture',
+  profilePictureKey: 'profilePictureKey',
+  phone: 'phone',
+  jobTitle: 'jobTitle',
+  businessName: 'businessName',
+  vatNumber: 'vatNumber',
+  userId: 'userId'
+} as const
+
+export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
 
 
 export const EmailScalarFieldEnum = {
@@ -92,23 +110,20 @@ export const ForgetPassScalarFieldEnum = {
 export type ForgetPassScalarFieldEnum = (typeof ForgetPassScalarFieldEnum)[keyof typeof ForgetPassScalarFieldEnum]
 
 
+export const LanguageScalarFieldEnum = {
+  id: 'id',
+  language: 'language',
+  isDefault: 'isDefault',
+  userId: 'userId'
+} as const
+
+export type LanguageScalarFieldEnum = (typeof LanguageScalarFieldEnum)[keyof typeof LanguageScalarFieldEnum]
+
+
 export const UserScalarFieldEnum = {
   id: 'id',
-  firstName: 'firstName',
-  lastName: 'lastName',
-  email: 'email',
   password: 'password',
   role: 'role',
-  profilePicture: 'profilePicture',
-  profilePictureKey: 'profilePictureKey',
-  phone: 'phone',
-  jobTitle: 'jobTitle',
-  businessName: 'businessName',
-  vatNumber: 'vatNumber',
-  language: 'language',
-  timezone: 'timezone',
-  dateFormat: 'dateFormat',
-  currency: 'currency',
   twoFactorEnabled: 'twoFactorEnabled',
   status: 'status',
   created_at: 'created_at',

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-// import { ImapApisModule } from './imap-apis/imap-apis.module';
+import { ImapApisModule } from './imap-apis/imap-apis.module';
 import { DatabaseModule } from './config/database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { AdminDashboardModule } from './admin-dashboard/admin-dashboard.module';
@@ -14,7 +14,7 @@ import { ConfigModule } from '@nestjs/config';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     DatabaseModule,
-    // ImapApisModule,
+    ImapApisModule,
     AuthModule,
     AdminDashboardModule,
     AccountantDashboardModule,

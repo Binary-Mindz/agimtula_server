@@ -1,5 +1,7 @@
-// import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 // import { ImapFlow } from 'imapflow';
+import { SchedulerRegistry } from '@nestjs/schedule';
+import { CronJob } from 'cron';
 
 // interface EmailData {
 //   uid: number;
@@ -9,152 +11,86 @@
 //   seen: boolean;
 // }
 
-// @Injectable()
-// export class ImapApisService implements OnModuleInit {
-//   private client = new ImapFlow({
-//     host: 'imap.gmail.com',
-//     port: 993,
-//     auth: {
-//       user: 'uforcode123@gmail.com',
-//       // pass: 'tlmz fmoy wzhf csu',
-//       pass: 'tlmz fmoy wzhf csug',
-//     },
-//   });
-//   async onModuleInit() {
-//     // for (const account of this.accountInfo) {
-//     try {
-//       await this.connect(this.client);
-//     } catch (error) {
-//       console.error(`Failed to connect to :`, error);
-//     }
-//     // }
-//   }
-//   async connect(client: ImapFlow) {
-//     if (!client.usable) {
-//       await client.connect();
-//     }
-//   }
-//   // 1. Read ALL emails
-//   async readAll(client: ImapFlow): Promise<EmailData[]> {
-//     // await this.connect(client);
-//     const lock = await client.getMailboxLock('INBOX');
-//     const mails: EmailData[] = [];
-//     try {
-//       for await (const msg of client.fetch('1:*', {
-//         envelope: true,
-//         flags: true,
-//         bodyStructure: true,
-//       })) {
-//         console.log(`=====================${msg.uid}====================`);
-//         console.log(msg.envelope);
-//         console.log(msg.bodyStructure);
-//         console.log(msg.bodyParts);
-//         console.log(`=====================${msg.uid}====================`);
-//         mails.push({
-//           uid: msg.uid,
-//           subject: msg.envelope?.subject,
-//           from: msg.envelope?.from,
-//           date: msg.envelope?.date,
-//           seen: msg.flags?.has('\\Seen') ?? false,
-//         });
-//         // const { uid, envelope, flags, bodyStructure, id } = msg;
-//         // mails.push({
-//         //   uid,
-//         //   envelope,
-//         //   flags: flags?.has('\\Seen') ?? false,
-//         //   // bodyStructure,
-//         //   id,
-//         // });
-//       }
-//     } finally {
-//       lock.release();
-//     }
-//     return mails.sort((a, b) =>
-//       !a.date || !b.date ? 0 : a.date > b.date ? -1 : 1,
-//     );
-//   }
-//   // Read from all accounts
-//   async readAllAccounts() {
-//     const emails = await this.readAll(this.client);
-//     return emails;
-//   }
-// }
+@Injectable()
+export class ImapApisService {
+  constructor(
+    private schedulerRegistry: SchedulerRegistry,
+    // private prisma: PrismaService,       // Your DB service
+  ) {}
 
-// don't touch below code
+  // async onModuleInit() {
+  //   await this.loadCronJobsFromDB();
+  // }
 
-// off site - cron job per account
-// import { Injectable, OnModuleInit } from '@nestjs/common';
-// import { SchedulerRegistry } from '@nestjs/schedule';
-// import { CronJob } from 'cron';
-// import { ImapFlow } from 'imapflow';
-// import { PrismaService } from 'src/config/database/prisma.service';
+  loadCronJobsFromDB() {
+    // const accounts = await this.prisma.emailAccount.findMany();
+    // [{email:"user1@gmail.com", timeupdate:5}, ...]
 
-// @Injectable()
-// export class ImapApisService implements OnModuleInit {
-//   constructor(
-//     private schedulerRegistry: SchedulerRegistry,
-//     private prisma: PrismaService,       // Your DB service
-//   ) {}
+    const accounts: ({ email: string; timeupdate: number } | null)[] = [
+      { email: 'uforcode123@gmail.com', timeupdate: 5 },
+      null,
+    ];
 
-//   async onModuleInit() {
-//     await this.loadCronJobsFromDB();
-//   }
+    if (accounts.length > 0 && accounts[0])
+      this.createCronForAccount(accounts[0].email, accounts[0].timeupdate);
+  }
 
-//   async loadCronJobsFromDB() {
-//     const accounts = await this.prisma.emailAccount.findMany();
-//     // [{email:"user1@gmail.com", timeupdate:5}, ...]
+  createCronForAccount(email: string, minutes: number) {
+    const jobName = `cron_${email}`;
+    const cronTime = `*/5 * * * * *`; // Every 'minutes' minutes
 
-//     for (const acc of accounts) {
-//       this.createCronForAccount(acc.email, acc.timeupdate);
-//     }
-//   }
+    this.stopCronForAccount(email); // Stop existing job if any
 
-//   createCronForAccount(email: string, minutes: number) {
-//     const jobName = `cron_${email}`;
+    const job = new CronJob(cronTime, () => {
+      // this.runCronJob(email);
+      console.log(`Running cron job for ${email}`);
+    });
 
-//     // If job already exists, delete it
-//     try {
-//       this.schedulerRegistry.deleteCronJob(jobName);
-//     } catch {}
+    this.schedulerRegistry.addCronJob(jobName, job as any);
+    job.start();
 
-//     const cron = new CronJob(`*/${minutes} * * * *`, async () => {
-//       console.log(`Running cron for: ${email}`);
+    console.log(`Cron job ${jobName} created to run every ${minutes} minutes.`);
+  }
 
-//       // TODO: fetch emails for this email (multiple clients)
-//       await this.readEmailByAccount(email);
-//     });
+  stopCronForAccount(email: string) {
+    const jobName = `cron_${email}`;
 
-//     this.schedulerRegistry.addCronJob(jobName, cron);
-//     cron.start();
+    try {
+      const job = this.schedulerRegistry.getCronJob(jobName);
+      job.stop();
+      this.schedulerRegistry.deleteCronJob(jobName);
 
-//     console.log(`Cron started for ${email} every ${minutes} min`);
-//   }
+      console.log(`Cron job ${jobName} stopped and removed.`);
+    } catch {
+      console.log(`Cron job ${jobName} not found.`);
+    }
+  }
 
-//   async readEmailByAccount(email: string) {
-//     // Create IMAP Flow client for each email
-//     const account = await this.prisma.emailAccount.findUnique({
-//       where: { email },
-//     });
+  // async readEmailByAccount(email: string) {
+  //   // Create IMAP Flow client for each email
+  //   const account = await this.prisma.emailAccount.findUnique({
+  //     where: { email },
+  //   });
 
-//     const client = new ImapFlow({
-//       host: 'imap.gmail.com',
-//       port: 993,
-//       auth: {
-//         user: account.email,
-//         pass: account.password,
-//       },
-//     });
+  //   const client = new ImapFlow({
+  //     host: 'imap.gmail.com',
+  //     port: 993,
+  //     auth: {
+  //       user: account.email,
+  //       pass: account.password,
+  //     },
+  //   });
 
-//     await client.connect();
+  //   await client.connect();
 
-//     const inbox = await client.getMailboxLock('INBOX');
-//     try {
-//       for await (const msg of client.fetch('1:*', { envelope: true })) {
-//         console.log(`[${email}] → ${msg.envelope.subject}`);
-//       }
-//     } finally {
-//       inbox.release();
-//       await client.logout();
-//     }
-//   }
-// }
+  //   const inbox = await client.getMailboxLock('INBOX');
+  //   try {
+  //     for await (const msg of client.fetch('1:*', { envelope: true })) {
+  //       console.log(`[${email}] → ${msg.envelope.subject}`);
+  //     }
+  //   } finally {
+  //     inbox.release();
+  //     await client.logout();
+  //   }
+  // }
+}

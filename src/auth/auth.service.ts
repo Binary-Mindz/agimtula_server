@@ -34,7 +34,7 @@ export class AuthService {
   async cleanExpiredCodes() {
     const cutoff = new Date(Date.now() - 5 * 60 * 1000);
 
-    const deleted = await this.prisma.client.forgetPass.deleteMany({
+    const deleted = await this.prisma.forgetPass.deleteMany({
       where: {
         createdAt: {
           lt: cutoff,

@@ -34,7 +34,7 @@ export class AuthService {
   async cleanExpiredCodes() {
     const cutoff = new Date(Date.now() - 5 * 60 * 1000);
 
-    const deleted = await this.prisma.client.forgetPass.deleteMany({
+    const deleted = await this.prisma.forgetPass.deleteMany({
       where: {
         createdAt: {
           lt: cutoff,
@@ -224,97 +224,89 @@ export class AuthService {
   }
 
   async verifyForgetPassCode(data: ValidateForgetPass) {
-    try {
-      const code = Number(data.verificationCode);
-      const isValid = await this.prisma.forgetPass.findFirst({
-        where: {
-          email: data.email,
-          code,
-        },
-      });
-      if (!isValid) {
-        throw new ForbiddenException(
-          'Not allowed to forget your password or no account with this mail',
-        );
-      }
-
-      const now = new Date().getTime();
-
-      const createdAt = new Date(isValid.createdAt).getTime();
-
-      const ExpirationLimit = 15 * 60 * 1000;
-
-      if (now - createdAt > ExpirationLimit) {
-        throw new ForbiddenException(
-          'Your request to reset code is not valid yet',
-        );
-      }
-
-      await this.prisma.forgetPass.update({
-        where: {
-          id: isValid.id,
-        },
-        data: {
-          isVerified: true,
-        },
-      });
-
-      return {
-        message: 'Code is verified, now you can change your password',
-      };
-    } catch (error) {
-      throw error;
+    const code = Number(data.verificationCode);
+    const isValid = await this.prisma.forgetPass.findFirst({
+      where: {
+        email: data.email,
+        code,
+      },
+    });
+    if (!isValid) {
+      throw new ForbiddenException(
+        'Not allowed to forget your password or no account with this mail',
+      );
     }
+
+    const now = new Date().getTime();
+
+    const createdAt = new Date(isValid.createdAt).getTime();
+
+    const ExpirationLimit = 15 * 60 * 1000;
+
+    if (now - createdAt > ExpirationLimit) {
+      throw new ForbiddenException(
+        'Your request to reset code is not valid yet',
+      );
+    }
+
+    await this.prisma.forgetPass.update({
+      where: {
+        id: isValid.id,
+      },
+      data: {
+        isVerified: true,
+      },
+    });
+
+    return {
+      message: 'Code is verified, now you can change your password',
+    };
   }
 
   async changePassword(data: ResetPass) {
-    try {
-      const user = await this.prisma.user.findFirst({
-        where: {
-          email: {
-            email: data.email,
-          },
-        },
-      });
-
-      if (!user) {
-        throw new UnauthorizedException('User not found');
-      }
-
-      const isValid = await this.prisma.forgetPass.findFirst({
-        where: {
-          email: data.email,
-          isVerified: true,
-        },
-      });
-
-      if (!isValid) {
-        throw new ForbiddenException('Not allowed to change your password');
-      }
-
-      const hashedPass = await bcrypt.hash(data.password, 10);
-
-      await this.prisma.user.update({
-        where: {
-          id: user.id,
-        },
-        data: {
-          password: hashedPass,
-        },
-      });
-
-      await this.prisma.forgetPass.deleteMany({
-        where: {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        email: {
           email: data.email,
         },
-      });
+      },
+    });
 
-      return {
-        message: 'Password changed successfully',
-      };
-    } catch (error) {
-      throw error;
+    if (!user) {
+      throw new UnauthorizedException('User not found');
     }
+
+    const isValid = await this.prisma.forgetPass.findFirst({
+      where: {
+        email: data.email,
+        isVerified: true,
+      },
+    });
+
+    if (!isValid) {
+      throw new ForbiddenException('Not allowed to change your password');
+    }
+
+    const hashedPass = await bcrypt.hash(data.password, 10);
+
+    await this.prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        password: hashedPass,
+      },
+    });
+
+    await this.prisma.forgetPass.deleteMany({
+      where: {
+        email: data.email,
+      },
+    });
+
+    return {
+      message: 'Password changed successfully',
+    };
   }
 
   findAll() {
@@ -324,10 +316,6 @@ export class AuthService {
   findOne(id: number) {
     return `This action returns a #${id} auth`;
   }
-
-  // update(id: number, updateAuthDto: UpdateAuthDto) {
-  //   return `This action updates a #${id} auth`;
-  // }
 
   remove(id: number) {
     return `This action removes a #${id} auth`;

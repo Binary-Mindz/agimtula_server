@@ -4,7 +4,6 @@ import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { SmtpMailModule } from 'src/config/smtp-mail/smtp-mail.module';
 import { JwtStrategy } from './strategies/jwt-strategy';
-import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [

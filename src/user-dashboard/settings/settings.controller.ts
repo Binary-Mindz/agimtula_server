@@ -15,14 +15,14 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { PaymentMethodDto } from './dto/payment-method.dto';
 import { InvoiceLayoutDto } from './dto/invoice-layout.dto';
-import { JwtAccessGuard } from 'src/auth/guards/jwt/jwt-access.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 
 @Controller('settings')
 export class SettingsController {
   constructor(private readonly settingsService: SettingsService) {}
 
   @Patch('update-business-info')
-  @UseGuards(JwtAccessGuard)
+  @Roles('USER')
   @UsePipes(new ValidationPipe({ transform: true }))
   @UseInterceptors(FileInterceptor('logo'))
   @ApiConsumes('multipart/form-data')
@@ -35,13 +35,13 @@ export class SettingsController {
   }
 
   @Patch('update-payment-method')
-  @UseGuards(JwtAccessGuard)
+  @Roles('USER')
   @UsePipes(new ValidationPipe({ transform: true }))
   async updatePaymentInfo(@Body() dto: PaymentMethodDto) {
     return await this.settingsService.paymentMethod(dto);
   }
   @Post('invoice-layout')
-  @UseGuards(JwtAccessGuard)
+  @Roles('USER')
   @UsePipes(new ValidationPipe({ transform: true }))
   async invoiceLayout(@Body() dto: InvoiceLayoutDto) {
     return await this.settingsService.invoiceLayout(dto);

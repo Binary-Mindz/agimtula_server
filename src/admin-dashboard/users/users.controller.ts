@@ -15,7 +15,7 @@ export class UsersController {
   @Post('create-user-dto')
   @Roles('ADMIN')
   @UsePipes(new ValidationPipe({ transform: true }))
-  async createUserDto(@Body() dto: CreateUserDto) {
+  createUserDto(@Body() dto: CreateUserDto) {
     return { dto };
   }
 }

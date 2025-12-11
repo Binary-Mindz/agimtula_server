@@ -1,29 +1,22 @@
 model User {
-  id              Int      @id @default(autoincrement())
-  firstName       String
-  lastName        String
-  email           String @unique
+  id              String  @unique    @id @default(uuid())
   password        String
   role            UserRole @default(USER)
-  profilePicture  String?
-  profilePictureKey String?
-  phone String?
-  jobTitle String?
-  businessName String?
-  vatNumber String?
-
-  language String @default("en")
-  timezone String @default("UTC")
-  dateFormat String? @default("y-m-d")
-  currency String @default("USD")
-
   twoFactorEnabled Boolean @default(false)
-  status          Boolean  @default(false)
+  status           Boolean  @default(true)
 
   // relations 
-  emails Email?
+  email Email?
+  profile Profile?
+  languages Language[]
+  paymentMethods PaymentMethod[]
+  businessInfo BusinessInfo?
+  invoiceLayout InvoiceLayout?
+
   created_at      DateTime @default(now())
   updated_at      DateTime @updatedAt
+
+  @@map("user")
 }
 
 enum UserRole {

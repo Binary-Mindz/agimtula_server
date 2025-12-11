@@ -2,13 +2,13 @@ import {
   ConflictException,
   ForbiddenException,
   Injectable,
+  Logger,
   UnauthorizedException,
 } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from './dto/login.dto';
-import { User } from 'prisma/generated/prisma/client';
 import { JwtService } from '@nestjs/jwt';
 import {
   ForgetPassDto,
@@ -17,6 +17,7 @@ import {
 } from './dto/forget-pass-dto';
 import { SmtpMailService } from 'src/config/smtp-mail/smtp-mail.service';
 import { jwtPayload } from './types/jwt-payload';
+import { Cron, CronExpression } from '@nestjs/schedule';
 // import { UpdateAuthDto } from './dto/update-auth.dto';
 
 @Injectable()
@@ -26,6 +27,25 @@ export class AuthService {
     private jwt: JwtService,
     private mail: SmtpMailService,
   ) {}
+
+  private readonly logger = new Logger(AuthService.name);
+
+  @Cron(CronExpression.EVERY_MINUTE)
+  async cleanExpiredCodes() {
+    const cutoff = new Date(Date.now() - 5 * 60 * 1000);
+
+    const deleted = await this.prisma.client.forgetPass.deleteMany({
+      where: {
+        createdAt: {
+          lt: cutoff,
+        },
+      },
+    });
+
+    if (deleted.count > 0) {
+      this.logger.log(`Deleted ${deleted.count} expired forget-password codes`);
+    }
+  }
 
   async generateAccessToken(jwtPayload: jwtPayload) {
     return this.jwt.signAsync(
@@ -40,7 +60,9 @@ export class AuthService {
   async create(createAuthDto: CreateAuthDto) {
     const isUser = await this.prisma.user.findFirst({
       where: {
-        email: createAuthDto.email,
+        email: {
+          email: createAuthDto.email,
+        },
       },
     });
 
@@ -52,17 +74,22 @@ export class AuthService {
 
     const user = await this.prisma.user.create({
       data: {
-        firstName: createAuthDto.firstName,
-        lastName: createAuthDto.lastName,
-        email: createAuthDto.email,
+        profile: {
+          create: {
+            firstName: createAuthDto.firstName,
+            lastName: createAuthDto.lastName,
+          },
+        },
+        email: {
+          create: {
+            email: createAuthDto.email,
+          },
+        },
         password: hashedPass,
       },
-    });
-
-    await this.prisma.email.create({
-      data: {
-        userId: user.id,
-        email: createAuthDto.email,
+      include: {
+        profile: true,
+        email: true,
       },
     });
 
@@ -70,9 +97,9 @@ export class AuthService {
       message: 'User created successfully',
       user: {
         id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
+        firstName: user.profile?.firstName,
+        lastName: user.profile?.lastName,
+        email: user.email?.email,
       },
     };
   }
@@ -80,7 +107,13 @@ export class AuthService {
   async login(loginDto: LoginDto) {
     const user = await this.prisma.user.findFirst({
       where: {
-        email: loginDto.email,
+        email: {
+          email: loginDto.email,
+        },
+      },
+      include: {
+        email: true,
+        profile: true,
       },
     });
 
@@ -97,9 +130,13 @@ export class AuthService {
       throw new ForbiddenException('Invalid credentials');
     }
 
+    if (!user.email) {
+      throw new UnauthorizedException('User not valid');
+    }
+
     const accessToken = await this.generateAccessToken({
       sub: user.id,
-      email: user.email,
+      email: user.email.email,
       role: user.role,
     });
 
@@ -107,9 +144,9 @@ export class AuthService {
       message: 'Login successful',
       user: {
         id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
+        firstName: user.profile?.firstName,
+        lastName: user.profile?.lastName,
+        email: user.email.email,
       },
       accessToken,
     };
@@ -120,7 +157,9 @@ export class AuthService {
 
     const user = await this.prisma.user.findFirst({
       where: {
-        email: email,
+        email: {
+          email: email,
+        },
       },
     });
 
@@ -141,7 +180,7 @@ export class AuthService {
 
       const diffMinutes = (now.getTime() - createdAt.getTime()) / (1000 * 60);
 
-      if (diffMinutes < 15) {
+      if (diffMinutes < 5) {
         finalCode = existing.code;
       } else {
         await this.prisma.forgetPass.deleteMany({
@@ -175,7 +214,7 @@ export class AuthService {
         <h3>AuthSystem</h3>
         <p>Your email verification code:</p>
         <h2>${finalCode}</h2>
-        <p>This code is valid for 15 minutes.</p>
+        <p>This code is valid for 5 minutes.</p>
       `,
     );
 
@@ -232,7 +271,9 @@ export class AuthService {
     try {
       const user = await this.prisma.user.findFirst({
         where: {
-          email: data.email,
+          email: {
+            email: data.email,
+          },
         },
       });
 
@@ -291,6 +332,4 @@ export class AuthService {
   remove(id: number) {
     return `This action removes a #${id} auth`;
   }
-
-  generateToken(payload: User) {}
 }

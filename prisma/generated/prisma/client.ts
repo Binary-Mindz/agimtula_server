@@ -27,8 +27,8 @@ export * from "./enums"
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Emails
- * const emails = await prisma.email.findMany()
+ * // Fetch zero or more Profiles
+ * const profiles = await prisma.profile.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -37,6 +37,11 @@ export const PrismaClient = $Class.getPrismaClientClass()
 export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts extends Prisma.PrismaClientOptions["omit"] = Prisma.PrismaClientOptions["omit"], ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = $Class.PrismaClient<LogOpts, OmitOpts, ExtArgs>
 export { Prisma }
 
+/**
+ * Model Profile
+ * 
+ */
+export type Profile = Prisma.ProfileModel
 /**
  * Model Email
  * 
@@ -47,6 +52,31 @@ export type Email = Prisma.EmailModel
  * 
  */
 export type ForgetPass = Prisma.ForgetPassModel
+/**
+ * Model Language
+ * 
+ */
+export type Language = Prisma.LanguageModel
+/**
+ * Model BusinessInfo
+ * 
+ */
+export type BusinessInfo = Prisma.BusinessInfoModel
+/**
+ * Model PaymentMethod
+ * 
+ */
+export type PaymentMethod = Prisma.PaymentMethodModel
+/**
+ * Model InvoiceLayout
+ * 
+ */
+export type InvoiceLayout = Prisma.InvoiceLayoutModel
+/**
+ * Model NotificationSetting
+ * 
+ */
+export type NotificationSetting = Prisma.NotificationSettingModel
 /**
  * Model User
  * 

@@ -51,8 +51,14 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  Profile: 'Profile',
   Email: 'Email',
   ForgetPass: 'ForgetPass',
+  Language: 'Language',
+  BusinessInfo: 'BusinessInfo',
+  PaymentMethod: 'PaymentMethod',
+  InvoiceLayout: 'InvoiceLayout',
+  NotificationSetting: 'NotificationSetting',
   User: 'User'
 } as const
 
@@ -70,6 +76,22 @@ export const TransactionIsolationLevel = {
 } as const
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
+
+
+export const ProfileScalarFieldEnum = {
+  id: 'id',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  profilePicture: 'profilePicture',
+  profilePictureKey: 'profilePictureKey',
+  phone: 'phone',
+  jobTitle: 'jobTitle',
+  businessName: 'businessName',
+  vatNumber: 'vatNumber',
+  userId: 'userId'
+} as const
+
+export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
 
 
 export const EmailScalarFieldEnum = {
@@ -92,23 +114,79 @@ export const ForgetPassScalarFieldEnum = {
 export type ForgetPassScalarFieldEnum = (typeof ForgetPassScalarFieldEnum)[keyof typeof ForgetPassScalarFieldEnum]
 
 
+export const LanguageScalarFieldEnum = {
+  id: 'id',
+  language: 'language',
+  isDefault: 'isDefault',
+  userId: 'userId'
+} as const
+
+export type LanguageScalarFieldEnum = (typeof LanguageScalarFieldEnum)[keyof typeof LanguageScalarFieldEnum]
+
+
+export const BusinessInfoScalarFieldEnum = {
+  id: 'id',
+  companyName: 'companyName',
+  vatNumber: 'vatNumber',
+  address1: 'address1',
+  address2: 'address2',
+  address3: 'address3',
+  country: 'country',
+  website: 'website',
+  logo: 'logo',
+  logoKey: 'logoKey',
+  userId: 'userId'
+} as const
+
+export type BusinessInfoScalarFieldEnum = (typeof BusinessInfoScalarFieldEnum)[keyof typeof BusinessInfoScalarFieldEnum]
+
+
+export const PaymentMethodScalarFieldEnum = {
+  id: 'id',
+  acc_name: 'acc_name',
+  bank_name: 'bank_name',
+  sort_code: 'sort_code',
+  iban: 'iban',
+  bic_swift: 'bic_swift',
+  default_payment_term: 'default_payment_term',
+  late_payment_fee: 'late_payment_fee',
+  payment_instructions: 'payment_instructions',
+  isDefault: 'isDefault',
+  userId: 'userId'
+} as const
+
+export type PaymentMethodScalarFieldEnum = (typeof PaymentMethodScalarFieldEnum)[keyof typeof PaymentMethodScalarFieldEnum]
+
+
+export const InvoiceLayoutScalarFieldEnum = {
+  id: 'id',
+  invoice_prefix: 'invoice_prefix',
+  quote_prefix: 'quote_prefix',
+  year_format: 'year_format',
+  default_vat_rate: 'default_vat_rate',
+  tax_breakdown: 'tax_breakdown',
+  prices_include_tax: 'prices_include_tax',
+  template_title: 'template_title',
+  show_company_logo: 'show_company_logo',
+  invoice_notes: 'invoice_notes',
+  terms_and_conditions: 'terms_and_conditions',
+  userId: 'userId'
+} as const
+
+export type InvoiceLayoutScalarFieldEnum = (typeof InvoiceLayoutScalarFieldEnum)[keyof typeof InvoiceLayoutScalarFieldEnum]
+
+
+export const NotificationSettingScalarFieldEnum = {
+  id: 'id'
+} as const
+
+export type NotificationSettingScalarFieldEnum = (typeof NotificationSettingScalarFieldEnum)[keyof typeof NotificationSettingScalarFieldEnum]
+
+
 export const UserScalarFieldEnum = {
   id: 'id',
-  firstName: 'firstName',
-  lastName: 'lastName',
-  email: 'email',
   password: 'password',
   role: 'role',
-  profilePicture: 'profilePicture',
-  profilePictureKey: 'profilePictureKey',
-  phone: 'phone',
-  jobTitle: 'jobTitle',
-  businessName: 'businessName',
-  vatNumber: 'vatNumber',
-  language: 'language',
-  timezone: 'timezone',
-  dateFormat: 'dateFormat',
-  currency: 'currency',
   twoFactorEnabled: 'twoFactorEnabled',
   status: 'status',
   created_at: 'created_at',

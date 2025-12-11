@@ -9,10 +9,15 @@ import { AccountantDashboardModule } from './accountant-dashboard/accountant-das
 import { UserDashboardModule } from './user-dashboard/user-dashboard.module';
 import { SmtpMailModule } from './config/smtp-mail/smtp-mail.module';
 import { ConfigModule } from '@nestjs/config';
+import { MileageModule } from './user-dashboard/mileage/mileage.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { SettingsModule } from './user-dashboard/settings/settings.module';
+import { AuthGuard } from './auth/guards/auth/auth.guard';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    ScheduleModule.forRoot(),
     DatabaseModule,
     ImapApisModule,
     AuthModule,
@@ -20,8 +25,16 @@ import { ConfigModule } from '@nestjs/config';
     AccountantDashboardModule,
     UserDashboardModule,
     SmtpMailModule,
+    MileageModule,
+    SettingsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: 'APP_GUARD',
+      useClass: AuthGuard,
+    },
+  ],
 })
 export class AppModule {}

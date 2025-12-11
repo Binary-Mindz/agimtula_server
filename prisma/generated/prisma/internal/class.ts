@@ -20,7 +20,7 @@ const config: runtime.GetPrismaClientConfig = {
   "clientVersion": "7.1.0",
   "engineVersion": "ab635e6b9d606fa5c8fb8b1a7f909c3c3c1c98ba",
   "activeProvider": "postgresql",
-  "inlineSchema": "model Email {\n  id     Int    @id @default(autoincrement())\n  email  String\n  userId Int    @unique\n  user   User   @relation(fields: [userId], references: [id])\n}\n\nmodel ForgetPass {\n  id String @id @default(cuid())\n\n  email      String\n  code       Int\n  isVerified Boolean @default(false)\n\n  createdAt DateTime @default(now())\n}\n\n// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel User {\n  id                Int      @id @default(autoincrement())\n  firstName         String\n  lastName          String\n  email             String   @unique\n  password          String\n  role              UserRole @default(USER)\n  profilePicture    String?\n  profilePictureKey String?\n  phone             String?\n  jobTitle          String?\n  businessName      String?\n  vatNumber         String?\n\n  language   String  @default(\"en\")\n  timezone   String  @default(\"UTC\")\n  dateFormat String? @default(\"y-m-d\")\n  currency   String  @default(\"USD\")\n\n  twoFactorEnabled Boolean @default(false)\n  status           Boolean @default(false)\n\n  // relations \n  emails     Email?\n  created_at DateTime @default(now())\n  updated_at DateTime @updatedAt\n}\n\nenum UserRole {\n  ADMIN\n  USER\n  ACCOUNTANT\n}\n",
+  "inlineSchema": "model Profile {\n  id                String  @id @default(uuid())\n  firstName         String\n  lastName          String\n  profilePicture    String?\n  profilePictureKey String?\n  phone             String?\n  jobTitle          String?\n  businessName      String?\n  vatNumber         String?\n\n  userId String @unique\n  // relation\n  user   User   @relation(fields: [userId], references: [id])\n\n  @@map(\"profile\")\n}\n\nmodel Email {\n  id     String @id @default(uuid())\n  email  String @unique\n  userId String @unique\n  user   User   @relation(fields: [userId], references: [id])\n\n  @@map(\"email\")\n}\n\nmodel ForgetPass {\n  id String @id @default(ulid())\n\n  email      String  @unique\n  code       Int\n  isVerified Boolean @default(false)\n\n  createdAt DateTime @default(now())\n\n  @@map(\"forgetPass\")\n}\n\nmodel Language {\n  id        String  @id @default(uuid())\n  language  String\n  isDefault Boolean @default(false)\n  userId    String\n  user      User    @relation(fields: [userId], references: [id])\n\n  @@map(\"language\")\n}\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel BusinessInfo {\n  id          String  @id @unique @default(uuid())\n  companyName String\n  vatNumber   String\n  address1    String\n  address2    String?\n  address3    String?\n  country     String\n  website     String?\n  logo        String?\n  logoKey     String?\n\n  userId String @unique\n  user   User   @relation(fields: [userId], references: [id])\n\n  @@map(\"businessInfo\")\n}\n\nmodel PaymentMethod {\n  id String @id @default(uuid())\n\n  //acc details\n  acc_name  String\n  bank_name String\n  sort_code String\n  iban      String\n  bic_swift String\n\n  //payment terms\n  default_payment_term String?\n  late_payment_fee     Int?\n  payment_instructions String?\n\n  isDefault Boolean @default(false)\n\n  userId String\n  user   User   @relation(fields: [userId], references: [id])\n\n  @@map(\"paymentMethod\")\n}\n\nmodel InvoiceLayout {\n  id String @id @default(uuid())\n\n  // invoice numbering\n  invoice_prefix String\n  quote_prefix   String\n  year_format    String?\n\n  // tax settings\n  default_vat_rate   Float?\n  tax_breakdown      Boolean @default(false)\n  prices_include_tax Boolean @default(false)\n\n  // invoice template\n  template_title    String?\n  show_company_logo Boolean @default(false)\n\n  // default notes and terms\n  invoice_notes        String?\n  terms_and_conditions String?\n\n  userId String @unique\n  user   User   @relation(fields: [userId], references: [id])\n\n  @@map(\"invoiceLayout\")\n}\n\nmodel NotificationSetting {\n  id String @id @unique @default(uuid())\n}\n\nmodel User {\n  id               String   @id @unique @default(uuid())\n  password         String\n  role             UserRole @default(USER)\n  twoFactorEnabled Boolean  @default(false)\n  status           Boolean  @default(true)\n\n  // relations \n  email          Email?\n  profile        Profile?\n  languages      Language[]\n  paymentMethods PaymentMethod[]\n  businessInfo   BusinessInfo?\n  invoiceLayout  InvoiceLayout?\n\n  created_at DateTime @default(now())\n  updated_at DateTime @updatedAt\n\n  @@map(\"user\")\n}\n\nenum UserRole {\n  ADMIN\n  USER\n  ACCOUNTANT\n}\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},
@@ -28,7 +28,7 @@ const config: runtime.GetPrismaClientConfig = {
   }
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Email\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"EmailToUser\"}],\"dbName\":null},\"ForgetPass\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"code\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"isVerified\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"firstName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lastName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"UserRole\"},{\"name\":\"profilePicture\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"profilePictureKey\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"jobTitle\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"businessName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"vatNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"language\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"timezone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"dateFormat\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"currency\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"twoFactorEnabled\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"emails\",\"kind\":\"object\",\"type\":\"Email\",\"relationName\":\"EmailToUser\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Profile\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"firstName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lastName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"profilePicture\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"profilePictureKey\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"jobTitle\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"businessName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"vatNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ProfileToUser\"}],\"dbName\":\"profile\"},\"Email\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"EmailToUser\"}],\"dbName\":\"email\"},\"ForgetPass\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"code\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"isVerified\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"forgetPass\"},\"Language\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"language\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isDefault\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"LanguageToUser\"}],\"dbName\":\"language\"},\"BusinessInfo\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"companyName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"vatNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"address1\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"address2\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"address3\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"country\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"website\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"logo\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"logoKey\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"BusinessInfoToUser\"}],\"dbName\":\"businessInfo\"},\"PaymentMethod\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"acc_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"bank_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sort_code\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"iban\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"bic_swift\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"default_payment_term\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"late_payment_fee\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"payment_instructions\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isDefault\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"PaymentMethodToUser\"}],\"dbName\":\"paymentMethod\"},\"InvoiceLayout\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"invoice_prefix\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"quote_prefix\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"year_format\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"default_vat_rate\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"tax_breakdown\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"prices_include_tax\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"template_title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"show_company_logo\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"invoice_notes\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"terms_and_conditions\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"InvoiceLayoutToUser\"}],\"dbName\":\"invoiceLayout\"},\"NotificationSetting\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"UserRole\"},{\"name\":\"twoFactorEnabled\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"email\",\"kind\":\"object\",\"type\":\"Email\",\"relationName\":\"EmailToUser\"},{\"name\":\"profile\",\"kind\":\"object\",\"type\":\"Profile\",\"relationName\":\"ProfileToUser\"},{\"name\":\"languages\",\"kind\":\"object\",\"type\":\"Language\",\"relationName\":\"LanguageToUser\"},{\"name\":\"paymentMethods\",\"kind\":\"object\",\"type\":\"PaymentMethod\",\"relationName\":\"PaymentMethodToUser\"},{\"name\":\"businessInfo\",\"kind\":\"object\",\"type\":\"BusinessInfo\",\"relationName\":\"BusinessInfoToUser\"},{\"name\":\"invoiceLayout\",\"kind\":\"object\",\"type\":\"InvoiceLayout\",\"relationName\":\"InvoiceLayoutToUser\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"user\"}},\"enums\":{},\"types\":{}}")
 
 async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Module> {
   const { Buffer } = await import('node:buffer')
@@ -58,8 +58,8 @@ export interface PrismaClientConstructor {
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more Emails
-   * const emails = await prisma.email.findMany()
+   * // Fetch zero or more Profiles
+   * const profiles = await prisma.profile.findMany()
    * ```
    * 
    * Read more in our [docs](https://pris.ly/d/client).
@@ -80,8 +80,8 @@ export interface PrismaClientConstructor {
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Emails
- * const emails = await prisma.email.findMany()
+ * // Fetch zero or more Profiles
+ * const profiles = await prisma.profile.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -175,6 +175,16 @@ export interface PrismaClient<
   }>>
 
       /**
+   * `prisma.profile`: Exposes CRUD operations for the **Profile** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Profiles
+    * const profiles = await prisma.profile.findMany()
+    * ```
+    */
+  get profile(): Prisma.ProfileDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
    * `prisma.email`: Exposes CRUD operations for the **Email** model.
     * Example usage:
     * ```ts
@@ -193,6 +203,56 @@ export interface PrismaClient<
     * ```
     */
   get forgetPass(): Prisma.ForgetPassDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.language`: Exposes CRUD operations for the **Language** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Languages
+    * const languages = await prisma.language.findMany()
+    * ```
+    */
+  get language(): Prisma.LanguageDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.businessInfo`: Exposes CRUD operations for the **BusinessInfo** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more BusinessInfos
+    * const businessInfos = await prisma.businessInfo.findMany()
+    * ```
+    */
+  get businessInfo(): Prisma.BusinessInfoDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.paymentMethod`: Exposes CRUD operations for the **PaymentMethod** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PaymentMethods
+    * const paymentMethods = await prisma.paymentMethod.findMany()
+    * ```
+    */
+  get paymentMethod(): Prisma.PaymentMethodDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.invoiceLayout`: Exposes CRUD operations for the **InvoiceLayout** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more InvoiceLayouts
+    * const invoiceLayouts = await prisma.invoiceLayout.findMany()
+    * ```
+    */
+  get invoiceLayout(): Prisma.InvoiceLayoutDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.notificationSetting`: Exposes CRUD operations for the **NotificationSetting** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more NotificationSettings
+    * const notificationSettings = await prisma.notificationSetting.findMany()
+    * ```
+    */
+  get notificationSetting(): Prisma.NotificationSettingDelegate<ExtArgs, { omit: OmitOpts }>;
 
   /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.

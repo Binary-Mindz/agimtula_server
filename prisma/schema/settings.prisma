@@ -1,0 +1,72 @@
+model BusinessInfo{
+    id String @unique @id @default(uuid())
+    companyName String
+    vatNumber String    
+    address1 String
+    address2 String?
+    address3 String?
+    country String
+    website String?
+    logo String?
+    logoKey String?
+
+    userId String @unique
+    user User @relation(fields: [userId] , references: [id])
+
+    @@map("businessInfo")
+}
+
+model PaymentMethod{
+    id String @id @default(uuid())
+    
+    //acc details
+    acc_name String
+    bank_name String
+    sort_code String
+    iban String
+    bic_swift String
+
+    //payment terms
+    default_payment_term String?
+    late_payment_fee Int?
+    payment_instructions String?
+
+    isDefault Boolean @default(false)
+
+    userId String 
+    user User @relation(fields: [userId] , references: [id])
+
+    @@map("paymentMethod")
+}
+
+model InvoiceLayout {
+    id String @id @default(uuid())
+    
+    // invoice numbering
+    invoice_prefix String
+    quote_prefix String
+    year_format String?
+
+    // tax settings
+    default_vat_rate Float?
+    tax_breakdown Boolean @default(false)
+    prices_include_tax Boolean @default(false)
+
+    // invoice template
+    template_title String?
+    show_company_logo Boolean @default(false)
+
+    // default notes and terms
+    invoice_notes String?
+    terms_and_conditions String?
+
+    userId String @unique
+    user User @relation(fields: [userId] , references: [id])
+
+    @@map("invoiceLayout")
+}
+
+model NotificationSetting{
+    id String @unique @id @default(uuid())
+
+}

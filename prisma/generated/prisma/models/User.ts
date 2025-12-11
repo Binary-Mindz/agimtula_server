@@ -201,6 +201,9 @@ export type UserWhereInput = {
   email?: Prisma.XOR<Prisma.EmailNullableScalarRelationFilter, Prisma.EmailWhereInput> | null
   profile?: Prisma.XOR<Prisma.ProfileNullableScalarRelationFilter, Prisma.ProfileWhereInput> | null
   languages?: Prisma.LanguageListRelationFilter
+  paymentMethods?: Prisma.PaymentMethodListRelationFilter
+  businessInfo?: Prisma.XOR<Prisma.BusinessInfoNullableScalarRelationFilter, Prisma.BusinessInfoWhereInput> | null
+  invoiceLayout?: Prisma.XOR<Prisma.InvoiceLayoutNullableScalarRelationFilter, Prisma.InvoiceLayoutWhereInput> | null
 }
 
 export type UserOrderByWithRelationInput = {
@@ -214,6 +217,9 @@ export type UserOrderByWithRelationInput = {
   email?: Prisma.EmailOrderByWithRelationInput
   profile?: Prisma.ProfileOrderByWithRelationInput
   languages?: Prisma.LanguageOrderByRelationAggregateInput
+  paymentMethods?: Prisma.PaymentMethodOrderByRelationAggregateInput
+  businessInfo?: Prisma.BusinessInfoOrderByWithRelationInput
+  invoiceLayout?: Prisma.InvoiceLayoutOrderByWithRelationInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -230,6 +236,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   email?: Prisma.XOR<Prisma.EmailNullableScalarRelationFilter, Prisma.EmailWhereInput> | null
   profile?: Prisma.XOR<Prisma.ProfileNullableScalarRelationFilter, Prisma.ProfileWhereInput> | null
   languages?: Prisma.LanguageListRelationFilter
+  paymentMethods?: Prisma.PaymentMethodListRelationFilter
+  businessInfo?: Prisma.XOR<Prisma.BusinessInfoNullableScalarRelationFilter, Prisma.BusinessInfoWhereInput> | null
+  invoiceLayout?: Prisma.XOR<Prisma.InvoiceLayoutNullableScalarRelationFilter, Prisma.InvoiceLayoutWhereInput> | null
 }, "id" | "id">
 
 export type UserOrderByWithAggregationInput = {
@@ -269,6 +278,9 @@ export type UserCreateInput = {
   email?: Prisma.EmailCreateNestedOneWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
   languages?: Prisma.LanguageCreateNestedManyWithoutUserInput
+  paymentMethods?: Prisma.PaymentMethodCreateNestedManyWithoutUserInput
+  businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
+  invoiceLayout?: Prisma.InvoiceLayoutCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -282,6 +294,9 @@ export type UserUncheckedCreateInput = {
   email?: Prisma.EmailUncheckedCreateNestedOneWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
   languages?: Prisma.LanguageUncheckedCreateNestedManyWithoutUserInput
+  paymentMethods?: Prisma.PaymentMethodUncheckedCreateNestedManyWithoutUserInput
+  businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
+  invoiceLayout?: Prisma.InvoiceLayoutUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -295,6 +310,9 @@ export type UserUpdateInput = {
   email?: Prisma.EmailUpdateOneWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
   languages?: Prisma.LanguageUpdateManyWithoutUserNestedInput
+  paymentMethods?: Prisma.PaymentMethodUpdateManyWithoutUserNestedInput
+  businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
+  invoiceLayout?: Prisma.InvoiceLayoutUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -308,6 +326,9 @@ export type UserUncheckedUpdateInput = {
   email?: Prisma.EmailUncheckedUpdateOneWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
   languages?: Prisma.LanguageUncheckedUpdateManyWithoutUserNestedInput
+  paymentMethods?: Prisma.PaymentMethodUncheckedUpdateManyWithoutUserNestedInput
+  businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
+  invoiceLayout?: Prisma.InvoiceLayoutUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -417,6 +438,48 @@ export type UserUpdateOneRequiredWithoutLanguagesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutLanguagesInput, Prisma.UserUpdateWithoutLanguagesInput>, Prisma.UserUncheckedUpdateWithoutLanguagesInput>
 }
 
+export type UserCreateNestedOneWithoutBusinessInfoInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBusinessInfoInput, Prisma.UserUncheckedCreateWithoutBusinessInfoInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBusinessInfoInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutBusinessInfoNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBusinessInfoInput, Prisma.UserUncheckedCreateWithoutBusinessInfoInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBusinessInfoInput
+  upsert?: Prisma.UserUpsertWithoutBusinessInfoInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBusinessInfoInput, Prisma.UserUpdateWithoutBusinessInfoInput>, Prisma.UserUncheckedUpdateWithoutBusinessInfoInput>
+}
+
+export type UserCreateNestedOneWithoutPaymentMethodsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPaymentMethodsInput, Prisma.UserUncheckedCreateWithoutPaymentMethodsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPaymentMethodsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPaymentMethodsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPaymentMethodsInput, Prisma.UserUncheckedCreateWithoutPaymentMethodsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPaymentMethodsInput
+  upsert?: Prisma.UserUpsertWithoutPaymentMethodsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPaymentMethodsInput, Prisma.UserUpdateWithoutPaymentMethodsInput>, Prisma.UserUncheckedUpdateWithoutPaymentMethodsInput>
+}
+
+export type UserCreateNestedOneWithoutInvoiceLayoutInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutInvoiceLayoutInput, Prisma.UserUncheckedCreateWithoutInvoiceLayoutInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutInvoiceLayoutInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutInvoiceLayoutNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutInvoiceLayoutInput, Prisma.UserUncheckedCreateWithoutInvoiceLayoutInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutInvoiceLayoutInput
+  upsert?: Prisma.UserUpsertWithoutInvoiceLayoutInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutInvoiceLayoutInput, Prisma.UserUpdateWithoutInvoiceLayoutInput>, Prisma.UserUncheckedUpdateWithoutInvoiceLayoutInput>
+}
+
 export type EnumUserRoleFieldUpdateOperationsInput = {
   set?: $Enums.UserRole
 }
@@ -431,6 +494,9 @@ export type UserCreateWithoutProfileInput = {
   updated_at?: Date | string
   email?: Prisma.EmailCreateNestedOneWithoutUserInput
   languages?: Prisma.LanguageCreateNestedManyWithoutUserInput
+  paymentMethods?: Prisma.PaymentMethodCreateNestedManyWithoutUserInput
+  businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
+  invoiceLayout?: Prisma.InvoiceLayoutCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProfileInput = {
@@ -443,6 +509,9 @@ export type UserUncheckedCreateWithoutProfileInput = {
   updated_at?: Date | string
   email?: Prisma.EmailUncheckedCreateNestedOneWithoutUserInput
   languages?: Prisma.LanguageUncheckedCreateNestedManyWithoutUserInput
+  paymentMethods?: Prisma.PaymentMethodUncheckedCreateNestedManyWithoutUserInput
+  businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
+  invoiceLayout?: Prisma.InvoiceLayoutUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProfileInput = {
@@ -471,6 +540,9 @@ export type UserUpdateWithoutProfileInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   email?: Prisma.EmailUpdateOneWithoutUserNestedInput
   languages?: Prisma.LanguageUpdateManyWithoutUserNestedInput
+  paymentMethods?: Prisma.PaymentMethodUpdateManyWithoutUserNestedInput
+  businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
+  invoiceLayout?: Prisma.InvoiceLayoutUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfileInput = {
@@ -483,6 +555,9 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   email?: Prisma.EmailUncheckedUpdateOneWithoutUserNestedInput
   languages?: Prisma.LanguageUncheckedUpdateManyWithoutUserNestedInput
+  paymentMethods?: Prisma.PaymentMethodUncheckedUpdateManyWithoutUserNestedInput
+  businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
+  invoiceLayout?: Prisma.InvoiceLayoutUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutEmailInput = {
@@ -495,6 +570,9 @@ export type UserCreateWithoutEmailInput = {
   updated_at?: Date | string
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
   languages?: Prisma.LanguageCreateNestedManyWithoutUserInput
+  paymentMethods?: Prisma.PaymentMethodCreateNestedManyWithoutUserInput
+  businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
+  invoiceLayout?: Prisma.InvoiceLayoutCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutEmailInput = {
@@ -507,6 +585,9 @@ export type UserUncheckedCreateWithoutEmailInput = {
   updated_at?: Date | string
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
   languages?: Prisma.LanguageUncheckedCreateNestedManyWithoutUserInput
+  paymentMethods?: Prisma.PaymentMethodUncheckedCreateNestedManyWithoutUserInput
+  businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
+  invoiceLayout?: Prisma.InvoiceLayoutUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutEmailInput = {
@@ -535,6 +616,9 @@ export type UserUpdateWithoutEmailInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
   languages?: Prisma.LanguageUpdateManyWithoutUserNestedInput
+  paymentMethods?: Prisma.PaymentMethodUpdateManyWithoutUserNestedInput
+  businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
+  invoiceLayout?: Prisma.InvoiceLayoutUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutEmailInput = {
@@ -547,6 +631,9 @@ export type UserUncheckedUpdateWithoutEmailInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
   languages?: Prisma.LanguageUncheckedUpdateManyWithoutUserNestedInput
+  paymentMethods?: Prisma.PaymentMethodUncheckedUpdateManyWithoutUserNestedInput
+  businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
+  invoiceLayout?: Prisma.InvoiceLayoutUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutLanguagesInput = {
@@ -559,6 +646,9 @@ export type UserCreateWithoutLanguagesInput = {
   updated_at?: Date | string
   email?: Prisma.EmailCreateNestedOneWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  paymentMethods?: Prisma.PaymentMethodCreateNestedManyWithoutUserInput
+  businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
+  invoiceLayout?: Prisma.InvoiceLayoutCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutLanguagesInput = {
@@ -571,6 +661,9 @@ export type UserUncheckedCreateWithoutLanguagesInput = {
   updated_at?: Date | string
   email?: Prisma.EmailUncheckedCreateNestedOneWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  paymentMethods?: Prisma.PaymentMethodUncheckedCreateNestedManyWithoutUserInput
+  businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
+  invoiceLayout?: Prisma.InvoiceLayoutUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutLanguagesInput = {
@@ -599,6 +692,9 @@ export type UserUpdateWithoutLanguagesInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   email?: Prisma.EmailUpdateOneWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  paymentMethods?: Prisma.PaymentMethodUpdateManyWithoutUserNestedInput
+  businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
+  invoiceLayout?: Prisma.InvoiceLayoutUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLanguagesInput = {
@@ -611,6 +707,237 @@ export type UserUncheckedUpdateWithoutLanguagesInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   email?: Prisma.EmailUncheckedUpdateOneWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  paymentMethods?: Prisma.PaymentMethodUncheckedUpdateManyWithoutUserNestedInput
+  businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
+  invoiceLayout?: Prisma.InvoiceLayoutUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutBusinessInfoInput = {
+  id?: string
+  password: string
+  role?: $Enums.UserRole
+  twoFactorEnabled?: boolean
+  status?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  email?: Prisma.EmailCreateNestedOneWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  languages?: Prisma.LanguageCreateNestedManyWithoutUserInput
+  paymentMethods?: Prisma.PaymentMethodCreateNestedManyWithoutUserInput
+  invoiceLayout?: Prisma.InvoiceLayoutCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutBusinessInfoInput = {
+  id?: string
+  password: string
+  role?: $Enums.UserRole
+  twoFactorEnabled?: boolean
+  status?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  email?: Prisma.EmailUncheckedCreateNestedOneWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  languages?: Prisma.LanguageUncheckedCreateNestedManyWithoutUserInput
+  paymentMethods?: Prisma.PaymentMethodUncheckedCreateNestedManyWithoutUserInput
+  invoiceLayout?: Prisma.InvoiceLayoutUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutBusinessInfoInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutBusinessInfoInput, Prisma.UserUncheckedCreateWithoutBusinessInfoInput>
+}
+
+export type UserUpsertWithoutBusinessInfoInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutBusinessInfoInput, Prisma.UserUncheckedUpdateWithoutBusinessInfoInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutBusinessInfoInput, Prisma.UserUncheckedCreateWithoutBusinessInfoInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutBusinessInfoInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutBusinessInfoInput, Prisma.UserUncheckedUpdateWithoutBusinessInfoInput>
+}
+
+export type UserUpdateWithoutBusinessInfoInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  email?: Prisma.EmailUpdateOneWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  languages?: Prisma.LanguageUpdateManyWithoutUserNestedInput
+  paymentMethods?: Prisma.PaymentMethodUpdateManyWithoutUserNestedInput
+  invoiceLayout?: Prisma.InvoiceLayoutUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutBusinessInfoInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  email?: Prisma.EmailUncheckedUpdateOneWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  languages?: Prisma.LanguageUncheckedUpdateManyWithoutUserNestedInput
+  paymentMethods?: Prisma.PaymentMethodUncheckedUpdateManyWithoutUserNestedInput
+  invoiceLayout?: Prisma.InvoiceLayoutUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutPaymentMethodsInput = {
+  id?: string
+  password: string
+  role?: $Enums.UserRole
+  twoFactorEnabled?: boolean
+  status?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  email?: Prisma.EmailCreateNestedOneWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  languages?: Prisma.LanguageCreateNestedManyWithoutUserInput
+  businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
+  invoiceLayout?: Prisma.InvoiceLayoutCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPaymentMethodsInput = {
+  id?: string
+  password: string
+  role?: $Enums.UserRole
+  twoFactorEnabled?: boolean
+  status?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  email?: Prisma.EmailUncheckedCreateNestedOneWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  languages?: Prisma.LanguageUncheckedCreateNestedManyWithoutUserInput
+  businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
+  invoiceLayout?: Prisma.InvoiceLayoutUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPaymentMethodsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPaymentMethodsInput, Prisma.UserUncheckedCreateWithoutPaymentMethodsInput>
+}
+
+export type UserUpsertWithoutPaymentMethodsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPaymentMethodsInput, Prisma.UserUncheckedUpdateWithoutPaymentMethodsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPaymentMethodsInput, Prisma.UserUncheckedCreateWithoutPaymentMethodsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPaymentMethodsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPaymentMethodsInput, Prisma.UserUncheckedUpdateWithoutPaymentMethodsInput>
+}
+
+export type UserUpdateWithoutPaymentMethodsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  email?: Prisma.EmailUpdateOneWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  languages?: Prisma.LanguageUpdateManyWithoutUserNestedInput
+  businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
+  invoiceLayout?: Prisma.InvoiceLayoutUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPaymentMethodsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  email?: Prisma.EmailUncheckedUpdateOneWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  languages?: Prisma.LanguageUncheckedUpdateManyWithoutUserNestedInput
+  businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
+  invoiceLayout?: Prisma.InvoiceLayoutUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutInvoiceLayoutInput = {
+  id?: string
+  password: string
+  role?: $Enums.UserRole
+  twoFactorEnabled?: boolean
+  status?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  email?: Prisma.EmailCreateNestedOneWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  languages?: Prisma.LanguageCreateNestedManyWithoutUserInput
+  paymentMethods?: Prisma.PaymentMethodCreateNestedManyWithoutUserInput
+  businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutInvoiceLayoutInput = {
+  id?: string
+  password: string
+  role?: $Enums.UserRole
+  twoFactorEnabled?: boolean
+  status?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  email?: Prisma.EmailUncheckedCreateNestedOneWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  languages?: Prisma.LanguageUncheckedCreateNestedManyWithoutUserInput
+  paymentMethods?: Prisma.PaymentMethodUncheckedCreateNestedManyWithoutUserInput
+  businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutInvoiceLayoutInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutInvoiceLayoutInput, Prisma.UserUncheckedCreateWithoutInvoiceLayoutInput>
+}
+
+export type UserUpsertWithoutInvoiceLayoutInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutInvoiceLayoutInput, Prisma.UserUncheckedUpdateWithoutInvoiceLayoutInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutInvoiceLayoutInput, Prisma.UserUncheckedCreateWithoutInvoiceLayoutInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutInvoiceLayoutInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutInvoiceLayoutInput, Prisma.UserUncheckedUpdateWithoutInvoiceLayoutInput>
+}
+
+export type UserUpdateWithoutInvoiceLayoutInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  email?: Prisma.EmailUpdateOneWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  languages?: Prisma.LanguageUpdateManyWithoutUserNestedInput
+  paymentMethods?: Prisma.PaymentMethodUpdateManyWithoutUserNestedInput
+  businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutInvoiceLayoutInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  email?: Prisma.EmailUncheckedUpdateOneWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  languages?: Prisma.LanguageUncheckedUpdateManyWithoutUserNestedInput
+  paymentMethods?: Prisma.PaymentMethodUncheckedUpdateManyWithoutUserNestedInput
+  businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
 }
 
 
@@ -620,10 +947,12 @@ export type UserUncheckedUpdateWithoutLanguagesInput = {
 
 export type UserCountOutputType = {
   languages: number
+  paymentMethods: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   languages?: boolean | UserCountOutputTypeCountLanguagesArgs
+  paymentMethods?: boolean | UserCountOutputTypeCountPaymentMethodsArgs
 }
 
 /**
@@ -643,6 +972,13 @@ export type UserCountOutputTypeCountLanguagesArgs<ExtArgs extends runtime.Types.
   where?: Prisma.LanguageWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPaymentMethodsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaymentMethodWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -655,6 +991,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   email?: boolean | Prisma.User$emailArgs<ExtArgs>
   profile?: boolean | Prisma.User$profileArgs<ExtArgs>
   languages?: boolean | Prisma.User$languagesArgs<ExtArgs>
+  paymentMethods?: boolean | Prisma.User$paymentMethodsArgs<ExtArgs>
+  businessInfo?: boolean | Prisma.User$businessInfoArgs<ExtArgs>
+  invoiceLayout?: boolean | Prisma.User$invoiceLayoutArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -693,6 +1032,9 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   email?: boolean | Prisma.User$emailArgs<ExtArgs>
   profile?: boolean | Prisma.User$profileArgs<ExtArgs>
   languages?: boolean | Prisma.User$languagesArgs<ExtArgs>
+  paymentMethods?: boolean | Prisma.User$paymentMethodsArgs<ExtArgs>
+  businessInfo?: boolean | Prisma.User$businessInfoArgs<ExtArgs>
+  invoiceLayout?: boolean | Prisma.User$invoiceLayoutArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -704,6 +1046,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     email: Prisma.$EmailPayload<ExtArgs> | null
     profile: Prisma.$ProfilePayload<ExtArgs> | null
     languages: Prisma.$LanguagePayload<ExtArgs>[]
+    paymentMethods: Prisma.$PaymentMethodPayload<ExtArgs>[]
+    businessInfo: Prisma.$BusinessInfoPayload<ExtArgs> | null
+    invoiceLayout: Prisma.$InvoiceLayoutPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1110,6 +1455,9 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   email<T extends Prisma.User$emailArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$emailArgs<ExtArgs>>): Prisma.Prisma__EmailClient<runtime.Types.Result.GetResult<Prisma.$EmailPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   profile<T extends Prisma.User$profileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$profileArgs<ExtArgs>>): Prisma.Prisma__ProfileClient<runtime.Types.Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   languages<T extends Prisma.User$languagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$languagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LanguagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  paymentMethods<T extends Prisma.User$paymentMethodsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$paymentMethodsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentMethodPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  businessInfo<T extends Prisma.User$businessInfoArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$businessInfoArgs<ExtArgs>>): Prisma.Prisma__BusinessInfoClient<runtime.Types.Result.GetResult<Prisma.$BusinessInfoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  invoiceLayout<T extends Prisma.User$invoiceLayoutArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$invoiceLayoutArgs<ExtArgs>>): Prisma.Prisma__InvoiceLayoutClient<runtime.Types.Result.GetResult<Prisma.$InvoiceLayoutPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1593,6 +1941,68 @@ export type User$languagesArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.LanguageScalarFieldEnum | Prisma.LanguageScalarFieldEnum[]
+}
+
+/**
+ * User.paymentMethods
+ */
+export type User$paymentMethodsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PaymentMethod
+   */
+  select?: Prisma.PaymentMethodSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PaymentMethod
+   */
+  omit?: Prisma.PaymentMethodOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaymentMethodInclude<ExtArgs> | null
+  where?: Prisma.PaymentMethodWhereInput
+  orderBy?: Prisma.PaymentMethodOrderByWithRelationInput | Prisma.PaymentMethodOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentMethodWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaymentMethodScalarFieldEnum | Prisma.PaymentMethodScalarFieldEnum[]
+}
+
+/**
+ * User.businessInfo
+ */
+export type User$businessInfoArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BusinessInfo
+   */
+  select?: Prisma.BusinessInfoSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BusinessInfo
+   */
+  omit?: Prisma.BusinessInfoOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BusinessInfoInclude<ExtArgs> | null
+  where?: Prisma.BusinessInfoWhereInput
+}
+
+/**
+ * User.invoiceLayout
+ */
+export type User$invoiceLayoutArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InvoiceLayout
+   */
+  select?: Prisma.InvoiceLayoutSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the InvoiceLayout
+   */
+  omit?: Prisma.InvoiceLayoutOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InvoiceLayoutInclude<ExtArgs> | null
+  where?: Prisma.InvoiceLayoutWhereInput
 }
 
 /**

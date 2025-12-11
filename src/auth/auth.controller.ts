@@ -16,12 +16,14 @@ import {
   ResetPass,
   ValidateForgetPass,
 } from './dto/forget-pass-dto';
+import { Public } from './decorators/public.decorator';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @HttpCode(201)
+  @Public()
   @Post('registration')
   create(@Body(new ValidationPipe()) createAuthDto: CreateAuthDto) {
     return this.authService.create(createAuthDto);
@@ -29,40 +31,29 @@ export class AuthController {
 
   @HttpCode(200)
   @Post('login')
+  @Public()
   login(@Body(new ValidationPipe()) loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }
 
   @HttpCode(200)
   @Post('forget-password')
+  @Public()
   forgetPassword(@Body(new ValidationPipe()) dto: ForgetPassDto) {
     return this.authService.sendForgetPassCode(dto);
   }
 
   @HttpCode(200)
   @Post('verify-forget-password')
+  @Public()
   verifyForgetPassword(@Body(new ValidationPipe()) data: ValidateForgetPass) {
     return this.authService.verifyForgetPassCode(data);
   }
 
   @HttpCode(200)
   @Post('change-forgotten-password')
+  @Public()
   changePassword(@Body(new ValidationPipe()) data: ResetPass) {
     return this.authService.changePassword(data);
-  }
-
-  @Get()
-  findAll() {
-    return this.authService.findAll();
-  }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
-  //   return this.authService.update(+id, updateAuthDto);
-  // }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.authService.remove(+id);
   }
 }

@@ -9,6 +9,9 @@ model User {
   email Email?
   profile Profile?
   languages Language[]
+  paymentMethods PaymentMethod[]
+  businessInfo BusinessInfo?
+  invoiceLayout InvoiceLayout?
 
   created_at      DateTime @default(now())
   updated_at      DateTime @updatedAt

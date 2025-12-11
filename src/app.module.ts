@@ -11,6 +11,7 @@ import { SmtpMailModule } from './config/smtp-mail/smtp-mail.module';
 import { ConfigModule } from '@nestjs/config';
 import { MileageModule } from './user-dashboard/mileage/mileage.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { SettingsModule } from './user-dashboard/settings/settings.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     UserDashboardModule,
     SmtpMailModule,
     MileageModule,
+    SettingsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -20,32 +20,20 @@ export type EmailModel = runtime.Types.Result.DefaultSelection<Prisma.$EmailPayl
 
 export type AggregateEmail = {
   _count: EmailCountAggregateOutputType | null
-  _avg: EmailAvgAggregateOutputType | null
-  _sum: EmailSumAggregateOutputType | null
   _min: EmailMinAggregateOutputType | null
   _max: EmailMaxAggregateOutputType | null
 }
 
-export type EmailAvgAggregateOutputType = {
-  id: number | null
-  userId: number | null
-}
-
-export type EmailSumAggregateOutputType = {
-  id: number | null
-  userId: number | null
-}
-
 export type EmailMinAggregateOutputType = {
-  id: number | null
+  id: string | null
   email: string | null
-  userId: number | null
+  userId: string | null
 }
 
 export type EmailMaxAggregateOutputType = {
-  id: number | null
+  id: string | null
   email: string | null
-  userId: number | null
+  userId: string | null
 }
 
 export type EmailCountAggregateOutputType = {
@@ -55,16 +43,6 @@ export type EmailCountAggregateOutputType = {
   _all: number
 }
 
-
-export type EmailAvgAggregateInputType = {
-  id?: true
-  userId?: true
-}
-
-export type EmailSumAggregateInputType = {
-  id?: true
-  userId?: true
-}
 
 export type EmailMinAggregateInputType = {
   id?: true
@@ -123,18 +101,6 @@ export type EmailAggregateArgs<ExtArgs extends runtime.Types.Extensions.Internal
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: EmailAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: EmailSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: EmailMinAggregateInputType
@@ -165,19 +131,15 @@ export type EmailGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   _count?: EmailCountAggregateInputType | true
-  _avg?: EmailAvgAggregateInputType
-  _sum?: EmailSumAggregateInputType
   _min?: EmailMinAggregateInputType
   _max?: EmailMaxAggregateInputType
 }
 
 export type EmailGroupByOutputType = {
-  id: number
+  id: string
   email: string
-  userId: number
+  userId: string
   _count: EmailCountAggregateOutputType | null
-  _avg: EmailAvgAggregateOutputType | null
-  _sum: EmailSumAggregateOutputType | null
   _min: EmailMinAggregateOutputType | null
   _max: EmailMaxAggregateOutputType | null
 }
@@ -201,9 +163,9 @@ export type EmailWhereInput = {
   AND?: Prisma.EmailWhereInput | Prisma.EmailWhereInput[]
   OR?: Prisma.EmailWhereInput[]
   NOT?: Prisma.EmailWhereInput | Prisma.EmailWhereInput[]
-  id?: Prisma.IntFilter<"Email"> | number
+  id?: Prisma.StringFilter<"Email"> | string
   email?: Prisma.StringFilter<"Email"> | string
-  userId?: Prisma.IntFilter<"Email"> | number
+  userId?: Prisma.StringFilter<"Email"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
@@ -215,81 +177,77 @@ export type EmailOrderByWithRelationInput = {
 }
 
 export type EmailWhereUniqueInput = Prisma.AtLeast<{
-  id?: number
-  userId?: number
+  id?: string
+  email?: string
+  userId?: string
   AND?: Prisma.EmailWhereInput | Prisma.EmailWhereInput[]
   OR?: Prisma.EmailWhereInput[]
   NOT?: Prisma.EmailWhereInput | Prisma.EmailWhereInput[]
-  email?: Prisma.StringFilter<"Email"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-}, "id" | "userId">
+}, "id" | "email" | "userId">
 
 export type EmailOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   _count?: Prisma.EmailCountOrderByAggregateInput
-  _avg?: Prisma.EmailAvgOrderByAggregateInput
   _max?: Prisma.EmailMaxOrderByAggregateInput
   _min?: Prisma.EmailMinOrderByAggregateInput
-  _sum?: Prisma.EmailSumOrderByAggregateInput
 }
 
 export type EmailScalarWhereWithAggregatesInput = {
   AND?: Prisma.EmailScalarWhereWithAggregatesInput | Prisma.EmailScalarWhereWithAggregatesInput[]
   OR?: Prisma.EmailScalarWhereWithAggregatesInput[]
   NOT?: Prisma.EmailScalarWhereWithAggregatesInput | Prisma.EmailScalarWhereWithAggregatesInput[]
-  id?: Prisma.IntWithAggregatesFilter<"Email"> | number
+  id?: Prisma.StringWithAggregatesFilter<"Email"> | string
   email?: Prisma.StringWithAggregatesFilter<"Email"> | string
-  userId?: Prisma.IntWithAggregatesFilter<"Email"> | number
+  userId?: Prisma.StringWithAggregatesFilter<"Email"> | string
 }
 
 export type EmailCreateInput = {
+  id?: string
   email: string
-  user: Prisma.UserCreateNestedOneWithoutEmailsInput
+  user: Prisma.UserCreateNestedOneWithoutEmailInput
 }
 
 export type EmailUncheckedCreateInput = {
-  id?: number
+  id?: string
   email: string
-  userId: number
+  userId: string
 }
 
 export type EmailUpdateInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  user?: Prisma.UserUpdateOneRequiredWithoutEmailsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutEmailNestedInput
 }
 
 export type EmailUncheckedUpdateInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type EmailCreateManyInput = {
-  id?: number
+  id?: string
   email: string
-  userId: number
+  userId: string
 }
 
 export type EmailUpdateManyMutationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type EmailUncheckedUpdateManyInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type EmailCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
-}
-
-export type EmailAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
 }
 
@@ -305,26 +263,9 @@ export type EmailMinOrderByAggregateInput = {
   userId?: Prisma.SortOrder
 }
 
-export type EmailSumOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
-}
-
 export type EmailNullableScalarRelationFilter = {
   is?: Prisma.EmailWhereInput | null
   isNot?: Prisma.EmailWhereInput | null
-}
-
-export type StringFieldUpdateOperationsInput = {
-  set?: string
-}
-
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
 }
 
 export type EmailCreateNestedOneWithoutUserInput = {
@@ -360,11 +301,12 @@ export type EmailUncheckedUpdateOneWithoutUserNestedInput = {
 }
 
 export type EmailCreateWithoutUserInput = {
+  id?: string
   email: string
 }
 
 export type EmailUncheckedCreateWithoutUserInput = {
-  id?: number
+  id?: string
   email: string
 }
 
@@ -385,11 +327,12 @@ export type EmailUpdateToOneWithWhereWithoutUserInput = {
 }
 
 export type EmailUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type EmailUncheckedUpdateWithoutUserInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -439,9 +382,9 @@ export type $EmailPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     user: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: number
+    id: string
     email: string
-    userId: number
+    userId: string
   }, ExtArgs["result"]["email"]>
   composites: {}
 }
@@ -866,9 +809,9 @@ export interface Prisma__EmailClient<T, Null = never, ExtArgs extends runtime.Ty
  * Fields of the Email model
  */
 export interface EmailFieldRefs {
-  readonly id: Prisma.FieldRef<"Email", 'Int'>
+  readonly id: Prisma.FieldRef<"Email", 'String'>
   readonly email: Prisma.FieldRef<"Email", 'String'>
-  readonly userId: Prisma.FieldRef<"Email", 'Int'>
+  readonly userId: Prisma.FieldRef<"Email", 'String'>
 }
     
 

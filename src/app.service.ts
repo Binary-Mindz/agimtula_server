@@ -15,14 +15,6 @@ export class AppService {
   }
 
   async createUser() {
-    const user = await this.prisma.user.create({
-      data: {
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john.doe@example.com',
-        password: 'securepassword',
-      },
-    });
-    return user;
+    return '';
   }
 }

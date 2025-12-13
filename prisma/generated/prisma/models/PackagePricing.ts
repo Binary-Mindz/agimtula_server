@@ -27,20 +27,20 @@ export type AggregatePackagePricing = {
 }
 
 export type PackagePricingAvgAggregateOutputType = {
-  monthlyPrice: number | null
+  price: number | null
   setupFee: number | null
   freeTrialDays: number | null
 }
 
 export type PackagePricingSumAggregateOutputType = {
-  monthlyPrice: number | null
+  price: number | null
   setupFee: number | null
   freeTrialDays: number | null
 }
 
 export type PackagePricingMinAggregateOutputType = {
   id: string | null
-  monthlyPrice: number | null
+  price: number | null
   setupFee: number | null
   freeTrialDays: number | null
   billingPeriod: $Enums.BillingPeriod | null
@@ -49,7 +49,7 @@ export type PackagePricingMinAggregateOutputType = {
 
 export type PackagePricingMaxAggregateOutputType = {
   id: string | null
-  monthlyPrice: number | null
+  price: number | null
   setupFee: number | null
   freeTrialDays: number | null
   billingPeriod: $Enums.BillingPeriod | null
@@ -58,7 +58,7 @@ export type PackagePricingMaxAggregateOutputType = {
 
 export type PackagePricingCountAggregateOutputType = {
   id: number
-  monthlyPrice: number
+  price: number
   setupFee: number
   freeTrialDays: number
   billingPeriod: number
@@ -68,20 +68,20 @@ export type PackagePricingCountAggregateOutputType = {
 
 
 export type PackagePricingAvgAggregateInputType = {
-  monthlyPrice?: true
+  price?: true
   setupFee?: true
   freeTrialDays?: true
 }
 
 export type PackagePricingSumAggregateInputType = {
-  monthlyPrice?: true
+  price?: true
   setupFee?: true
   freeTrialDays?: true
 }
 
 export type PackagePricingMinAggregateInputType = {
   id?: true
-  monthlyPrice?: true
+  price?: true
   setupFee?: true
   freeTrialDays?: true
   billingPeriod?: true
@@ -90,7 +90,7 @@ export type PackagePricingMinAggregateInputType = {
 
 export type PackagePricingMaxAggregateInputType = {
   id?: true
-  monthlyPrice?: true
+  price?: true
   setupFee?: true
   freeTrialDays?: true
   billingPeriod?: true
@@ -99,7 +99,7 @@ export type PackagePricingMaxAggregateInputType = {
 
 export type PackagePricingCountAggregateInputType = {
   id?: true
-  monthlyPrice?: true
+  price?: true
   setupFee?: true
   freeTrialDays?: true
   billingPeriod?: true
@@ -195,7 +195,7 @@ export type PackagePricingGroupByArgs<ExtArgs extends runtime.Types.Extensions.I
 
 export type PackagePricingGroupByOutputType = {
   id: string
-  monthlyPrice: number
+  price: number
   setupFee: number
   freeTrialDays: number | null
   billingPeriod: $Enums.BillingPeriod
@@ -227,7 +227,7 @@ export type PackagePricingWhereInput = {
   OR?: Prisma.PackagePricingWhereInput[]
   NOT?: Prisma.PackagePricingWhereInput | Prisma.PackagePricingWhereInput[]
   id?: Prisma.StringFilter<"PackagePricing"> | string
-  monthlyPrice?: Prisma.FloatFilter<"PackagePricing"> | number
+  price?: Prisma.FloatFilter<"PackagePricing"> | number
   setupFee?: Prisma.FloatFilter<"PackagePricing"> | number
   freeTrialDays?: Prisma.IntNullableFilter<"PackagePricing"> | number | null
   billingPeriod?: Prisma.EnumBillingPeriodFilter<"PackagePricing"> | $Enums.BillingPeriod
@@ -237,7 +237,7 @@ export type PackagePricingWhereInput = {
 
 export type PackagePricingOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  monthlyPrice?: Prisma.SortOrder
+  price?: Prisma.SortOrder
   setupFee?: Prisma.SortOrder
   freeTrialDays?: Prisma.SortOrderInput | Prisma.SortOrder
   billingPeriod?: Prisma.SortOrder
@@ -250,7 +250,7 @@ export type PackagePricingWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.PackagePricingWhereInput | Prisma.PackagePricingWhereInput[]
   OR?: Prisma.PackagePricingWhereInput[]
   NOT?: Prisma.PackagePricingWhereInput | Prisma.PackagePricingWhereInput[]
-  monthlyPrice?: Prisma.FloatFilter<"PackagePricing"> | number
+  price?: Prisma.FloatFilter<"PackagePricing"> | number
   setupFee?: Prisma.FloatFilter<"PackagePricing"> | number
   freeTrialDays?: Prisma.IntNullableFilter<"PackagePricing"> | number | null
   billingPeriod?: Prisma.EnumBillingPeriodFilter<"PackagePricing"> | $Enums.BillingPeriod
@@ -260,7 +260,7 @@ export type PackagePricingWhereUniqueInput = Prisma.AtLeast<{
 
 export type PackagePricingOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  monthlyPrice?: Prisma.SortOrder
+  price?: Prisma.SortOrder
   setupFee?: Prisma.SortOrder
   freeTrialDays?: Prisma.SortOrderInput | Prisma.SortOrder
   billingPeriod?: Prisma.SortOrder
@@ -277,7 +277,7 @@ export type PackagePricingScalarWhereWithAggregatesInput = {
   OR?: Prisma.PackagePricingScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PackagePricingScalarWhereWithAggregatesInput | Prisma.PackagePricingScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"PackagePricing"> | string
-  monthlyPrice?: Prisma.FloatWithAggregatesFilter<"PackagePricing"> | number
+  price?: Prisma.FloatWithAggregatesFilter<"PackagePricing"> | number
   setupFee?: Prisma.FloatWithAggregatesFilter<"PackagePricing"> | number
   freeTrialDays?: Prisma.IntNullableWithAggregatesFilter<"PackagePricing"> | number | null
   billingPeriod?: Prisma.EnumBillingPeriodWithAggregatesFilter<"PackagePricing"> | $Enums.BillingPeriod
@@ -286,7 +286,7 @@ export type PackagePricingScalarWhereWithAggregatesInput = {
 
 export type PackagePricingCreateInput = {
   id?: string
-  monthlyPrice: number
+  price: number
   setupFee?: number
   freeTrialDays?: number | null
   billingPeriod?: $Enums.BillingPeriod
@@ -295,7 +295,7 @@ export type PackagePricingCreateInput = {
 
 export type PackagePricingUncheckedCreateInput = {
   id?: string
-  monthlyPrice: number
+  price: number
   setupFee?: number
   freeTrialDays?: number | null
   billingPeriod?: $Enums.BillingPeriod
@@ -304,7 +304,7 @@ export type PackagePricingUncheckedCreateInput = {
 
 export type PackagePricingUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  monthlyPrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  price?: Prisma.FloatFieldUpdateOperationsInput | number
   setupFee?: Prisma.FloatFieldUpdateOperationsInput | number
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   billingPeriod?: Prisma.EnumBillingPeriodFieldUpdateOperationsInput | $Enums.BillingPeriod
@@ -313,7 +313,7 @@ export type PackagePricingUpdateInput = {
 
 export type PackagePricingUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  monthlyPrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  price?: Prisma.FloatFieldUpdateOperationsInput | number
   setupFee?: Prisma.FloatFieldUpdateOperationsInput | number
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   billingPeriod?: Prisma.EnumBillingPeriodFieldUpdateOperationsInput | $Enums.BillingPeriod
@@ -322,7 +322,7 @@ export type PackagePricingUncheckedUpdateInput = {
 
 export type PackagePricingCreateManyInput = {
   id?: string
-  monthlyPrice: number
+  price: number
   setupFee?: number
   freeTrialDays?: number | null
   billingPeriod?: $Enums.BillingPeriod
@@ -331,7 +331,7 @@ export type PackagePricingCreateManyInput = {
 
 export type PackagePricingUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  monthlyPrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  price?: Prisma.FloatFieldUpdateOperationsInput | number
   setupFee?: Prisma.FloatFieldUpdateOperationsInput | number
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   billingPeriod?: Prisma.EnumBillingPeriodFieldUpdateOperationsInput | $Enums.BillingPeriod
@@ -339,7 +339,7 @@ export type PackagePricingUpdateManyMutationInput = {
 
 export type PackagePricingUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  monthlyPrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  price?: Prisma.FloatFieldUpdateOperationsInput | number
   setupFee?: Prisma.FloatFieldUpdateOperationsInput | number
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   billingPeriod?: Prisma.EnumBillingPeriodFieldUpdateOperationsInput | $Enums.BillingPeriod
@@ -358,7 +358,7 @@ export type PackagePricingOrderByRelationAggregateInput = {
 
 export type PackagePricingCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  monthlyPrice?: Prisma.SortOrder
+  price?: Prisma.SortOrder
   setupFee?: Prisma.SortOrder
   freeTrialDays?: Prisma.SortOrder
   billingPeriod?: Prisma.SortOrder
@@ -366,14 +366,14 @@ export type PackagePricingCountOrderByAggregateInput = {
 }
 
 export type PackagePricingAvgOrderByAggregateInput = {
-  monthlyPrice?: Prisma.SortOrder
+  price?: Prisma.SortOrder
   setupFee?: Prisma.SortOrder
   freeTrialDays?: Prisma.SortOrder
 }
 
 export type PackagePricingMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  monthlyPrice?: Prisma.SortOrder
+  price?: Prisma.SortOrder
   setupFee?: Prisma.SortOrder
   freeTrialDays?: Prisma.SortOrder
   billingPeriod?: Prisma.SortOrder
@@ -382,7 +382,7 @@ export type PackagePricingMaxOrderByAggregateInput = {
 
 export type PackagePricingMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  monthlyPrice?: Prisma.SortOrder
+  price?: Prisma.SortOrder
   setupFee?: Prisma.SortOrder
   freeTrialDays?: Prisma.SortOrder
   billingPeriod?: Prisma.SortOrder
@@ -390,7 +390,7 @@ export type PackagePricingMinOrderByAggregateInput = {
 }
 
 export type PackagePricingSumOrderByAggregateInput = {
-  monthlyPrice?: Prisma.SortOrder
+  price?: Prisma.SortOrder
   setupFee?: Prisma.SortOrder
   freeTrialDays?: Prisma.SortOrder
 }
@@ -451,7 +451,7 @@ export type EnumBillingPeriodFieldUpdateOperationsInput = {
 
 export type PackagePricingCreateWithoutSubscriptionPlanInput = {
   id?: string
-  monthlyPrice: number
+  price: number
   setupFee?: number
   freeTrialDays?: number | null
   billingPeriod?: $Enums.BillingPeriod
@@ -459,7 +459,7 @@ export type PackagePricingCreateWithoutSubscriptionPlanInput = {
 
 export type PackagePricingUncheckedCreateWithoutSubscriptionPlanInput = {
   id?: string
-  monthlyPrice: number
+  price: number
   setupFee?: number
   freeTrialDays?: number | null
   billingPeriod?: $Enums.BillingPeriod
@@ -496,7 +496,7 @@ export type PackagePricingScalarWhereInput = {
   OR?: Prisma.PackagePricingScalarWhereInput[]
   NOT?: Prisma.PackagePricingScalarWhereInput | Prisma.PackagePricingScalarWhereInput[]
   id?: Prisma.StringFilter<"PackagePricing"> | string
-  monthlyPrice?: Prisma.FloatFilter<"PackagePricing"> | number
+  price?: Prisma.FloatFilter<"PackagePricing"> | number
   setupFee?: Prisma.FloatFilter<"PackagePricing"> | number
   freeTrialDays?: Prisma.IntNullableFilter<"PackagePricing"> | number | null
   billingPeriod?: Prisma.EnumBillingPeriodFilter<"PackagePricing"> | $Enums.BillingPeriod
@@ -505,7 +505,7 @@ export type PackagePricingScalarWhereInput = {
 
 export type PackagePricingCreateManySubscriptionPlanInput = {
   id?: string
-  monthlyPrice: number
+  price: number
   setupFee?: number
   freeTrialDays?: number | null
   billingPeriod?: $Enums.BillingPeriod
@@ -513,7 +513,7 @@ export type PackagePricingCreateManySubscriptionPlanInput = {
 
 export type PackagePricingUpdateWithoutSubscriptionPlanInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  monthlyPrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  price?: Prisma.FloatFieldUpdateOperationsInput | number
   setupFee?: Prisma.FloatFieldUpdateOperationsInput | number
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   billingPeriod?: Prisma.EnumBillingPeriodFieldUpdateOperationsInput | $Enums.BillingPeriod
@@ -521,7 +521,7 @@ export type PackagePricingUpdateWithoutSubscriptionPlanInput = {
 
 export type PackagePricingUncheckedUpdateWithoutSubscriptionPlanInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  monthlyPrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  price?: Prisma.FloatFieldUpdateOperationsInput | number
   setupFee?: Prisma.FloatFieldUpdateOperationsInput | number
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   billingPeriod?: Prisma.EnumBillingPeriodFieldUpdateOperationsInput | $Enums.BillingPeriod
@@ -529,7 +529,7 @@ export type PackagePricingUncheckedUpdateWithoutSubscriptionPlanInput = {
 
 export type PackagePricingUncheckedUpdateManyWithoutSubscriptionPlanInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  monthlyPrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  price?: Prisma.FloatFieldUpdateOperationsInput | number
   setupFee?: Prisma.FloatFieldUpdateOperationsInput | number
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   billingPeriod?: Prisma.EnumBillingPeriodFieldUpdateOperationsInput | $Enums.BillingPeriod
@@ -539,7 +539,7 @@ export type PackagePricingUncheckedUpdateManyWithoutSubscriptionPlanInput = {
 
 export type PackagePricingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  monthlyPrice?: boolean
+  price?: boolean
   setupFee?: boolean
   freeTrialDays?: boolean
   billingPeriod?: boolean
@@ -549,7 +549,7 @@ export type PackagePricingSelect<ExtArgs extends runtime.Types.Extensions.Intern
 
 export type PackagePricingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  monthlyPrice?: boolean
+  price?: boolean
   setupFee?: boolean
   freeTrialDays?: boolean
   billingPeriod?: boolean
@@ -559,7 +559,7 @@ export type PackagePricingSelectCreateManyAndReturn<ExtArgs extends runtime.Type
 
 export type PackagePricingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  monthlyPrice?: boolean
+  price?: boolean
   setupFee?: boolean
   freeTrialDays?: boolean
   billingPeriod?: boolean
@@ -569,14 +569,14 @@ export type PackagePricingSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
 
 export type PackagePricingSelectScalar = {
   id?: boolean
-  monthlyPrice?: boolean
+  price?: boolean
   setupFee?: boolean
   freeTrialDays?: boolean
   billingPeriod?: boolean
   SubscriptionPlanId?: boolean
 }
 
-export type PackagePricingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "monthlyPrice" | "setupFee" | "freeTrialDays" | "billingPeriod" | "SubscriptionPlanId", ExtArgs["result"]["packagePricing"]>
+export type PackagePricingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "price" | "setupFee" | "freeTrialDays" | "billingPeriod" | "SubscriptionPlanId", ExtArgs["result"]["packagePricing"]>
 export type PackagePricingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   subscriptionPlan?: boolean | Prisma.SubscriptionPlanDefaultArgs<ExtArgs>
 }
@@ -594,7 +594,7 @@ export type $PackagePricingPayload<ExtArgs extends runtime.Types.Extensions.Inte
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    monthlyPrice: number
+    price: number
     setupFee: number
     freeTrialDays: number | null
     billingPeriod: $Enums.BillingPeriod
@@ -1024,7 +1024,7 @@ export interface Prisma__PackagePricingClient<T, Null = never, ExtArgs extends r
  */
 export interface PackagePricingFieldRefs {
   readonly id: Prisma.FieldRef<"PackagePricing", 'String'>
-  readonly monthlyPrice: Prisma.FieldRef<"PackagePricing", 'Float'>
+  readonly price: Prisma.FieldRef<"PackagePricing", 'Float'>
   readonly setupFee: Prisma.FieldRef<"PackagePricing", 'Float'>
   readonly freeTrialDays: Prisma.FieldRef<"PackagePricing", 'Int'>
   readonly billingPeriod: Prisma.FieldRef<"PackagePricing", 'BillingPeriod'>

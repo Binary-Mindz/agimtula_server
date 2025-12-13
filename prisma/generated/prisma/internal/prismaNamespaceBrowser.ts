@@ -61,6 +61,7 @@ export const ModelName = {
   NotificationSetting: 'NotificationSetting',
   SubscriptionPlan: 'SubscriptionPlan',
   PackagePricing: 'PackagePricing',
+  realtimeSelectionTime: 'realtimeSelectionTime',
   User: 'User'
 } as const
 
@@ -202,7 +203,7 @@ export type SubscriptionPlanScalarFieldEnum = (typeof SubscriptionPlanScalarFiel
 
 export const PackagePricingScalarFieldEnum = {
   id: 'id',
-  monthlyPrice: 'monthlyPrice',
+  price: 'price',
   setupFee: 'setupFee',
   freeTrialDays: 'freeTrialDays',
   billingPeriod: 'billingPeriod',
@@ -210,6 +211,14 @@ export const PackagePricingScalarFieldEnum = {
 } as const
 
 export type PackagePricingScalarFieldEnum = (typeof PackagePricingScalarFieldEnum)[keyof typeof PackagePricingScalarFieldEnum]
+
+
+export const RealtimeSelectionTimeScalarFieldEnum = {
+  id: 'id',
+  time: 'time'
+} as const
+
+export type RealtimeSelectionTimeScalarFieldEnum = (typeof RealtimeSelectionTimeScalarFieldEnum)[keyof typeof RealtimeSelectionTimeScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {

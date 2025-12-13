@@ -394,6 +394,7 @@ export const ModelName = {
   NotificationSetting: 'NotificationSetting',
   SubscriptionPlan: 'SubscriptionPlan',
   PackagePricing: 'PackagePricing',
+  realtimeSelectionTime: 'realtimeSelectionTime',
   User: 'User'
 } as const
 
@@ -410,7 +411,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "profile" | "email" | "forgetPass" | "language" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "user"
+    modelProps: "profile" | "email" | "forgetPass" | "language" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "realtimeSelectionTime" | "user"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1154,6 +1155,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    realtimeSelectionTime: {
+      payload: Prisma.$realtimeSelectionTimePayload<ExtArgs>
+      fields: Prisma.realtimeSelectionTimeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.realtimeSelectionTimeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$realtimeSelectionTimePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.realtimeSelectionTimeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$realtimeSelectionTimePayload>
+        }
+        findFirst: {
+          args: Prisma.realtimeSelectionTimeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$realtimeSelectionTimePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.realtimeSelectionTimeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$realtimeSelectionTimePayload>
+        }
+        findMany: {
+          args: Prisma.realtimeSelectionTimeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$realtimeSelectionTimePayload>[]
+        }
+        create: {
+          args: Prisma.realtimeSelectionTimeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$realtimeSelectionTimePayload>
+        }
+        createMany: {
+          args: Prisma.realtimeSelectionTimeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.realtimeSelectionTimeCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$realtimeSelectionTimePayload>[]
+        }
+        delete: {
+          args: Prisma.realtimeSelectionTimeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$realtimeSelectionTimePayload>
+        }
+        update: {
+          args: Prisma.realtimeSelectionTimeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$realtimeSelectionTimePayload>
+        }
+        deleteMany: {
+          args: Prisma.realtimeSelectionTimeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.realtimeSelectionTimeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.realtimeSelectionTimeUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$realtimeSelectionTimePayload>[]
+        }
+        upsert: {
+          args: Prisma.realtimeSelectionTimeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$realtimeSelectionTimePayload>
+        }
+        aggregate: {
+          args: Prisma.RealtimeSelectionTimeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRealtimeSelectionTime>
+        }
+        groupBy: {
+          args: Prisma.realtimeSelectionTimeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RealtimeSelectionTimeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.realtimeSelectionTimeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RealtimeSelectionTimeCountAggregateOutputType> | number
+        }
+      }
+    }
     User: {
       payload: Prisma.$UserPayload<ExtArgs>
       fields: Prisma.UserFieldRefs
@@ -1389,7 +1464,7 @@ export type SubscriptionPlanScalarFieldEnum = (typeof SubscriptionPlanScalarFiel
 
 export const PackagePricingScalarFieldEnum = {
   id: 'id',
-  monthlyPrice: 'monthlyPrice',
+  price: 'price',
   setupFee: 'setupFee',
   freeTrialDays: 'freeTrialDays',
   billingPeriod: 'billingPeriod',
@@ -1397,6 +1472,14 @@ export const PackagePricingScalarFieldEnum = {
 } as const
 
 export type PackagePricingScalarFieldEnum = (typeof PackagePricingScalarFieldEnum)[keyof typeof PackagePricingScalarFieldEnum]
+
+
+export const RealtimeSelectionTimeScalarFieldEnum = {
+  id: 'id',
+  time: 'time'
+} as const
+
+export type RealtimeSelectionTimeScalarFieldEnum = (typeof RealtimeSelectionTimeScalarFieldEnum)[keyof typeof RealtimeSelectionTimeScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {
@@ -1637,6 +1720,7 @@ export type GlobalOmitConfig = {
   notificationSetting?: Prisma.NotificationSettingOmit
   subscriptionPlan?: Prisma.SubscriptionPlanOmit
   packagePricing?: Prisma.PackagePricingOmit
+  realtimeSelectionTime?: Prisma.realtimeSelectionTimeOmit
   user?: Prisma.UserOmit
 }
 

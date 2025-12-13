@@ -78,6 +78,16 @@ export type InvoiceLayout = Prisma.InvoiceLayoutModel
  */
 export type NotificationSetting = Prisma.NotificationSettingModel
 /**
+ * Model SubscriptionPlan
+ * 
+ */
+export type SubscriptionPlan = Prisma.SubscriptionPlanModel
+/**
+ * Model PackagePricing
+ * 
+ */
+export type PackagePricing = Prisma.PackagePricingModel
+/**
  * Model User
  * 
  */

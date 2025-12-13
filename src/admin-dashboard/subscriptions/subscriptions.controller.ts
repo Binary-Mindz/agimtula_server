@@ -16,7 +16,7 @@ export class SubscriptionsController {
   @Post('plans')
   @Roles('ADMIN')
   @UsePipes(new ValidationPipe({ transform: true }))
-  getPlans(@Body() dto: CreateSubscriptionPlanDto) {
-    return { dto };
+  createSubscriptionPlan(@Body() dto: CreateSubscriptionPlanDto) {
+    return this.subscriptionsService.createSubscription(dto);
   }
 }

@@ -32,10 +32,10 @@ model userSubscriptionPlanHistory {
     UserId String
     user   User   @relation(fields: [UserId], references: [id])
 
-    isLimitedInvoicePerMonth Boolean @default(false)
-    perMonthInvoiceCount     Int     @default(15)
+    isLimitedInvoicePerMonth Boolean
+    perMonthInvoiceCount     Int
 
-    realtimeImapChecking Int @default(86400)
+    realtimeImapChecking Int
 
     price         Float
     setupFee      Float @default(0.00)

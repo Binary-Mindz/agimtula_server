@@ -1,0 +1,18 @@
+model imapConfiguration {
+    id       String  @id @unique @default(uuid())
+    userId   String  @unique
+    host     String
+    port     Int
+    username String
+    password String
+    secure   Boolean @default(true)
+
+
+    // relations
+    user User @relation(fields: [userId], references: [id])
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    @@map("imap_configuration")
+}

@@ -1,6 +1,9 @@
 import {
   Body,
   Controller,
+  Delete,
+  Get,
+  Param,
   Post,
   UsePipes,
   ValidationPipe,
@@ -18,5 +21,17 @@ export class SubscriptionsController {
   @UsePipes(new ValidationPipe({ transform: true }))
   createSubscriptionPlan(@Body() dto: CreateSubscriptionPlanDto) {
     return this.subscriptionsService.createSubscription(dto);
+  }
+
+  @Get('plans')
+  @Roles('ADMIN')
+  getSubscriptionPlans() {
+    return this.subscriptionsService.getSubscriptionPlans();
+  }
+
+  @Delete('plans/:id')
+  @Roles('ADMIN', 'USER', 'ACCOUNTANT')
+  deleteSubscriptionPlan(@Param('id') id: string) {
+    return this.subscriptionsService.deleteSubscription(id);
   }
 }

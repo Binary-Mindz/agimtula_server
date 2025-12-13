@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Transform, Type } from 'class-transformer';
+import { Type } from 'class-transformer';
 import {
   IsArray,
   IsBoolean,
@@ -12,56 +12,9 @@ import {
   Min,
   ValidateNested,
 } from 'class-validator';
+import { BillingPeriod } from 'prisma/generated/prisma/enums';
 
-export enum BillingPeriod {
-  MONTHLY = 'Monthly',
-  YEARLY = 'Yearly',
-}
-
-class UsageLimitsDto {
-  @ApiPropertyOptional({ example: null, nullable: true })
-  @IsOptional()
-  @Transform(({ value }) =>
-    value === '' || value == null ? null : Number(value),
-  )
-  @IsInt()
-  @Min(0)
-  maxInvoicesPerMonth?: number | null;
-
-  @ApiPropertyOptional({ example: null, nullable: true })
-  @IsOptional()
-  @Transform(({ value }) =>
-    value === '' || value == null ? null : Number(value),
-  )
-  @IsInt()
-  @Min(0)
-  maxReceiptsPerMonth?: number | null;
-
-  @ApiPropertyOptional({ example: null, nullable: true })
-  @IsOptional()
-  @Transform(({ value }) =>
-    value === '' || value == null ? null : Number(value),
-  )
-  @IsInt()
-  @Min(0)
-  maxClients?: number | null;
-}
-
-export class CreateSubscriptionPlanDto {
-  @ApiProperty({ example: 'Professional' })
-  @IsNotEmpty()
-  @IsString()
-  planName: string;
-
-  @ApiProperty({ example: true, default: true })
-  @IsBoolean()
-  isActive: boolean = true;
-
-  @ApiPropertyOptional({ example: 'Perfect for freelancers' })
-  @IsOptional()
-  @IsString()
-  description?: string;
-
+class PackagePricingDto {
   @ApiProperty({ example: 49.0, minimum: 0 })
   @Type(() => Number)
   @IsNumber()
@@ -80,14 +33,44 @@ export class CreateSubscriptionPlanDto {
   @Min(0)
   freeTrialDays?: number;
 
-  @ApiProperty({ enum: BillingPeriod, default: BillingPeriod.MONTHLY })
+  @ApiProperty({
+    enum: BillingPeriod,
+    default: BillingPeriod.MONTHLY,
+    example: BillingPeriod.MONTHLY,
+  })
   @IsEnum(BillingPeriod)
   billingPeriod: BillingPeriod = BillingPeriod.MONTHLY;
+}
 
-  @ApiProperty({ type: UsageLimitsDto })
+export class CreateSubscriptionPlanDto {
+  @ApiProperty({ example: 'Professional' })
+  @IsNotEmpty()
+  @IsString()
+  planName: string;
+
+  @ApiProperty({ example: true, default: true })
+  @IsBoolean()
+  isActive: boolean = true;
+
+  @ApiPropertyOptional({ example: 'Perfect for freelancers' })
+  @IsOptional()
+  @IsString()
+  description?: string;
+
+  @ApiProperty({ type: PackagePricingDto })
   @ValidateNested()
-  @Type(() => UsageLimitsDto)
-  usageLimits: UsageLimitsDto = new UsageLimitsDto();
+  @Type(() => PackagePricingDto)
+  packagePricingDto: PackagePricingDto = new PackagePricingDto();
+
+  @ApiPropertyOptional({ example: 15 })
+  @IsNotEmpty()
+  @IsInt()
+  perMonthInvoiceCount: number;
+
+  @ApiPropertyOptional({ example: 86400 })
+  @IsNotEmpty()
+  @IsInt()
+  realtimeImapChecking: number;
 
   @ApiPropertyOptional({
     type: [String],
@@ -96,5 +79,5 @@ export class CreateSubscriptionPlanDto {
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
-  features?: string[] = [];
+  planFeatures?: string[] = [];
 }

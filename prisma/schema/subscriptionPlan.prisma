@@ -3,11 +3,11 @@ model SubscriptionPlan{
     planName String
     isActive Boolean @default(false)
     description String?
- 
+
     isLimitedInvoicePerMonth Boolean @default(false)
     perMonthInvoiceCount Int @default(15)
    
-    realtimeImapChecking Int @default(15)
+    realtimeImapChecking Int @default(86400)
     planFeatures String[]
     
     packagePricing PackagePricing[]
@@ -26,10 +26,16 @@ model PackagePricing {
     id String @id @unique @default(uuid())
     monthlyPrice Float
     setupFee Float @default(0.00)
-    trialDays Int?
+    freeTrialDays Int?
 
     billingPeriod BillingPeriod @default(MONTHLY)
 
     SubscriptionPlanId String
-    subscriptionPlan SubscriptionPlan @relation(fields: [SubscriptionPlanId],references: [id])
+    subscriptionPlan SubscriptionPlan @relation(fields: [SubscriptionPlanId],references: [id],onDelete: Cascade)
+}
+
+model realtimeSelectionTime {
+    id String @id @unique @default(uuid())
+
+    time Int 
 }

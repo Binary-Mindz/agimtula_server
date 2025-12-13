@@ -13,7 +13,6 @@ import { MileageModule } from './user-dashboard/mileage/mileage.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { SettingsModule } from './user-dashboard/settings/settings.module';
 import { AuthGuard } from './auth/guards/auth/auth.guard';
-import { ForgetPasswordModule } from './forget-password/forget-password.module';
 
 @Module({
   imports: [
@@ -27,7 +26,6 @@ import { ForgetPasswordModule } from './forget-password/forget-password.module';
     SmtpMailModule,
     MileageModule,
     SettingsModule,
-    ForgetPasswordModule,
   ],
   controllers: [AppController],
   providers: [

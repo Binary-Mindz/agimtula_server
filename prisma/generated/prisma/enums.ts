@@ -9,6 +9,14 @@
 * 🟢 You can import this file directly.
 */
 
+export const BillingPeriod = {
+  MONTHLY: 'MONTHLY',
+  YEARLY: 'YEARLY'
+} as const
+
+export type BillingPeriod = (typeof BillingPeriod)[keyof typeof BillingPeriod]
+
+
 export const UserRole = {
   ADMIN: 'ADMIN',
   USER: 'USER',

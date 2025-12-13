@@ -59,6 +59,8 @@ export const ModelName = {
   PaymentMethod: 'PaymentMethod',
   InvoiceLayout: 'InvoiceLayout',
   NotificationSetting: 'NotificationSetting',
+  SubscriptionPlan: 'SubscriptionPlan',
+  PackagePricing: 'PackagePricing',
   User: 'User'
 } as const
 
@@ -181,6 +183,33 @@ export const NotificationSettingScalarFieldEnum = {
 } as const
 
 export type NotificationSettingScalarFieldEnum = (typeof NotificationSettingScalarFieldEnum)[keyof typeof NotificationSettingScalarFieldEnum]
+
+
+export const SubscriptionPlanScalarFieldEnum = {
+  id: 'id',
+  planName: 'planName',
+  isActive: 'isActive',
+  description: 'description',
+  isLimitedInvoicePerMonth: 'isLimitedInvoicePerMonth',
+  perMonthInvoiceCount: 'perMonthInvoiceCount',
+  realtimeImapChecking: 'realtimeImapChecking',
+  planFeatures: 'planFeatures',
+  createdAt: 'createdAt'
+} as const
+
+export type SubscriptionPlanScalarFieldEnum = (typeof SubscriptionPlanScalarFieldEnum)[keyof typeof SubscriptionPlanScalarFieldEnum]
+
+
+export const PackagePricingScalarFieldEnum = {
+  id: 'id',
+  monthlyPrice: 'monthlyPrice',
+  setupFee: 'setupFee',
+  freeTrialDays: 'freeTrialDays',
+  billingPeriod: 'billingPeriod',
+  SubscriptionPlanId: 'SubscriptionPlanId'
+} as const
+
+export type PackagePricingScalarFieldEnum = (typeof PackagePricingScalarFieldEnum)[keyof typeof PackagePricingScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {

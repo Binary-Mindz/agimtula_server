@@ -13,6 +13,9 @@ model User {
   businessInfo BusinessInfo?
   invoiceLayout InvoiceLayout?
 
+  // IMAP configurations
+  imapConfigurations imapConfiguration?
+
   created_at      DateTime @default(now())
   updated_at      DateTime @updatedAt
 

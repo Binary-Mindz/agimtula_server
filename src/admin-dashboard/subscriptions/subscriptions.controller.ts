@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Get,
   Post,
   UsePipes,
   ValidationPipe,
@@ -17,7 +16,7 @@ export class SubscriptionsController {
   @Post('plans')
   @Roles('ADMIN')
   @UsePipes(new ValidationPipe({ transform: true }))
-  async getPlans(@Body() dto: CreateSubscriptionPlanDto) {
+  getPlans(@Body() dto: CreateSubscriptionPlanDto) {
     return { dto };
   }
 }

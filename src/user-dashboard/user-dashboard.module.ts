@@ -3,6 +3,6 @@ import { AutoInvoiceImportsModule } from './auto-invoice-imports/auto-invoice-im
 import { ReceiptsModule } from './receipts/receipts.module';
 
 @Module({
-  imports: [AutoInvoiceImportsModule, ReceiptsModule]
+  imports: [AutoInvoiceImportsModule, ReceiptsModule],
 })
 export class UserDashboardModule {}

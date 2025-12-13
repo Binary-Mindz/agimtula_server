@@ -24,13 +24,13 @@ export class SubscriptionsController {
   }
 
   @Get('plans')
-  @Roles('ADMIN')
+  @Roles('ADMIN', 'USER', 'ACCOUNTANT')
   getSubscriptionPlans() {
     return this.subscriptionsService.getSubscriptionPlans();
   }
 
   @Delete('plans/:id')
-  @Roles('ADMIN', 'USER', 'ACCOUNTANT')
+  @Roles('ADMIN')
   deleteSubscriptionPlan(@Param('id') id: string) {
     return this.subscriptionsService.deleteSubscription(id);
   }

@@ -204,6 +204,50 @@ export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedFloatNullableFilter<$PrismaModel>
 }
 
+export type FloatFilter<$PrismaModel = never> = {
+  equals?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  in?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel>
+  notIn?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel>
+  lt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  lte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  gt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  gte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedFloatFilter<$PrismaModel> | number
+}
+
+export type EnumBillingPeriodFilter<$PrismaModel = never> = {
+  equals?: $Enums.BillingPeriod | Prisma.EnumBillingPeriodFieldRefInput<$PrismaModel>
+  in?: $Enums.BillingPeriod[] | Prisma.ListEnumBillingPeriodFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BillingPeriod[] | Prisma.ListEnumBillingPeriodFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBillingPeriodFilter<$PrismaModel> | $Enums.BillingPeriod
+}
+
+export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  in?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel>
+  notIn?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel>
+  lt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  lte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  gt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  gte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedFloatWithAggregatesFilter<$PrismaModel> | number
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _avg?: Prisma.NestedFloatFilter<$PrismaModel>
+  _sum?: Prisma.NestedFloatFilter<$PrismaModel>
+  _min?: Prisma.NestedFloatFilter<$PrismaModel>
+  _max?: Prisma.NestedFloatFilter<$PrismaModel>
+}
+
+export type EnumBillingPeriodWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.BillingPeriod | Prisma.EnumBillingPeriodFieldRefInput<$PrismaModel>
+  in?: $Enums.BillingPeriod[] | Prisma.ListEnumBillingPeriodFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BillingPeriod[] | Prisma.ListEnumBillingPeriodFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBillingPeriodWithAggregatesFilter<$PrismaModel> | $Enums.BillingPeriod
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumBillingPeriodFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumBillingPeriodFilter<$PrismaModel>
+}
+
 export type EnumUserRoleFilter<$PrismaModel = never> = {
   equals?: $Enums.UserRole | Prisma.EnumUserRoleFieldRefInput<$PrismaModel>
   in?: $Enums.UserRole[] | Prisma.ListEnumUserRoleFieldRefInput<$PrismaModel>
@@ -411,6 +455,39 @@ export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
   _sum?: Prisma.NestedFloatNullableFilter<$PrismaModel>
   _min?: Prisma.NestedFloatNullableFilter<$PrismaModel>
   _max?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumBillingPeriodFilter<$PrismaModel = never> = {
+  equals?: $Enums.BillingPeriod | Prisma.EnumBillingPeriodFieldRefInput<$PrismaModel>
+  in?: $Enums.BillingPeriod[] | Prisma.ListEnumBillingPeriodFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BillingPeriod[] | Prisma.ListEnumBillingPeriodFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBillingPeriodFilter<$PrismaModel> | $Enums.BillingPeriod
+}
+
+export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  in?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel>
+  notIn?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel>
+  lt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  lte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  gt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  gte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedFloatWithAggregatesFilter<$PrismaModel> | number
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _avg?: Prisma.NestedFloatFilter<$PrismaModel>
+  _sum?: Prisma.NestedFloatFilter<$PrismaModel>
+  _min?: Prisma.NestedFloatFilter<$PrismaModel>
+  _max?: Prisma.NestedFloatFilter<$PrismaModel>
+}
+
+export type NestedEnumBillingPeriodWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.BillingPeriod | Prisma.EnumBillingPeriodFieldRefInput<$PrismaModel>
+  in?: $Enums.BillingPeriod[] | Prisma.ListEnumBillingPeriodFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BillingPeriod[] | Prisma.ListEnumBillingPeriodFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBillingPeriodWithAggregatesFilter<$PrismaModel> | $Enums.BillingPeriod
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumBillingPeriodFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumBillingPeriodFilter<$PrismaModel>
 }
 
 export type NestedEnumUserRoleFilter<$PrismaModel = never> = {

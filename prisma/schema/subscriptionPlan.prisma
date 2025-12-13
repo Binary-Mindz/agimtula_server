@@ -1,0 +1,35 @@
+model SubscriptionPlan{
+    id String @id @unique @default(uuid())
+    planName String
+    isActive Boolean @default(false)
+    description String?
+ 
+    isLimitedInvoicePerMonth Boolean @default(false)
+    perMonthInvoiceCount Int @default(15)
+   
+    realtimeImapChecking Int @default(15)
+    planFeatures String[]
+    
+    packagePricing PackagePricing[]
+
+    createdAt DateTime @default(now())
+
+    @@map("subscriptionPlan")
+}
+
+enum BillingPeriod {
+    MONTHLY 
+    YEARLY
+}
+
+model PackagePricing {
+    id String @id @unique @default(uuid())
+    monthlyPrice Float
+    setupFee Float @default(0.00)
+    trialDays Int?
+
+    billingPeriod BillingPeriod @default(MONTHLY)
+
+    SubscriptionPlanId String
+    subscriptionPlan SubscriptionPlan @relation(fields: [SubscriptionPlanId],references: [id])
+}

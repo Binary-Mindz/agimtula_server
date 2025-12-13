@@ -7,12 +7,46 @@ model imapConfiguration {
     password String
     secure   Boolean @default(true)
 
-
     // relations
     user User @relation(fields: [userId], references: [id])
+
+    // subscription plan details
+    isLimitedInvoicePerMonth Boolean @default(false)
+    perMonthInvoiceCount     Int     @default(15)
+
+    realtimeImapChecking Int @default(86400)
+
+    startedAt DateTime @default(now())
+    expiredAt DateTime
 
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
     @@map("imap_configuration")
+}
+
+// user relation with subscription plan based on their selected plan
+model userSubscriptionPlanHistory {
+    id String @id @unique @default(uuid())
+
+    UserId String
+    user   User   @relation(fields: [UserId], references: [id])
+
+    isLimitedInvoicePerMonth Boolean @default(false)
+    perMonthInvoiceCount     Int     @default(15)
+
+    realtimeImapChecking Int @default(86400)
+
+    price         Float
+    setupFee      Float @default(0.00)
+    freeTrialDays Int?
+
+    billingPeriod BillingPeriod
+
+    startedAt DateTime @default(now())
+    expiredAt DateTime
+
+    createdAt DateTime @default(now())
+
+    @@map("userSubscriptionPlan")
 }

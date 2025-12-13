@@ -24,7 +24,7 @@ enum BillingPeriod {
 
 model PackagePricing {
     id String @id @unique @default(uuid())
-    monthlyPrice Float
+    price Float
     setupFee Float @default(0.00)
     freeTrialDays Int?
 

@@ -16,11 +16,13 @@ export class SubscriptionsService {
         realtimeImapChecking: dto.realtimeImapChecking,
         planFeatures: dto.planFeatures,
         packagePricing: {
-          create: {
-            monthlyPrice: dto.packagePricingDto.monthlyPrice,
-            setupFee: dto.packagePricingDto.setupFee,
-            freeTrialDays: dto.packagePricingDto.freeTrialDays,
-            billingPeriod: dto.packagePricingDto.billingPeriod,
+          createMany: {
+            data: dto.packagePricingDto.map(packageItem => ({
+              monthlyPrice: packageItem.monthlyPrice,
+              setupFee: packageItem.setupFee,
+              freeTrialDays: packageItem.freeTrialDays,
+              billingPeriod: packageItem.billingPeriod,
+            })),
           },
         },
       },

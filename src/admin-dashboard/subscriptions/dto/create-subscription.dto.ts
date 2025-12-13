@@ -57,10 +57,11 @@ export class CreateSubscriptionPlanDto {
   @IsString()
   description?: string;
 
-  @ApiProperty({ type: PackagePricingDto })
-  @ValidateNested()
+  @ApiProperty({ type: [PackagePricingDto] })
+  @IsArray()
+  @ValidateNested({ each: true })
   @Type(() => PackagePricingDto)
-  packagePricingDto: PackagePricingDto = new PackagePricingDto();
+  packagePricingDto: PackagePricingDto[] = [];
 
   @ApiPropertyOptional({ example: 15 })
   @IsNotEmpty()

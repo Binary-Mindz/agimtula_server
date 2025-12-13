@@ -17,8 +17,8 @@ export class SubscriptionsService {
         planFeatures: dto.planFeatures,
         packagePricing: {
           createMany: {
-            data: dto.packagePricingDto.map(packageItem => ({
-              monthlyPrice: packageItem.monthlyPrice,
+            data: dto.packagePricingDto.map((packageItem) => ({
+              price: packageItem.price,
               setupFee: packageItem.setupFee,
               freeTrialDays: packageItem.freeTrialDays,
               billingPeriod: packageItem.billingPeriod,

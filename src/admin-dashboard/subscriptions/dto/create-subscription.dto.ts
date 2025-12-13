@@ -19,7 +19,7 @@ class PackagePricingDto {
   @Type(() => Number)
   @IsNumber()
   @Min(0)
-  monthlyPrice: number;
+  price: number;
 
   @ApiProperty({ example: 0 })
   @Type(() => Number)

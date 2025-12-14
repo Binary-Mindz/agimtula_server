@@ -17,7 +17,8 @@ model User {
   imapConfigurations imapConfiguration?
 
   // user subscription plan
-  userSubscriptionPlan userSubscriptionPlanHistory[]
+  userSubscriptionPlan userSubscriptionPlan?
+  userSubscriptionPlanHistory userSubscriptionPlanHistory[]
 
   created_at      DateTime @default(now())
   updated_at      DateTime @updatedAt

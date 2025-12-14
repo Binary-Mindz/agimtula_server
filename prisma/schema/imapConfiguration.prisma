@@ -1,3 +1,4 @@
+// IMAP configuration for users
 model imapConfiguration {
     id       String  @id @unique @default(uuid())
     userId   String  @unique
@@ -12,6 +13,9 @@ model imapConfiguration {
 
     // subscription plan details
     userSubscriptionPlan userSubscriptionPlan?
+
+    // subscription status details
+    subscriptionPlanPaymentStatus subscriptionPlanPaymentStatus?
 
     startedAt DateTime @default(now())
     expiredAt DateTime
@@ -31,6 +35,8 @@ model userSubscriptionPlan {
 
     imapConfigurationId String            @unique
     imapConfiguration   imapConfiguration @relation(fields: [imapConfigurationId], references: [id])
+
+    subscriptionPlanPaymentStatus subscriptionPlanPaymentStatus? @relation(name: "PaymentStatusToSubscriptionPlan")
 
     isLimitedInvoicePerMonth Boolean
     perMonthInvoiceCount     Int
@@ -66,10 +72,37 @@ model userSubscriptionPlanHistory {
 
     billingPeriod BillingPeriod
 
+    subscriptionPlanPaymentStatus subscriptionPlanPaymentStatus?
+
     startedAt DateTime @default(now())
     expiredAt DateTime
 
     createdAt DateTime @default(now())
 
     @@map("userSubscriptionPlan")
+}
+
+// payment status for imap configuration and subscription plans
+model subscriptionPlanPaymentStatus {
+    id String @id @unique @default(uuid())
+
+    // imap configuration relation payment status
+    imapConfigurationId String?            @unique
+    imapConfiguration   imapConfiguration? @relation(fields: [imapConfigurationId], references: [id])
+
+    // subscription plan history relation payment status
+    subscriptionPlanHistoryId   String                      @unique
+    userSubscriptionPlanHistory userSubscriptionPlanHistory @relation(fields: [subscriptionPlanHistoryId], references: [id])
+
+    // user subscription plan relation payment status
+    userSubscriptionPlanId String?               @unique
+    userSubscriptionPlan   userSubscriptionPlan? @relation(name: "PaymentStatusToSubscriptionPlan", fields: [userSubscriptionPlanId], references: [id])
+
+    totalAmount Float
+
+    paymentStatus String
+
+    createdAt DateTime @default(now())
+
+    @@map("subscription_plan_payment_status")
 }

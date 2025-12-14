@@ -51,8 +51,10 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  ActivityLog: 'ActivityLog',
+  imapConfiguration: 'imapConfiguration',
+  userSubscriptionPlanHistory: 'userSubscriptionPlanHistory',
   Profile: 'Profile',
-  Email: 'Email',
   ForgetPass: 'ForgetPass',
   Language: 'Language',
   BusinessInfo: 'BusinessInfo',
@@ -62,7 +64,8 @@ export const ModelName = {
   SubscriptionPlan: 'SubscriptionPlan',
   PackagePricing: 'PackagePricing',
   realtimeSelectionTime: 'realtimeSelectionTime',
-  User: 'User'
+  User: 'User',
+  Email: 'Email'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -81,6 +84,55 @@ export const TransactionIsolationLevel = {
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const ActivityLogScalarFieldEnum = {
+  id: 'id',
+  actorId: 'actorId',
+  type: 'type',
+  message: 'message',
+  createdAt: 'createdAt'
+} as const
+
+export type ActivityLogScalarFieldEnum = (typeof ActivityLogScalarFieldEnum)[keyof typeof ActivityLogScalarFieldEnum]
+
+
+export const ImapConfigurationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  host: 'host',
+  port: 'port',
+  username: 'username',
+  password: 'password',
+  secure: 'secure',
+  isLimitedInvoicePerMonth: 'isLimitedInvoicePerMonth',
+  perMonthInvoiceCount: 'perMonthInvoiceCount',
+  realtimeImapChecking: 'realtimeImapChecking',
+  startedAt: 'startedAt',
+  expiredAt: 'expiredAt',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type ImapConfigurationScalarFieldEnum = (typeof ImapConfigurationScalarFieldEnum)[keyof typeof ImapConfigurationScalarFieldEnum]
+
+
+export const UserSubscriptionPlanHistoryScalarFieldEnum = {
+  id: 'id',
+  UserId: 'UserId',
+  isLimitedInvoicePerMonth: 'isLimitedInvoicePerMonth',
+  perMonthInvoiceCount: 'perMonthInvoiceCount',
+  realtimeImapChecking: 'realtimeImapChecking',
+  price: 'price',
+  setupFee: 'setupFee',
+  freeTrialDays: 'freeTrialDays',
+  billingPeriod: 'billingPeriod',
+  startedAt: 'startedAt',
+  expiredAt: 'expiredAt',
+  createdAt: 'createdAt'
+} as const
+
+export type UserSubscriptionPlanHistoryScalarFieldEnum = (typeof UserSubscriptionPlanHistoryScalarFieldEnum)[keyof typeof UserSubscriptionPlanHistoryScalarFieldEnum]
+
+
 export const ProfileScalarFieldEnum = {
   id: 'id',
   firstName: 'firstName',
@@ -95,15 +147,6 @@ export const ProfileScalarFieldEnum = {
 } as const
 
 export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
-
-
-export const EmailScalarFieldEnum = {
-  id: 'id',
-  email: 'email',
-  userId: 'userId'
-} as const
-
-export type EmailScalarFieldEnum = (typeof EmailScalarFieldEnum)[keyof typeof EmailScalarFieldEnum]
 
 
 export const ForgetPassScalarFieldEnum = {
@@ -232,6 +275,15 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const EmailScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  userId: 'userId'
+} as const
+
+export type EmailScalarFieldEnum = (typeof EmailScalarFieldEnum)[keyof typeof EmailScalarFieldEnum]
 
 
 export const SortOrder = {

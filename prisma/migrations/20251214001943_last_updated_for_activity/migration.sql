@@ -2,12 +2,11 @@
   Warnings:
 
   - You are about to drop the column `monthlyPrice` on the `PackagePricing` table. All the data in the column will be lost.
-  - Added the required column `price` to the `PackagePricing` table without a default value. This is not possible if the table is not empty.
 
 */
 -- AlterTable
 ALTER TABLE "PackagePricing" DROP COLUMN "monthlyPrice",
-ADD COLUMN     "price" DOUBLE PRECISION NOT NULL;
+ADD COLUMN     "price" DOUBLE PRECISION NOT NULL DEFAULT 0.00;
 
 -- AlterTable
 ALTER TABLE "subscriptionPlan" ALTER COLUMN "realtimeImapChecking" SET DEFAULT 86400;

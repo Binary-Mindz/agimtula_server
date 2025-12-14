@@ -493,14 +493,6 @@ export type PaymentMethodOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type PaymentMethodCreateNestedManyWithoutUserInput = {
   create?: Prisma.XOR<Prisma.PaymentMethodCreateWithoutUserInput, Prisma.PaymentMethodUncheckedCreateWithoutUserInput> | Prisma.PaymentMethodCreateWithoutUserInput[] | Prisma.PaymentMethodUncheckedCreateWithoutUserInput[]
   connectOrCreate?: Prisma.PaymentMethodCreateOrConnectWithoutUserInput | Prisma.PaymentMethodCreateOrConnectWithoutUserInput[]

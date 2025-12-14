@@ -30,3 +30,12 @@ enum UserRole {
   USER
   ACCOUNTANT
 }
+
+model Email {
+    id String @id @default(uuid())
+    email String @unique
+    userId String @unique
+    user User @relation(fields: [userId],references: [id])
+
+    @@map("email")
+}

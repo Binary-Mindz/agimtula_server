@@ -18,15 +18,25 @@ export { Prisma }
 export * as $Enums from './enums'
 export * from './enums';
 /**
+ * Model ActivityLog
+ * 
+ */
+export type ActivityLog = Prisma.ActivityLogModel
+/**
+ * Model imapConfiguration
+ * 
+ */
+export type imapConfiguration = Prisma.imapConfigurationModel
+/**
+ * Model userSubscriptionPlanHistory
+ * 
+ */
+export type userSubscriptionPlanHistory = Prisma.userSubscriptionPlanHistoryModel
+/**
  * Model Profile
  * 
  */
 export type Profile = Prisma.ProfileModel
-/**
- * Model Email
- * 
- */
-export type Email = Prisma.EmailModel
 /**
  * Model ForgetPass
  * 
@@ -77,3 +87,8 @@ export type realtimeSelectionTime = Prisma.realtimeSelectionTimeModel
  * 
  */
 export type User = Prisma.UserModel
+/**
+ * Model Email
+ * 
+ */
+export type Email = Prisma.EmailModel

@@ -27,8 +27,8 @@ export * from "./enums"
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Profiles
- * const profiles = await prisma.profile.findMany()
+ * // Fetch zero or more ActivityLogs
+ * const activityLogs = await prisma.activityLog.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -38,15 +38,25 @@ export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts exten
 export { Prisma }
 
 /**
+ * Model ActivityLog
+ * 
+ */
+export type ActivityLog = Prisma.ActivityLogModel
+/**
+ * Model imapConfiguration
+ * 
+ */
+export type imapConfiguration = Prisma.imapConfigurationModel
+/**
+ * Model userSubscriptionPlanHistory
+ * 
+ */
+export type userSubscriptionPlanHistory = Prisma.userSubscriptionPlanHistoryModel
+/**
  * Model Profile
  * 
  */
 export type Profile = Prisma.ProfileModel
-/**
- * Model Email
- * 
- */
-export type Email = Prisma.EmailModel
 /**
  * Model ForgetPass
  * 
@@ -97,3 +107,8 @@ export type realtimeSelectionTime = Prisma.realtimeSelectionTimeModel
  * 
  */
 export type User = Prisma.UserModel
+/**
+ * Model Email
+ * 
+ */
+export type Email = Prisma.EmailModel

@@ -286,7 +286,7 @@ export type PackagePricingScalarWhereWithAggregatesInput = {
 
 export type PackagePricingCreateInput = {
   id?: string
-  price: number
+  price?: number
   setupFee?: number
   freeTrialDays?: number | null
   billingPeriod?: $Enums.BillingPeriod
@@ -295,7 +295,7 @@ export type PackagePricingCreateInput = {
 
 export type PackagePricingUncheckedCreateInput = {
   id?: string
-  price: number
+  price?: number
   setupFee?: number
   freeTrialDays?: number | null
   billingPeriod?: $Enums.BillingPeriod
@@ -322,7 +322,7 @@ export type PackagePricingUncheckedUpdateInput = {
 
 export type PackagePricingCreateManyInput = {
   id?: string
-  price: number
+  price?: number
   setupFee?: number
   freeTrialDays?: number | null
   billingPeriod?: $Enums.BillingPeriod
@@ -437,21 +437,9 @@ export type PackagePricingUncheckedUpdateManyWithoutSubscriptionPlanNestedInput 
   deleteMany?: Prisma.PackagePricingScalarWhereInput | Prisma.PackagePricingScalarWhereInput[]
 }
 
-export type FloatFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
-export type EnumBillingPeriodFieldUpdateOperationsInput = {
-  set?: $Enums.BillingPeriod
-}
-
 export type PackagePricingCreateWithoutSubscriptionPlanInput = {
   id?: string
-  price: number
+  price?: number
   setupFee?: number
   freeTrialDays?: number | null
   billingPeriod?: $Enums.BillingPeriod
@@ -459,7 +447,7 @@ export type PackagePricingCreateWithoutSubscriptionPlanInput = {
 
 export type PackagePricingUncheckedCreateWithoutSubscriptionPlanInput = {
   id?: string
-  price: number
+  price?: number
   setupFee?: number
   freeTrialDays?: number | null
   billingPeriod?: $Enums.BillingPeriod
@@ -505,7 +493,7 @@ export type PackagePricingScalarWhereInput = {
 
 export type PackagePricingCreateManySubscriptionPlanInput = {
   id?: string
-  price: number
+  price?: number
   setupFee?: number
   freeTrialDays?: number | null
   billingPeriod?: $Enums.BillingPeriod

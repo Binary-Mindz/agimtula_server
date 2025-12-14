@@ -245,6 +245,11 @@ export type EmailUncheckedUpdateManyInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
+export type EmailNullableScalarRelationFilter = {
+  is?: Prisma.EmailWhereInput | null
+  isNot?: Prisma.EmailWhereInput | null
+}
+
 export type EmailCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
@@ -261,11 +266,6 @@ export type EmailMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-}
-
-export type EmailNullableScalarRelationFilter = {
-  is?: Prisma.EmailWhereInput | null
-  isNot?: Prisma.EmailWhereInput | null
 }
 
 export type EmailCreateNestedOneWithoutUserInput = {

@@ -26,28 +26,124 @@ export type AggregateNotificationSetting = {
 
 export type NotificationSettingMinAggregateOutputType = {
   id: string | null
+  userId: string | null
+  invoiceSent: boolean | null
+  invoicePaid: boolean | null
+  paymentOverdue: boolean | null
+  quoteViewed: boolean | null
+  quoteAccepted: boolean | null
+  newBankTransactions: boolean | null
+  unmatchedTransactions: boolean | null
+  missingReceipts: boolean | null
+  weeklySummary: boolean | null
+  monthlyReport: boolean | null
+  vatFilingReminder: boolean | null
+  notificationEmail: string | null
+  notificationFrequency: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type NotificationSettingMaxAggregateOutputType = {
   id: string | null
+  userId: string | null
+  invoiceSent: boolean | null
+  invoicePaid: boolean | null
+  paymentOverdue: boolean | null
+  quoteViewed: boolean | null
+  quoteAccepted: boolean | null
+  newBankTransactions: boolean | null
+  unmatchedTransactions: boolean | null
+  missingReceipts: boolean | null
+  weeklySummary: boolean | null
+  monthlyReport: boolean | null
+  vatFilingReminder: boolean | null
+  notificationEmail: string | null
+  notificationFrequency: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type NotificationSettingCountAggregateOutputType = {
   id: number
+  userId: number
+  invoiceSent: number
+  invoicePaid: number
+  paymentOverdue: number
+  quoteViewed: number
+  quoteAccepted: number
+  newBankTransactions: number
+  unmatchedTransactions: number
+  missingReceipts: number
+  weeklySummary: number
+  monthlyReport: number
+  vatFilingReminder: number
+  notificationEmail: number
+  notificationFrequency: number
+  createdAt: number
+  updatedAt: number
   _all: number
 }
 
 
 export type NotificationSettingMinAggregateInputType = {
   id?: true
+  userId?: true
+  invoiceSent?: true
+  invoicePaid?: true
+  paymentOverdue?: true
+  quoteViewed?: true
+  quoteAccepted?: true
+  newBankTransactions?: true
+  unmatchedTransactions?: true
+  missingReceipts?: true
+  weeklySummary?: true
+  monthlyReport?: true
+  vatFilingReminder?: true
+  notificationEmail?: true
+  notificationFrequency?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type NotificationSettingMaxAggregateInputType = {
   id?: true
+  userId?: true
+  invoiceSent?: true
+  invoicePaid?: true
+  paymentOverdue?: true
+  quoteViewed?: true
+  quoteAccepted?: true
+  newBankTransactions?: true
+  unmatchedTransactions?: true
+  missingReceipts?: true
+  weeklySummary?: true
+  monthlyReport?: true
+  vatFilingReminder?: true
+  notificationEmail?: true
+  notificationFrequency?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type NotificationSettingCountAggregateInputType = {
   id?: true
+  userId?: true
+  invoiceSent?: true
+  invoicePaid?: true
+  paymentOverdue?: true
+  quoteViewed?: true
+  quoteAccepted?: true
+  newBankTransactions?: true
+  unmatchedTransactions?: true
+  missingReceipts?: true
+  weeklySummary?: true
+  monthlyReport?: true
+  vatFilingReminder?: true
+  notificationEmail?: true
+  notificationFrequency?: true
+  createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -125,6 +221,22 @@ export type NotificationSettingGroupByArgs<ExtArgs extends runtime.Types.Extensi
 
 export type NotificationSettingGroupByOutputType = {
   id: string
+  userId: string
+  invoiceSent: boolean
+  invoicePaid: boolean
+  paymentOverdue: boolean
+  quoteViewed: boolean
+  quoteAccepted: boolean
+  newBankTransactions: boolean
+  unmatchedTransactions: boolean
+  missingReceipts: boolean
+  weeklySummary: boolean
+  monthlyReport: boolean
+  vatFilingReminder: boolean
+  notificationEmail: string
+  notificationFrequency: string
+  createdAt: Date
+  updatedAt: Date
   _count: NotificationSettingCountAggregateOutputType | null
   _min: NotificationSettingMinAggregateOutputType | null
   _max: NotificationSettingMaxAggregateOutputType | null
@@ -150,21 +262,85 @@ export type NotificationSettingWhereInput = {
   OR?: Prisma.NotificationSettingWhereInput[]
   NOT?: Prisma.NotificationSettingWhereInput | Prisma.NotificationSettingWhereInput[]
   id?: Prisma.StringFilter<"NotificationSetting"> | string
+  userId?: Prisma.StringFilter<"NotificationSetting"> | string
+  invoiceSent?: Prisma.BoolFilter<"NotificationSetting"> | boolean
+  invoicePaid?: Prisma.BoolFilter<"NotificationSetting"> | boolean
+  paymentOverdue?: Prisma.BoolFilter<"NotificationSetting"> | boolean
+  quoteViewed?: Prisma.BoolFilter<"NotificationSetting"> | boolean
+  quoteAccepted?: Prisma.BoolFilter<"NotificationSetting"> | boolean
+  newBankTransactions?: Prisma.BoolFilter<"NotificationSetting"> | boolean
+  unmatchedTransactions?: Prisma.BoolFilter<"NotificationSetting"> | boolean
+  missingReceipts?: Prisma.BoolFilter<"NotificationSetting"> | boolean
+  weeklySummary?: Prisma.BoolFilter<"NotificationSetting"> | boolean
+  monthlyReport?: Prisma.BoolFilter<"NotificationSetting"> | boolean
+  vatFilingReminder?: Prisma.BoolFilter<"NotificationSetting"> | boolean
+  notificationEmail?: Prisma.StringFilter<"NotificationSetting"> | string
+  notificationFrequency?: Prisma.StringFilter<"NotificationSetting"> | string
+  createdAt?: Prisma.DateTimeFilter<"NotificationSetting"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"NotificationSetting"> | Date | string
 }
 
 export type NotificationSettingOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  invoiceSent?: Prisma.SortOrder
+  invoicePaid?: Prisma.SortOrder
+  paymentOverdue?: Prisma.SortOrder
+  quoteViewed?: Prisma.SortOrder
+  quoteAccepted?: Prisma.SortOrder
+  newBankTransactions?: Prisma.SortOrder
+  unmatchedTransactions?: Prisma.SortOrder
+  missingReceipts?: Prisma.SortOrder
+  weeklySummary?: Prisma.SortOrder
+  monthlyReport?: Prisma.SortOrder
+  vatFilingReminder?: Prisma.SortOrder
+  notificationEmail?: Prisma.SortOrder
+  notificationFrequency?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type NotificationSettingWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  userId?: string
   AND?: Prisma.NotificationSettingWhereInput | Prisma.NotificationSettingWhereInput[]
   OR?: Prisma.NotificationSettingWhereInput[]
   NOT?: Prisma.NotificationSettingWhereInput | Prisma.NotificationSettingWhereInput[]
-}, "id" | "id">
+  invoiceSent?: Prisma.BoolFilter<"NotificationSetting"> | boolean
+  invoicePaid?: Prisma.BoolFilter<"NotificationSetting"> | boolean
+  paymentOverdue?: Prisma.BoolFilter<"NotificationSetting"> | boolean
+  quoteViewed?: Prisma.BoolFilter<"NotificationSetting"> | boolean
+  quoteAccepted?: Prisma.BoolFilter<"NotificationSetting"> | boolean
+  newBankTransactions?: Prisma.BoolFilter<"NotificationSetting"> | boolean
+  unmatchedTransactions?: Prisma.BoolFilter<"NotificationSetting"> | boolean
+  missingReceipts?: Prisma.BoolFilter<"NotificationSetting"> | boolean
+  weeklySummary?: Prisma.BoolFilter<"NotificationSetting"> | boolean
+  monthlyReport?: Prisma.BoolFilter<"NotificationSetting"> | boolean
+  vatFilingReminder?: Prisma.BoolFilter<"NotificationSetting"> | boolean
+  notificationEmail?: Prisma.StringFilter<"NotificationSetting"> | string
+  notificationFrequency?: Prisma.StringFilter<"NotificationSetting"> | string
+  createdAt?: Prisma.DateTimeFilter<"NotificationSetting"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"NotificationSetting"> | Date | string
+}, "id" | "userId">
 
 export type NotificationSettingOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  invoiceSent?: Prisma.SortOrder
+  invoicePaid?: Prisma.SortOrder
+  paymentOverdue?: Prisma.SortOrder
+  quoteViewed?: Prisma.SortOrder
+  quoteAccepted?: Prisma.SortOrder
+  newBankTransactions?: Prisma.SortOrder
+  unmatchedTransactions?: Prisma.SortOrder
+  missingReceipts?: Prisma.SortOrder
+  weeklySummary?: Prisma.SortOrder
+  monthlyReport?: Prisma.SortOrder
+  vatFilingReminder?: Prisma.SortOrder
+  notificationEmail?: Prisma.SortOrder
+  notificationFrequency?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.NotificationSettingCountOrderByAggregateInput
   _max?: Prisma.NotificationSettingMaxOrderByAggregateInput
   _min?: Prisma.NotificationSettingMinOrderByAggregateInput
@@ -175,73 +351,329 @@ export type NotificationSettingScalarWhereWithAggregatesInput = {
   OR?: Prisma.NotificationSettingScalarWhereWithAggregatesInput[]
   NOT?: Prisma.NotificationSettingScalarWhereWithAggregatesInput | Prisma.NotificationSettingScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"NotificationSetting"> | string
+  userId?: Prisma.StringWithAggregatesFilter<"NotificationSetting"> | string
+  invoiceSent?: Prisma.BoolWithAggregatesFilter<"NotificationSetting"> | boolean
+  invoicePaid?: Prisma.BoolWithAggregatesFilter<"NotificationSetting"> | boolean
+  paymentOverdue?: Prisma.BoolWithAggregatesFilter<"NotificationSetting"> | boolean
+  quoteViewed?: Prisma.BoolWithAggregatesFilter<"NotificationSetting"> | boolean
+  quoteAccepted?: Prisma.BoolWithAggregatesFilter<"NotificationSetting"> | boolean
+  newBankTransactions?: Prisma.BoolWithAggregatesFilter<"NotificationSetting"> | boolean
+  unmatchedTransactions?: Prisma.BoolWithAggregatesFilter<"NotificationSetting"> | boolean
+  missingReceipts?: Prisma.BoolWithAggregatesFilter<"NotificationSetting"> | boolean
+  weeklySummary?: Prisma.BoolWithAggregatesFilter<"NotificationSetting"> | boolean
+  monthlyReport?: Prisma.BoolWithAggregatesFilter<"NotificationSetting"> | boolean
+  vatFilingReminder?: Prisma.BoolWithAggregatesFilter<"NotificationSetting"> | boolean
+  notificationEmail?: Prisma.StringWithAggregatesFilter<"NotificationSetting"> | string
+  notificationFrequency?: Prisma.StringWithAggregatesFilter<"NotificationSetting"> | string
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"NotificationSetting"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"NotificationSetting"> | Date | string
 }
 
 export type NotificationSettingCreateInput = {
   id?: string
+  userId: string
+  invoiceSent?: boolean
+  invoicePaid?: boolean
+  paymentOverdue?: boolean
+  quoteViewed?: boolean
+  quoteAccepted?: boolean
+  newBankTransactions?: boolean
+  unmatchedTransactions?: boolean
+  missingReceipts?: boolean
+  weeklySummary?: boolean
+  monthlyReport?: boolean
+  vatFilingReminder?: boolean
+  notificationEmail: string
+  notificationFrequency?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type NotificationSettingUncheckedCreateInput = {
   id?: string
+  userId: string
+  invoiceSent?: boolean
+  invoicePaid?: boolean
+  paymentOverdue?: boolean
+  quoteViewed?: boolean
+  quoteAccepted?: boolean
+  newBankTransactions?: boolean
+  unmatchedTransactions?: boolean
+  missingReceipts?: boolean
+  weeklySummary?: boolean
+  monthlyReport?: boolean
+  vatFilingReminder?: boolean
+  notificationEmail: string
+  notificationFrequency?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type NotificationSettingUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  invoiceSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  invoicePaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  paymentOverdue?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  quoteViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  quoteAccepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  newBankTransactions?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  unmatchedTransactions?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  missingReceipts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklySummary?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  monthlyReport?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  vatFilingReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  notificationEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationFrequency?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type NotificationSettingUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  invoiceSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  invoicePaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  paymentOverdue?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  quoteViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  quoteAccepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  newBankTransactions?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  unmatchedTransactions?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  missingReceipts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklySummary?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  monthlyReport?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  vatFilingReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  notificationEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationFrequency?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type NotificationSettingCreateManyInput = {
   id?: string
+  userId: string
+  invoiceSent?: boolean
+  invoicePaid?: boolean
+  paymentOverdue?: boolean
+  quoteViewed?: boolean
+  quoteAccepted?: boolean
+  newBankTransactions?: boolean
+  unmatchedTransactions?: boolean
+  missingReceipts?: boolean
+  weeklySummary?: boolean
+  monthlyReport?: boolean
+  vatFilingReminder?: boolean
+  notificationEmail: string
+  notificationFrequency?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type NotificationSettingUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  invoiceSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  invoicePaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  paymentOverdue?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  quoteViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  quoteAccepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  newBankTransactions?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  unmatchedTransactions?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  missingReceipts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklySummary?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  monthlyReport?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  vatFilingReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  notificationEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationFrequency?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type NotificationSettingUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  invoiceSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  invoicePaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  paymentOverdue?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  quoteViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  quoteAccepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  newBankTransactions?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  unmatchedTransactions?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  missingReceipts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklySummary?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  monthlyReport?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  vatFilingReminder?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  notificationEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationFrequency?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type NotificationSettingCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  invoiceSent?: Prisma.SortOrder
+  invoicePaid?: Prisma.SortOrder
+  paymentOverdue?: Prisma.SortOrder
+  quoteViewed?: Prisma.SortOrder
+  quoteAccepted?: Prisma.SortOrder
+  newBankTransactions?: Prisma.SortOrder
+  unmatchedTransactions?: Prisma.SortOrder
+  missingReceipts?: Prisma.SortOrder
+  weeklySummary?: Prisma.SortOrder
+  monthlyReport?: Prisma.SortOrder
+  vatFilingReminder?: Prisma.SortOrder
+  notificationEmail?: Prisma.SortOrder
+  notificationFrequency?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type NotificationSettingMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  invoiceSent?: Prisma.SortOrder
+  invoicePaid?: Prisma.SortOrder
+  paymentOverdue?: Prisma.SortOrder
+  quoteViewed?: Prisma.SortOrder
+  quoteAccepted?: Prisma.SortOrder
+  newBankTransactions?: Prisma.SortOrder
+  unmatchedTransactions?: Prisma.SortOrder
+  missingReceipts?: Prisma.SortOrder
+  weeklySummary?: Prisma.SortOrder
+  monthlyReport?: Prisma.SortOrder
+  vatFilingReminder?: Prisma.SortOrder
+  notificationEmail?: Prisma.SortOrder
+  notificationFrequency?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type NotificationSettingMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  invoiceSent?: Prisma.SortOrder
+  invoicePaid?: Prisma.SortOrder
+  paymentOverdue?: Prisma.SortOrder
+  quoteViewed?: Prisma.SortOrder
+  quoteAccepted?: Prisma.SortOrder
+  newBankTransactions?: Prisma.SortOrder
+  unmatchedTransactions?: Prisma.SortOrder
+  missingReceipts?: Prisma.SortOrder
+  weeklySummary?: Prisma.SortOrder
+  monthlyReport?: Prisma.SortOrder
+  vatFilingReminder?: Prisma.SortOrder
+  notificationEmail?: Prisma.SortOrder
+  notificationFrequency?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 
 
 export type NotificationSettingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  userId?: boolean
+  invoiceSent?: boolean
+  invoicePaid?: boolean
+  paymentOverdue?: boolean
+  quoteViewed?: boolean
+  quoteAccepted?: boolean
+  newBankTransactions?: boolean
+  unmatchedTransactions?: boolean
+  missingReceipts?: boolean
+  weeklySummary?: boolean
+  monthlyReport?: boolean
+  vatFilingReminder?: boolean
+  notificationEmail?: boolean
+  notificationFrequency?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }, ExtArgs["result"]["notificationSetting"]>
 
 export type NotificationSettingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  userId?: boolean
+  invoiceSent?: boolean
+  invoicePaid?: boolean
+  paymentOverdue?: boolean
+  quoteViewed?: boolean
+  quoteAccepted?: boolean
+  newBankTransactions?: boolean
+  unmatchedTransactions?: boolean
+  missingReceipts?: boolean
+  weeklySummary?: boolean
+  monthlyReport?: boolean
+  vatFilingReminder?: boolean
+  notificationEmail?: boolean
+  notificationFrequency?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }, ExtArgs["result"]["notificationSetting"]>
 
 export type NotificationSettingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  userId?: boolean
+  invoiceSent?: boolean
+  invoicePaid?: boolean
+  paymentOverdue?: boolean
+  quoteViewed?: boolean
+  quoteAccepted?: boolean
+  newBankTransactions?: boolean
+  unmatchedTransactions?: boolean
+  missingReceipts?: boolean
+  weeklySummary?: boolean
+  monthlyReport?: boolean
+  vatFilingReminder?: boolean
+  notificationEmail?: boolean
+  notificationFrequency?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }, ExtArgs["result"]["notificationSetting"]>
 
 export type NotificationSettingSelectScalar = {
   id?: boolean
+  userId?: boolean
+  invoiceSent?: boolean
+  invoicePaid?: boolean
+  paymentOverdue?: boolean
+  quoteViewed?: boolean
+  quoteAccepted?: boolean
+  newBankTransactions?: boolean
+  unmatchedTransactions?: boolean
+  missingReceipts?: boolean
+  weeklySummary?: boolean
+  monthlyReport?: boolean
+  vatFilingReminder?: boolean
+  notificationEmail?: boolean
+  notificationFrequency?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type NotificationSettingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id", ExtArgs["result"]["notificationSetting"]>
+export type NotificationSettingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "invoiceSent" | "invoicePaid" | "paymentOverdue" | "quoteViewed" | "quoteAccepted" | "newBankTransactions" | "unmatchedTransactions" | "missingReceipts" | "weeklySummary" | "monthlyReport" | "vatFilingReminder" | "notificationEmail" | "notificationFrequency" | "createdAt" | "updatedAt", ExtArgs["result"]["notificationSetting"]>
 
 export type $NotificationSettingPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "NotificationSetting"
   objects: {}
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    userId: string
+    invoiceSent: boolean
+    invoicePaid: boolean
+    paymentOverdue: boolean
+    quoteViewed: boolean
+    quoteAccepted: boolean
+    newBankTransactions: boolean
+    unmatchedTransactions: boolean
+    missingReceipts: boolean
+    weeklySummary: boolean
+    monthlyReport: boolean
+    vatFilingReminder: boolean
+    notificationEmail: string
+    notificationFrequency: string
+    createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["notificationSetting"]>
   composites: {}
 }
@@ -666,6 +1098,22 @@ export interface Prisma__NotificationSettingClient<T, Null = never, ExtArgs exte
  */
 export interface NotificationSettingFieldRefs {
   readonly id: Prisma.FieldRef<"NotificationSetting", 'String'>
+  readonly userId: Prisma.FieldRef<"NotificationSetting", 'String'>
+  readonly invoiceSent: Prisma.FieldRef<"NotificationSetting", 'Boolean'>
+  readonly invoicePaid: Prisma.FieldRef<"NotificationSetting", 'Boolean'>
+  readonly paymentOverdue: Prisma.FieldRef<"NotificationSetting", 'Boolean'>
+  readonly quoteViewed: Prisma.FieldRef<"NotificationSetting", 'Boolean'>
+  readonly quoteAccepted: Prisma.FieldRef<"NotificationSetting", 'Boolean'>
+  readonly newBankTransactions: Prisma.FieldRef<"NotificationSetting", 'Boolean'>
+  readonly unmatchedTransactions: Prisma.FieldRef<"NotificationSetting", 'Boolean'>
+  readonly missingReceipts: Prisma.FieldRef<"NotificationSetting", 'Boolean'>
+  readonly weeklySummary: Prisma.FieldRef<"NotificationSetting", 'Boolean'>
+  readonly monthlyReport: Prisma.FieldRef<"NotificationSetting", 'Boolean'>
+  readonly vatFilingReminder: Prisma.FieldRef<"NotificationSetting", 'Boolean'>
+  readonly notificationEmail: Prisma.FieldRef<"NotificationSetting", 'String'>
+  readonly notificationFrequency: Prisma.FieldRef<"NotificationSetting", 'String'>
+  readonly createdAt: Prisma.FieldRef<"NotificationSetting", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"NotificationSetting", 'DateTime'>
 }
     
 
@@ -860,7 +1308,7 @@ export type NotificationSettingCreateArgs<ExtArgs extends runtime.Types.Extensio
   /**
    * The data needed to create a NotificationSetting.
    */
-  data?: Prisma.XOR<Prisma.NotificationSettingCreateInput, Prisma.NotificationSettingUncheckedCreateInput>
+  data: Prisma.XOR<Prisma.NotificationSettingCreateInput, Prisma.NotificationSettingUncheckedCreateInput>
 }
 
 /**

@@ -51,9 +51,10 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  ActivityLog: 'ActivityLog',
   imapConfiguration: 'imapConfiguration',
+  userSubscriptionPlan: 'userSubscriptionPlan',
   userSubscriptionPlanHistory: 'userSubscriptionPlanHistory',
+  subscriptionPlanPaymentStatus: 'subscriptionPlanPaymentStatus',
   Profile: 'Profile',
   ForgetPass: 'ForgetPass',
   Language: 'Language',
@@ -84,17 +85,6 @@ export const TransactionIsolationLevel = {
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const ActivityLogScalarFieldEnum = {
-  id: 'id',
-  actorId: 'actorId',
-  type: 'type',
-  message: 'message',
-  createdAt: 'createdAt'
-} as const
-
-export type ActivityLogScalarFieldEnum = (typeof ActivityLogScalarFieldEnum)[keyof typeof ActivityLogScalarFieldEnum]
-
-
 export const ImapConfigurationScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -103,9 +93,6 @@ export const ImapConfigurationScalarFieldEnum = {
   username: 'username',
   password: 'password',
   secure: 'secure',
-  isLimitedInvoicePerMonth: 'isLimitedInvoicePerMonth',
-  perMonthInvoiceCount: 'perMonthInvoiceCount',
-  realtimeImapChecking: 'realtimeImapChecking',
   startedAt: 'startedAt',
   expiredAt: 'expiredAt',
   created_at: 'created_at',
@@ -113,6 +100,24 @@ export const ImapConfigurationScalarFieldEnum = {
 } as const
 
 export type ImapConfigurationScalarFieldEnum = (typeof ImapConfigurationScalarFieldEnum)[keyof typeof ImapConfigurationScalarFieldEnum]
+
+
+export const UserSubscriptionPlanScalarFieldEnum = {
+  id: 'id',
+  UserId: 'UserId',
+  imapConfigurationId: 'imapConfigurationId',
+  isLimitedInvoicePerMonth: 'isLimitedInvoicePerMonth',
+  perMonthInvoiceCount: 'perMonthInvoiceCount',
+  realtimeImapChecking: 'realtimeImapChecking',
+  price: 'price',
+  setupFee: 'setupFee',
+  freeTrialDays: 'freeTrialDays',
+  startedAt: 'startedAt',
+  expiredAt: 'expiredAt',
+  createdAt: 'createdAt'
+} as const
+
+export type UserSubscriptionPlanScalarFieldEnum = (typeof UserSubscriptionPlanScalarFieldEnum)[keyof typeof UserSubscriptionPlanScalarFieldEnum]
 
 
 export const UserSubscriptionPlanHistoryScalarFieldEnum = {
@@ -131,6 +136,19 @@ export const UserSubscriptionPlanHistoryScalarFieldEnum = {
 } as const
 
 export type UserSubscriptionPlanHistoryScalarFieldEnum = (typeof UserSubscriptionPlanHistoryScalarFieldEnum)[keyof typeof UserSubscriptionPlanHistoryScalarFieldEnum]
+
+
+export const SubscriptionPlanPaymentStatusScalarFieldEnum = {
+  id: 'id',
+  imapConfigurationId: 'imapConfigurationId',
+  subscriptionPlanHistoryId: 'subscriptionPlanHistoryId',
+  userSubscriptionPlanId: 'userSubscriptionPlanId',
+  totalAmount: 'totalAmount',
+  paymentStatus: 'paymentStatus',
+  createdAt: 'createdAt'
+} as const
+
+export type SubscriptionPlanPaymentStatusScalarFieldEnum = (typeof SubscriptionPlanPaymentStatusScalarFieldEnum)[keyof typeof SubscriptionPlanPaymentStatusScalarFieldEnum]
 
 
 export const ProfileScalarFieldEnum = {
@@ -213,6 +231,7 @@ export const InvoiceLayoutScalarFieldEnum = {
   tax_breakdown: 'tax_breakdown',
   prices_include_tax: 'prices_include_tax',
   template_title: 'template_title',
+  footer_text: 'footer_text',
   show_company_logo: 'show_company_logo',
   invoice_notes: 'invoice_notes',
   terms_and_conditions: 'terms_and_conditions',
@@ -223,7 +242,23 @@ export type InvoiceLayoutScalarFieldEnum = (typeof InvoiceLayoutScalarFieldEnum)
 
 
 export const NotificationSettingScalarFieldEnum = {
-  id: 'id'
+  id: 'id',
+  userId: 'userId',
+  invoiceSent: 'invoiceSent',
+  invoicePaid: 'invoicePaid',
+  paymentOverdue: 'paymentOverdue',
+  quoteViewed: 'quoteViewed',
+  quoteAccepted: 'quoteAccepted',
+  newBankTransactions: 'newBankTransactions',
+  unmatchedTransactions: 'unmatchedTransactions',
+  missingReceipts: 'missingReceipts',
+  weeklySummary: 'weeklySummary',
+  monthlyReport: 'monthlyReport',
+  vatFilingReminder: 'vatFilingReminder',
+  notificationEmail: 'notificationEmail',
+  notificationFrequency: 'notificationFrequency',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type NotificationSettingScalarFieldEnum = (typeof NotificationSettingScalarFieldEnum)[keyof typeof NotificationSettingScalarFieldEnum]

@@ -205,8 +205,8 @@ export type UserWhereInput = {
   businessInfo?: Prisma.XOR<Prisma.BusinessInfoNullableScalarRelationFilter, Prisma.BusinessInfoWhereInput> | null
   invoiceLayout?: Prisma.XOR<Prisma.InvoiceLayoutNullableScalarRelationFilter, Prisma.InvoiceLayoutWhereInput> | null
   imapConfigurations?: Prisma.XOR<Prisma.ImapConfigurationNullableScalarRelationFilter, Prisma.imapConfigurationWhereInput> | null
-  userSubscriptionPlan?: Prisma.UserSubscriptionPlanHistoryListRelationFilter
-  activityLog?: Prisma.ActivityLogListRelationFilter
+  userSubscriptionPlan?: Prisma.XOR<Prisma.UserSubscriptionPlanNullableScalarRelationFilter, Prisma.userSubscriptionPlanWhereInput> | null
+  userSubscriptionPlanHistory?: Prisma.UserSubscriptionPlanHistoryListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -224,8 +224,8 @@ export type UserOrderByWithRelationInput = {
   businessInfo?: Prisma.BusinessInfoOrderByWithRelationInput
   invoiceLayout?: Prisma.InvoiceLayoutOrderByWithRelationInput
   imapConfigurations?: Prisma.imapConfigurationOrderByWithRelationInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryOrderByRelationAggregateInput
-  activityLog?: Prisma.ActivityLogOrderByRelationAggregateInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanOrderByWithRelationInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -246,8 +246,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   businessInfo?: Prisma.XOR<Prisma.BusinessInfoNullableScalarRelationFilter, Prisma.BusinessInfoWhereInput> | null
   invoiceLayout?: Prisma.XOR<Prisma.InvoiceLayoutNullableScalarRelationFilter, Prisma.InvoiceLayoutWhereInput> | null
   imapConfigurations?: Prisma.XOR<Prisma.ImapConfigurationNullableScalarRelationFilter, Prisma.imapConfigurationWhereInput> | null
-  userSubscriptionPlan?: Prisma.UserSubscriptionPlanHistoryListRelationFilter
-  activityLog?: Prisma.ActivityLogListRelationFilter
+  userSubscriptionPlan?: Prisma.XOR<Prisma.UserSubscriptionPlanNullableScalarRelationFilter, Prisma.userSubscriptionPlanWhereInput> | null
+  userSubscriptionPlanHistory?: Prisma.UserSubscriptionPlanHistoryListRelationFilter
 }, "id" | "id">
 
 export type UserOrderByWithAggregationInput = {
@@ -291,8 +291,8 @@ export type UserCreateInput = {
   businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
   invoiceLayout?: Prisma.InvoiceLayoutCreateNestedOneWithoutUserInput
   imapConfigurations?: Prisma.imapConfigurationCreateNestedOneWithoutUserInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
-  activityLog?: Prisma.ActivityLogCreateNestedManyWithoutActorInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -310,8 +310,8 @@ export type UserUncheckedCreateInput = {
   businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
   invoiceLayout?: Prisma.InvoiceLayoutUncheckedCreateNestedOneWithoutUserInput
   imapConfigurations?: Prisma.imapConfigurationUncheckedCreateNestedOneWithoutUserInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
-  activityLog?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutActorInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -329,8 +329,8 @@ export type UserUpdateInput = {
   businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
   invoiceLayout?: Prisma.InvoiceLayoutUpdateOneWithoutUserNestedInput
   imapConfigurations?: Prisma.imapConfigurationUpdateOneWithoutUserNestedInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
-  activityLog?: Prisma.ActivityLogUpdateManyWithoutActorNestedInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -348,8 +348,8 @@ export type UserUncheckedUpdateInput = {
   businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
   invoiceLayout?: Prisma.InvoiceLayoutUncheckedUpdateOneWithoutUserNestedInput
   imapConfigurations?: Prisma.imapConfigurationUncheckedUpdateOneWithoutUserNestedInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
-  activityLog?: Prisma.ActivityLogUncheckedUpdateManyWithoutActorNestedInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -380,11 +380,6 @@ export type UserUncheckedUpdateManyInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type UserNullableScalarRelationFilter = {
-  is?: Prisma.UserWhereInput | null
-  isNot?: Prisma.UserWhereInput | null
 }
 
 export type UserScalarRelationFilter = {
@@ -422,22 +417,6 @@ export type UserMinOrderByAggregateInput = {
   updated_at?: Prisma.SortOrder
 }
 
-export type UserCreateNestedOneWithoutActivityLogInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutActivityLogInput, Prisma.UserUncheckedCreateWithoutActivityLogInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutActivityLogInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneWithoutActivityLogNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutActivityLogInput, Prisma.UserUncheckedCreateWithoutActivityLogInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutActivityLogInput
-  upsert?: Prisma.UserUpsertWithoutActivityLogInput
-  disconnect?: Prisma.UserWhereInput | boolean
-  delete?: Prisma.UserWhereInput | boolean
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutActivityLogInput, Prisma.UserUpdateWithoutActivityLogInput>, Prisma.UserUncheckedUpdateWithoutActivityLogInput>
-}
-
 export type UserCreateNestedOneWithoutImapConfigurationsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutImapConfigurationsInput, Prisma.UserUncheckedCreateWithoutImapConfigurationsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutImapConfigurationsInput
@@ -464,6 +443,20 @@ export type UserUpdateOneRequiredWithoutUserSubscriptionPlanNestedInput = {
   upsert?: Prisma.UserUpsertWithoutUserSubscriptionPlanInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUserSubscriptionPlanInput, Prisma.UserUpdateWithoutUserSubscriptionPlanInput>, Prisma.UserUncheckedUpdateWithoutUserSubscriptionPlanInput>
+}
+
+export type UserCreateNestedOneWithoutUserSubscriptionPlanHistoryInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUserSubscriptionPlanHistoryInput, Prisma.UserUncheckedCreateWithoutUserSubscriptionPlanHistoryInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserSubscriptionPlanHistoryInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutUserSubscriptionPlanHistoryNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUserSubscriptionPlanHistoryInput, Prisma.UserUncheckedCreateWithoutUserSubscriptionPlanHistoryInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserSubscriptionPlanHistoryInput
+  upsert?: Prisma.UserUpsertWithoutUserSubscriptionPlanHistoryInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUserSubscriptionPlanHistoryInput, Prisma.UserUpdateWithoutUserSubscriptionPlanHistoryInput>, Prisma.UserUncheckedUpdateWithoutUserSubscriptionPlanHistoryInput>
 }
 
 export type UserCreateNestedOneWithoutProfileInput = {
@@ -554,94 +547,6 @@ export type UserUpdateOneRequiredWithoutEmailNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutEmailInput, Prisma.UserUpdateWithoutEmailInput>, Prisma.UserUncheckedUpdateWithoutEmailInput>
 }
 
-export type UserCreateWithoutActivityLogInput = {
-  id?: string
-  password: string
-  role?: $Enums.UserRole
-  twoFactorEnabled?: boolean
-  status?: boolean
-  created_at?: Date | string
-  updated_at?: Date | string
-  email?: Prisma.EmailCreateNestedOneWithoutUserInput
-  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
-  languages?: Prisma.LanguageCreateNestedManyWithoutUserInput
-  paymentMethods?: Prisma.PaymentMethodCreateNestedManyWithoutUserInput
-  businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
-  invoiceLayout?: Prisma.InvoiceLayoutCreateNestedOneWithoutUserInput
-  imapConfigurations?: Prisma.imapConfigurationCreateNestedOneWithoutUserInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
-}
-
-export type UserUncheckedCreateWithoutActivityLogInput = {
-  id?: string
-  password: string
-  role?: $Enums.UserRole
-  twoFactorEnabled?: boolean
-  status?: boolean
-  created_at?: Date | string
-  updated_at?: Date | string
-  email?: Prisma.EmailUncheckedCreateNestedOneWithoutUserInput
-  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
-  languages?: Prisma.LanguageUncheckedCreateNestedManyWithoutUserInput
-  paymentMethods?: Prisma.PaymentMethodUncheckedCreateNestedManyWithoutUserInput
-  businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
-  invoiceLayout?: Prisma.InvoiceLayoutUncheckedCreateNestedOneWithoutUserInput
-  imapConfigurations?: Prisma.imapConfigurationUncheckedCreateNestedOneWithoutUserInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
-}
-
-export type UserCreateOrConnectWithoutActivityLogInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutActivityLogInput, Prisma.UserUncheckedCreateWithoutActivityLogInput>
-}
-
-export type UserUpsertWithoutActivityLogInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutActivityLogInput, Prisma.UserUncheckedUpdateWithoutActivityLogInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutActivityLogInput, Prisma.UserUncheckedCreateWithoutActivityLogInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutActivityLogInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutActivityLogInput, Prisma.UserUncheckedUpdateWithoutActivityLogInput>
-}
-
-export type UserUpdateWithoutActivityLogInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  email?: Prisma.EmailUpdateOneWithoutUserNestedInput
-  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
-  languages?: Prisma.LanguageUpdateManyWithoutUserNestedInput
-  paymentMethods?: Prisma.PaymentMethodUpdateManyWithoutUserNestedInput
-  businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
-  invoiceLayout?: Prisma.InvoiceLayoutUpdateOneWithoutUserNestedInput
-  imapConfigurations?: Prisma.imapConfigurationUpdateOneWithoutUserNestedInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
-}
-
-export type UserUncheckedUpdateWithoutActivityLogInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  email?: Prisma.EmailUncheckedUpdateOneWithoutUserNestedInput
-  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
-  languages?: Prisma.LanguageUncheckedUpdateManyWithoutUserNestedInput
-  paymentMethods?: Prisma.PaymentMethodUncheckedUpdateManyWithoutUserNestedInput
-  businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
-  invoiceLayout?: Prisma.InvoiceLayoutUncheckedUpdateOneWithoutUserNestedInput
-  imapConfigurations?: Prisma.imapConfigurationUncheckedUpdateOneWithoutUserNestedInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
-}
-
 export type UserCreateWithoutImapConfigurationsInput = {
   id?: string
   password: string
@@ -656,8 +561,8 @@ export type UserCreateWithoutImapConfigurationsInput = {
   paymentMethods?: Prisma.PaymentMethodCreateNestedManyWithoutUserInput
   businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
   invoiceLayout?: Prisma.InvoiceLayoutCreateNestedOneWithoutUserInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
-  activityLog?: Prisma.ActivityLogCreateNestedManyWithoutActorInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutImapConfigurationsInput = {
@@ -674,8 +579,8 @@ export type UserUncheckedCreateWithoutImapConfigurationsInput = {
   paymentMethods?: Prisma.PaymentMethodUncheckedCreateNestedManyWithoutUserInput
   businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
   invoiceLayout?: Prisma.InvoiceLayoutUncheckedCreateNestedOneWithoutUserInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
-  activityLog?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutActorInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutImapConfigurationsInput = {
@@ -708,8 +613,8 @@ export type UserUpdateWithoutImapConfigurationsInput = {
   paymentMethods?: Prisma.PaymentMethodUpdateManyWithoutUserNestedInput
   businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
   invoiceLayout?: Prisma.InvoiceLayoutUpdateOneWithoutUserNestedInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
-  activityLog?: Prisma.ActivityLogUpdateManyWithoutActorNestedInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutImapConfigurationsInput = {
@@ -726,8 +631,8 @@ export type UserUncheckedUpdateWithoutImapConfigurationsInput = {
   paymentMethods?: Prisma.PaymentMethodUncheckedUpdateManyWithoutUserNestedInput
   businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
   invoiceLayout?: Prisma.InvoiceLayoutUncheckedUpdateOneWithoutUserNestedInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
-  activityLog?: Prisma.ActivityLogUncheckedUpdateManyWithoutActorNestedInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutUserSubscriptionPlanInput = {
@@ -745,7 +650,7 @@ export type UserCreateWithoutUserSubscriptionPlanInput = {
   businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
   invoiceLayout?: Prisma.InvoiceLayoutCreateNestedOneWithoutUserInput
   imapConfigurations?: Prisma.imapConfigurationCreateNestedOneWithoutUserInput
-  activityLog?: Prisma.ActivityLogCreateNestedManyWithoutActorInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutUserSubscriptionPlanInput = {
@@ -763,7 +668,7 @@ export type UserUncheckedCreateWithoutUserSubscriptionPlanInput = {
   businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
   invoiceLayout?: Prisma.InvoiceLayoutUncheckedCreateNestedOneWithoutUserInput
   imapConfigurations?: Prisma.imapConfigurationUncheckedCreateNestedOneWithoutUserInput
-  activityLog?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutActorInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutUserSubscriptionPlanInput = {
@@ -797,7 +702,7 @@ export type UserUpdateWithoutUserSubscriptionPlanInput = {
   businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
   invoiceLayout?: Prisma.InvoiceLayoutUpdateOneWithoutUserNestedInput
   imapConfigurations?: Prisma.imapConfigurationUpdateOneWithoutUserNestedInput
-  activityLog?: Prisma.ActivityLogUpdateManyWithoutActorNestedInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUserSubscriptionPlanInput = {
@@ -815,7 +720,95 @@ export type UserUncheckedUpdateWithoutUserSubscriptionPlanInput = {
   businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
   invoiceLayout?: Prisma.InvoiceLayoutUncheckedUpdateOneWithoutUserNestedInput
   imapConfigurations?: Prisma.imapConfigurationUncheckedUpdateOneWithoutUserNestedInput
-  activityLog?: Prisma.ActivityLogUncheckedUpdateManyWithoutActorNestedInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutUserSubscriptionPlanHistoryInput = {
+  id?: string
+  password: string
+  role?: $Enums.UserRole
+  twoFactorEnabled?: boolean
+  status?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  email?: Prisma.EmailCreateNestedOneWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  languages?: Prisma.LanguageCreateNestedManyWithoutUserInput
+  paymentMethods?: Prisma.PaymentMethodCreateNestedManyWithoutUserInput
+  businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
+  invoiceLayout?: Prisma.InvoiceLayoutCreateNestedOneWithoutUserInput
+  imapConfigurations?: Prisma.imapConfigurationCreateNestedOneWithoutUserInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutUserSubscriptionPlanHistoryInput = {
+  id?: string
+  password: string
+  role?: $Enums.UserRole
+  twoFactorEnabled?: boolean
+  status?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  email?: Prisma.EmailUncheckedCreateNestedOneWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  languages?: Prisma.LanguageUncheckedCreateNestedManyWithoutUserInput
+  paymentMethods?: Prisma.PaymentMethodUncheckedCreateNestedManyWithoutUserInput
+  businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
+  invoiceLayout?: Prisma.InvoiceLayoutUncheckedCreateNestedOneWithoutUserInput
+  imapConfigurations?: Prisma.imapConfigurationUncheckedCreateNestedOneWithoutUserInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutUserSubscriptionPlanHistoryInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutUserSubscriptionPlanHistoryInput, Prisma.UserUncheckedCreateWithoutUserSubscriptionPlanHistoryInput>
+}
+
+export type UserUpsertWithoutUserSubscriptionPlanHistoryInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutUserSubscriptionPlanHistoryInput, Prisma.UserUncheckedUpdateWithoutUserSubscriptionPlanHistoryInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutUserSubscriptionPlanHistoryInput, Prisma.UserUncheckedCreateWithoutUserSubscriptionPlanHistoryInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutUserSubscriptionPlanHistoryInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutUserSubscriptionPlanHistoryInput, Prisma.UserUncheckedUpdateWithoutUserSubscriptionPlanHistoryInput>
+}
+
+export type UserUpdateWithoutUserSubscriptionPlanHistoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  email?: Prisma.EmailUpdateOneWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  languages?: Prisma.LanguageUpdateManyWithoutUserNestedInput
+  paymentMethods?: Prisma.PaymentMethodUpdateManyWithoutUserNestedInput
+  businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
+  invoiceLayout?: Prisma.InvoiceLayoutUpdateOneWithoutUserNestedInput
+  imapConfigurations?: Prisma.imapConfigurationUpdateOneWithoutUserNestedInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutUserSubscriptionPlanHistoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  email?: Prisma.EmailUncheckedUpdateOneWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  languages?: Prisma.LanguageUncheckedUpdateManyWithoutUserNestedInput
+  paymentMethods?: Prisma.PaymentMethodUncheckedUpdateManyWithoutUserNestedInput
+  businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
+  invoiceLayout?: Prisma.InvoiceLayoutUncheckedUpdateOneWithoutUserNestedInput
+  imapConfigurations?: Prisma.imapConfigurationUncheckedUpdateOneWithoutUserNestedInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutProfileInput = {
@@ -832,8 +825,8 @@ export type UserCreateWithoutProfileInput = {
   businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
   invoiceLayout?: Prisma.InvoiceLayoutCreateNestedOneWithoutUserInput
   imapConfigurations?: Prisma.imapConfigurationCreateNestedOneWithoutUserInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
-  activityLog?: Prisma.ActivityLogCreateNestedManyWithoutActorInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProfileInput = {
@@ -850,8 +843,8 @@ export type UserUncheckedCreateWithoutProfileInput = {
   businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
   invoiceLayout?: Prisma.InvoiceLayoutUncheckedCreateNestedOneWithoutUserInput
   imapConfigurations?: Prisma.imapConfigurationUncheckedCreateNestedOneWithoutUserInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
-  activityLog?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutActorInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProfileInput = {
@@ -884,8 +877,8 @@ export type UserUpdateWithoutProfileInput = {
   businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
   invoiceLayout?: Prisma.InvoiceLayoutUpdateOneWithoutUserNestedInput
   imapConfigurations?: Prisma.imapConfigurationUpdateOneWithoutUserNestedInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
-  activityLog?: Prisma.ActivityLogUpdateManyWithoutActorNestedInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfileInput = {
@@ -902,8 +895,8 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
   invoiceLayout?: Prisma.InvoiceLayoutUncheckedUpdateOneWithoutUserNestedInput
   imapConfigurations?: Prisma.imapConfigurationUncheckedUpdateOneWithoutUserNestedInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
-  activityLog?: Prisma.ActivityLogUncheckedUpdateManyWithoutActorNestedInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutLanguagesInput = {
@@ -920,8 +913,8 @@ export type UserCreateWithoutLanguagesInput = {
   businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
   invoiceLayout?: Prisma.InvoiceLayoutCreateNestedOneWithoutUserInput
   imapConfigurations?: Prisma.imapConfigurationCreateNestedOneWithoutUserInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
-  activityLog?: Prisma.ActivityLogCreateNestedManyWithoutActorInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutLanguagesInput = {
@@ -938,8 +931,8 @@ export type UserUncheckedCreateWithoutLanguagesInput = {
   businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
   invoiceLayout?: Prisma.InvoiceLayoutUncheckedCreateNestedOneWithoutUserInput
   imapConfigurations?: Prisma.imapConfigurationUncheckedCreateNestedOneWithoutUserInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
-  activityLog?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutActorInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutLanguagesInput = {
@@ -972,8 +965,8 @@ export type UserUpdateWithoutLanguagesInput = {
   businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
   invoiceLayout?: Prisma.InvoiceLayoutUpdateOneWithoutUserNestedInput
   imapConfigurations?: Prisma.imapConfigurationUpdateOneWithoutUserNestedInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
-  activityLog?: Prisma.ActivityLogUpdateManyWithoutActorNestedInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLanguagesInput = {
@@ -990,8 +983,8 @@ export type UserUncheckedUpdateWithoutLanguagesInput = {
   businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
   invoiceLayout?: Prisma.InvoiceLayoutUncheckedUpdateOneWithoutUserNestedInput
   imapConfigurations?: Prisma.imapConfigurationUncheckedUpdateOneWithoutUserNestedInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
-  activityLog?: Prisma.ActivityLogUncheckedUpdateManyWithoutActorNestedInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutBusinessInfoInput = {
@@ -1008,8 +1001,8 @@ export type UserCreateWithoutBusinessInfoInput = {
   paymentMethods?: Prisma.PaymentMethodCreateNestedManyWithoutUserInput
   invoiceLayout?: Prisma.InvoiceLayoutCreateNestedOneWithoutUserInput
   imapConfigurations?: Prisma.imapConfigurationCreateNestedOneWithoutUserInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
-  activityLog?: Prisma.ActivityLogCreateNestedManyWithoutActorInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutBusinessInfoInput = {
@@ -1026,8 +1019,8 @@ export type UserUncheckedCreateWithoutBusinessInfoInput = {
   paymentMethods?: Prisma.PaymentMethodUncheckedCreateNestedManyWithoutUserInput
   invoiceLayout?: Prisma.InvoiceLayoutUncheckedCreateNestedOneWithoutUserInput
   imapConfigurations?: Prisma.imapConfigurationUncheckedCreateNestedOneWithoutUserInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
-  activityLog?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutActorInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutBusinessInfoInput = {
@@ -1060,8 +1053,8 @@ export type UserUpdateWithoutBusinessInfoInput = {
   paymentMethods?: Prisma.PaymentMethodUpdateManyWithoutUserNestedInput
   invoiceLayout?: Prisma.InvoiceLayoutUpdateOneWithoutUserNestedInput
   imapConfigurations?: Prisma.imapConfigurationUpdateOneWithoutUserNestedInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
-  activityLog?: Prisma.ActivityLogUpdateManyWithoutActorNestedInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBusinessInfoInput = {
@@ -1078,8 +1071,8 @@ export type UserUncheckedUpdateWithoutBusinessInfoInput = {
   paymentMethods?: Prisma.PaymentMethodUncheckedUpdateManyWithoutUserNestedInput
   invoiceLayout?: Prisma.InvoiceLayoutUncheckedUpdateOneWithoutUserNestedInput
   imapConfigurations?: Prisma.imapConfigurationUncheckedUpdateOneWithoutUserNestedInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
-  activityLog?: Prisma.ActivityLogUncheckedUpdateManyWithoutActorNestedInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPaymentMethodsInput = {
@@ -1096,8 +1089,8 @@ export type UserCreateWithoutPaymentMethodsInput = {
   businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
   invoiceLayout?: Prisma.InvoiceLayoutCreateNestedOneWithoutUserInput
   imapConfigurations?: Prisma.imapConfigurationCreateNestedOneWithoutUserInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
-  activityLog?: Prisma.ActivityLogCreateNestedManyWithoutActorInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPaymentMethodsInput = {
@@ -1114,8 +1107,8 @@ export type UserUncheckedCreateWithoutPaymentMethodsInput = {
   businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
   invoiceLayout?: Prisma.InvoiceLayoutUncheckedCreateNestedOneWithoutUserInput
   imapConfigurations?: Prisma.imapConfigurationUncheckedCreateNestedOneWithoutUserInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
-  activityLog?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutActorInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPaymentMethodsInput = {
@@ -1148,8 +1141,8 @@ export type UserUpdateWithoutPaymentMethodsInput = {
   businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
   invoiceLayout?: Prisma.InvoiceLayoutUpdateOneWithoutUserNestedInput
   imapConfigurations?: Prisma.imapConfigurationUpdateOneWithoutUserNestedInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
-  activityLog?: Prisma.ActivityLogUpdateManyWithoutActorNestedInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPaymentMethodsInput = {
@@ -1166,8 +1159,8 @@ export type UserUncheckedUpdateWithoutPaymentMethodsInput = {
   businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
   invoiceLayout?: Prisma.InvoiceLayoutUncheckedUpdateOneWithoutUserNestedInput
   imapConfigurations?: Prisma.imapConfigurationUncheckedUpdateOneWithoutUserNestedInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
-  activityLog?: Prisma.ActivityLogUncheckedUpdateManyWithoutActorNestedInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutInvoiceLayoutInput = {
@@ -1184,8 +1177,8 @@ export type UserCreateWithoutInvoiceLayoutInput = {
   paymentMethods?: Prisma.PaymentMethodCreateNestedManyWithoutUserInput
   businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
   imapConfigurations?: Prisma.imapConfigurationCreateNestedOneWithoutUserInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
-  activityLog?: Prisma.ActivityLogCreateNestedManyWithoutActorInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutInvoiceLayoutInput = {
@@ -1202,8 +1195,8 @@ export type UserUncheckedCreateWithoutInvoiceLayoutInput = {
   paymentMethods?: Prisma.PaymentMethodUncheckedCreateNestedManyWithoutUserInput
   businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
   imapConfigurations?: Prisma.imapConfigurationUncheckedCreateNestedOneWithoutUserInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
-  activityLog?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutActorInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutInvoiceLayoutInput = {
@@ -1236,8 +1229,8 @@ export type UserUpdateWithoutInvoiceLayoutInput = {
   paymentMethods?: Prisma.PaymentMethodUpdateManyWithoutUserNestedInput
   businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
   imapConfigurations?: Prisma.imapConfigurationUpdateOneWithoutUserNestedInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
-  activityLog?: Prisma.ActivityLogUpdateManyWithoutActorNestedInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutInvoiceLayoutInput = {
@@ -1254,8 +1247,8 @@ export type UserUncheckedUpdateWithoutInvoiceLayoutInput = {
   paymentMethods?: Prisma.PaymentMethodUncheckedUpdateManyWithoutUserNestedInput
   businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
   imapConfigurations?: Prisma.imapConfigurationUncheckedUpdateOneWithoutUserNestedInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
-  activityLog?: Prisma.ActivityLogUncheckedUpdateManyWithoutActorNestedInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutEmailInput = {
@@ -1272,8 +1265,8 @@ export type UserCreateWithoutEmailInput = {
   businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
   invoiceLayout?: Prisma.InvoiceLayoutCreateNestedOneWithoutUserInput
   imapConfigurations?: Prisma.imapConfigurationCreateNestedOneWithoutUserInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
-  activityLog?: Prisma.ActivityLogCreateNestedManyWithoutActorInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutEmailInput = {
@@ -1290,8 +1283,8 @@ export type UserUncheckedCreateWithoutEmailInput = {
   businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
   invoiceLayout?: Prisma.InvoiceLayoutUncheckedCreateNestedOneWithoutUserInput
   imapConfigurations?: Prisma.imapConfigurationUncheckedCreateNestedOneWithoutUserInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
-  activityLog?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutActorInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutEmailInput = {
@@ -1324,8 +1317,8 @@ export type UserUpdateWithoutEmailInput = {
   businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
   invoiceLayout?: Prisma.InvoiceLayoutUpdateOneWithoutUserNestedInput
   imapConfigurations?: Prisma.imapConfigurationUpdateOneWithoutUserNestedInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
-  activityLog?: Prisma.ActivityLogUpdateManyWithoutActorNestedInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutEmailInput = {
@@ -1342,8 +1335,8 @@ export type UserUncheckedUpdateWithoutEmailInput = {
   businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
   invoiceLayout?: Prisma.InvoiceLayoutUncheckedUpdateOneWithoutUserNestedInput
   imapConfigurations?: Prisma.imapConfigurationUncheckedUpdateOneWithoutUserNestedInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
-  activityLog?: Prisma.ActivityLogUncheckedUpdateManyWithoutActorNestedInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1354,15 +1347,13 @@ export type UserUncheckedUpdateWithoutEmailInput = {
 export type UserCountOutputType = {
   languages: number
   paymentMethods: number
-  userSubscriptionPlan: number
-  activityLog: number
+  userSubscriptionPlanHistory: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   languages?: boolean | UserCountOutputTypeCountLanguagesArgs
   paymentMethods?: boolean | UserCountOutputTypeCountPaymentMethodsArgs
-  userSubscriptionPlan?: boolean | UserCountOutputTypeCountUserSubscriptionPlanArgs
-  activityLog?: boolean | UserCountOutputTypeCountActivityLogArgs
+  userSubscriptionPlanHistory?: boolean | UserCountOutputTypeCountUserSubscriptionPlanHistoryArgs
 }
 
 /**
@@ -1392,15 +1383,8 @@ export type UserCountOutputTypeCountPaymentMethodsArgs<ExtArgs extends runtime.T
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountUserSubscriptionPlanArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserCountOutputTypeCountUserSubscriptionPlanHistoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.userSubscriptionPlanHistoryWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountActivityLogArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ActivityLogWhereInput
 }
 
 
@@ -1420,7 +1404,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   invoiceLayout?: boolean | Prisma.User$invoiceLayoutArgs<ExtArgs>
   imapConfigurations?: boolean | Prisma.User$imapConfigurationsArgs<ExtArgs>
   userSubscriptionPlan?: boolean | Prisma.User$userSubscriptionPlanArgs<ExtArgs>
-  activityLog?: boolean | Prisma.User$activityLogArgs<ExtArgs>
+  userSubscriptionPlanHistory?: boolean | Prisma.User$userSubscriptionPlanHistoryArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1464,7 +1448,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   invoiceLayout?: boolean | Prisma.User$invoiceLayoutArgs<ExtArgs>
   imapConfigurations?: boolean | Prisma.User$imapConfigurationsArgs<ExtArgs>
   userSubscriptionPlan?: boolean | Prisma.User$userSubscriptionPlanArgs<ExtArgs>
-  activityLog?: boolean | Prisma.User$activityLogArgs<ExtArgs>
+  userSubscriptionPlanHistory?: boolean | Prisma.User$userSubscriptionPlanHistoryArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1480,8 +1464,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     businessInfo: Prisma.$BusinessInfoPayload<ExtArgs> | null
     invoiceLayout: Prisma.$InvoiceLayoutPayload<ExtArgs> | null
     imapConfigurations: Prisma.$imapConfigurationPayload<ExtArgs> | null
-    userSubscriptionPlan: Prisma.$userSubscriptionPlanHistoryPayload<ExtArgs>[]
-    activityLog: Prisma.$ActivityLogPayload<ExtArgs>[]
+    userSubscriptionPlan: Prisma.$userSubscriptionPlanPayload<ExtArgs> | null
+    userSubscriptionPlanHistory: Prisma.$userSubscriptionPlanHistoryPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1892,8 +1876,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   businessInfo<T extends Prisma.User$businessInfoArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$businessInfoArgs<ExtArgs>>): Prisma.Prisma__BusinessInfoClient<runtime.Types.Result.GetResult<Prisma.$BusinessInfoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   invoiceLayout<T extends Prisma.User$invoiceLayoutArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$invoiceLayoutArgs<ExtArgs>>): Prisma.Prisma__InvoiceLayoutClient<runtime.Types.Result.GetResult<Prisma.$InvoiceLayoutPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   imapConfigurations<T extends Prisma.User$imapConfigurationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$imapConfigurationsArgs<ExtArgs>>): Prisma.Prisma__imapConfigurationClient<runtime.Types.Result.GetResult<Prisma.$imapConfigurationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  userSubscriptionPlan<T extends Prisma.User$userSubscriptionPlanArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$userSubscriptionPlanArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$userSubscriptionPlanHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  activityLog<T extends Prisma.User$activityLogArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$activityLogArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ActivityLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  userSubscriptionPlan<T extends Prisma.User$userSubscriptionPlanArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$userSubscriptionPlanArgs<ExtArgs>>): Prisma.Prisma__userSubscriptionPlanClient<runtime.Types.Result.GetResult<Prisma.$userSubscriptionPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  userSubscriptionPlanHistory<T extends Prisma.User$userSubscriptionPlanHistoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$userSubscriptionPlanHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$userSubscriptionPlanHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2465,6 +2449,25 @@ export type User$imapConfigurationsArgs<ExtArgs extends runtime.Types.Extensions
  */
 export type User$userSubscriptionPlanArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
+   * Select specific fields to fetch from the userSubscriptionPlan
+   */
+  select?: Prisma.userSubscriptionPlanSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the userSubscriptionPlan
+   */
+  omit?: Prisma.userSubscriptionPlanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.userSubscriptionPlanInclude<ExtArgs> | null
+  where?: Prisma.userSubscriptionPlanWhereInput
+}
+
+/**
+ * User.userSubscriptionPlanHistory
+ */
+export type User$userSubscriptionPlanHistoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
    * Select specific fields to fetch from the userSubscriptionPlanHistory
    */
   select?: Prisma.userSubscriptionPlanHistorySelect<ExtArgs> | null
@@ -2482,30 +2485,6 @@ export type User$userSubscriptionPlanArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   distinct?: Prisma.UserSubscriptionPlanHistoryScalarFieldEnum | Prisma.UserSubscriptionPlanHistoryScalarFieldEnum[]
-}
-
-/**
- * User.activityLog
- */
-export type User$activityLogArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the ActivityLog
-   */
-  select?: Prisma.ActivityLogSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the ActivityLog
-   */
-  omit?: Prisma.ActivityLogOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.ActivityLogInclude<ExtArgs> | null
-  where?: Prisma.ActivityLogWhereInput
-  orderBy?: Prisma.ActivityLogOrderByWithRelationInput | Prisma.ActivityLogOrderByWithRelationInput[]
-  cursor?: Prisma.ActivityLogWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.ActivityLogScalarFieldEnum | Prisma.ActivityLogScalarFieldEnum[]
 }
 
 /**

@@ -27,10 +27,12 @@ export type AggregatePaymentMethod = {
 }
 
 export type PaymentMethodAvgAggregateOutputType = {
+  default_payment_term: number | null
   late_payment_fee: number | null
 }
 
 export type PaymentMethodSumAggregateOutputType = {
+  default_payment_term: number | null
   late_payment_fee: number | null
 }
 
@@ -41,7 +43,7 @@ export type PaymentMethodMinAggregateOutputType = {
   sort_code: string | null
   iban: string | null
   bic_swift: string | null
-  default_payment_term: string | null
+  default_payment_term: number | null
   late_payment_fee: number | null
   payment_instructions: string | null
   isDefault: boolean | null
@@ -55,7 +57,7 @@ export type PaymentMethodMaxAggregateOutputType = {
   sort_code: string | null
   iban: string | null
   bic_swift: string | null
-  default_payment_term: string | null
+  default_payment_term: number | null
   late_payment_fee: number | null
   payment_instructions: string | null
   isDefault: boolean | null
@@ -79,10 +81,12 @@ export type PaymentMethodCountAggregateOutputType = {
 
 
 export type PaymentMethodAvgAggregateInputType = {
+  default_payment_term?: true
   late_payment_fee?: true
 }
 
 export type PaymentMethodSumAggregateInputType = {
+  default_payment_term?: true
   late_payment_fee?: true
 }
 
@@ -217,12 +221,12 @@ export type PaymentMethodGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 
 export type PaymentMethodGroupByOutputType = {
   id: string
-  acc_name: string
-  bank_name: string
-  sort_code: string
-  iban: string
-  bic_swift: string
-  default_payment_term: string | null
+  acc_name: string | null
+  bank_name: string | null
+  sort_code: string | null
+  iban: string | null
+  bic_swift: string | null
+  default_payment_term: number | null
   late_payment_fee: number | null
   payment_instructions: string | null
   isDefault: boolean
@@ -254,12 +258,12 @@ export type PaymentMethodWhereInput = {
   OR?: Prisma.PaymentMethodWhereInput[]
   NOT?: Prisma.PaymentMethodWhereInput | Prisma.PaymentMethodWhereInput[]
   id?: Prisma.StringFilter<"PaymentMethod"> | string
-  acc_name?: Prisma.StringFilter<"PaymentMethod"> | string
-  bank_name?: Prisma.StringFilter<"PaymentMethod"> | string
-  sort_code?: Prisma.StringFilter<"PaymentMethod"> | string
-  iban?: Prisma.StringFilter<"PaymentMethod"> | string
-  bic_swift?: Prisma.StringFilter<"PaymentMethod"> | string
-  default_payment_term?: Prisma.StringNullableFilter<"PaymentMethod"> | string | null
+  acc_name?: Prisma.StringNullableFilter<"PaymentMethod"> | string | null
+  bank_name?: Prisma.StringNullableFilter<"PaymentMethod"> | string | null
+  sort_code?: Prisma.StringNullableFilter<"PaymentMethod"> | string | null
+  iban?: Prisma.StringNullableFilter<"PaymentMethod"> | string | null
+  bic_swift?: Prisma.StringNullableFilter<"PaymentMethod"> | string | null
+  default_payment_term?: Prisma.IntNullableFilter<"PaymentMethod"> | number | null
   late_payment_fee?: Prisma.IntNullableFilter<"PaymentMethod"> | number | null
   payment_instructions?: Prisma.StringNullableFilter<"PaymentMethod"> | string | null
   isDefault?: Prisma.BoolFilter<"PaymentMethod"> | boolean
@@ -269,11 +273,11 @@ export type PaymentMethodWhereInput = {
 
 export type PaymentMethodOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  acc_name?: Prisma.SortOrder
-  bank_name?: Prisma.SortOrder
-  sort_code?: Prisma.SortOrder
-  iban?: Prisma.SortOrder
-  bic_swift?: Prisma.SortOrder
+  acc_name?: Prisma.SortOrderInput | Prisma.SortOrder
+  bank_name?: Prisma.SortOrderInput | Prisma.SortOrder
+  sort_code?: Prisma.SortOrderInput | Prisma.SortOrder
+  iban?: Prisma.SortOrderInput | Prisma.SortOrder
+  bic_swift?: Prisma.SortOrderInput | Prisma.SortOrder
   default_payment_term?: Prisma.SortOrderInput | Prisma.SortOrder
   late_payment_fee?: Prisma.SortOrderInput | Prisma.SortOrder
   payment_instructions?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -287,12 +291,12 @@ export type PaymentMethodWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.PaymentMethodWhereInput | Prisma.PaymentMethodWhereInput[]
   OR?: Prisma.PaymentMethodWhereInput[]
   NOT?: Prisma.PaymentMethodWhereInput | Prisma.PaymentMethodWhereInput[]
-  acc_name?: Prisma.StringFilter<"PaymentMethod"> | string
-  bank_name?: Prisma.StringFilter<"PaymentMethod"> | string
-  sort_code?: Prisma.StringFilter<"PaymentMethod"> | string
-  iban?: Prisma.StringFilter<"PaymentMethod"> | string
-  bic_swift?: Prisma.StringFilter<"PaymentMethod"> | string
-  default_payment_term?: Prisma.StringNullableFilter<"PaymentMethod"> | string | null
+  acc_name?: Prisma.StringNullableFilter<"PaymentMethod"> | string | null
+  bank_name?: Prisma.StringNullableFilter<"PaymentMethod"> | string | null
+  sort_code?: Prisma.StringNullableFilter<"PaymentMethod"> | string | null
+  iban?: Prisma.StringNullableFilter<"PaymentMethod"> | string | null
+  bic_swift?: Prisma.StringNullableFilter<"PaymentMethod"> | string | null
+  default_payment_term?: Prisma.IntNullableFilter<"PaymentMethod"> | number | null
   late_payment_fee?: Prisma.IntNullableFilter<"PaymentMethod"> | number | null
   payment_instructions?: Prisma.StringNullableFilter<"PaymentMethod"> | string | null
   isDefault?: Prisma.BoolFilter<"PaymentMethod"> | boolean
@@ -302,11 +306,11 @@ export type PaymentMethodWhereUniqueInput = Prisma.AtLeast<{
 
 export type PaymentMethodOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  acc_name?: Prisma.SortOrder
-  bank_name?: Prisma.SortOrder
-  sort_code?: Prisma.SortOrder
-  iban?: Prisma.SortOrder
-  bic_swift?: Prisma.SortOrder
+  acc_name?: Prisma.SortOrderInput | Prisma.SortOrder
+  bank_name?: Prisma.SortOrderInput | Prisma.SortOrder
+  sort_code?: Prisma.SortOrderInput | Prisma.SortOrder
+  iban?: Prisma.SortOrderInput | Prisma.SortOrder
+  bic_swift?: Prisma.SortOrderInput | Prisma.SortOrder
   default_payment_term?: Prisma.SortOrderInput | Prisma.SortOrder
   late_payment_fee?: Prisma.SortOrderInput | Prisma.SortOrder
   payment_instructions?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -324,12 +328,12 @@ export type PaymentMethodScalarWhereWithAggregatesInput = {
   OR?: Prisma.PaymentMethodScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PaymentMethodScalarWhereWithAggregatesInput | Prisma.PaymentMethodScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"PaymentMethod"> | string
-  acc_name?: Prisma.StringWithAggregatesFilter<"PaymentMethod"> | string
-  bank_name?: Prisma.StringWithAggregatesFilter<"PaymentMethod"> | string
-  sort_code?: Prisma.StringWithAggregatesFilter<"PaymentMethod"> | string
-  iban?: Prisma.StringWithAggregatesFilter<"PaymentMethod"> | string
-  bic_swift?: Prisma.StringWithAggregatesFilter<"PaymentMethod"> | string
-  default_payment_term?: Prisma.StringNullableWithAggregatesFilter<"PaymentMethod"> | string | null
+  acc_name?: Prisma.StringNullableWithAggregatesFilter<"PaymentMethod"> | string | null
+  bank_name?: Prisma.StringNullableWithAggregatesFilter<"PaymentMethod"> | string | null
+  sort_code?: Prisma.StringNullableWithAggregatesFilter<"PaymentMethod"> | string | null
+  iban?: Prisma.StringNullableWithAggregatesFilter<"PaymentMethod"> | string | null
+  bic_swift?: Prisma.StringNullableWithAggregatesFilter<"PaymentMethod"> | string | null
+  default_payment_term?: Prisma.IntNullableWithAggregatesFilter<"PaymentMethod"> | number | null
   late_payment_fee?: Prisma.IntNullableWithAggregatesFilter<"PaymentMethod"> | number | null
   payment_instructions?: Prisma.StringNullableWithAggregatesFilter<"PaymentMethod"> | string | null
   isDefault?: Prisma.BoolWithAggregatesFilter<"PaymentMethod"> | boolean
@@ -338,12 +342,12 @@ export type PaymentMethodScalarWhereWithAggregatesInput = {
 
 export type PaymentMethodCreateInput = {
   id?: string
-  acc_name: string
-  bank_name: string
-  sort_code: string
-  iban: string
-  bic_swift: string
-  default_payment_term?: string | null
+  acc_name?: string | null
+  bank_name?: string | null
+  sort_code?: string | null
+  iban?: string | null
+  bic_swift?: string | null
+  default_payment_term?: number | null
   late_payment_fee?: number | null
   payment_instructions?: string | null
   isDefault?: boolean
@@ -352,12 +356,12 @@ export type PaymentMethodCreateInput = {
 
 export type PaymentMethodUncheckedCreateInput = {
   id?: string
-  acc_name: string
-  bank_name: string
-  sort_code: string
-  iban: string
-  bic_swift: string
-  default_payment_term?: string | null
+  acc_name?: string | null
+  bank_name?: string | null
+  sort_code?: string | null
+  iban?: string | null
+  bic_swift?: string | null
+  default_payment_term?: number | null
   late_payment_fee?: number | null
   payment_instructions?: string | null
   isDefault?: boolean
@@ -366,12 +370,12 @@ export type PaymentMethodUncheckedCreateInput = {
 
 export type PaymentMethodUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  acc_name?: Prisma.StringFieldUpdateOperationsInput | string
-  bank_name?: Prisma.StringFieldUpdateOperationsInput | string
-  sort_code?: Prisma.StringFieldUpdateOperationsInput | string
-  iban?: Prisma.StringFieldUpdateOperationsInput | string
-  bic_swift?: Prisma.StringFieldUpdateOperationsInput | string
-  default_payment_term?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acc_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bank_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sort_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iban?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bic_swift?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  default_payment_term?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   late_payment_fee?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   payment_instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -380,12 +384,12 @@ export type PaymentMethodUpdateInput = {
 
 export type PaymentMethodUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  acc_name?: Prisma.StringFieldUpdateOperationsInput | string
-  bank_name?: Prisma.StringFieldUpdateOperationsInput | string
-  sort_code?: Prisma.StringFieldUpdateOperationsInput | string
-  iban?: Prisma.StringFieldUpdateOperationsInput | string
-  bic_swift?: Prisma.StringFieldUpdateOperationsInput | string
-  default_payment_term?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acc_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bank_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sort_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iban?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bic_swift?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  default_payment_term?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   late_payment_fee?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   payment_instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -394,12 +398,12 @@ export type PaymentMethodUncheckedUpdateInput = {
 
 export type PaymentMethodCreateManyInput = {
   id?: string
-  acc_name: string
-  bank_name: string
-  sort_code: string
-  iban: string
-  bic_swift: string
-  default_payment_term?: string | null
+  acc_name?: string | null
+  bank_name?: string | null
+  sort_code?: string | null
+  iban?: string | null
+  bic_swift?: string | null
+  default_payment_term?: number | null
   late_payment_fee?: number | null
   payment_instructions?: string | null
   isDefault?: boolean
@@ -408,12 +412,12 @@ export type PaymentMethodCreateManyInput = {
 
 export type PaymentMethodUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  acc_name?: Prisma.StringFieldUpdateOperationsInput | string
-  bank_name?: Prisma.StringFieldUpdateOperationsInput | string
-  sort_code?: Prisma.StringFieldUpdateOperationsInput | string
-  iban?: Prisma.StringFieldUpdateOperationsInput | string
-  bic_swift?: Prisma.StringFieldUpdateOperationsInput | string
-  default_payment_term?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acc_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bank_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sort_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iban?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bic_swift?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  default_payment_term?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   late_payment_fee?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   payment_instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -421,12 +425,12 @@ export type PaymentMethodUpdateManyMutationInput = {
 
 export type PaymentMethodUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  acc_name?: Prisma.StringFieldUpdateOperationsInput | string
-  bank_name?: Prisma.StringFieldUpdateOperationsInput | string
-  sort_code?: Prisma.StringFieldUpdateOperationsInput | string
-  iban?: Prisma.StringFieldUpdateOperationsInput | string
-  bic_swift?: Prisma.StringFieldUpdateOperationsInput | string
-  default_payment_term?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acc_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bank_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sort_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iban?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bic_swift?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  default_payment_term?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   late_payment_fee?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   payment_instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -448,6 +452,7 @@ export type PaymentMethodCountOrderByAggregateInput = {
 }
 
 export type PaymentMethodAvgOrderByAggregateInput = {
+  default_payment_term?: Prisma.SortOrder
   late_payment_fee?: Prisma.SortOrder
 }
 
@@ -480,6 +485,7 @@ export type PaymentMethodMinOrderByAggregateInput = {
 }
 
 export type PaymentMethodSumOrderByAggregateInput = {
+  default_payment_term?: Prisma.SortOrder
   late_payment_fee?: Prisma.SortOrder
 }
 
@@ -537,12 +543,12 @@ export type PaymentMethodUncheckedUpdateManyWithoutUserNestedInput = {
 
 export type PaymentMethodCreateWithoutUserInput = {
   id?: string
-  acc_name: string
-  bank_name: string
-  sort_code: string
-  iban: string
-  bic_swift: string
-  default_payment_term?: string | null
+  acc_name?: string | null
+  bank_name?: string | null
+  sort_code?: string | null
+  iban?: string | null
+  bic_swift?: string | null
+  default_payment_term?: number | null
   late_payment_fee?: number | null
   payment_instructions?: string | null
   isDefault?: boolean
@@ -550,12 +556,12 @@ export type PaymentMethodCreateWithoutUserInput = {
 
 export type PaymentMethodUncheckedCreateWithoutUserInput = {
   id?: string
-  acc_name: string
-  bank_name: string
-  sort_code: string
-  iban: string
-  bic_swift: string
-  default_payment_term?: string | null
+  acc_name?: string | null
+  bank_name?: string | null
+  sort_code?: string | null
+  iban?: string | null
+  bic_swift?: string | null
+  default_payment_term?: number | null
   late_payment_fee?: number | null
   payment_instructions?: string | null
   isDefault?: boolean
@@ -592,12 +598,12 @@ export type PaymentMethodScalarWhereInput = {
   OR?: Prisma.PaymentMethodScalarWhereInput[]
   NOT?: Prisma.PaymentMethodScalarWhereInput | Prisma.PaymentMethodScalarWhereInput[]
   id?: Prisma.StringFilter<"PaymentMethod"> | string
-  acc_name?: Prisma.StringFilter<"PaymentMethod"> | string
-  bank_name?: Prisma.StringFilter<"PaymentMethod"> | string
-  sort_code?: Prisma.StringFilter<"PaymentMethod"> | string
-  iban?: Prisma.StringFilter<"PaymentMethod"> | string
-  bic_swift?: Prisma.StringFilter<"PaymentMethod"> | string
-  default_payment_term?: Prisma.StringNullableFilter<"PaymentMethod"> | string | null
+  acc_name?: Prisma.StringNullableFilter<"PaymentMethod"> | string | null
+  bank_name?: Prisma.StringNullableFilter<"PaymentMethod"> | string | null
+  sort_code?: Prisma.StringNullableFilter<"PaymentMethod"> | string | null
+  iban?: Prisma.StringNullableFilter<"PaymentMethod"> | string | null
+  bic_swift?: Prisma.StringNullableFilter<"PaymentMethod"> | string | null
+  default_payment_term?: Prisma.IntNullableFilter<"PaymentMethod"> | number | null
   late_payment_fee?: Prisma.IntNullableFilter<"PaymentMethod"> | number | null
   payment_instructions?: Prisma.StringNullableFilter<"PaymentMethod"> | string | null
   isDefault?: Prisma.BoolFilter<"PaymentMethod"> | boolean
@@ -606,12 +612,12 @@ export type PaymentMethodScalarWhereInput = {
 
 export type PaymentMethodCreateManyUserInput = {
   id?: string
-  acc_name: string
-  bank_name: string
-  sort_code: string
-  iban: string
-  bic_swift: string
-  default_payment_term?: string | null
+  acc_name?: string | null
+  bank_name?: string | null
+  sort_code?: string | null
+  iban?: string | null
+  bic_swift?: string | null
+  default_payment_term?: number | null
   late_payment_fee?: number | null
   payment_instructions?: string | null
   isDefault?: boolean
@@ -619,12 +625,12 @@ export type PaymentMethodCreateManyUserInput = {
 
 export type PaymentMethodUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  acc_name?: Prisma.StringFieldUpdateOperationsInput | string
-  bank_name?: Prisma.StringFieldUpdateOperationsInput | string
-  sort_code?: Prisma.StringFieldUpdateOperationsInput | string
-  iban?: Prisma.StringFieldUpdateOperationsInput | string
-  bic_swift?: Prisma.StringFieldUpdateOperationsInput | string
-  default_payment_term?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acc_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bank_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sort_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iban?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bic_swift?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  default_payment_term?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   late_payment_fee?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   payment_instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -632,12 +638,12 @@ export type PaymentMethodUpdateWithoutUserInput = {
 
 export type PaymentMethodUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  acc_name?: Prisma.StringFieldUpdateOperationsInput | string
-  bank_name?: Prisma.StringFieldUpdateOperationsInput | string
-  sort_code?: Prisma.StringFieldUpdateOperationsInput | string
-  iban?: Prisma.StringFieldUpdateOperationsInput | string
-  bic_swift?: Prisma.StringFieldUpdateOperationsInput | string
-  default_payment_term?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acc_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bank_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sort_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iban?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bic_swift?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  default_payment_term?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   late_payment_fee?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   payment_instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -645,12 +651,12 @@ export type PaymentMethodUncheckedUpdateWithoutUserInput = {
 
 export type PaymentMethodUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  acc_name?: Prisma.StringFieldUpdateOperationsInput | string
-  bank_name?: Prisma.StringFieldUpdateOperationsInput | string
-  sort_code?: Prisma.StringFieldUpdateOperationsInput | string
-  iban?: Prisma.StringFieldUpdateOperationsInput | string
-  bic_swift?: Prisma.StringFieldUpdateOperationsInput | string
-  default_payment_term?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acc_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bank_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sort_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iban?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bic_swift?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  default_payment_term?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   late_payment_fee?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   payment_instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -735,12 +741,12 @@ export type $PaymentMethodPayload<ExtArgs extends runtime.Types.Extensions.Inter
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    acc_name: string
-    bank_name: string
-    sort_code: string
-    iban: string
-    bic_swift: string
-    default_payment_term: string | null
+    acc_name: string | null
+    bank_name: string | null
+    sort_code: string | null
+    iban: string | null
+    bic_swift: string | null
+    default_payment_term: number | null
     late_payment_fee: number | null
     payment_instructions: string | null
     isDefault: boolean
@@ -1175,7 +1181,7 @@ export interface PaymentMethodFieldRefs {
   readonly sort_code: Prisma.FieldRef<"PaymentMethod", 'String'>
   readonly iban: Prisma.FieldRef<"PaymentMethod", 'String'>
   readonly bic_swift: Prisma.FieldRef<"PaymentMethod", 'String'>
-  readonly default_payment_term: Prisma.FieldRef<"PaymentMethod", 'String'>
+  readonly default_payment_term: Prisma.FieldRef<"PaymentMethod", 'Int'>
   readonly late_payment_fee: Prisma.FieldRef<"PaymentMethod", 'Int'>
   readonly payment_instructions: Prisma.FieldRef<"PaymentMethod", 'String'>
   readonly isDefault: Prisma.FieldRef<"PaymentMethod", 'Boolean'>

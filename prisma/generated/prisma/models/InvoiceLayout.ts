@@ -43,6 +43,7 @@ export type InvoiceLayoutMinAggregateOutputType = {
   tax_breakdown: boolean | null
   prices_include_tax: boolean | null
   template_title: string | null
+  footer_text: string | null
   show_company_logo: boolean | null
   invoice_notes: string | null
   terms_and_conditions: string | null
@@ -58,6 +59,7 @@ export type InvoiceLayoutMaxAggregateOutputType = {
   tax_breakdown: boolean | null
   prices_include_tax: boolean | null
   template_title: string | null
+  footer_text: string | null
   show_company_logo: boolean | null
   invoice_notes: string | null
   terms_and_conditions: string | null
@@ -73,6 +75,7 @@ export type InvoiceLayoutCountAggregateOutputType = {
   tax_breakdown: number
   prices_include_tax: number
   template_title: number
+  footer_text: number
   show_company_logo: number
   invoice_notes: number
   terms_and_conditions: number
@@ -98,6 +101,7 @@ export type InvoiceLayoutMinAggregateInputType = {
   tax_breakdown?: true
   prices_include_tax?: true
   template_title?: true
+  footer_text?: true
   show_company_logo?: true
   invoice_notes?: true
   terms_and_conditions?: true
@@ -113,6 +117,7 @@ export type InvoiceLayoutMaxAggregateInputType = {
   tax_breakdown?: true
   prices_include_tax?: true
   template_title?: true
+  footer_text?: true
   show_company_logo?: true
   invoice_notes?: true
   terms_and_conditions?: true
@@ -128,6 +133,7 @@ export type InvoiceLayoutCountAggregateInputType = {
   tax_breakdown?: true
   prices_include_tax?: true
   template_title?: true
+  footer_text?: true
   show_company_logo?: true
   invoice_notes?: true
   terms_and_conditions?: true
@@ -223,13 +229,14 @@ export type InvoiceLayoutGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 
 export type InvoiceLayoutGroupByOutputType = {
   id: string
-  invoice_prefix: string
-  quote_prefix: string
+  invoice_prefix: string | null
+  quote_prefix: string | null
   year_format: string | null
   default_vat_rate: number | null
   tax_breakdown: boolean
   prices_include_tax: boolean
   template_title: string | null
+  footer_text: string | null
   show_company_logo: boolean
   invoice_notes: string | null
   terms_and_conditions: string | null
@@ -261,13 +268,14 @@ export type InvoiceLayoutWhereInput = {
   OR?: Prisma.InvoiceLayoutWhereInput[]
   NOT?: Prisma.InvoiceLayoutWhereInput | Prisma.InvoiceLayoutWhereInput[]
   id?: Prisma.StringFilter<"InvoiceLayout"> | string
-  invoice_prefix?: Prisma.StringFilter<"InvoiceLayout"> | string
-  quote_prefix?: Prisma.StringFilter<"InvoiceLayout"> | string
+  invoice_prefix?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
+  quote_prefix?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
   year_format?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
   default_vat_rate?: Prisma.FloatNullableFilter<"InvoiceLayout"> | number | null
   tax_breakdown?: Prisma.BoolFilter<"InvoiceLayout"> | boolean
   prices_include_tax?: Prisma.BoolFilter<"InvoiceLayout"> | boolean
   template_title?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
+  footer_text?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
   show_company_logo?: Prisma.BoolFilter<"InvoiceLayout"> | boolean
   invoice_notes?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
   terms_and_conditions?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
@@ -277,13 +285,14 @@ export type InvoiceLayoutWhereInput = {
 
 export type InvoiceLayoutOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  invoice_prefix?: Prisma.SortOrder
-  quote_prefix?: Prisma.SortOrder
+  invoice_prefix?: Prisma.SortOrderInput | Prisma.SortOrder
+  quote_prefix?: Prisma.SortOrderInput | Prisma.SortOrder
   year_format?: Prisma.SortOrderInput | Prisma.SortOrder
   default_vat_rate?: Prisma.SortOrderInput | Prisma.SortOrder
   tax_breakdown?: Prisma.SortOrder
   prices_include_tax?: Prisma.SortOrder
   template_title?: Prisma.SortOrderInput | Prisma.SortOrder
+  footer_text?: Prisma.SortOrderInput | Prisma.SortOrder
   show_company_logo?: Prisma.SortOrder
   invoice_notes?: Prisma.SortOrderInput | Prisma.SortOrder
   terms_and_conditions?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -297,13 +306,14 @@ export type InvoiceLayoutWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.InvoiceLayoutWhereInput | Prisma.InvoiceLayoutWhereInput[]
   OR?: Prisma.InvoiceLayoutWhereInput[]
   NOT?: Prisma.InvoiceLayoutWhereInput | Prisma.InvoiceLayoutWhereInput[]
-  invoice_prefix?: Prisma.StringFilter<"InvoiceLayout"> | string
-  quote_prefix?: Prisma.StringFilter<"InvoiceLayout"> | string
+  invoice_prefix?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
+  quote_prefix?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
   year_format?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
   default_vat_rate?: Prisma.FloatNullableFilter<"InvoiceLayout"> | number | null
   tax_breakdown?: Prisma.BoolFilter<"InvoiceLayout"> | boolean
   prices_include_tax?: Prisma.BoolFilter<"InvoiceLayout"> | boolean
   template_title?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
+  footer_text?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
   show_company_logo?: Prisma.BoolFilter<"InvoiceLayout"> | boolean
   invoice_notes?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
   terms_and_conditions?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
@@ -312,13 +322,14 @@ export type InvoiceLayoutWhereUniqueInput = Prisma.AtLeast<{
 
 export type InvoiceLayoutOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  invoice_prefix?: Prisma.SortOrder
-  quote_prefix?: Prisma.SortOrder
+  invoice_prefix?: Prisma.SortOrderInput | Prisma.SortOrder
+  quote_prefix?: Prisma.SortOrderInput | Prisma.SortOrder
   year_format?: Prisma.SortOrderInput | Prisma.SortOrder
   default_vat_rate?: Prisma.SortOrderInput | Prisma.SortOrder
   tax_breakdown?: Prisma.SortOrder
   prices_include_tax?: Prisma.SortOrder
   template_title?: Prisma.SortOrderInput | Prisma.SortOrder
+  footer_text?: Prisma.SortOrderInput | Prisma.SortOrder
   show_company_logo?: Prisma.SortOrder
   invoice_notes?: Prisma.SortOrderInput | Prisma.SortOrder
   terms_and_conditions?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -335,13 +346,14 @@ export type InvoiceLayoutScalarWhereWithAggregatesInput = {
   OR?: Prisma.InvoiceLayoutScalarWhereWithAggregatesInput[]
   NOT?: Prisma.InvoiceLayoutScalarWhereWithAggregatesInput | Prisma.InvoiceLayoutScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"InvoiceLayout"> | string
-  invoice_prefix?: Prisma.StringWithAggregatesFilter<"InvoiceLayout"> | string
-  quote_prefix?: Prisma.StringWithAggregatesFilter<"InvoiceLayout"> | string
+  invoice_prefix?: Prisma.StringNullableWithAggregatesFilter<"InvoiceLayout"> | string | null
+  quote_prefix?: Prisma.StringNullableWithAggregatesFilter<"InvoiceLayout"> | string | null
   year_format?: Prisma.StringNullableWithAggregatesFilter<"InvoiceLayout"> | string | null
   default_vat_rate?: Prisma.FloatNullableWithAggregatesFilter<"InvoiceLayout"> | number | null
   tax_breakdown?: Prisma.BoolWithAggregatesFilter<"InvoiceLayout"> | boolean
   prices_include_tax?: Prisma.BoolWithAggregatesFilter<"InvoiceLayout"> | boolean
   template_title?: Prisma.StringNullableWithAggregatesFilter<"InvoiceLayout"> | string | null
+  footer_text?: Prisma.StringNullableWithAggregatesFilter<"InvoiceLayout"> | string | null
   show_company_logo?: Prisma.BoolWithAggregatesFilter<"InvoiceLayout"> | boolean
   invoice_notes?: Prisma.StringNullableWithAggregatesFilter<"InvoiceLayout"> | string | null
   terms_and_conditions?: Prisma.StringNullableWithAggregatesFilter<"InvoiceLayout"> | string | null
@@ -350,13 +362,14 @@ export type InvoiceLayoutScalarWhereWithAggregatesInput = {
 
 export type InvoiceLayoutCreateInput = {
   id?: string
-  invoice_prefix: string
-  quote_prefix: string
+  invoice_prefix?: string | null
+  quote_prefix?: string | null
   year_format?: string | null
   default_vat_rate?: number | null
   tax_breakdown?: boolean
   prices_include_tax?: boolean
   template_title?: string | null
+  footer_text?: string | null
   show_company_logo?: boolean
   invoice_notes?: string | null
   terms_and_conditions?: string | null
@@ -365,13 +378,14 @@ export type InvoiceLayoutCreateInput = {
 
 export type InvoiceLayoutUncheckedCreateInput = {
   id?: string
-  invoice_prefix: string
-  quote_prefix: string
+  invoice_prefix?: string | null
+  quote_prefix?: string | null
   year_format?: string | null
   default_vat_rate?: number | null
   tax_breakdown?: boolean
   prices_include_tax?: boolean
   template_title?: string | null
+  footer_text?: string | null
   show_company_logo?: boolean
   invoice_notes?: string | null
   terms_and_conditions?: string | null
@@ -380,13 +394,14 @@ export type InvoiceLayoutUncheckedCreateInput = {
 
 export type InvoiceLayoutUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  invoice_prefix?: Prisma.StringFieldUpdateOperationsInput | string
-  quote_prefix?: Prisma.StringFieldUpdateOperationsInput | string
+  invoice_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  quote_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   default_vat_rate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   tax_breakdown?: Prisma.BoolFieldUpdateOperationsInput | boolean
   prices_include_tax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   template_title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  footer_text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   show_company_logo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   invoice_notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   terms_and_conditions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -395,13 +410,14 @@ export type InvoiceLayoutUpdateInput = {
 
 export type InvoiceLayoutUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  invoice_prefix?: Prisma.StringFieldUpdateOperationsInput | string
-  quote_prefix?: Prisma.StringFieldUpdateOperationsInput | string
+  invoice_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  quote_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   default_vat_rate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   tax_breakdown?: Prisma.BoolFieldUpdateOperationsInput | boolean
   prices_include_tax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   template_title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  footer_text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   show_company_logo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   invoice_notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   terms_and_conditions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -410,13 +426,14 @@ export type InvoiceLayoutUncheckedUpdateInput = {
 
 export type InvoiceLayoutCreateManyInput = {
   id?: string
-  invoice_prefix: string
-  quote_prefix: string
+  invoice_prefix?: string | null
+  quote_prefix?: string | null
   year_format?: string | null
   default_vat_rate?: number | null
   tax_breakdown?: boolean
   prices_include_tax?: boolean
   template_title?: string | null
+  footer_text?: string | null
   show_company_logo?: boolean
   invoice_notes?: string | null
   terms_and_conditions?: string | null
@@ -425,13 +442,14 @@ export type InvoiceLayoutCreateManyInput = {
 
 export type InvoiceLayoutUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  invoice_prefix?: Prisma.StringFieldUpdateOperationsInput | string
-  quote_prefix?: Prisma.StringFieldUpdateOperationsInput | string
+  invoice_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  quote_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   default_vat_rate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   tax_breakdown?: Prisma.BoolFieldUpdateOperationsInput | boolean
   prices_include_tax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   template_title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  footer_text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   show_company_logo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   invoice_notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   terms_and_conditions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -439,13 +457,14 @@ export type InvoiceLayoutUpdateManyMutationInput = {
 
 export type InvoiceLayoutUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  invoice_prefix?: Prisma.StringFieldUpdateOperationsInput | string
-  quote_prefix?: Prisma.StringFieldUpdateOperationsInput | string
+  invoice_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  quote_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   default_vat_rate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   tax_breakdown?: Prisma.BoolFieldUpdateOperationsInput | boolean
   prices_include_tax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   template_title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  footer_text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   show_company_logo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   invoice_notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   terms_and_conditions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -461,6 +480,7 @@ export type InvoiceLayoutCountOrderByAggregateInput = {
   tax_breakdown?: Prisma.SortOrder
   prices_include_tax?: Prisma.SortOrder
   template_title?: Prisma.SortOrder
+  footer_text?: Prisma.SortOrder
   show_company_logo?: Prisma.SortOrder
   invoice_notes?: Prisma.SortOrder
   terms_and_conditions?: Prisma.SortOrder
@@ -480,6 +500,7 @@ export type InvoiceLayoutMaxOrderByAggregateInput = {
   tax_breakdown?: Prisma.SortOrder
   prices_include_tax?: Prisma.SortOrder
   template_title?: Prisma.SortOrder
+  footer_text?: Prisma.SortOrder
   show_company_logo?: Prisma.SortOrder
   invoice_notes?: Prisma.SortOrder
   terms_and_conditions?: Prisma.SortOrder
@@ -495,6 +516,7 @@ export type InvoiceLayoutMinOrderByAggregateInput = {
   tax_breakdown?: Prisma.SortOrder
   prices_include_tax?: Prisma.SortOrder
   template_title?: Prisma.SortOrder
+  footer_text?: Prisma.SortOrder
   show_company_logo?: Prisma.SortOrder
   invoice_notes?: Prisma.SortOrder
   terms_and_conditions?: Prisma.SortOrder
@@ -552,13 +574,14 @@ export type InvoiceLayoutUncheckedUpdateOneWithoutUserNestedInput = {
 
 export type InvoiceLayoutCreateWithoutUserInput = {
   id?: string
-  invoice_prefix: string
-  quote_prefix: string
+  invoice_prefix?: string | null
+  quote_prefix?: string | null
   year_format?: string | null
   default_vat_rate?: number | null
   tax_breakdown?: boolean
   prices_include_tax?: boolean
   template_title?: string | null
+  footer_text?: string | null
   show_company_logo?: boolean
   invoice_notes?: string | null
   terms_and_conditions?: string | null
@@ -566,13 +589,14 @@ export type InvoiceLayoutCreateWithoutUserInput = {
 
 export type InvoiceLayoutUncheckedCreateWithoutUserInput = {
   id?: string
-  invoice_prefix: string
-  quote_prefix: string
+  invoice_prefix?: string | null
+  quote_prefix?: string | null
   year_format?: string | null
   default_vat_rate?: number | null
   tax_breakdown?: boolean
   prices_include_tax?: boolean
   template_title?: string | null
+  footer_text?: string | null
   show_company_logo?: boolean
   invoice_notes?: string | null
   terms_and_conditions?: string | null
@@ -596,13 +620,14 @@ export type InvoiceLayoutUpdateToOneWithWhereWithoutUserInput = {
 
 export type InvoiceLayoutUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  invoice_prefix?: Prisma.StringFieldUpdateOperationsInput | string
-  quote_prefix?: Prisma.StringFieldUpdateOperationsInput | string
+  invoice_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  quote_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   default_vat_rate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   tax_breakdown?: Prisma.BoolFieldUpdateOperationsInput | boolean
   prices_include_tax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   template_title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  footer_text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   show_company_logo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   invoice_notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   terms_and_conditions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -610,13 +635,14 @@ export type InvoiceLayoutUpdateWithoutUserInput = {
 
 export type InvoiceLayoutUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  invoice_prefix?: Prisma.StringFieldUpdateOperationsInput | string
-  quote_prefix?: Prisma.StringFieldUpdateOperationsInput | string
+  invoice_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  quote_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   default_vat_rate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   tax_breakdown?: Prisma.BoolFieldUpdateOperationsInput | boolean
   prices_include_tax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   template_title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  footer_text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   show_company_logo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   invoice_notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   terms_and_conditions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -633,6 +659,7 @@ export type InvoiceLayoutSelect<ExtArgs extends runtime.Types.Extensions.Interna
   tax_breakdown?: boolean
   prices_include_tax?: boolean
   template_title?: boolean
+  footer_text?: boolean
   show_company_logo?: boolean
   invoice_notes?: boolean
   terms_and_conditions?: boolean
@@ -649,6 +676,7 @@ export type InvoiceLayoutSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   tax_breakdown?: boolean
   prices_include_tax?: boolean
   template_title?: boolean
+  footer_text?: boolean
   show_company_logo?: boolean
   invoice_notes?: boolean
   terms_and_conditions?: boolean
@@ -665,6 +693,7 @@ export type InvoiceLayoutSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   tax_breakdown?: boolean
   prices_include_tax?: boolean
   template_title?: boolean
+  footer_text?: boolean
   show_company_logo?: boolean
   invoice_notes?: boolean
   terms_and_conditions?: boolean
@@ -681,13 +710,14 @@ export type InvoiceLayoutSelectScalar = {
   tax_breakdown?: boolean
   prices_include_tax?: boolean
   template_title?: boolean
+  footer_text?: boolean
   show_company_logo?: boolean
   invoice_notes?: boolean
   terms_and_conditions?: boolean
   userId?: boolean
 }
 
-export type InvoiceLayoutOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "invoice_prefix" | "quote_prefix" | "year_format" | "default_vat_rate" | "tax_breakdown" | "prices_include_tax" | "template_title" | "show_company_logo" | "invoice_notes" | "terms_and_conditions" | "userId", ExtArgs["result"]["invoiceLayout"]>
+export type InvoiceLayoutOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "invoice_prefix" | "quote_prefix" | "year_format" | "default_vat_rate" | "tax_breakdown" | "prices_include_tax" | "template_title" | "footer_text" | "show_company_logo" | "invoice_notes" | "terms_and_conditions" | "userId", ExtArgs["result"]["invoiceLayout"]>
 export type InvoiceLayoutInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -705,13 +735,14 @@ export type $InvoiceLayoutPayload<ExtArgs extends runtime.Types.Extensions.Inter
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    invoice_prefix: string
-    quote_prefix: string
+    invoice_prefix: string | null
+    quote_prefix: string | null
     year_format: string | null
     default_vat_rate: number | null
     tax_breakdown: boolean
     prices_include_tax: boolean
     template_title: string | null
+    footer_text: string | null
     show_company_logo: boolean
     invoice_notes: string | null
     terms_and_conditions: string | null
@@ -1148,6 +1179,7 @@ export interface InvoiceLayoutFieldRefs {
   readonly tax_breakdown: Prisma.FieldRef<"InvoiceLayout", 'Boolean'>
   readonly prices_include_tax: Prisma.FieldRef<"InvoiceLayout", 'Boolean'>
   readonly template_title: Prisma.FieldRef<"InvoiceLayout", 'String'>
+  readonly footer_text: Prisma.FieldRef<"InvoiceLayout", 'String'>
   readonly show_company_logo: Prisma.FieldRef<"InvoiceLayout", 'Boolean'>
   readonly invoice_notes: Prisma.FieldRef<"InvoiceLayout", 'String'>
   readonly terms_and_conditions: Prisma.FieldRef<"InvoiceLayout", 'String'>

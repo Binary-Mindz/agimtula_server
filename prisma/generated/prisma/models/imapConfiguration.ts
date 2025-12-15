@@ -28,14 +28,10 @@ export type AggregateImapConfiguration = {
 
 export type ImapConfigurationAvgAggregateOutputType = {
   port: number | null
-  perMonthInvoiceCount: number | null
-  realtimeImapChecking: number | null
 }
 
 export type ImapConfigurationSumAggregateOutputType = {
   port: number | null
-  perMonthInvoiceCount: number | null
-  realtimeImapChecking: number | null
 }
 
 export type ImapConfigurationMinAggregateOutputType = {
@@ -46,9 +42,6 @@ export type ImapConfigurationMinAggregateOutputType = {
   username: string | null
   password: string | null
   secure: boolean | null
-  isLimitedInvoicePerMonth: boolean | null
-  perMonthInvoiceCount: number | null
-  realtimeImapChecking: number | null
   startedAt: Date | null
   expiredAt: Date | null
   created_at: Date | null
@@ -63,9 +56,6 @@ export type ImapConfigurationMaxAggregateOutputType = {
   username: string | null
   password: string | null
   secure: boolean | null
-  isLimitedInvoicePerMonth: boolean | null
-  perMonthInvoiceCount: number | null
-  realtimeImapChecking: number | null
   startedAt: Date | null
   expiredAt: Date | null
   created_at: Date | null
@@ -80,9 +70,6 @@ export type ImapConfigurationCountAggregateOutputType = {
   username: number
   password: number
   secure: number
-  isLimitedInvoicePerMonth: number
-  perMonthInvoiceCount: number
-  realtimeImapChecking: number
   startedAt: number
   expiredAt: number
   created_at: number
@@ -93,14 +80,10 @@ export type ImapConfigurationCountAggregateOutputType = {
 
 export type ImapConfigurationAvgAggregateInputType = {
   port?: true
-  perMonthInvoiceCount?: true
-  realtimeImapChecking?: true
 }
 
 export type ImapConfigurationSumAggregateInputType = {
   port?: true
-  perMonthInvoiceCount?: true
-  realtimeImapChecking?: true
 }
 
 export type ImapConfigurationMinAggregateInputType = {
@@ -111,9 +94,6 @@ export type ImapConfigurationMinAggregateInputType = {
   username?: true
   password?: true
   secure?: true
-  isLimitedInvoicePerMonth?: true
-  perMonthInvoiceCount?: true
-  realtimeImapChecking?: true
   startedAt?: true
   expiredAt?: true
   created_at?: true
@@ -128,9 +108,6 @@ export type ImapConfigurationMaxAggregateInputType = {
   username?: true
   password?: true
   secure?: true
-  isLimitedInvoicePerMonth?: true
-  perMonthInvoiceCount?: true
-  realtimeImapChecking?: true
   startedAt?: true
   expiredAt?: true
   created_at?: true
@@ -145,9 +122,6 @@ export type ImapConfigurationCountAggregateInputType = {
   username?: true
   password?: true
   secure?: true
-  isLimitedInvoicePerMonth?: true
-  perMonthInvoiceCount?: true
-  realtimeImapChecking?: true
   startedAt?: true
   expiredAt?: true
   created_at?: true
@@ -249,9 +223,6 @@ export type ImapConfigurationGroupByOutputType = {
   username: string
   password: string
   secure: boolean
-  isLimitedInvoicePerMonth: boolean
-  perMonthInvoiceCount: number
-  realtimeImapChecking: number
   startedAt: Date
   expiredAt: Date
   created_at: Date
@@ -289,14 +260,13 @@ export type imapConfigurationWhereInput = {
   username?: Prisma.StringFilter<"imapConfiguration"> | string
   password?: Prisma.StringFilter<"imapConfiguration"> | string
   secure?: Prisma.BoolFilter<"imapConfiguration"> | boolean
-  isLimitedInvoicePerMonth?: Prisma.BoolFilter<"imapConfiguration"> | boolean
-  perMonthInvoiceCount?: Prisma.IntFilter<"imapConfiguration"> | number
-  realtimeImapChecking?: Prisma.IntFilter<"imapConfiguration"> | number
   startedAt?: Prisma.DateTimeFilter<"imapConfiguration"> | Date | string
   expiredAt?: Prisma.DateTimeFilter<"imapConfiguration"> | Date | string
   created_at?: Prisma.DateTimeFilter<"imapConfiguration"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"imapConfiguration"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  userSubscriptionPlan?: Prisma.XOR<Prisma.UserSubscriptionPlanNullableScalarRelationFilter, Prisma.userSubscriptionPlanWhereInput> | null
+  subscriptionPlanPaymentStatus?: Prisma.XOR<Prisma.SubscriptionPlanPaymentStatusNullableScalarRelationFilter, Prisma.subscriptionPlanPaymentStatusWhereInput> | null
 }
 
 export type imapConfigurationOrderByWithRelationInput = {
@@ -307,14 +277,13 @@ export type imapConfigurationOrderByWithRelationInput = {
   username?: Prisma.SortOrder
   password?: Prisma.SortOrder
   secure?: Prisma.SortOrder
-  isLimitedInvoicePerMonth?: Prisma.SortOrder
-  perMonthInvoiceCount?: Prisma.SortOrder
-  realtimeImapChecking?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
   expiredAt?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanOrderByWithRelationInput
+  subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusOrderByWithRelationInput
 }
 
 export type imapConfigurationWhereUniqueInput = Prisma.AtLeast<{
@@ -328,14 +297,13 @@ export type imapConfigurationWhereUniqueInput = Prisma.AtLeast<{
   username?: Prisma.StringFilter<"imapConfiguration"> | string
   password?: Prisma.StringFilter<"imapConfiguration"> | string
   secure?: Prisma.BoolFilter<"imapConfiguration"> | boolean
-  isLimitedInvoicePerMonth?: Prisma.BoolFilter<"imapConfiguration"> | boolean
-  perMonthInvoiceCount?: Prisma.IntFilter<"imapConfiguration"> | number
-  realtimeImapChecking?: Prisma.IntFilter<"imapConfiguration"> | number
   startedAt?: Prisma.DateTimeFilter<"imapConfiguration"> | Date | string
   expiredAt?: Prisma.DateTimeFilter<"imapConfiguration"> | Date | string
   created_at?: Prisma.DateTimeFilter<"imapConfiguration"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"imapConfiguration"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  userSubscriptionPlan?: Prisma.XOR<Prisma.UserSubscriptionPlanNullableScalarRelationFilter, Prisma.userSubscriptionPlanWhereInput> | null
+  subscriptionPlanPaymentStatus?: Prisma.XOR<Prisma.SubscriptionPlanPaymentStatusNullableScalarRelationFilter, Prisma.subscriptionPlanPaymentStatusWhereInput> | null
 }, "id" | "id" | "userId">
 
 export type imapConfigurationOrderByWithAggregationInput = {
@@ -346,9 +314,6 @@ export type imapConfigurationOrderByWithAggregationInput = {
   username?: Prisma.SortOrder
   password?: Prisma.SortOrder
   secure?: Prisma.SortOrder
-  isLimitedInvoicePerMonth?: Prisma.SortOrder
-  perMonthInvoiceCount?: Prisma.SortOrder
-  realtimeImapChecking?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
   expiredAt?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -371,9 +336,6 @@ export type imapConfigurationScalarWhereWithAggregatesInput = {
   username?: Prisma.StringWithAggregatesFilter<"imapConfiguration"> | string
   password?: Prisma.StringWithAggregatesFilter<"imapConfiguration"> | string
   secure?: Prisma.BoolWithAggregatesFilter<"imapConfiguration"> | boolean
-  isLimitedInvoicePerMonth?: Prisma.BoolWithAggregatesFilter<"imapConfiguration"> | boolean
-  perMonthInvoiceCount?: Prisma.IntWithAggregatesFilter<"imapConfiguration"> | number
-  realtimeImapChecking?: Prisma.IntWithAggregatesFilter<"imapConfiguration"> | number
   startedAt?: Prisma.DateTimeWithAggregatesFilter<"imapConfiguration"> | Date | string
   expiredAt?: Prisma.DateTimeWithAggregatesFilter<"imapConfiguration"> | Date | string
   created_at?: Prisma.DateTimeWithAggregatesFilter<"imapConfiguration"> | Date | string
@@ -387,14 +349,13 @@ export type imapConfigurationCreateInput = {
   username: string
   password: string
   secure?: boolean
-  isLimitedInvoicePerMonth?: boolean
-  perMonthInvoiceCount?: number
-  realtimeImapChecking?: number
   startedAt?: Date | string
   expiredAt: Date | string
   created_at?: Date | string
   updated_at?: Date | string
   user: Prisma.UserCreateNestedOneWithoutImapConfigurationsInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutImapConfigurationInput
+  subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusCreateNestedOneWithoutImapConfigurationInput
 }
 
 export type imapConfigurationUncheckedCreateInput = {
@@ -405,13 +366,12 @@ export type imapConfigurationUncheckedCreateInput = {
   username: string
   password: string
   secure?: boolean
-  isLimitedInvoicePerMonth?: boolean
-  perMonthInvoiceCount?: number
-  realtimeImapChecking?: number
   startedAt?: Date | string
   expiredAt: Date | string
   created_at?: Date | string
   updated_at?: Date | string
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutImapConfigurationInput
+  subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusUncheckedCreateNestedOneWithoutImapConfigurationInput
 }
 
 export type imapConfigurationUpdateInput = {
@@ -421,14 +381,13 @@ export type imapConfigurationUpdateInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   secure?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isLimitedInvoicePerMonth?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  perMonthInvoiceCount?: Prisma.IntFieldUpdateOperationsInput | number
-  realtimeImapChecking?: Prisma.IntFieldUpdateOperationsInput | number
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutImapConfigurationsNestedInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutImapConfigurationNestedInput
+  subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusUpdateOneWithoutImapConfigurationNestedInput
 }
 
 export type imapConfigurationUncheckedUpdateInput = {
@@ -439,13 +398,12 @@ export type imapConfigurationUncheckedUpdateInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   secure?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isLimitedInvoicePerMonth?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  perMonthInvoiceCount?: Prisma.IntFieldUpdateOperationsInput | number
-  realtimeImapChecking?: Prisma.IntFieldUpdateOperationsInput | number
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutImapConfigurationNestedInput
+  subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusUncheckedUpdateOneWithoutImapConfigurationNestedInput
 }
 
 export type imapConfigurationCreateManyInput = {
@@ -456,9 +414,6 @@ export type imapConfigurationCreateManyInput = {
   username: string
   password: string
   secure?: boolean
-  isLimitedInvoicePerMonth?: boolean
-  perMonthInvoiceCount?: number
-  realtimeImapChecking?: number
   startedAt?: Date | string
   expiredAt: Date | string
   created_at?: Date | string
@@ -472,9 +427,6 @@ export type imapConfigurationUpdateManyMutationInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   secure?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isLimitedInvoicePerMonth?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  perMonthInvoiceCount?: Prisma.IntFieldUpdateOperationsInput | number
-  realtimeImapChecking?: Prisma.IntFieldUpdateOperationsInput | number
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -489,9 +441,6 @@ export type imapConfigurationUncheckedUpdateManyInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   secure?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isLimitedInvoicePerMonth?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  perMonthInvoiceCount?: Prisma.IntFieldUpdateOperationsInput | number
-  realtimeImapChecking?: Prisma.IntFieldUpdateOperationsInput | number
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -506,9 +455,6 @@ export type imapConfigurationCountOrderByAggregateInput = {
   username?: Prisma.SortOrder
   password?: Prisma.SortOrder
   secure?: Prisma.SortOrder
-  isLimitedInvoicePerMonth?: Prisma.SortOrder
-  perMonthInvoiceCount?: Prisma.SortOrder
-  realtimeImapChecking?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
   expiredAt?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -517,8 +463,6 @@ export type imapConfigurationCountOrderByAggregateInput = {
 
 export type imapConfigurationAvgOrderByAggregateInput = {
   port?: Prisma.SortOrder
-  perMonthInvoiceCount?: Prisma.SortOrder
-  realtimeImapChecking?: Prisma.SortOrder
 }
 
 export type imapConfigurationMaxOrderByAggregateInput = {
@@ -529,9 +473,6 @@ export type imapConfigurationMaxOrderByAggregateInput = {
   username?: Prisma.SortOrder
   password?: Prisma.SortOrder
   secure?: Prisma.SortOrder
-  isLimitedInvoicePerMonth?: Prisma.SortOrder
-  perMonthInvoiceCount?: Prisma.SortOrder
-  realtimeImapChecking?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
   expiredAt?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -546,9 +487,6 @@ export type imapConfigurationMinOrderByAggregateInput = {
   username?: Prisma.SortOrder
   password?: Prisma.SortOrder
   secure?: Prisma.SortOrder
-  isLimitedInvoicePerMonth?: Prisma.SortOrder
-  perMonthInvoiceCount?: Prisma.SortOrder
-  realtimeImapChecking?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
   expiredAt?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -557,13 +495,20 @@ export type imapConfigurationMinOrderByAggregateInput = {
 
 export type imapConfigurationSumOrderByAggregateInput = {
   port?: Prisma.SortOrder
-  perMonthInvoiceCount?: Prisma.SortOrder
-  realtimeImapChecking?: Prisma.SortOrder
+}
+
+export type ImapConfigurationScalarRelationFilter = {
+  is?: Prisma.imapConfigurationWhereInput
+  isNot?: Prisma.imapConfigurationWhereInput
 }
 
 export type ImapConfigurationNullableScalarRelationFilter = {
   is?: Prisma.imapConfigurationWhereInput | null
   isNot?: Prisma.imapConfigurationWhereInput | null
+}
+
+export type StringFieldUpdateOperationsInput = {
+  set?: string
 }
 
 export type IntFieldUpdateOperationsInput = {
@@ -576,6 +521,40 @@ export type IntFieldUpdateOperationsInput = {
 
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
+}
+
+export type DateTimeFieldUpdateOperationsInput = {
+  set?: Date | string
+}
+
+export type imapConfigurationCreateNestedOneWithoutUserSubscriptionPlanInput = {
+  create?: Prisma.XOR<Prisma.imapConfigurationCreateWithoutUserSubscriptionPlanInput, Prisma.imapConfigurationUncheckedCreateWithoutUserSubscriptionPlanInput>
+  connectOrCreate?: Prisma.imapConfigurationCreateOrConnectWithoutUserSubscriptionPlanInput
+  connect?: Prisma.imapConfigurationWhereUniqueInput
+}
+
+export type imapConfigurationUpdateOneRequiredWithoutUserSubscriptionPlanNestedInput = {
+  create?: Prisma.XOR<Prisma.imapConfigurationCreateWithoutUserSubscriptionPlanInput, Prisma.imapConfigurationUncheckedCreateWithoutUserSubscriptionPlanInput>
+  connectOrCreate?: Prisma.imapConfigurationCreateOrConnectWithoutUserSubscriptionPlanInput
+  upsert?: Prisma.imapConfigurationUpsertWithoutUserSubscriptionPlanInput
+  connect?: Prisma.imapConfigurationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.imapConfigurationUpdateToOneWithWhereWithoutUserSubscriptionPlanInput, Prisma.imapConfigurationUpdateWithoutUserSubscriptionPlanInput>, Prisma.imapConfigurationUncheckedUpdateWithoutUserSubscriptionPlanInput>
+}
+
+export type imapConfigurationCreateNestedOneWithoutSubscriptionPlanPaymentStatusInput = {
+  create?: Prisma.XOR<Prisma.imapConfigurationCreateWithoutSubscriptionPlanPaymentStatusInput, Prisma.imapConfigurationUncheckedCreateWithoutSubscriptionPlanPaymentStatusInput>
+  connectOrCreate?: Prisma.imapConfigurationCreateOrConnectWithoutSubscriptionPlanPaymentStatusInput
+  connect?: Prisma.imapConfigurationWhereUniqueInput
+}
+
+export type imapConfigurationUpdateOneWithoutSubscriptionPlanPaymentStatusNestedInput = {
+  create?: Prisma.XOR<Prisma.imapConfigurationCreateWithoutSubscriptionPlanPaymentStatusInput, Prisma.imapConfigurationUncheckedCreateWithoutSubscriptionPlanPaymentStatusInput>
+  connectOrCreate?: Prisma.imapConfigurationCreateOrConnectWithoutSubscriptionPlanPaymentStatusInput
+  upsert?: Prisma.imapConfigurationUpsertWithoutSubscriptionPlanPaymentStatusInput
+  disconnect?: Prisma.imapConfigurationWhereInput | boolean
+  delete?: Prisma.imapConfigurationWhereInput | boolean
+  connect?: Prisma.imapConfigurationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.imapConfigurationUpdateToOneWithWhereWithoutSubscriptionPlanPaymentStatusInput, Prisma.imapConfigurationUpdateWithoutSubscriptionPlanPaymentStatusInput>, Prisma.imapConfigurationUncheckedUpdateWithoutSubscriptionPlanPaymentStatusInput>
 }
 
 export type imapConfigurationCreateNestedOneWithoutUserInput = {
@@ -610,6 +589,158 @@ export type imapConfigurationUncheckedUpdateOneWithoutUserNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.imapConfigurationUpdateToOneWithWhereWithoutUserInput, Prisma.imapConfigurationUpdateWithoutUserInput>, Prisma.imapConfigurationUncheckedUpdateWithoutUserInput>
 }
 
+export type imapConfigurationCreateWithoutUserSubscriptionPlanInput = {
+  id?: string
+  host: string
+  port: number
+  username: string
+  password: string
+  secure?: boolean
+  startedAt?: Date | string
+  expiredAt: Date | string
+  created_at?: Date | string
+  updated_at?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutImapConfigurationsInput
+  subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusCreateNestedOneWithoutImapConfigurationInput
+}
+
+export type imapConfigurationUncheckedCreateWithoutUserSubscriptionPlanInput = {
+  id?: string
+  userId: string
+  host: string
+  port: number
+  username: string
+  password: string
+  secure?: boolean
+  startedAt?: Date | string
+  expiredAt: Date | string
+  created_at?: Date | string
+  updated_at?: Date | string
+  subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusUncheckedCreateNestedOneWithoutImapConfigurationInput
+}
+
+export type imapConfigurationCreateOrConnectWithoutUserSubscriptionPlanInput = {
+  where: Prisma.imapConfigurationWhereUniqueInput
+  create: Prisma.XOR<Prisma.imapConfigurationCreateWithoutUserSubscriptionPlanInput, Prisma.imapConfigurationUncheckedCreateWithoutUserSubscriptionPlanInput>
+}
+
+export type imapConfigurationUpsertWithoutUserSubscriptionPlanInput = {
+  update: Prisma.XOR<Prisma.imapConfigurationUpdateWithoutUserSubscriptionPlanInput, Prisma.imapConfigurationUncheckedUpdateWithoutUserSubscriptionPlanInput>
+  create: Prisma.XOR<Prisma.imapConfigurationCreateWithoutUserSubscriptionPlanInput, Prisma.imapConfigurationUncheckedCreateWithoutUserSubscriptionPlanInput>
+  where?: Prisma.imapConfigurationWhereInput
+}
+
+export type imapConfigurationUpdateToOneWithWhereWithoutUserSubscriptionPlanInput = {
+  where?: Prisma.imapConfigurationWhereInput
+  data: Prisma.XOR<Prisma.imapConfigurationUpdateWithoutUserSubscriptionPlanInput, Prisma.imapConfigurationUncheckedUpdateWithoutUserSubscriptionPlanInput>
+}
+
+export type imapConfigurationUpdateWithoutUserSubscriptionPlanInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  host?: Prisma.StringFieldUpdateOperationsInput | string
+  port?: Prisma.IntFieldUpdateOperationsInput | number
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  secure?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutImapConfigurationsNestedInput
+  subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusUpdateOneWithoutImapConfigurationNestedInput
+}
+
+export type imapConfigurationUncheckedUpdateWithoutUserSubscriptionPlanInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  host?: Prisma.StringFieldUpdateOperationsInput | string
+  port?: Prisma.IntFieldUpdateOperationsInput | number
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  secure?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusUncheckedUpdateOneWithoutImapConfigurationNestedInput
+}
+
+export type imapConfigurationCreateWithoutSubscriptionPlanPaymentStatusInput = {
+  id?: string
+  host: string
+  port: number
+  username: string
+  password: string
+  secure?: boolean
+  startedAt?: Date | string
+  expiredAt: Date | string
+  created_at?: Date | string
+  updated_at?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutImapConfigurationsInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutImapConfigurationInput
+}
+
+export type imapConfigurationUncheckedCreateWithoutSubscriptionPlanPaymentStatusInput = {
+  id?: string
+  userId: string
+  host: string
+  port: number
+  username: string
+  password: string
+  secure?: boolean
+  startedAt?: Date | string
+  expiredAt: Date | string
+  created_at?: Date | string
+  updated_at?: Date | string
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutImapConfigurationInput
+}
+
+export type imapConfigurationCreateOrConnectWithoutSubscriptionPlanPaymentStatusInput = {
+  where: Prisma.imapConfigurationWhereUniqueInput
+  create: Prisma.XOR<Prisma.imapConfigurationCreateWithoutSubscriptionPlanPaymentStatusInput, Prisma.imapConfigurationUncheckedCreateWithoutSubscriptionPlanPaymentStatusInput>
+}
+
+export type imapConfigurationUpsertWithoutSubscriptionPlanPaymentStatusInput = {
+  update: Prisma.XOR<Prisma.imapConfigurationUpdateWithoutSubscriptionPlanPaymentStatusInput, Prisma.imapConfigurationUncheckedUpdateWithoutSubscriptionPlanPaymentStatusInput>
+  create: Prisma.XOR<Prisma.imapConfigurationCreateWithoutSubscriptionPlanPaymentStatusInput, Prisma.imapConfigurationUncheckedCreateWithoutSubscriptionPlanPaymentStatusInput>
+  where?: Prisma.imapConfigurationWhereInput
+}
+
+export type imapConfigurationUpdateToOneWithWhereWithoutSubscriptionPlanPaymentStatusInput = {
+  where?: Prisma.imapConfigurationWhereInput
+  data: Prisma.XOR<Prisma.imapConfigurationUpdateWithoutSubscriptionPlanPaymentStatusInput, Prisma.imapConfigurationUncheckedUpdateWithoutSubscriptionPlanPaymentStatusInput>
+}
+
+export type imapConfigurationUpdateWithoutSubscriptionPlanPaymentStatusInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  host?: Prisma.StringFieldUpdateOperationsInput | string
+  port?: Prisma.IntFieldUpdateOperationsInput | number
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  secure?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutImapConfigurationsNestedInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutImapConfigurationNestedInput
+}
+
+export type imapConfigurationUncheckedUpdateWithoutSubscriptionPlanPaymentStatusInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  host?: Prisma.StringFieldUpdateOperationsInput | string
+  port?: Prisma.IntFieldUpdateOperationsInput | number
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  secure?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutImapConfigurationNestedInput
+}
+
 export type imapConfigurationCreateWithoutUserInput = {
   id?: string
   host: string
@@ -617,13 +748,12 @@ export type imapConfigurationCreateWithoutUserInput = {
   username: string
   password: string
   secure?: boolean
-  isLimitedInvoicePerMonth?: boolean
-  perMonthInvoiceCount?: number
-  realtimeImapChecking?: number
   startedAt?: Date | string
   expiredAt: Date | string
   created_at?: Date | string
   updated_at?: Date | string
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutImapConfigurationInput
+  subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusCreateNestedOneWithoutImapConfigurationInput
 }
 
 export type imapConfigurationUncheckedCreateWithoutUserInput = {
@@ -633,13 +763,12 @@ export type imapConfigurationUncheckedCreateWithoutUserInput = {
   username: string
   password: string
   secure?: boolean
-  isLimitedInvoicePerMonth?: boolean
-  perMonthInvoiceCount?: number
-  realtimeImapChecking?: number
   startedAt?: Date | string
   expiredAt: Date | string
   created_at?: Date | string
   updated_at?: Date | string
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutImapConfigurationInput
+  subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusUncheckedCreateNestedOneWithoutImapConfigurationInput
 }
 
 export type imapConfigurationCreateOrConnectWithoutUserInput = {
@@ -665,13 +794,12 @@ export type imapConfigurationUpdateWithoutUserInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   secure?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isLimitedInvoicePerMonth?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  perMonthInvoiceCount?: Prisma.IntFieldUpdateOperationsInput | number
-  realtimeImapChecking?: Prisma.IntFieldUpdateOperationsInput | number
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutImapConfigurationNestedInput
+  subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusUpdateOneWithoutImapConfigurationNestedInput
 }
 
 export type imapConfigurationUncheckedUpdateWithoutUserInput = {
@@ -681,13 +809,12 @@ export type imapConfigurationUncheckedUpdateWithoutUserInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   secure?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isLimitedInvoicePerMonth?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  perMonthInvoiceCount?: Prisma.IntFieldUpdateOperationsInput | number
-  realtimeImapChecking?: Prisma.IntFieldUpdateOperationsInput | number
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutImapConfigurationNestedInput
+  subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusUncheckedUpdateOneWithoutImapConfigurationNestedInput
 }
 
 
@@ -700,14 +827,13 @@ export type imapConfigurationSelect<ExtArgs extends runtime.Types.Extensions.Int
   username?: boolean
   password?: boolean
   secure?: boolean
-  isLimitedInvoicePerMonth?: boolean
-  perMonthInvoiceCount?: boolean
-  realtimeImapChecking?: boolean
   startedAt?: boolean
   expiredAt?: boolean
   created_at?: boolean
   updated_at?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  userSubscriptionPlan?: boolean | Prisma.imapConfiguration$userSubscriptionPlanArgs<ExtArgs>
+  subscriptionPlanPaymentStatus?: boolean | Prisma.imapConfiguration$subscriptionPlanPaymentStatusArgs<ExtArgs>
 }, ExtArgs["result"]["imapConfiguration"]>
 
 export type imapConfigurationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -718,9 +844,6 @@ export type imapConfigurationSelectCreateManyAndReturn<ExtArgs extends runtime.T
   username?: boolean
   password?: boolean
   secure?: boolean
-  isLimitedInvoicePerMonth?: boolean
-  perMonthInvoiceCount?: boolean
-  realtimeImapChecking?: boolean
   startedAt?: boolean
   expiredAt?: boolean
   created_at?: boolean
@@ -736,9 +859,6 @@ export type imapConfigurationSelectUpdateManyAndReturn<ExtArgs extends runtime.T
   username?: boolean
   password?: boolean
   secure?: boolean
-  isLimitedInvoicePerMonth?: boolean
-  perMonthInvoiceCount?: boolean
-  realtimeImapChecking?: boolean
   startedAt?: boolean
   expiredAt?: boolean
   created_at?: boolean
@@ -754,18 +874,17 @@ export type imapConfigurationSelectScalar = {
   username?: boolean
   password?: boolean
   secure?: boolean
-  isLimitedInvoicePerMonth?: boolean
-  perMonthInvoiceCount?: boolean
-  realtimeImapChecking?: boolean
   startedAt?: boolean
   expiredAt?: boolean
   created_at?: boolean
   updated_at?: boolean
 }
 
-export type imapConfigurationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "host" | "port" | "username" | "password" | "secure" | "isLimitedInvoicePerMonth" | "perMonthInvoiceCount" | "realtimeImapChecking" | "startedAt" | "expiredAt" | "created_at" | "updated_at", ExtArgs["result"]["imapConfiguration"]>
+export type imapConfigurationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "host" | "port" | "username" | "password" | "secure" | "startedAt" | "expiredAt" | "created_at" | "updated_at", ExtArgs["result"]["imapConfiguration"]>
 export type imapConfigurationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  userSubscriptionPlan?: boolean | Prisma.imapConfiguration$userSubscriptionPlanArgs<ExtArgs>
+  subscriptionPlanPaymentStatus?: boolean | Prisma.imapConfiguration$subscriptionPlanPaymentStatusArgs<ExtArgs>
 }
 export type imapConfigurationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -778,6 +897,8 @@ export type $imapConfigurationPayload<ExtArgs extends runtime.Types.Extensions.I
   name: "imapConfiguration"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
+    userSubscriptionPlan: Prisma.$userSubscriptionPlanPayload<ExtArgs> | null
+    subscriptionPlanPaymentStatus: Prisma.$subscriptionPlanPaymentStatusPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -787,9 +908,6 @@ export type $imapConfigurationPayload<ExtArgs extends runtime.Types.Extensions.I
     username: string
     password: string
     secure: boolean
-    isLimitedInvoicePerMonth: boolean
-    perMonthInvoiceCount: number
-    realtimeImapChecking: number
     startedAt: Date
     expiredAt: Date
     created_at: Date
@@ -1189,6 +1307,8 @@ readonly fields: imapConfigurationFieldRefs;
 export interface Prisma__imapConfigurationClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  userSubscriptionPlan<T extends Prisma.imapConfiguration$userSubscriptionPlanArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.imapConfiguration$userSubscriptionPlanArgs<ExtArgs>>): Prisma.Prisma__userSubscriptionPlanClient<runtime.Types.Result.GetResult<Prisma.$userSubscriptionPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  subscriptionPlanPaymentStatus<T extends Prisma.imapConfiguration$subscriptionPlanPaymentStatusArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.imapConfiguration$subscriptionPlanPaymentStatusArgs<ExtArgs>>): Prisma.Prisma__subscriptionPlanPaymentStatusClient<runtime.Types.Result.GetResult<Prisma.$subscriptionPlanPaymentStatusPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1225,9 +1345,6 @@ export interface imapConfigurationFieldRefs {
   readonly username: Prisma.FieldRef<"imapConfiguration", 'String'>
   readonly password: Prisma.FieldRef<"imapConfiguration", 'String'>
   readonly secure: Prisma.FieldRef<"imapConfiguration", 'Boolean'>
-  readonly isLimitedInvoicePerMonth: Prisma.FieldRef<"imapConfiguration", 'Boolean'>
-  readonly perMonthInvoiceCount: Prisma.FieldRef<"imapConfiguration", 'Int'>
-  readonly realtimeImapChecking: Prisma.FieldRef<"imapConfiguration", 'Int'>
   readonly startedAt: Prisma.FieldRef<"imapConfiguration", 'DateTime'>
   readonly expiredAt: Prisma.FieldRef<"imapConfiguration", 'DateTime'>
   readonly created_at: Prisma.FieldRef<"imapConfiguration", 'DateTime'>
@@ -1625,6 +1742,44 @@ export type imapConfigurationDeleteManyArgs<ExtArgs extends runtime.Types.Extens
    * Limit how many imapConfigurations to delete.
    */
   limit?: number
+}
+
+/**
+ * imapConfiguration.userSubscriptionPlan
+ */
+export type imapConfiguration$userSubscriptionPlanArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the userSubscriptionPlan
+   */
+  select?: Prisma.userSubscriptionPlanSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the userSubscriptionPlan
+   */
+  omit?: Prisma.userSubscriptionPlanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.userSubscriptionPlanInclude<ExtArgs> | null
+  where?: Prisma.userSubscriptionPlanWhereInput
+}
+
+/**
+ * imapConfiguration.subscriptionPlanPaymentStatus
+ */
+export type imapConfiguration$subscriptionPlanPaymentStatusArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the subscriptionPlanPaymentStatus
+   */
+  select?: Prisma.subscriptionPlanPaymentStatusSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the subscriptionPlanPaymentStatus
+   */
+  omit?: Prisma.subscriptionPlanPaymentStatusOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.subscriptionPlanPaymentStatusInclude<ExtArgs> | null
+  where?: Prisma.subscriptionPlanPaymentStatusWhereInput
 }
 
 /**

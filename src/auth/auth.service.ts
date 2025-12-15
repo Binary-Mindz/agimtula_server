@@ -1,8 +1,10 @@
 import {
+  BadRequestException,
   ConflictException,
   ForbiddenException,
   Injectable,
   Logger,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
@@ -14,6 +16,8 @@ import { JwtService } from '@nestjs/jwt';
 import { SmtpMailService } from 'src/config/smtp-mail/smtp-mail.service';
 import { jwtPayload } from './types/jwt-payload';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import uploadToCloudinary from 'src/config/cloudinary/cloudinary';
+import { deleteFromCloudinary } from 'src/config/cloudinary/deleteImage';
 // import { UpdateAuthDto } from './dto/update-auth.dto';
 
 @Injectable()
@@ -145,6 +149,138 @@ export class AuthService {
         email: user.email.email,
       },
       accessToken,
+    };
+  }
+
+  async updatePassword(
+    userId: string,
+    oldPassword: string,
+    newPassword: string,
+  ) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+
+    const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
+
+    if (!isPasswordValid) {
+      throw new ForbiddenException('Invalid password');
+    }
+
+    const hashedPass = await bcrypt.hash(newPassword, 10);
+
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        password: hashedPass,
+      },
+    });
+
+    return {
+      message: 'Password updated successfully',
+    };
+  }
+
+  async deleteAccount(userId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+
+    const userEmail = await this.prisma.email.findUnique({
+      where: { userId },
+    });
+
+    if (userEmail) {
+      await this.prisma.email.update({
+        where: { id: userEmail.id },
+        data: { userId: undefined },
+      });
+    }
+
+    await this.prisma.user.delete({
+      where: { id: userId },
+    });
+
+    return {
+      message: 'Account deleted successfully',
+    };
+  }
+
+  async updateProfilepic(file: Express.Multer.File, userId: string) {
+    if (!file) {
+      throw new NotFoundException('File not found');
+    }
+
+    const userProfile = await this.prisma.user.findFirst({
+      where: { id: userId },
+      select: { profile: true },
+    });
+
+    if (!userProfile) {
+      throw new NotFoundException('User not found');
+    }
+
+    if (userProfile.profile?.profilePictureKey) {
+      await deleteFromCloudinary(userProfile.profile?.profilePictureKey);
+    }
+
+    const uploadResult = await uploadToCloudinary(file);
+    const profilePicture = uploadResult.secure_url;
+    const profilePictureKey = uploadResult.public_id;
+
+    const user = await this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        profile: {
+          update: {
+            profilePicture,
+            profilePictureKey,
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      throw new BadRequestException('User Updation Failed');
+    }
+
+    return {
+      message: 'Profile picture updated successfully',
+      profilePicture,
+    };
+  }
+
+  async removeProfilePic(userId: string) {
+    const userProfile = await this.prisma.user.findFirst({
+      where: { id: userId },
+      select: { profile: true },
+    });
+
+    if (userProfile?.profile?.profilePictureKey) {
+      await deleteFromCloudinary(userProfile.profile?.profilePictureKey);
+    }
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        profile: {
+          update: {
+            profilePicture: null,
+            profilePictureKey: null,
+          },
+        },
+      },
+    });
+
+    return {
+      message: 'Profile picture removed successfully',
     };
   }
 

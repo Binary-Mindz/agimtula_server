@@ -417,6 +417,11 @@ export type UserMinOrderByAggregateInput = {
   updated_at?: Prisma.SortOrder
 }
 
+export type UserNullableScalarRelationFilter = {
+  is?: Prisma.UserWhereInput | null
+  isNot?: Prisma.UserWhereInput | null
+}
+
 export type UserCreateNestedOneWithoutImapConfigurationsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutImapConfigurationsInput, Prisma.UserUncheckedCreateWithoutImapConfigurationsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutImapConfigurationsInput
@@ -539,10 +544,12 @@ export type UserCreateNestedOneWithoutEmailInput = {
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutEmailNestedInput = {
+export type UserUpdateOneWithoutEmailNestedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutEmailInput, Prisma.UserUncheckedCreateWithoutEmailInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutEmailInput
   upsert?: Prisma.UserUpsertWithoutEmailInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutEmailInput, Prisma.UserUpdateWithoutEmailInput>, Prisma.UserUncheckedUpdateWithoutEmailInput>
 }

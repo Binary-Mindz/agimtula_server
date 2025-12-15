@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { CreatePaymentMethodDto } from './dto/create-payment-method.dto';
 import { UpdatePaymentMethodDto } from './dto/update-payment-method.dto';
@@ -12,6 +12,21 @@ export class PaymentMethodService {
     dto: CreatePaymentMethodDto,
     makeDefault = false,
   ) {
+    const existing = await this.prisma.paymentMethod.findFirst({
+      where: {
+        userId,
+        acc_name: dto.accountName,
+        bank_name: dto.bankName,
+        iban: dto.iban,
+      },
+    });
+
+    if (existing) {
+      throw new ForbiddenException(
+        'Payment method already exists for this user',
+      );
+    }
+
     if (makeDefault) {
       await this.prisma.paymentMethod.updateMany({
         where: { userId, isDefault: true },

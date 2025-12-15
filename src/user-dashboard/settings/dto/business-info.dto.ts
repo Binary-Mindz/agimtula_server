@@ -74,8 +74,9 @@ export class BusinessInfoDto {
   @IsString()
   @IsUrl({ require_tld: true }, { message: 'Please enter a valid website URL' })
   website?: string;
+}
 
-  // File upload field
+export class UpdateLogoDto {
   @ApiPropertyOptional({
     type: 'string',
     format: 'binary',

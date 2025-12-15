@@ -1,59 +1,20 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { BusinessInfoDto } from './dto/business-info.dto';
 import { InvoiceLayoutDto } from './dto/invoice-layout.dto';
-import cloudinary from 'src/config/cloudinary';
 import { PrismaService } from 'src/config/database/prisma.service';
+import { deleteFromCloudinary } from 'src/config/cloudinary/deleteImage';
+import uploadToCloudinary from 'src/config/cloudinary/cloudinary';
 
 @Injectable()
 export class SettingsService {
   constructor(private prisma: PrismaService) {}
 
-  private uploadToCloudinary(file: Express.Multer.File): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const uploadStream = cloudinary.uploader.upload_stream(
-        { resource_type: 'auto' },
-        (error, result) => {
-          if (error) {
-            return reject(
-              new Error(error.message || 'Cloudinary upload failed'),
-            );
-          }
-          resolve(result);
-        },
-      );
-
-      uploadStream.end(file.buffer);
-    });
-  }
-
-  async updateBusinessInfo(
-    userId: string,
-    dto: BusinessInfoDto,
-    file?: Express.Multer.File,
-  ) {
-    let logoUrl: string | undefined;
-    let logoKey: string | undefined;
-
-    // Upload logo if file exists
-    if (file) {
-      const uploadResult = await this.uploadToCloudinary(file);
-      logoUrl = uploadResult.secure_url;
-      logoKey = uploadResult.public_id;
-    }
-
-    const { ...businessData } = dto;
-
+  async updateBusinessInfo(userId: string, dto: BusinessInfoDto) {
     const businessInfo = await this.prisma.businessInfo.upsert({
       where: { userId },
-      update: {
-        ...businessData,
-        logo: logoUrl,
-        logoKey,
-      },
+      update: dto,
       create: {
-        ...businessData,
-        logo: logoUrl,
-        logoKey,
+        ...dto,
         user: {
           connect: { id: userId },
         },
@@ -61,6 +22,69 @@ export class SettingsService {
     });
 
     return businessInfo;
+  }
+
+  async updateBusinessLogo(userId: string, file: Express.Multer.File) {
+    if (!file) throw new NotFoundException('File not found');
+
+    console.log(file.originalname);
+
+    const businessInfo = await this.prisma.businessInfo.findUnique({
+      where: { userId },
+    });
+
+    console.log(businessInfo);
+
+    if (!businessInfo) throw new NotFoundException('Business info not found');
+
+    if (businessInfo.logoKey) {
+      await deleteFromCloudinary(businessInfo.logoKey);
+    }
+
+    console.log(businessInfo);
+
+    const uploadResult = await uploadToCloudinary(file);
+
+    console.log(uploadResult.secure_Url);
+
+    await this.prisma.businessInfo.update({
+      where: { userId },
+      data: {
+        logo: uploadResult.secure_url,
+        logoKey: uploadResult.public_id,
+      },
+    });
+
+    return {
+      message: 'Business logo updated successfully',
+      logo: uploadResult.secure_url,
+    };
+  }
+
+  async removeBusinessLogo(userId: string) {
+    const businessInfo = await this.prisma.businessInfo.findUnique({
+      where: { userId },
+    });
+
+    if (!businessInfo) {
+      throw new NotFoundException('Business info not found');
+    }
+
+    if (businessInfo.logoKey) {
+      await deleteFromCloudinary(businessInfo.logoKey);
+    }
+
+    await this.prisma.businessInfo.update({
+      where: { userId },
+      data: {
+        logo: null,
+        logoKey: null,
+      },
+    });
+
+    return {
+      message: 'Business logo removed successfully',
+    };
   }
 
   async getBusinessInfo(userId: string) {

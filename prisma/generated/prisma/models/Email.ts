@@ -138,7 +138,7 @@ export type EmailGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type EmailGroupByOutputType = {
   id: string
   email: string
-  userId: string
+  userId: string | null
   _count: EmailCountAggregateOutputType | null
   _min: EmailMinAggregateOutputType | null
   _max: EmailMaxAggregateOutputType | null
@@ -165,14 +165,14 @@ export type EmailWhereInput = {
   NOT?: Prisma.EmailWhereInput | Prisma.EmailWhereInput[]
   id?: Prisma.StringFilter<"Email"> | string
   email?: Prisma.StringFilter<"Email"> | string
-  userId?: Prisma.StringFilter<"Email"> | string
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  userId?: Prisma.StringNullableFilter<"Email"> | string | null
+  user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
 
 export type EmailOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
+  userId?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
 
@@ -183,13 +183,13 @@ export type EmailWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.EmailWhereInput | Prisma.EmailWhereInput[]
   OR?: Prisma.EmailWhereInput[]
   NOT?: Prisma.EmailWhereInput | Prisma.EmailWhereInput[]
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id" | "email" | "userId">
 
 export type EmailOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
+  userId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.EmailCountOrderByAggregateInput
   _max?: Prisma.EmailMaxOrderByAggregateInput
   _min?: Prisma.EmailMinOrderByAggregateInput
@@ -201,37 +201,37 @@ export type EmailScalarWhereWithAggregatesInput = {
   NOT?: Prisma.EmailScalarWhereWithAggregatesInput | Prisma.EmailScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Email"> | string
   email?: Prisma.StringWithAggregatesFilter<"Email"> | string
-  userId?: Prisma.StringWithAggregatesFilter<"Email"> | string
+  userId?: Prisma.StringNullableWithAggregatesFilter<"Email"> | string | null
 }
 
 export type EmailCreateInput = {
   id?: string
   email: string
-  user: Prisma.UserCreateNestedOneWithoutEmailInput
+  user?: Prisma.UserCreateNestedOneWithoutEmailInput
 }
 
 export type EmailUncheckedCreateInput = {
   id?: string
   email: string
-  userId: string
+  userId?: string | null
 }
 
 export type EmailUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  user?: Prisma.UserUpdateOneRequiredWithoutEmailNestedInput
+  user?: Prisma.UserUpdateOneWithoutEmailNestedInput
 }
 
 export type EmailUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type EmailCreateManyInput = {
   id?: string
   email: string
-  userId: string
+  userId?: string | null
 }
 
 export type EmailUpdateManyMutationInput = {
@@ -242,7 +242,7 @@ export type EmailUpdateManyMutationInput = {
 export type EmailUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type EmailNullableScalarRelationFilter = {
@@ -342,21 +342,21 @@ export type EmailSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   id?: boolean
   email?: boolean
   userId?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Email$userArgs<ExtArgs>
 }, ExtArgs["result"]["email"]>
 
 export type EmailSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   email?: boolean
   userId?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Email$userArgs<ExtArgs>
 }, ExtArgs["result"]["email"]>
 
 export type EmailSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   email?: boolean
   userId?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Email$userArgs<ExtArgs>
 }, ExtArgs["result"]["email"]>
 
 export type EmailSelectScalar = {
@@ -367,24 +367,24 @@ export type EmailSelectScalar = {
 
 export type EmailOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "userId", ExtArgs["result"]["email"]>
 export type EmailInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Email$userArgs<ExtArgs>
 }
 export type EmailIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Email$userArgs<ExtArgs>
 }
 export type EmailIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Email$userArgs<ExtArgs>
 }
 
 export type $EmailPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Email"
   objects: {
-    user: Prisma.$UserPayload<ExtArgs>
+    user: Prisma.$UserPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     email: string
-    userId: string
+    userId: string | null
   }, ExtArgs["result"]["email"]>
   composites: {}
 }
@@ -779,7 +779,7 @@ readonly fields: EmailFieldRefs;
  */
 export interface Prisma__EmailClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.Email$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Email$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1205,6 +1205,25 @@ export type EmailDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Limit how many Emails to delete.
    */
   limit?: number
+}
+
+/**
+ * Email.user
+ */
+export type Email$userArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
 }
 
 /**

@@ -11,7 +11,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { SettingsService } from './settings.service';
-import { BusinessInfoDto } from './dto/business-info.dto';
+import { BusinessInfoDto, UpdateLogoDto } from './dto/business-info.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { CreatePaymentMethodDto } from './dto/create-payment-method.dto';
@@ -44,16 +44,30 @@ export class SettingsController {
   @Patch('update-business-info')
   @Roles('USER', 'ADMIN')
   @UsePipes(new ValidationPipe({ transform: true }))
-  @UseInterceptors(FileInterceptor('logo'))
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({ type: BusinessInfoDto })
   async updateBusinessInfo(
     @Body() dto: BusinessInfoDto,
-    @UploadedFile() logo: Express.Multer.File,
     @User() user: jwtPayload,
   ) {
     const userId: string = user.sub;
-    return await this.settingsService.updateBusinessInfo(userId, dto, logo);
+    return await this.settingsService.updateBusinessInfo(userId, dto);
+  }
+
+  @Patch('update-business-logo')
+  @Roles('USER', 'ADMIN')
+  @UseInterceptors(FileInterceptor('logo'))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ type: UpdateLogoDto })
+  updateBusinessLogo(
+    @User() user: jwtPayload,
+    @UploadedFile() logo: Express.Multer.File,
+  ) {
+    return this.settingsService.updateBusinessLogo(user.sub, logo);
+  }
+
+  @Patch('remove-business-logo')
+  @Roles('USER', 'ADMIN')
+  removeBusinessLogo(@User() user: jwtPayload) {
+    return this.settingsService.removeBusinessLogo(user.sub);
   }
 
   // payment method
@@ -101,6 +115,7 @@ export class SettingsController {
       },
     },
   })
+  @UsePipes(new ValidationPipe({ transform: true }))
   makePaymentDefault(
     @Param('id') id: string,
     @User() user: jwtPayload,

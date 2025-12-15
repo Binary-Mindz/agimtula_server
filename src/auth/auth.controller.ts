@@ -4,6 +4,11 @@ import {
   Body,
   ValidationPipe,
   HttpCode,
+  Patch,
+  // Delete,
+  UsePipes,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
@@ -16,6 +21,13 @@ import {
   ValidateForgetPass,
 } from './dto/forget-pass-dto';
 import { ForgetPasswordService } from './forget-password.service';
+import { User } from './decorators/user.decorator';
+import { jwtPayload } from './types/jwt-payload';
+import { UpdatePasswordDto } from './dto/update-password.dto';
+import { Roles } from './decorators/roles.decorator';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiBody, ApiConsumes } from '@nestjs/swagger';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -34,9 +46,46 @@ export class AuthController {
   @HttpCode(200)
   @Post('login')
   @Public()
-  login(@Body(new ValidationPipe()) loginDto: LoginDto) {
+  @UsePipes(new ValidationPipe())
+  login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }
+
+  @Patch('update-password')
+  @Roles('USER', 'ADMIN', 'ACCOUNTANT')
+  @UsePipes(new ValidationPipe())
+  updatePassword(@Body() data: UpdatePasswordDto, @User() user: jwtPayload) {
+    return this.authService.updatePassword(
+      user.sub,
+      data.oldPassword,
+      data.newPassword,
+    );
+  }
+
+  @Patch('update-profile-pic')
+  @Roles('USER', 'ADMIN', 'ACCOUNTANT')
+  @UsePipes(new ValidationPipe())
+  @UseInterceptors(FileInterceptor('profilePic'))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ type: UpdateProfileDto })
+  updateProfilePic(
+    @UploadedFile() profilePic: Express.Multer.File,
+    @User() user: jwtPayload,
+  ) {
+    return this.authService.updateProfilepic(profilePic, user.sub);
+  }
+
+  @Patch('remove-profile-pic')
+  @Roles('USER', 'ADMIN', 'ACCOUNTANT')
+  removeProfilePic(@User() user: jwtPayload) {
+    return this.authService.removeProfilePic(user.sub);
+  }
+
+  // @Delete('delete')
+  // @Roles('USER', 'ADMIN', 'ACCOUNTANT')
+  // deleteAccount(@User() user: jwtPayload) {
+  //   return this.authService.deleteAccount(user.sub);
+  // }
 
   @HttpCode(200)
   @Post('forget-password')

@@ -10,8 +10,7 @@ model Profile{
   vatNumber String?
 
   userId String @unique
-  // relation
-  user User @relation(fields: [userId] , references: [id])
+  user User @relation(fields: [userId] , references: [id],onDelete: Cascade)
 
   @@map("profile")
 }

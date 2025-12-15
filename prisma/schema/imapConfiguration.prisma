@@ -13,9 +13,6 @@ model imapConfiguration {
     userId String @unique
     user User @relation(fields: [userId], references: [id])
 
-    // subscription plan details
-    userSubscriptionPlanId String               @unique
-    userSubscriptionPlan   userSubscriptionPlan @relation(fields: [userSubscriptionPlanId], references: [id])
 
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
@@ -29,8 +26,6 @@ model userSubscriptionPlan {
 
     UserId String @unique
     user   User   @relation(fields: [UserId], references: [id])
-
-    imapConfiguration imapConfiguration?
 
     subscriptionPlanPaymentStatus subscriptionPlanPaymentStatus? @relation(name: "PaymentStatusToSubscriptionPlan")
 
@@ -81,10 +76,6 @@ model userSubscriptionPlanHistory {
 // payment status for imap configuration and subscription plans
 model subscriptionPlanPaymentStatus {
     id String @id @unique @default(uuid())
-
-    // imap configuration relation payment status
-    imapConfigurationId String?            @unique
-    imapConfiguration   imapConfiguration? @relation(fields: [imapConfigurationId], references: [id])
 
     // subscription plan history relation payment status
     subscriptionPlanHistoryId   String                      @unique

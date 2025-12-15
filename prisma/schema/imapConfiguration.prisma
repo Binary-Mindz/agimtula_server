@@ -1,7 +1,8 @@
 // IMAP configuration for users
 model imapConfiguration {
-    id       String  @id @unique @default(uuid())
-    userId   String  @unique
+    id     String @id @unique @default(uuid())
+
+    // IMAP server details
     host     String
     port     Int
     username String
@@ -9,16 +10,12 @@ model imapConfiguration {
     secure   Boolean @default(true)
 
     // relations
+    userId String @unique
     user User @relation(fields: [userId], references: [id])
 
     // subscription plan details
-    userSubscriptionPlan userSubscriptionPlan?
-
-    // subscription status details
-    subscriptionPlanPaymentStatus subscriptionPlanPaymentStatus?
-
-    startedAt DateTime @default(now())
-    expiredAt DateTime
+    userSubscriptionPlanId String               @unique
+    userSubscriptionPlan   userSubscriptionPlan @relation(fields: [userSubscriptionPlanId], references: [id])
 
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
@@ -33,14 +30,13 @@ model userSubscriptionPlan {
     UserId String @unique
     user   User   @relation(fields: [UserId], references: [id])
 
-    imapConfigurationId String            @unique
-    imapConfiguration   imapConfiguration @relation(fields: [imapConfigurationId], references: [id])
+    imapConfiguration imapConfiguration?
 
     subscriptionPlanPaymentStatus subscriptionPlanPaymentStatus? @relation(name: "PaymentStatusToSubscriptionPlan")
 
     isLimitedInvoicePerMonth Boolean
     perMonthInvoiceCount     Int
-    realtimeImapChecking     Int // in seconds
+    realtimeImapChecking     String[] // in seconds
 
     price         Float
     setupFee      Float @default(0.00)
@@ -64,7 +60,7 @@ model userSubscriptionPlanHistory {
     isLimitedInvoicePerMonth Boolean
     perMonthInvoiceCount     Int
 
-    realtimeImapChecking Int
+    realtimeImapChecking String[]
 
     price         Float
     setupFee      Float @default(0.00)
@@ -95,7 +91,7 @@ model subscriptionPlanPaymentStatus {
     userSubscriptionPlanHistory userSubscriptionPlanHistory @relation(fields: [subscriptionPlanHistoryId], references: [id])
 
     // user subscription plan relation payment status
-    userSubscriptionPlanId String?               @unique
+    userSubscriptionPlanId String?              @unique
     userSubscriptionPlan   userSubscriptionPlan? @relation(name: "PaymentStatusToSubscriptionPlan", fields: [userSubscriptionPlanId], references: [id])
 
     totalAmount Float

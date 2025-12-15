@@ -18,20 +18,25 @@ export { Prisma }
 export * as $Enums from './enums'
 export * from './enums';
 /**
- * Model ActivityLog
- * 
- */
-export type ActivityLog = Prisma.ActivityLogModel
-/**
  * Model imapConfiguration
  * 
  */
 export type imapConfiguration = Prisma.imapConfigurationModel
 /**
+ * Model userSubscriptionPlan
+ * 
+ */
+export type userSubscriptionPlan = Prisma.userSubscriptionPlanModel
+/**
  * Model userSubscriptionPlanHistory
  * 
  */
 export type userSubscriptionPlanHistory = Prisma.userSubscriptionPlanHistoryModel
+/**
+ * Model subscriptionPlanPaymentStatus
+ * 
+ */
+export type subscriptionPlanPaymentStatus = Prisma.subscriptionPlanPaymentStatusModel
 /**
  * Model Profile
  * 

@@ -9,20 +9,6 @@
 * 🟢 You can import this file directly.
 */
 
-export const ActivityType = {
-  USER_REGISTERED: 'USER_REGISTERED',
-  PAYMENT_SUCCEEDED: 'PAYMENT_SUCCEEDED',
-  PAYMENT_FAILED: 'PAYMENT_FAILED',
-  PLAN_UPGRADED: 'PLAN_UPGRADED',
-  PLAN_DOWNGRADED: 'PLAN_DOWNGRADED',
-  USER_INVITED: 'USER_INVITED',
-  INVOICE_SENT: 'INVOICE_SENT',
-  INVOICE_PAID: 'INVOICE_PAID'
-} as const
-
-export type ActivityType = (typeof ActivityType)[keyof typeof ActivityType]
-
-
 export const BillingPeriod = {
   MONTHLY: 'MONTHLY',
   YEARLY: 'YEARLY'

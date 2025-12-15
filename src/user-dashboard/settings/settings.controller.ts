@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Patch,
+  Post,
   UploadedFile,
   UseInterceptors,
   UsePipes,
@@ -56,7 +57,7 @@ export class SettingsController {
   }
 
   // payment method
-  @Patch('create-payment-method')
+  @Post('create-payment-method')
   @Roles('USER', 'ADMIN')
   @UsePipes(new ValidationPipe({ transform: true }))
   createPaymentMethod(

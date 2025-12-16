@@ -27,6 +27,25 @@ model ForgetPass{
     @@map("forgetPass")
 }
 
+model TwoFA {
+  id        String   @id @default(uuid())
+  email     String
+  code      Int
+  purpose   TwoFAPurpose
+  attempts  Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@unique([email, purpose])
+  @@map("twoFA")
+}
+
+enum TwoFAPurpose {
+  LOGIN
+  ENABLE_2FA
+  DISABLE_2FA
+}
+
+
 model Language{
     id String @id @default(uuid())
     language String

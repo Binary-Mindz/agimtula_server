@@ -390,6 +390,7 @@ export const ModelName = {
   subscriptionPlanPaymentStatus: 'subscriptionPlanPaymentStatus',
   Profile: 'Profile',
   ForgetPass: 'ForgetPass',
+  TwoFA: 'TwoFA',
   Language: 'Language',
   BusinessInfo: 'BusinessInfo',
   PaymentMethod: 'PaymentMethod',
@@ -398,6 +399,7 @@ export const ModelName = {
   SubscriptionPlan: 'SubscriptionPlan',
   PackagePricing: 'PackagePricing',
   realtimeSelectionTime: 'realtimeSelectionTime',
+  invoiceAutoSyncInterval: 'invoiceAutoSyncInterval',
   User: 'User',
   Email: 'Email'
 } as const
@@ -415,7 +417,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "profile" | "forgetPass" | "language" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "realtimeSelectionTime" | "user" | "email"
+    modelProps: "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "profile" | "forgetPass" | "twoFA" | "language" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "realtimeSelectionTime" | "invoiceAutoSyncInterval" | "user" | "email"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -860,6 +862,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.ForgetPassCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.ForgetPassCountAggregateOutputType> | number
+        }
+      }
+    }
+    TwoFA: {
+      payload: Prisma.$TwoFAPayload<ExtArgs>
+      fields: Prisma.TwoFAFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TwoFAFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TwoFAPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TwoFAFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TwoFAPayload>
+        }
+        findFirst: {
+          args: Prisma.TwoFAFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TwoFAPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TwoFAFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TwoFAPayload>
+        }
+        findMany: {
+          args: Prisma.TwoFAFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TwoFAPayload>[]
+        }
+        create: {
+          args: Prisma.TwoFACreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TwoFAPayload>
+        }
+        createMany: {
+          args: Prisma.TwoFACreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TwoFACreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TwoFAPayload>[]
+        }
+        delete: {
+          args: Prisma.TwoFADeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TwoFAPayload>
+        }
+        update: {
+          args: Prisma.TwoFAUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TwoFAPayload>
+        }
+        deleteMany: {
+          args: Prisma.TwoFADeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TwoFAUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TwoFAUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TwoFAPayload>[]
+        }
+        upsert: {
+          args: Prisma.TwoFAUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TwoFAPayload>
+        }
+        aggregate: {
+          args: Prisma.TwoFAAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTwoFA>
+        }
+        groupBy: {
+          args: Prisma.TwoFAGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TwoFAGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TwoFACountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TwoFACountAggregateOutputType> | number
         }
       }
     }
@@ -1455,6 +1531,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    invoiceAutoSyncInterval: {
+      payload: Prisma.$invoiceAutoSyncIntervalPayload<ExtArgs>
+      fields: Prisma.invoiceAutoSyncIntervalFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.invoiceAutoSyncIntervalFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$invoiceAutoSyncIntervalPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.invoiceAutoSyncIntervalFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$invoiceAutoSyncIntervalPayload>
+        }
+        findFirst: {
+          args: Prisma.invoiceAutoSyncIntervalFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$invoiceAutoSyncIntervalPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.invoiceAutoSyncIntervalFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$invoiceAutoSyncIntervalPayload>
+        }
+        findMany: {
+          args: Prisma.invoiceAutoSyncIntervalFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$invoiceAutoSyncIntervalPayload>[]
+        }
+        create: {
+          args: Prisma.invoiceAutoSyncIntervalCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$invoiceAutoSyncIntervalPayload>
+        }
+        createMany: {
+          args: Prisma.invoiceAutoSyncIntervalCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.invoiceAutoSyncIntervalCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$invoiceAutoSyncIntervalPayload>[]
+        }
+        delete: {
+          args: Prisma.invoiceAutoSyncIntervalDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$invoiceAutoSyncIntervalPayload>
+        }
+        update: {
+          args: Prisma.invoiceAutoSyncIntervalUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$invoiceAutoSyncIntervalPayload>
+        }
+        deleteMany: {
+          args: Prisma.invoiceAutoSyncIntervalDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.invoiceAutoSyncIntervalUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.invoiceAutoSyncIntervalUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$invoiceAutoSyncIntervalPayload>[]
+        }
+        upsert: {
+          args: Prisma.invoiceAutoSyncIntervalUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$invoiceAutoSyncIntervalPayload>
+        }
+        aggregate: {
+          args: Prisma.InvoiceAutoSyncIntervalAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateInvoiceAutoSyncInterval>
+        }
+        groupBy: {
+          args: Prisma.invoiceAutoSyncIntervalGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InvoiceAutoSyncIntervalGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.invoiceAutoSyncIntervalCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InvoiceAutoSyncIntervalCountAggregateOutputType> | number
+        }
+      }
+    }
     User: {
       payload: Prisma.$UserPayload<ExtArgs>
       fields: Prisma.UserFieldRefs
@@ -1644,14 +1794,14 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const ImapConfigurationScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
   host: 'host',
   port: 'port',
   username: 'username',
   password: 'password',
   secure: 'secure',
-  startedAt: 'startedAt',
-  expiredAt: 'expiredAt',
+  userId: 'userId',
+  connect: 'connect',
+  sync: 'sync',
   created_at: 'created_at',
   updated_at: 'updated_at'
 } as const
@@ -1662,7 +1812,6 @@ export type ImapConfigurationScalarFieldEnum = (typeof ImapConfigurationScalarFi
 export const UserSubscriptionPlanScalarFieldEnum = {
   id: 'id',
   UserId: 'UserId',
-  imapConfigurationId: 'imapConfigurationId',
   isLimitedInvoicePerMonth: 'isLimitedInvoicePerMonth',
   perMonthInvoiceCount: 'perMonthInvoiceCount',
   realtimeImapChecking: 'realtimeImapChecking',
@@ -1697,7 +1846,6 @@ export type UserSubscriptionPlanHistoryScalarFieldEnum = (typeof UserSubscriptio
 
 export const SubscriptionPlanPaymentStatusScalarFieldEnum = {
   id: 'id',
-  imapConfigurationId: 'imapConfigurationId',
   subscriptionPlanHistoryId: 'subscriptionPlanHistoryId',
   userSubscriptionPlanId: 'userSubscriptionPlanId',
   totalAmount: 'totalAmount',
@@ -1733,6 +1881,18 @@ export const ForgetPassScalarFieldEnum = {
 } as const
 
 export type ForgetPassScalarFieldEnum = (typeof ForgetPassScalarFieldEnum)[keyof typeof ForgetPassScalarFieldEnum]
+
+
+export const TwoFAScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  code: 'code',
+  purpose: 'purpose',
+  attempts: 'attempts',
+  createdAt: 'createdAt'
+} as const
+
+export type TwoFAScalarFieldEnum = (typeof TwoFAScalarFieldEnum)[keyof typeof TwoFAScalarFieldEnum]
 
 
 export const LanguageScalarFieldEnum = {
@@ -1854,6 +2014,16 @@ export const RealtimeSelectionTimeScalarFieldEnum = {
 } as const
 
 export type RealtimeSelectionTimeScalarFieldEnum = (typeof RealtimeSelectionTimeScalarFieldEnum)[keyof typeof RealtimeSelectionTimeScalarFieldEnum]
+
+
+export const InvoiceAutoSyncIntervalScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  cronTime: 'cronTime'
+} as const
+
+export type InvoiceAutoSyncIntervalScalarFieldEnum = (typeof InvoiceAutoSyncIntervalScalarFieldEnum)[keyof typeof InvoiceAutoSyncIntervalScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {
@@ -1986,6 +2156,20 @@ export type ListEnumBillingPeriodFieldRefInput<$PrismaModel> = FieldRefInputType
 
 
 /**
+ * Reference to a field of type 'TwoFAPurpose'
+ */
+export type EnumTwoFAPurposeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TwoFAPurpose'>
+    
+
+
+/**
+ * Reference to a field of type 'TwoFAPurpose[]'
+ */
+export type ListEnumTwoFAPurposeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TwoFAPurpose[]'>
+    
+
+
+/**
  * Reference to a field of type 'UserRole'
  */
 export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole'>
@@ -2099,6 +2283,7 @@ export type GlobalOmitConfig = {
   subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusOmit
   profile?: Prisma.ProfileOmit
   forgetPass?: Prisma.ForgetPassOmit
+  twoFA?: Prisma.TwoFAOmit
   language?: Prisma.LanguageOmit
   businessInfo?: Prisma.BusinessInfoOmit
   paymentMethod?: Prisma.PaymentMethodOmit
@@ -2107,6 +2292,7 @@ export type GlobalOmitConfig = {
   subscriptionPlan?: Prisma.SubscriptionPlanOmit
   packagePricing?: Prisma.PackagePricingOmit
   realtimeSelectionTime?: Prisma.realtimeSelectionTimeOmit
+  invoiceAutoSyncInterval?: Prisma.invoiceAutoSyncIntervalOmit
   user?: Prisma.UserOmit
   email?: Prisma.EmailOmit
 }

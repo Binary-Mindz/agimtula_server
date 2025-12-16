@@ -15,10 +15,10 @@ import { JwtService } from '@nestjs/jwt';
 
 import { SmtpMailService } from 'src/config/smtp-mail/smtp-mail.service';
 import { jwtPayload } from './types/jwt-payload';
-import { Cron, CronExpression } from '@nestjs/schedule';
 import uploadToCloudinary from 'src/config/cloudinary/cloudinary';
 import { deleteFromCloudinary } from 'src/config/cloudinary/deleteImage';
 import { UpdateProfileDto } from './dto/update-profile.dto';
+import { VerifyTwoFADto } from './dto/two-fa.dto';
 
 @Injectable()
 export class AuthService {
@@ -29,23 +29,6 @@ export class AuthService {
   ) {}
 
   private readonly logger = new Logger(AuthService.name);
-
-  @Cron(CronExpression.EVERY_MINUTE)
-  async cleanExpiredCodes() {
-    const cutoff = new Date(Date.now() - 5 * 60 * 1000);
-
-    const deleted = await this.prisma.forgetPass.deleteMany({
-      where: {
-        createdAt: {
-          lt: cutoff,
-        },
-      },
-    });
-
-    if (deleted.count > 0) {
-      this.logger.log(`Deleted ${deleted.count} expired forget-password codes`);
-    }
-  }
 
   async generateAccessToken(jwtPayload: jwtPayload) {
     return this.jwt.signAsync(
@@ -134,6 +117,100 @@ export class AuthService {
       throw new UnauthorizedException('User not valid');
     }
 
+    const is2FAEnabled = user.twoFactorEnabled;
+
+    if (is2FAEnabled) {
+      const existing = await this.prisma.twoFA.findFirst({
+        where: { email: user.email.email },
+      });
+
+      let code: number | string;
+      if (existing) {
+        const diffMinutes =
+          (Date.now() - new Date(existing.createdAt).getTime()) / 60000;
+
+        if (diffMinutes < 5) {
+          code = existing.code;
+        } else {
+          await this.prisma.twoFA.delete({ where: { id: existing.id } });
+          code = Math.floor(100000 + Math.random() * 900000);
+          await this.prisma.twoFA.create({
+            data: { email: user.email.email, code, purpose: 'LOGIN' },
+          });
+        }
+      } else {
+        code = Math.floor(100000 + Math.random() * 900000);
+        await this.prisma.twoFA.create({
+          data: { email: user.email.email, code, purpose: 'LOGIN' },
+        });
+      }
+
+      await this.mail.sendMail(
+        user.email.email,
+        'Your 2FA Verification Code',
+        `
+        <h3>Enable Two-Factor Authentication</h3>
+        <p>Your 6-digit verification code:</p>
+        <h2 style="letter-spacing: 4px;">${code}</h2>
+        <p>This code expires in 5 minutes.</p>
+        <p>If you didn't request this, you can safely ignore this email.</p>
+      `,
+      );
+
+      return {
+        message: 'Verify your 2FA code to complete login',
+        twoFactorEnabled: true,
+        userId: user.id,
+      };
+    }
+
+    const accessToken = await this.generateAccessToken({
+      sub: user.id,
+      email: user.email.email,
+      role: user.role,
+    });
+
+    return {
+      message: 'Login successful',
+      user: {
+        id: user.id,
+        firstName: user.profile?.firstName,
+        lastName: user.profile?.lastName,
+        email: user.email.email,
+      },
+      accessToken,
+    };
+  }
+
+  async verifyLogin2FA(dto: VerifyTwoFADto) {
+    const { email, code } = dto;
+
+    const record = await this.prisma.twoFA.findFirst({
+      where: { email, purpose: 'LOGIN' },
+    });
+
+    if (!record || record.code !== code) {
+      throw new ForbiddenException('Invalid or expired OTP');
+    }
+
+    const isExpired = Date.now() - record.createdAt.getTime() > 5 * 60 * 1000;
+    if (isExpired) {
+      await this.prisma.twoFA.delete({ where: { id: record.id } });
+      throw new ForbiddenException('OTP has expired');
+    }
+
+    await this.prisma.twoFA.delete({ where: { id: record.id } });
+
+    const user = await this.prisma.user.findFirst({
+      where: { email: { email } },
+      include: { email: true, profile: true },
+    });
+
+    if (!user) throw new UnauthorizedException('User not found');
+
+    if (!user.email) {
+      throw new UnauthorizedException('User email not found');
+    }
     const accessToken = await this.generateAccessToken({
       sub: user.id,
       email: user.email.email,

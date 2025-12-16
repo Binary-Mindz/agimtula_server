@@ -33,12 +33,15 @@ import {
   UpdateProfileDto,
   UpdateProfilePicDto,
 } from './dto/update-profile.dto';
+import { EnableTwoFADto, VerifyTwoFADto } from './dto/two-fa.dto';
+import { TwoFAService } from './2fa.service';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly forgetPasswordService: ForgetPasswordService,
+    private readonly twoFAService: TwoFAService,
   ) {}
 
   @HttpCode(201)
@@ -54,6 +57,13 @@ export class AuthController {
   @UsePipes(new ValidationPipe())
   login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
+  }
+  @HttpCode(200)
+  @Post('verifyLogin')
+  @Public()
+  @UsePipes(new ValidationPipe())
+  verifyLogin(@Body() verify: VerifyTwoFADto) {
+    return this.authService.verifyLogin2FA(verify);
   }
 
   @Patch('update-password')
@@ -129,5 +139,31 @@ export class AuthController {
   @Public()
   changePassword(@Body(new ValidationPipe()) data: ResetPass) {
     return this.forgetPasswordService.changePassword(data);
+  }
+
+  // 2fa features
+
+  @Post('2fa/enable')
+  @Roles('USER', 'ADMIN', 'ACCOUNTANT')
+  enable2FA(@User() user: jwtPayload, @Body() dto: EnableTwoFADto) {
+    return this.twoFAService.sendTwoFACode(user.sub, dto);
+  }
+
+  @Post('2fa/verify')
+  @Roles('USER', 'ADMIN', 'ACCOUNTANT')
+  verify2FA(@User() user: jwtPayload, @Body() dto: VerifyTwoFADto) {
+    return this.twoFAService.verifyAndEnableTwoFA(user.sub, dto);
+  }
+
+  @Post('2fa/disable')
+  @Roles('USER', 'ADMIN', 'ACCOUNTANT')
+  disable2FA(@User() user: jwtPayload, @Body() dto: EnableTwoFADto) {
+    return this.twoFAService.sendDisableTwoFACode(user.sub, dto);
+  }
+
+  @Post('2fa/disable-verify')
+  @Roles('USER', 'ADMIN', 'ACCOUNTANT')
+  verifyDisable2FA(@User() user: jwtPayload, @Body() dto: VerifyTwoFADto) {
+    return this.twoFAService.verifyAndDisableTwoFA(user.sub, dto);
   }
 }

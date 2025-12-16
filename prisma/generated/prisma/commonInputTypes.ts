@@ -221,6 +221,23 @@ export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedStringNullableFilter<$PrismaModel>
 }
 
+export type EnumTwoFAPurposeFilter<$PrismaModel = never> = {
+  equals?: $Enums.TwoFAPurpose | Prisma.EnumTwoFAPurposeFieldRefInput<$PrismaModel>
+  in?: $Enums.TwoFAPurpose[] | Prisma.ListEnumTwoFAPurposeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TwoFAPurpose[] | Prisma.ListEnumTwoFAPurposeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTwoFAPurposeFilter<$PrismaModel> | $Enums.TwoFAPurpose
+}
+
+export type EnumTwoFAPurposeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TwoFAPurpose | Prisma.EnumTwoFAPurposeFieldRefInput<$PrismaModel>
+  in?: $Enums.TwoFAPurpose[] | Prisma.ListEnumTwoFAPurposeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TwoFAPurpose[] | Prisma.ListEnumTwoFAPurposeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTwoFAPurposeWithAggregatesFilter<$PrismaModel> | $Enums.TwoFAPurpose
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTwoFAPurposeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTwoFAPurposeFilter<$PrismaModel>
+}
+
 export type FloatNullableFilter<$PrismaModel = never> = {
   equals?: number | Prisma.FloatFieldRefInput<$PrismaModel> | null
   in?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel> | null
@@ -472,6 +489,23 @@ export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _min?: Prisma.NestedStringNullableFilter<$PrismaModel>
   _max?: Prisma.NestedStringNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumTwoFAPurposeFilter<$PrismaModel = never> = {
+  equals?: $Enums.TwoFAPurpose | Prisma.EnumTwoFAPurposeFieldRefInput<$PrismaModel>
+  in?: $Enums.TwoFAPurpose[] | Prisma.ListEnumTwoFAPurposeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TwoFAPurpose[] | Prisma.ListEnumTwoFAPurposeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTwoFAPurposeFilter<$PrismaModel> | $Enums.TwoFAPurpose
+}
+
+export type NestedEnumTwoFAPurposeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TwoFAPurpose | Prisma.EnumTwoFAPurposeFieldRefInput<$PrismaModel>
+  in?: $Enums.TwoFAPurpose[] | Prisma.ListEnumTwoFAPurposeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TwoFAPurpose[] | Prisma.ListEnumTwoFAPurposeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTwoFAPurposeWithAggregatesFilter<$PrismaModel> | $Enums.TwoFAPurpose
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTwoFAPurposeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTwoFAPurposeFilter<$PrismaModel>
 }
 
 export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {

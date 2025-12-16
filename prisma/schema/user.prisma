@@ -12,7 +12,7 @@ model User {
   paymentMethods PaymentMethod[]
   businessInfo BusinessInfo?
   invoiceLayout InvoiceLayout?
-
+  
   // IMAP configurations
   imapConfigurations imapConfiguration?
 

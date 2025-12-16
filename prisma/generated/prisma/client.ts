@@ -68,6 +68,11 @@ export type Profile = Prisma.ProfileModel
  */
 export type ForgetPass = Prisma.ForgetPassModel
 /**
+ * Model TwoFA
+ * 
+ */
+export type TwoFA = Prisma.TwoFAModel
+/**
  * Model Language
  * 
  */
@@ -107,6 +112,11 @@ export type PackagePricing = Prisma.PackagePricingModel
  * 
  */
 export type realtimeSelectionTime = Prisma.realtimeSelectionTimeModel
+/**
+ * Model invoiceAutoSyncInterval
+ * 
+ */
+export type invoiceAutoSyncInterval = Prisma.invoiceAutoSyncIntervalModel
 /**
  * Model User
  * 

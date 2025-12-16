@@ -444,10 +444,6 @@ export type subscriptionPlanPaymentStatusUncheckedUpdateOneWithoutUserSubscripti
   update?: Prisma.XOR<Prisma.XOR<Prisma.subscriptionPlanPaymentStatusUpdateToOneWithWhereWithoutUserSubscriptionPlanHistoryInput, Prisma.subscriptionPlanPaymentStatusUpdateWithoutUserSubscriptionPlanHistoryInput>, Prisma.subscriptionPlanPaymentStatusUncheckedUpdateWithoutUserSubscriptionPlanHistoryInput>
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
 export type subscriptionPlanPaymentStatusCreateWithoutUserSubscriptionPlanInput = {
   id?: string
   totalAmount: number

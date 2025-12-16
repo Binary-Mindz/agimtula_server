@@ -18,6 +18,11 @@ export { Prisma }
 export * as $Enums from './enums'
 export * from './enums';
 /**
+ * Model Mileage
+ * 
+ */
+export type Mileage = Prisma.MileageModel
+/**
  * Model imapConfiguration
  * 
  */
@@ -57,6 +62,16 @@ export type TwoFA = Prisma.TwoFAModel
  * 
  */
 export type Language = Prisma.LanguageModel
+/**
+ * Model Receipt
+ * 
+ */
+export type Receipt = Prisma.ReceiptModel
+/**
+ * Model ReceiptCategory
+ * 
+ */
+export type ReceiptCategory = Prisma.ReceiptCategoryModel
 /**
  * Model BusinessInfo
  * 

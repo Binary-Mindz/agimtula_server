@@ -1,0 +1,22 @@
+model Receipt{
+    id String @id @unique @default(uuid())
+    receiptFileUrl String?
+    receiptFileKey String?
+    vendor String
+    date DateTime
+    categoryId String
+    category ReceiptCategory @relation(fields: [categoryId], references: [id])
+    amount Float
+    notes String?
+    
+    userId String 
+    user User @relation(fields: [userId], references: [id])
+
+    createdAt DateTime @default(now())
+}
+
+model ReceiptCategory{
+    id String @id @unique @default(uuid())
+    name String
+    receipts Receipt[]
+}

@@ -12,6 +12,8 @@ model User {
   paymentMethods PaymentMethod[]
   businessInfo BusinessInfo?
   invoiceLayout InvoiceLayout?
+  mileages Mileage[]
+  receipts Receipt[]
   
   // IMAP configurations
   imapConfigurations imapConfiguration?

@@ -27,8 +27,8 @@ export * from "./enums"
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more ImapConfigurations
- * const imapConfigurations = await prisma.imapConfiguration.findMany()
+ * // Fetch zero or more Mileages
+ * const mileages = await prisma.mileage.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -37,6 +37,11 @@ export const PrismaClient = $Class.getPrismaClientClass()
 export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts extends Prisma.PrismaClientOptions["omit"] = Prisma.PrismaClientOptions["omit"], ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = $Class.PrismaClient<LogOpts, OmitOpts, ExtArgs>
 export { Prisma }
 
+/**
+ * Model Mileage
+ * 
+ */
+export type Mileage = Prisma.MileageModel
 /**
  * Model imapConfiguration
  * 
@@ -77,6 +82,16 @@ export type TwoFA = Prisma.TwoFAModel
  * 
  */
 export type Language = Prisma.LanguageModel
+/**
+ * Model Receipt
+ * 
+ */
+export type Receipt = Prisma.ReceiptModel
+/**
+ * Model ReceiptCategory
+ * 
+ */
+export type ReceiptCategory = Prisma.ReceiptCategoryModel
 /**
  * Model BusinessInfo
  * 

@@ -488,10 +488,6 @@ export type ImapConfigurationNullableScalarRelationFilter = {
   isNot?: Prisma.imapConfigurationWhereInput | null
 }
 
-export type StringFieldUpdateOperationsInput = {
-  set?: string
-}
-
 export type IntFieldUpdateOperationsInput = {
   set?: number
   increment?: number
@@ -502,10 +498,6 @@ export type IntFieldUpdateOperationsInput = {
 
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
-}
-
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
 }
 
 export type imapConfigurationCreateNestedOneWithoutUserInput = {

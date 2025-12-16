@@ -15,7 +15,8 @@ export class UploadReceiptDto {
     format: 'binary',
     description: 'Receipt image or PDF (JPG, PNG, PDF)',
   })
-  receiptFile: Express.Multer.File;
+  @IsOptional()
+  receiptFile?: Express.Multer.File;
 
   @ApiProperty({
     description: 'Vendor or merchant name (auto-filled by OCR, but editable)',
@@ -50,7 +51,7 @@ export class UploadReceiptDto {
 
   @ApiProperty({
     description: 'Category of the expense',
-    example: 'supplies',
+    example: '071d7ea4-8e93-4469-81be-8744458f25ed',
   })
   @IsString({ message: 'Invalid category' })
   @IsNotEmpty({ message: 'Category is required' })

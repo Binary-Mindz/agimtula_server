@@ -51,6 +51,7 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  Mileage: 'Mileage',
   imapConfiguration: 'imapConfiguration',
   userSubscriptionPlan: 'userSubscriptionPlan',
   userSubscriptionPlanHistory: 'userSubscriptionPlanHistory',
@@ -59,6 +60,8 @@ export const ModelName = {
   ForgetPass: 'ForgetPass',
   TwoFA: 'TwoFA',
   Language: 'Language',
+  Receipt: 'Receipt',
+  ReceiptCategory: 'ReceiptCategory',
   BusinessInfo: 'BusinessInfo',
   PaymentMethod: 'PaymentMethod',
   InvoiceLayout: 'InvoiceLayout',
@@ -85,6 +88,22 @@ export const TransactionIsolationLevel = {
 } as const
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
+
+
+export const MileageScalarFieldEnum = {
+  id: 'id',
+  date: 'date',
+  startLocation: 'startLocation',
+  endLocation: 'endLocation',
+  distance: 'distance',
+  tripType: 'tripType',
+  vehicle: 'vehicle',
+  purpose: 'purpose',
+  notes: 'notes',
+  userId: 'userId'
+} as const
+
+export type MileageScalarFieldEnum = (typeof MileageScalarFieldEnum)[keyof typeof MileageScalarFieldEnum]
 
 
 export const ImapConfigurationScalarFieldEnum = {
@@ -198,6 +217,30 @@ export const LanguageScalarFieldEnum = {
 } as const
 
 export type LanguageScalarFieldEnum = (typeof LanguageScalarFieldEnum)[keyof typeof LanguageScalarFieldEnum]
+
+
+export const ReceiptScalarFieldEnum = {
+  id: 'id',
+  receiptFileUrl: 'receiptFileUrl',
+  receiptFileKey: 'receiptFileKey',
+  vendor: 'vendor',
+  date: 'date',
+  categoryId: 'categoryId',
+  amount: 'amount',
+  notes: 'notes',
+  userId: 'userId',
+  createdAt: 'createdAt'
+} as const
+
+export type ReceiptScalarFieldEnum = (typeof ReceiptScalarFieldEnum)[keyof typeof ReceiptScalarFieldEnum]
+
+
+export const ReceiptCategoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name'
+} as const
+
+export type ReceiptCategoryScalarFieldEnum = (typeof ReceiptCategoryScalarFieldEnum)[keyof typeof ReceiptCategoryScalarFieldEnum]
 
 
 export const BusinessInfoScalarFieldEnum = {

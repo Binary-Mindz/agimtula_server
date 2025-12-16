@@ -42,22 +42,18 @@ model PaymentMethod{
 model InvoiceLayout {
   id String @id @default(uuid())
 
-  // Invoice numbering
   invoice_prefix String?
   quote_prefix String?
   year_format String?
 
-  // Tax settings
   default_vat_rate Float?
   tax_breakdown Boolean @default(false)
   prices_include_tax Boolean @default(false)
 
-  // Invoice template
   template_title String?
   footer_text String?
   show_company_logo Boolean @default(false)
 
-  // Notes & terms
   invoice_notes String?
   terms_and_conditions String?
 

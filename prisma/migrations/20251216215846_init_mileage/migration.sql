@@ -8,6 +8,22 @@ CREATE TYPE "BillingPeriod" AS ENUM ('MONTHLY', 'YEARLY');
 CREATE TYPE "UserRole" AS ENUM ('ADMIN', 'USER', 'ACCOUNTANT');
 
 -- CreateTable
+CREATE TABLE "mileage" (
+    "id" TEXT NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL,
+    "startLocation" TEXT NOT NULL,
+    "endLocation" TEXT NOT NULL,
+    "distance" DOUBLE PRECISION NOT NULL,
+    "tripType" TEXT NOT NULL,
+    "vehicle" TEXT,
+    "purpose" TEXT NOT NULL,
+    "notes" TEXT,
+    "userId" TEXT NOT NULL,
+
+    CONSTRAINT "mileage_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "imap_configuration" (
     "id" TEXT NOT NULL,
     "host" TEXT NOT NULL,
@@ -118,6 +134,30 @@ CREATE TABLE "language" (
     "userId" TEXT NOT NULL,
 
     CONSTRAINT "language_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Receipt" (
+    "id" TEXT NOT NULL,
+    "receiptFileUrl" TEXT,
+    "receiptFileKey" TEXT,
+    "vendor" TEXT NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL,
+    "categoryId" TEXT NOT NULL,
+    "amount" DOUBLE PRECISION NOT NULL,
+    "notes" TEXT,
+    "userId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Receipt_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ReceiptCategory" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+
+    CONSTRAINT "ReceiptCategory_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -297,6 +337,12 @@ CREATE UNIQUE INDEX "forgetPass_email_key" ON "forgetPass"("email");
 CREATE UNIQUE INDEX "twoFA_email_purpose_key" ON "twoFA"("email", "purpose");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Receipt_id_key" ON "Receipt"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "ReceiptCategory_id_key" ON "ReceiptCategory"("id");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "businessInfo_id_key" ON "businessInfo"("id");
 
 -- CreateIndex
@@ -330,6 +376,9 @@ CREATE UNIQUE INDEX "email_email_key" ON "email"("email");
 CREATE UNIQUE INDEX "email_userId_key" ON "email"("userId");
 
 -- AddForeignKey
+ALTER TABLE "mileage" ADD CONSTRAINT "mileage_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "imap_configuration" ADD CONSTRAINT "imap_configuration_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -349,6 +398,12 @@ ALTER TABLE "profile" ADD CONSTRAINT "profile_userId_fkey" FOREIGN KEY ("userId"
 
 -- AddForeignKey
 ALTER TABLE "language" ADD CONSTRAINT "language_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Receipt" ADD CONSTRAINT "Receipt_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "ReceiptCategory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Receipt" ADD CONSTRAINT "Receipt_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "businessInfo" ADD CONSTRAINT "businessInfo_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

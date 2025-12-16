@@ -8,6 +8,7 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/Mileage'
 export type * from './models/imapConfiguration'
 export type * from './models/userSubscriptionPlan'
 export type * from './models/userSubscriptionPlanHistory'
@@ -16,6 +17,8 @@ export type * from './models/Profile'
 export type * from './models/ForgetPass'
 export type * from './models/TwoFA'
 export type * from './models/Language'
+export type * from './models/Receipt'
+export type * from './models/ReceiptCategory'
 export type * from './models/BusinessInfo'
 export type * from './models/PaymentMethod'
 export type * from './models/InvoiceLayout'

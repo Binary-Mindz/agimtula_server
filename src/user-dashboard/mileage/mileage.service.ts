@@ -15,6 +15,7 @@ export class MileageService {
         distance: dto.distance,
         tripType: dto.tripType,
         vehicle: dto.vehicle,
+        amount: dto.distance * 0.6,
         purpose: dto.purpose,
         notes: dto.notes,
         userId: userId,
@@ -41,34 +42,80 @@ export class MileageService {
       59,
       59,
     );
-    const [totalDistance, totalTripLastMonth] = await Promise.all([
-      this.prisma.mileage.aggregate({
-        where: { userId },
-        _sum: { distance: true },
-      }),
+    const [totalDistance, reimbursement, totalTripLastMonth, trips] =
+      await Promise.all([
+        this.prisma.mileage.aggregate({
+          where: { userId },
+          _sum: { distance: true },
+        }),
 
-      this.prisma.mileage.count({
-        where: {
-          userId,
-          date: {
-            gte: firstDayThisMonth,
-            lte: lastDayThisMonth,
+        this.prisma.mileage.aggregate({
+          where: { userId },
+          _sum: { amount: true },
+        }),
+
+        this.prisma.mileage.count({
+          where: {
+            userId,
+            date: {
+              gte: firstDayThisMonth,
+              lte: lastDayThisMonth,
+            },
           },
-        },
-      }),
-    ]);
+        }),
 
-    const reimbursement: number = totalDistance._sum.distance
-      ? totalDistance._sum.distance * 0.6
-      : 0;
+        this.prisma.mileage.findMany({
+          where: { userId },
+          select: {
+            id: true,
+            startLocation: true,
+            endLocation: true,
+            date: true,
+            distance: true,
+            amount: true,
+          },
+          orderBy: { date: 'desc' },
+        }),
+      ]);
 
     return {
       message: 'Mileage data retrieved successfully',
       data: {
         totalDistance: totalDistance._sum.distance || 0,
         totalTripThisMonth: totalTripLastMonth || 0,
-        reimbursement: parseFloat(reimbursement.toFixed(2)),
+        reimbursement: reimbursement._sum.amount || 0,
+        trips,
       },
+    };
+  }
+
+  async editLoggedTrip(userId: string, tripId: string, dto: LogTripDto) {
+    const updatedTrip = await this.prisma.mileage.update({
+      where: { userId, id: tripId },
+      data: {
+        date: dto.date,
+        startLocation: dto.startLocation,
+        endLocation: dto.endLocation,
+        distance: dto.distance,
+        tripType: dto.tripType,
+        vehicle: dto.vehicle,
+        amount: dto.distance * 0.6,
+        purpose: dto.purpose,
+        notes: dto.notes,
+      },
+    });
+    return {
+      message: 'Trip updated successfully',
+      updatedTrip,
+    };
+  }
+
+  async deleteLoggedTrip(userId: string, tripId: string) {
+    await this.prisma.mileage.delete({
+      where: { userId, id: tripId },
+    });
+    return {
+      message: 'Trip deleted successfully',
     };
   }
 }

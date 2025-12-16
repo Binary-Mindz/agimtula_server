@@ -28,10 +28,12 @@ export type AggregateMileage = {
 
 export type MileageAvgAggregateOutputType = {
   distance: number | null
+  amount: number | null
 }
 
 export type MileageSumAggregateOutputType = {
   distance: number | null
+  amount: number | null
 }
 
 export type MileageMinAggregateOutputType = {
@@ -41,6 +43,7 @@ export type MileageMinAggregateOutputType = {
   endLocation: string | null
   distance: number | null
   tripType: string | null
+  amount: number | null
   vehicle: string | null
   purpose: string | null
   notes: string | null
@@ -54,6 +57,7 @@ export type MileageMaxAggregateOutputType = {
   endLocation: string | null
   distance: number | null
   tripType: string | null
+  amount: number | null
   vehicle: string | null
   purpose: string | null
   notes: string | null
@@ -67,6 +71,7 @@ export type MileageCountAggregateOutputType = {
   endLocation: number
   distance: number
   tripType: number
+  amount: number
   vehicle: number
   purpose: number
   notes: number
@@ -77,10 +82,12 @@ export type MileageCountAggregateOutputType = {
 
 export type MileageAvgAggregateInputType = {
   distance?: true
+  amount?: true
 }
 
 export type MileageSumAggregateInputType = {
   distance?: true
+  amount?: true
 }
 
 export type MileageMinAggregateInputType = {
@@ -90,6 +97,7 @@ export type MileageMinAggregateInputType = {
   endLocation?: true
   distance?: true
   tripType?: true
+  amount?: true
   vehicle?: true
   purpose?: true
   notes?: true
@@ -103,6 +111,7 @@ export type MileageMaxAggregateInputType = {
   endLocation?: true
   distance?: true
   tripType?: true
+  amount?: true
   vehicle?: true
   purpose?: true
   notes?: true
@@ -116,6 +125,7 @@ export type MileageCountAggregateInputType = {
   endLocation?: true
   distance?: true
   tripType?: true
+  amount?: true
   vehicle?: true
   purpose?: true
   notes?: true
@@ -216,6 +226,7 @@ export type MileageGroupByOutputType = {
   endLocation: string
   distance: number
   tripType: string
+  amount: number
   vehicle: string | null
   purpose: string
   notes: string | null
@@ -252,6 +263,7 @@ export type MileageWhereInput = {
   endLocation?: Prisma.StringFilter<"Mileage"> | string
   distance?: Prisma.FloatFilter<"Mileage"> | number
   tripType?: Prisma.StringFilter<"Mileage"> | string
+  amount?: Prisma.FloatFilter<"Mileage"> | number
   vehicle?: Prisma.StringNullableFilter<"Mileage"> | string | null
   purpose?: Prisma.StringFilter<"Mileage"> | string
   notes?: Prisma.StringNullableFilter<"Mileage"> | string | null
@@ -266,6 +278,7 @@ export type MileageOrderByWithRelationInput = {
   endLocation?: Prisma.SortOrder
   distance?: Prisma.SortOrder
   tripType?: Prisma.SortOrder
+  amount?: Prisma.SortOrder
   vehicle?: Prisma.SortOrderInput | Prisma.SortOrder
   purpose?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -283,6 +296,7 @@ export type MileageWhereUniqueInput = Prisma.AtLeast<{
   endLocation?: Prisma.StringFilter<"Mileage"> | string
   distance?: Prisma.FloatFilter<"Mileage"> | number
   tripType?: Prisma.StringFilter<"Mileage"> | string
+  amount?: Prisma.FloatFilter<"Mileage"> | number
   vehicle?: Prisma.StringNullableFilter<"Mileage"> | string | null
   purpose?: Prisma.StringFilter<"Mileage"> | string
   notes?: Prisma.StringNullableFilter<"Mileage"> | string | null
@@ -297,6 +311,7 @@ export type MileageOrderByWithAggregationInput = {
   endLocation?: Prisma.SortOrder
   distance?: Prisma.SortOrder
   tripType?: Prisma.SortOrder
+  amount?: Prisma.SortOrder
   vehicle?: Prisma.SortOrderInput | Prisma.SortOrder
   purpose?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -318,6 +333,7 @@ export type MileageScalarWhereWithAggregatesInput = {
   endLocation?: Prisma.StringWithAggregatesFilter<"Mileage"> | string
   distance?: Prisma.FloatWithAggregatesFilter<"Mileage"> | number
   tripType?: Prisma.StringWithAggregatesFilter<"Mileage"> | string
+  amount?: Prisma.FloatWithAggregatesFilter<"Mileage"> | number
   vehicle?: Prisma.StringNullableWithAggregatesFilter<"Mileage"> | string | null
   purpose?: Prisma.StringWithAggregatesFilter<"Mileage"> | string
   notes?: Prisma.StringNullableWithAggregatesFilter<"Mileage"> | string | null
@@ -331,6 +347,7 @@ export type MileageCreateInput = {
   endLocation: string
   distance: number
   tripType: string
+  amount: number
   vehicle?: string | null
   purpose: string
   notes?: string | null
@@ -344,6 +361,7 @@ export type MileageUncheckedCreateInput = {
   endLocation: string
   distance: number
   tripType: string
+  amount: number
   vehicle?: string | null
   purpose: string
   notes?: string | null
@@ -357,6 +375,7 @@ export type MileageUpdateInput = {
   endLocation?: Prisma.StringFieldUpdateOperationsInput | string
   distance?: Prisma.FloatFieldUpdateOperationsInput | number
   tripType?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
   vehicle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -370,6 +389,7 @@ export type MileageUncheckedUpdateInput = {
   endLocation?: Prisma.StringFieldUpdateOperationsInput | string
   distance?: Prisma.FloatFieldUpdateOperationsInput | number
   tripType?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
   vehicle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -383,6 +403,7 @@ export type MileageCreateManyInput = {
   endLocation: string
   distance: number
   tripType: string
+  amount: number
   vehicle?: string | null
   purpose: string
   notes?: string | null
@@ -396,6 +417,7 @@ export type MileageUpdateManyMutationInput = {
   endLocation?: Prisma.StringFieldUpdateOperationsInput | string
   distance?: Prisma.FloatFieldUpdateOperationsInput | number
   tripType?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
   vehicle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -408,6 +430,7 @@ export type MileageUncheckedUpdateManyInput = {
   endLocation?: Prisma.StringFieldUpdateOperationsInput | string
   distance?: Prisma.FloatFieldUpdateOperationsInput | number
   tripType?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
   vehicle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -421,6 +444,7 @@ export type MileageCountOrderByAggregateInput = {
   endLocation?: Prisma.SortOrder
   distance?: Prisma.SortOrder
   tripType?: Prisma.SortOrder
+  amount?: Prisma.SortOrder
   vehicle?: Prisma.SortOrder
   purpose?: Prisma.SortOrder
   notes?: Prisma.SortOrder
@@ -429,6 +453,7 @@ export type MileageCountOrderByAggregateInput = {
 
 export type MileageAvgOrderByAggregateInput = {
   distance?: Prisma.SortOrder
+  amount?: Prisma.SortOrder
 }
 
 export type MileageMaxOrderByAggregateInput = {
@@ -438,6 +463,7 @@ export type MileageMaxOrderByAggregateInput = {
   endLocation?: Prisma.SortOrder
   distance?: Prisma.SortOrder
   tripType?: Prisma.SortOrder
+  amount?: Prisma.SortOrder
   vehicle?: Prisma.SortOrder
   purpose?: Prisma.SortOrder
   notes?: Prisma.SortOrder
@@ -451,6 +477,7 @@ export type MileageMinOrderByAggregateInput = {
   endLocation?: Prisma.SortOrder
   distance?: Prisma.SortOrder
   tripType?: Prisma.SortOrder
+  amount?: Prisma.SortOrder
   vehicle?: Prisma.SortOrder
   purpose?: Prisma.SortOrder
   notes?: Prisma.SortOrder
@@ -459,6 +486,7 @@ export type MileageMinOrderByAggregateInput = {
 
 export type MileageSumOrderByAggregateInput = {
   distance?: Prisma.SortOrder
+  amount?: Prisma.SortOrder
 }
 
 export type MileageListRelationFilter = {
@@ -540,6 +568,7 @@ export type MileageCreateWithoutUserInput = {
   endLocation: string
   distance: number
   tripType: string
+  amount: number
   vehicle?: string | null
   purpose: string
   notes?: string | null
@@ -552,6 +581,7 @@ export type MileageUncheckedCreateWithoutUserInput = {
   endLocation: string
   distance: number
   tripType: string
+  amount: number
   vehicle?: string | null
   purpose: string
   notes?: string | null
@@ -593,6 +623,7 @@ export type MileageScalarWhereInput = {
   endLocation?: Prisma.StringFilter<"Mileage"> | string
   distance?: Prisma.FloatFilter<"Mileage"> | number
   tripType?: Prisma.StringFilter<"Mileage"> | string
+  amount?: Prisma.FloatFilter<"Mileage"> | number
   vehicle?: Prisma.StringNullableFilter<"Mileage"> | string | null
   purpose?: Prisma.StringFilter<"Mileage"> | string
   notes?: Prisma.StringNullableFilter<"Mileage"> | string | null
@@ -606,6 +637,7 @@ export type MileageCreateManyUserInput = {
   endLocation: string
   distance: number
   tripType: string
+  amount: number
   vehicle?: string | null
   purpose: string
   notes?: string | null
@@ -618,6 +650,7 @@ export type MileageUpdateWithoutUserInput = {
   endLocation?: Prisma.StringFieldUpdateOperationsInput | string
   distance?: Prisma.FloatFieldUpdateOperationsInput | number
   tripType?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
   vehicle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -630,6 +663,7 @@ export type MileageUncheckedUpdateWithoutUserInput = {
   endLocation?: Prisma.StringFieldUpdateOperationsInput | string
   distance?: Prisma.FloatFieldUpdateOperationsInput | number
   tripType?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
   vehicle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -642,6 +676,7 @@ export type MileageUncheckedUpdateManyWithoutUserInput = {
   endLocation?: Prisma.StringFieldUpdateOperationsInput | string
   distance?: Prisma.FloatFieldUpdateOperationsInput | number
   tripType?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
   vehicle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -656,6 +691,7 @@ export type MileageSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   endLocation?: boolean
   distance?: boolean
   tripType?: boolean
+  amount?: boolean
   vehicle?: boolean
   purpose?: boolean
   notes?: boolean
@@ -670,6 +706,7 @@ export type MileageSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   endLocation?: boolean
   distance?: boolean
   tripType?: boolean
+  amount?: boolean
   vehicle?: boolean
   purpose?: boolean
   notes?: boolean
@@ -684,6 +721,7 @@ export type MileageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   endLocation?: boolean
   distance?: boolean
   tripType?: boolean
+  amount?: boolean
   vehicle?: boolean
   purpose?: boolean
   notes?: boolean
@@ -698,13 +736,14 @@ export type MileageSelectScalar = {
   endLocation?: boolean
   distance?: boolean
   tripType?: boolean
+  amount?: boolean
   vehicle?: boolean
   purpose?: boolean
   notes?: boolean
   userId?: boolean
 }
 
-export type MileageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "date" | "startLocation" | "endLocation" | "distance" | "tripType" | "vehicle" | "purpose" | "notes" | "userId", ExtArgs["result"]["mileage"]>
+export type MileageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "date" | "startLocation" | "endLocation" | "distance" | "tripType" | "amount" | "vehicle" | "purpose" | "notes" | "userId", ExtArgs["result"]["mileage"]>
 export type MileageInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -727,6 +766,7 @@ export type $MileagePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     endLocation: string
     distance: number
     tripType: string
+    amount: number
     vehicle: string | null
     purpose: string
     notes: string | null
@@ -1161,6 +1201,7 @@ export interface MileageFieldRefs {
   readonly endLocation: Prisma.FieldRef<"Mileage", 'String'>
   readonly distance: Prisma.FieldRef<"Mileage", 'Float'>
   readonly tripType: Prisma.FieldRef<"Mileage", 'String'>
+  readonly amount: Prisma.FieldRef<"Mileage", 'Float'>
   readonly vehicle: Prisma.FieldRef<"Mileage", 'String'>
   readonly purpose: Prisma.FieldRef<"Mileage", 'String'>
   readonly notes: Prisma.FieldRef<"Mileage", 'String'>

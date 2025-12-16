@@ -5,6 +5,7 @@ model Mileage {
     endLocation String
     distance Float
     tripType String
+    amount Float
     
     vehicle String?
     purpose String

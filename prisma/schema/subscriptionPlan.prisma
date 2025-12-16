@@ -38,3 +38,12 @@ model realtimeSelectionTime {
     id String @id @unique @default(uuid())
     time Int 
 }
+
+
+// invice Automatic Sync Interval
+model invoiceAutoSyncInterval {
+    id String @id @unique @default(uuid())
+    title String
+    description String
+    cronTime String
+}

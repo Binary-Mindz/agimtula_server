@@ -1,6 +1,7 @@
 import { Controller, Get, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ImapApisService } from './imap-apis/imap-apis.service';
+import { Public } from './auth/decorators/public.decorator';
 
 @Controller()
 export class AppController {
@@ -14,6 +15,7 @@ export class AppController {
     return this.appService.getHello();
   }
 
+  @Public()
   @Get('getAllInvoice')
   getAllInvoice() {
     const result = this.imapApisService.loadCronJobsFromDB();

@@ -1,6 +1,6 @@
 // IMAP configuration for users
 model imapConfiguration {
-    id     String @id @unique @default(uuid())
+    id String @id @unique @default(uuid())
 
     // IMAP server details
     host     String
@@ -11,8 +11,10 @@ model imapConfiguration {
 
     // relations
     userId String @unique
-    user User @relation(fields: [userId], references: [id])
+    user   User   @relation(fields: [userId], references: [id])
 
+    connect Boolean @default(false)
+    sync    Boolean @default(false)
 
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
@@ -82,7 +84,7 @@ model subscriptionPlanPaymentStatus {
     userSubscriptionPlanHistory userSubscriptionPlanHistory @relation(fields: [subscriptionPlanHistoryId], references: [id])
 
     // user subscription plan relation payment status
-    userSubscriptionPlanId String?              @unique
+    userSubscriptionPlanId String?               @unique
     userSubscriptionPlan   userSubscriptionPlan? @relation(name: "PaymentStatusToSubscriptionPlan", fields: [userSubscriptionPlanId], references: [id])
 
     totalAmount Float

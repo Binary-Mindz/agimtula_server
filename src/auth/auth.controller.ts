@@ -9,6 +9,8 @@ import {
   UsePipes,
   UseInterceptors,
   UploadedFile,
+  Get,
+  Delete,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
@@ -27,7 +29,10 @@ import { UpdatePasswordDto } from './dto/update-password.dto';
 import { Roles } from './decorators/roles.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes } from '@nestjs/swagger';
-import { UpdateProfileDto } from './dto/update-profile.dto';
+import {
+  UpdateProfileDto,
+  UpdateProfilePicDto,
+} from './dto/update-profile.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -62,12 +67,18 @@ export class AuthController {
     );
   }
 
+  @Delete('delete-account')
+  @Roles('USER', 'ADMIN', 'ACCOUNTANT')
+  deleteAccount(@User() user: jwtPayload) {
+    return this.authService.deleteAccount(user.sub);
+  }
+
   @Patch('update-profile-pic')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
   @UsePipes(new ValidationPipe())
   @UseInterceptors(FileInterceptor('profilePic'))
   @ApiConsumes('multipart/form-data')
-  @ApiBody({ type: UpdateProfileDto })
+  @ApiBody({ type: UpdateProfilePicDto })
   updateProfilePic(
     @UploadedFile() profilePic: Express.Multer.File,
     @User() user: jwtPayload,
@@ -81,6 +92,18 @@ export class AuthController {
     return this.authService.removeProfilePic(user.sub);
   }
 
+  @Patch('update-profile')
+  @Roles('USER', 'ADMIN', 'ACCOUNTANT')
+  @UsePipes(new ValidationPipe())
+  updateProfile(@Body() data: UpdateProfileDto, @User() user: jwtPayload) {
+    return this.authService.updateProfile(user.sub, data);
+  }
+
+  @Get('profile')
+  @Roles('USER', 'ADMIN', 'ACCOUNTANT')
+  getProfile(@User() user: jwtPayload) {
+    return this.authService.getProfile(user.sub);
+  }
   // @Delete('delete')
   // @Roles('USER', 'ADMIN', 'ACCOUNTANT')
   // deleteAccount(@User() user: jwtPayload) {

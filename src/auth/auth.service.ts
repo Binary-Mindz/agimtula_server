@@ -18,7 +18,7 @@ import { jwtPayload } from './types/jwt-payload';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import uploadToCloudinary from 'src/config/cloudinary/cloudinary';
 import { deleteFromCloudinary } from 'src/config/cloudinary/deleteImage';
-// import { UpdateAuthDto } from './dto/update-auth.dto';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 
 @Injectable()
 export class AuthService {
@@ -186,27 +186,8 @@ export class AuthService {
   }
 
   async deleteAccount(userId: string) {
-    const user = await this.prisma.user.findUnique({
-      where: { id: userId },
-    });
-
-    if (!user) {
-      throw new UnauthorizedException('User not found');
-    }
-
-    const userEmail = await this.prisma.email.findUnique({
+    await this.prisma.email.delete({
       where: { userId },
-    });
-
-    if (userEmail) {
-      await this.prisma.email.update({
-        where: { id: userEmail.id },
-        data: { userId: undefined },
-      });
-    }
-
-    await this.prisma.user.delete({
-      where: { id: userId },
     });
 
     return {
@@ -281,6 +262,68 @@ export class AuthService {
 
     return {
       message: 'Profile picture removed successfully',
+    };
+  }
+
+  async updateProfile(userId: string, data: UpdateProfileDto) {
+    const user = await this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        profile: {
+          update: {
+            firstName: data.firstName,
+            lastName: data.lastName,
+            phone: data.phone,
+            jobTitle: data.jobTitle,
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      throw new BadRequestException('User Updation Failed');
+    }
+
+    return {
+      message: 'Profile updated successfully',
+    };
+  }
+
+  async getProfile(userId: string) {
+    const user = await this.prisma.user.findFirst({
+      where: { id: userId },
+      select: {
+        profile: {
+          select: {
+            firstName: true,
+            lastName: true,
+            phone: true,
+            jobTitle: true,
+            profilePicture: true,
+          },
+        },
+        password: false,
+        email: {
+          select: {
+            email: true,
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return {
+      user: {
+        firstName: user.profile?.firstName,
+        lastName: user.profile?.lastName,
+        email: user.email?.email,
+        phone: user.profile?.phone,
+        jobTitle: user.profile?.jobTitle,
+        profilePicture: user.profile?.profilePicture,
+      },
     };
   }
 

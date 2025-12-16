@@ -1,7 +1,8 @@
 // IMAP configuration for users
 model imapConfiguration {
-    id       String  @id @unique @default(uuid())
-    userId   String  @unique
+    id String @id @unique @default(uuid())
+
+    // IMAP server details
     host     String
     port     Int
     username String
@@ -9,16 +10,11 @@ model imapConfiguration {
     secure   Boolean @default(true)
 
     // relations
-    user User @relation(fields: [userId], references: [id])
+    userId String @unique
+    user   User   @relation(fields: [userId], references: [id])
 
-    // subscription plan details
-    userSubscriptionPlan userSubscriptionPlan?
-
-    // subscription status details
-    subscriptionPlanPaymentStatus subscriptionPlanPaymentStatus?
-
-    startedAt DateTime @default(now())
-    expiredAt DateTime
+    connect Boolean @default(false)
+    sync    Boolean @default(false)
 
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
@@ -33,14 +29,11 @@ model userSubscriptionPlan {
     UserId String @unique
     user   User   @relation(fields: [UserId], references: [id])
 
-    imapConfigurationId String            @unique
-    imapConfiguration   imapConfiguration @relation(fields: [imapConfigurationId], references: [id])
-
     subscriptionPlanPaymentStatus subscriptionPlanPaymentStatus? @relation(name: "PaymentStatusToSubscriptionPlan")
 
     isLimitedInvoicePerMonth Boolean
     perMonthInvoiceCount     Int
-    realtimeImapChecking     Int // in seconds
+    realtimeImapChecking     String[] // in seconds
 
     price         Float
     setupFee      Float @default(0.00)
@@ -64,7 +57,7 @@ model userSubscriptionPlanHistory {
     isLimitedInvoicePerMonth Boolean
     perMonthInvoiceCount     Int
 
-    realtimeImapChecking Int
+    realtimeImapChecking String[]
 
     price         Float
     setupFee      Float @default(0.00)
@@ -85,10 +78,6 @@ model userSubscriptionPlanHistory {
 // payment status for imap configuration and subscription plans
 model subscriptionPlanPaymentStatus {
     id String @id @unique @default(uuid())
-
-    // imap configuration relation payment status
-    imapConfigurationId String?            @unique
-    imapConfiguration   imapConfiguration? @relation(fields: [imapConfigurationId], references: [id])
 
     // subscription plan history relation payment status
     subscriptionPlanHistoryId   String                      @unique

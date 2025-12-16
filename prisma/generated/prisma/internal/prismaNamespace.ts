@@ -2024,6 +2024,7 @@ export const MileageScalarFieldEnum = {
   endLocation: 'endLocation',
   distance: 'distance',
   tripType: 'tripType',
+  amount: 'amount',
   vehicle: 'vehicle',
   purpose: 'purpose',
   notes: 'notes',

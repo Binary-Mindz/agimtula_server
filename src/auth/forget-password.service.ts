@@ -11,6 +11,7 @@ import {
 import { PrismaService } from 'src/config/database/prisma.service';
 import { SmtpMailService } from 'src/config/smtp-mail/smtp-mail.service';
 import * as bcrypt from 'bcrypt';
+import { cResponseData } from 'src/common/cResponse';
 
 @Injectable()
 export class ForgetPasswordService {
@@ -84,9 +85,9 @@ export class ForgetPasswordService {
       `,
     );
 
-    return {
+    return cResponseData({
       message: 'Forget password code sent successfully',
-    };
+    });
   }
 
   async verifyForgetPassCode(data: ValidateForgetPass) {
@@ -124,9 +125,9 @@ export class ForgetPasswordService {
       },
     });
 
-    return {
+    return cResponseData({
       message: 'Code is verified, now you can change your password',
-    };
+    });
   }
 
   async changePassword(data: ResetPass) {
@@ -170,8 +171,8 @@ export class ForgetPasswordService {
       },
     });
 
-    return {
+    return cResponseData({
       message: 'Password changed successfully',
-    };
+    });
   }
 }

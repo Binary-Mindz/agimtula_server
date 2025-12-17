@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
 
 @Injectable()
@@ -25,8 +26,8 @@ export class DashboardService {
 
     // make a separate activity log file where every update will call an api to update anyghing like user registered or updated any field or
 
-    return {
-      totalUser: userCount,
-    };
+    return cResponseData({
+      data: userCount,
+    });
   }
 }

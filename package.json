@@ -46,6 +46,7 @@
     "dotenv": "^17.2.3",
     "dotenv-expand": "^12.0.3",
     "imapflow": "^1.1.1",
+    "ioredis": "^5.8.2",
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.0.2",
     "nestjs-form-data": "^1.9.93",

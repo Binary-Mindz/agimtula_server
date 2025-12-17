@@ -45,46 +45,36 @@ export class SubscriptionsService {
         perMonthInvoiceCount: true,
         planFeatures: true,
         invoiceAutoSyncIntervalIds: true,
-        packagePricing: {
-          select: {
-            id: true,
-            price: true,
-            setupFee: true,
-            freeTrialDays: true,
-            billingPeriod: true,
-          },
-        },
+        packagePricing: true,
       },
     });
 
+    // important part to get invoice auto-sync intervals related to plans
     const intervals = await this.prisma.invoiceAutoSyncInterval.findMany({
       where: {
         id: {
           in: plans.flatMap((plan) => plan.invoiceAutoSyncIntervalIds || []),
         },
       },
+      distinct: ['id'],
     });
-
-    const planing = plans.map((plan) => {
-      const invoiceIntervals = intervals.filter((interval) =>
-        plan.invoiceAutoSyncIntervalIds?.includes(interval.id),
-      );
-      return {
-        plan: {
-          id: plan.id,
-          planName: plan.planName,
-          isActive: plan.isActive,
-          description: plan.description,
-          perMonthInvoiceCount: plan.perMonthInvoiceCount,
-          planFeatures: plan.planFeatures,
-          packagePricing: plan.packagePricing,
-        },
-        invoiceIntervals,
-      };
-    });
+    const intervalsObject = new Map<string, any>(
+      intervals.map((interval) => [interval.id, interval]),
+    );
 
     return {
-      planing,
+      planing: plans.map((plan) => ({
+        id: plan.id,
+        planName: plan.planName,
+        isActive: plan.isActive,
+        description: plan.description,
+        perMonthInvoiceCount: plan.perMonthInvoiceCount,
+        planFeatures: plan.planFeatures,
+        packagePricing: plan.packagePricing,
+        invoiceAutoSyncIntervals: plan.invoiceAutoSyncIntervalIds?.map(
+          (intervalId: string) => intervalsObject.get(intervalId),
+        ),
+      })),
       message: 'Subscription plans retrieved successfully',
     };
   }

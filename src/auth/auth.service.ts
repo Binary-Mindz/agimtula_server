@@ -19,6 +19,7 @@ import uploadToCloudinary from 'src/config/cloudinary/cloudinary';
 import { deleteFromCloudinary } from 'src/config/cloudinary/deleteImage';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { VerifyTwoFADto } from './dto/two-fa.dto';
+import { cResponseData } from 'src/common/cResponse';
 
 @Injectable()
 export class AuthService {
@@ -76,15 +77,15 @@ export class AuthService {
       },
     });
 
-    return {
+    return cResponseData({
       message: 'User created successfully',
-      user: {
+      data: {
         id: user.id,
         firstName: user.profile?.firstName,
         lastName: user.profile?.lastName,
         email: user.email?.email,
       },
-    };
+    });
   }
 
   async login(loginDto: LoginDto) {
@@ -157,11 +158,13 @@ export class AuthService {
       `,
       );
 
-      return {
+      return cResponseData({
         message: 'Verify your 2FA code to complete login',
-        twoFactorEnabled: true,
-        userId: user.id,
-      };
+        data: {
+          twoFactorEnabled: true,
+          userId: user.id,
+        },
+      });
     }
 
     const accessToken = await this.generateAccessToken({
@@ -170,16 +173,16 @@ export class AuthService {
       role: user.role,
     });
 
-    return {
+    return cResponseData({
       message: 'Login successful',
-      user: {
+      data: {
         id: user.id,
         firstName: user.profile?.firstName,
         lastName: user.profile?.lastName,
         email: user.email.email,
+        accessToken,
       },
-      accessToken,
-    };
+    });
   }
 
   async verifyLogin2FA(dto: VerifyTwoFADto) {
@@ -217,16 +220,16 @@ export class AuthService {
       role: user.role,
     });
 
-    return {
+    return cResponseData({
       message: 'Login successful',
-      user: {
+      data: {
         id: user.id,
         firstName: user.profile?.firstName,
         lastName: user.profile?.lastName,
         email: user.email.email,
+        accessToken,
       },
-      accessToken,
-    };
+    });
   }
 
   async updatePassword(
@@ -257,9 +260,7 @@ export class AuthService {
       },
     });
 
-    return {
-      message: 'Password updated successfully',
-    };
+    return cResponseData({ message: 'Password updated successfully' });
   }
 
   async deleteAccount(userId: string) {
@@ -267,9 +268,9 @@ export class AuthService {
       where: { userId },
     });
 
-    return {
+    return cResponseData({
       message: 'Account deleted successfully',
-    };
+    });
   }
 
   async updateProfilepic(file: Express.Multer.File, userId: string) {
@@ -310,10 +311,10 @@ export class AuthService {
       throw new BadRequestException('User Updation Failed');
     }
 
-    return {
+    return cResponseData({
       message: 'Profile picture updated successfully',
-      profilePicture,
-    };
+      data: { profilePicture },
+    });
   }
 
   async removeProfilePic(userId: string) {
@@ -337,9 +338,9 @@ export class AuthService {
       },
     });
 
-    return {
+    return cResponseData({
       message: 'Profile picture removed successfully',
-    };
+    });
   }
 
   async updateProfile(userId: string, data: UpdateProfileDto) {
@@ -361,9 +362,9 @@ export class AuthService {
       throw new BadRequestException('User Updation Failed');
     }
 
-    return {
+    return cResponseData({
       message: 'Profile updated successfully',
-    };
+    });
   }
 
   async getProfile(userId: string) {
@@ -392,8 +393,8 @@ export class AuthService {
       throw new NotFoundException('User not found');
     }
 
-    return {
-      user: {
+    return cResponseData({
+      data: {
         firstName: user.profile?.firstName,
         lastName: user.profile?.lastName,
         email: user.email?.email,
@@ -401,7 +402,7 @@ export class AuthService {
         jobTitle: user.profile?.jobTitle,
         profilePicture: user.profile?.profilePicture,
       },
-    };
+    });
   }
 
   findAll() {

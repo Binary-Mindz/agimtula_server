@@ -1,13 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { InvoiceLayoutDto } from './dto/invoice-layout.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
+import { cResponseData } from 'src/common/cResponse';
 
 @Injectable()
 export class InvoiceLayoutService {
   constructor(private readonly prisma: PrismaService) {}
 
   async findByUser(userId: string) {
-    return this.prisma.invoiceLayout.findUnique({ where: { userId } });
+    const invoiceLayout = await this.prisma.invoiceLayout.findUnique({
+      where: { userId },
+    });
+
+    return cResponseData({ data: invoiceLayout });
   }
 
   async updateLayout(userId: string, dto: InvoiceLayoutDto) {
@@ -24,14 +29,17 @@ export class InvoiceLayoutService {
       if (dto.show_company_logo !== undefined)
         updateData.show_company_logo = !existing.show_company_logo;
 
-      return this.prisma.invoiceLayout.update({
+      const invoiceLayout = await this.prisma.invoiceLayout.update({
         where: { userId },
         data: updateData,
       });
+
+      return cResponseData({ data: invoiceLayout });
     } else {
-      return this.prisma.invoiceLayout.create({
+      const invoiceLayout = await this.prisma.invoiceLayout.create({
         data: { ...dto, userId },
       });
+      return cResponseData({ data: invoiceLayout });
     }
   }
 }

@@ -31,8 +31,12 @@ export class RedisServiceService implements OnModuleInit, OnModuleDestroy {
     return this.redisClient;
   }
 
-  async set(key: string, value: string, duration?: number) {
-    if (duration) {
+  async set(key: string, value: string, mode?: string, duration?: number) {
+    if (mode != 'EX' && duration) {
+      console.log('Unsupported mode for Redis set operation');
+      return;
+    }
+    if (mode === 'EX' && duration) {
       return await this.redisClient.set(key, value, 'EX', duration);
     }
     return await this.redisClient.set(key, value);

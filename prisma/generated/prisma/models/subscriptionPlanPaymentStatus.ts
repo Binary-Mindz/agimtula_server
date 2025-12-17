@@ -38,7 +38,6 @@ export type SubscriptionPlanPaymentStatusMinAggregateOutputType = {
   id: string | null
   pi_id: string | null
   subscriptionPlanHistoryId: string | null
-  userSubscriptionPlanId: string | null
   totalAmount: number | null
   paymentStatus: string | null
   createdAt: Date | null
@@ -48,7 +47,6 @@ export type SubscriptionPlanPaymentStatusMaxAggregateOutputType = {
   id: string | null
   pi_id: string | null
   subscriptionPlanHistoryId: string | null
-  userSubscriptionPlanId: string | null
   totalAmount: number | null
   paymentStatus: string | null
   createdAt: Date | null
@@ -58,7 +56,6 @@ export type SubscriptionPlanPaymentStatusCountAggregateOutputType = {
   id: number
   pi_id: number
   subscriptionPlanHistoryId: number
-  userSubscriptionPlanId: number
   totalAmount: number
   paymentStatus: number
   createdAt: number
@@ -78,7 +75,6 @@ export type SubscriptionPlanPaymentStatusMinAggregateInputType = {
   id?: true
   pi_id?: true
   subscriptionPlanHistoryId?: true
-  userSubscriptionPlanId?: true
   totalAmount?: true
   paymentStatus?: true
   createdAt?: true
@@ -88,7 +84,6 @@ export type SubscriptionPlanPaymentStatusMaxAggregateInputType = {
   id?: true
   pi_id?: true
   subscriptionPlanHistoryId?: true
-  userSubscriptionPlanId?: true
   totalAmount?: true
   paymentStatus?: true
   createdAt?: true
@@ -98,7 +93,6 @@ export type SubscriptionPlanPaymentStatusCountAggregateInputType = {
   id?: true
   pi_id?: true
   subscriptionPlanHistoryId?: true
-  userSubscriptionPlanId?: true
   totalAmount?: true
   paymentStatus?: true
   createdAt?: true
@@ -195,7 +189,6 @@ export type SubscriptionPlanPaymentStatusGroupByOutputType = {
   id: string
   pi_id: string
   subscriptionPlanHistoryId: string
-  userSubscriptionPlanId: string | null
   totalAmount: number
   paymentStatus: string
   createdAt: Date
@@ -228,7 +221,6 @@ export type subscriptionPlanPaymentStatusWhereInput = {
   id?: Prisma.StringFilter<"subscriptionPlanPaymentStatus"> | string
   pi_id?: Prisma.StringFilter<"subscriptionPlanPaymentStatus"> | string
   subscriptionPlanHistoryId?: Prisma.StringFilter<"subscriptionPlanPaymentStatus"> | string
-  userSubscriptionPlanId?: Prisma.StringNullableFilter<"subscriptionPlanPaymentStatus"> | string | null
   totalAmount?: Prisma.FloatFilter<"subscriptionPlanPaymentStatus"> | number
   paymentStatus?: Prisma.StringFilter<"subscriptionPlanPaymentStatus"> | string
   createdAt?: Prisma.DateTimeFilter<"subscriptionPlanPaymentStatus"> | Date | string
@@ -240,7 +232,6 @@ export type subscriptionPlanPaymentStatusOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   pi_id?: Prisma.SortOrder
   subscriptionPlanHistoryId?: Prisma.SortOrder
-  userSubscriptionPlanId?: Prisma.SortOrderInput | Prisma.SortOrder
   totalAmount?: Prisma.SortOrder
   paymentStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -252,7 +243,6 @@ export type subscriptionPlanPaymentStatusWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   pi_id?: string
   subscriptionPlanHistoryId?: string
-  userSubscriptionPlanId?: string
   AND?: Prisma.subscriptionPlanPaymentStatusWhereInput | Prisma.subscriptionPlanPaymentStatusWhereInput[]
   OR?: Prisma.subscriptionPlanPaymentStatusWhereInput[]
   NOT?: Prisma.subscriptionPlanPaymentStatusWhereInput | Prisma.subscriptionPlanPaymentStatusWhereInput[]
@@ -261,13 +251,12 @@ export type subscriptionPlanPaymentStatusWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"subscriptionPlanPaymentStatus"> | Date | string
   userSubscriptionPlanHistory?: Prisma.XOR<Prisma.UserSubscriptionPlanHistoryScalarRelationFilter, Prisma.userSubscriptionPlanHistoryWhereInput>
   userSubscriptionPlan?: Prisma.XOR<Prisma.UserSubscriptionPlanNullableScalarRelationFilter, Prisma.userSubscriptionPlanWhereInput> | null
-}, "id" | "id" | "pi_id" | "subscriptionPlanHistoryId" | "userSubscriptionPlanId">
+}, "id" | "id" | "pi_id" | "subscriptionPlanHistoryId">
 
 export type subscriptionPlanPaymentStatusOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   pi_id?: Prisma.SortOrder
   subscriptionPlanHistoryId?: Prisma.SortOrder
-  userSubscriptionPlanId?: Prisma.SortOrderInput | Prisma.SortOrder
   totalAmount?: Prisma.SortOrder
   paymentStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -285,7 +274,6 @@ export type subscriptionPlanPaymentStatusScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"subscriptionPlanPaymentStatus"> | string
   pi_id?: Prisma.StringWithAggregatesFilter<"subscriptionPlanPaymentStatus"> | string
   subscriptionPlanHistoryId?: Prisma.StringWithAggregatesFilter<"subscriptionPlanPaymentStatus"> | string
-  userSubscriptionPlanId?: Prisma.StringNullableWithAggregatesFilter<"subscriptionPlanPaymentStatus"> | string | null
   totalAmount?: Prisma.FloatWithAggregatesFilter<"subscriptionPlanPaymentStatus"> | number
   paymentStatus?: Prisma.StringWithAggregatesFilter<"subscriptionPlanPaymentStatus"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"subscriptionPlanPaymentStatus"> | Date | string
@@ -305,10 +293,10 @@ export type subscriptionPlanPaymentStatusUncheckedCreateInput = {
   id?: string
   pi_id: string
   subscriptionPlanHistoryId: string
-  userSubscriptionPlanId?: string | null
   totalAmount: number
   paymentStatus: string
   createdAt?: Date | string
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutSubscriptionPlanPaymentStatusInput
 }
 
 export type subscriptionPlanPaymentStatusUpdateInput = {
@@ -325,17 +313,16 @@ export type subscriptionPlanPaymentStatusUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   pi_id?: Prisma.StringFieldUpdateOperationsInput | string
   subscriptionPlanHistoryId?: Prisma.StringFieldUpdateOperationsInput | string
-  userSubscriptionPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutSubscriptionPlanPaymentStatusNestedInput
 }
 
 export type subscriptionPlanPaymentStatusCreateManyInput = {
   id?: string
   pi_id: string
   subscriptionPlanHistoryId: string
-  userSubscriptionPlanId?: string | null
   totalAmount: number
   paymentStatus: string
   createdAt?: Date | string
@@ -353,7 +340,6 @@ export type subscriptionPlanPaymentStatusUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   pi_id?: Prisma.StringFieldUpdateOperationsInput | string
   subscriptionPlanHistoryId?: Prisma.StringFieldUpdateOperationsInput | string
-  userSubscriptionPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -368,7 +354,6 @@ export type subscriptionPlanPaymentStatusCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   pi_id?: Prisma.SortOrder
   subscriptionPlanHistoryId?: Prisma.SortOrder
-  userSubscriptionPlanId?: Prisma.SortOrder
   totalAmount?: Prisma.SortOrder
   paymentStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -382,7 +367,6 @@ export type subscriptionPlanPaymentStatusMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   pi_id?: Prisma.SortOrder
   subscriptionPlanHistoryId?: Prisma.SortOrder
-  userSubscriptionPlanId?: Prisma.SortOrder
   totalAmount?: Prisma.SortOrder
   paymentStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -392,7 +376,6 @@ export type subscriptionPlanPaymentStatusMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   pi_id?: Prisma.SortOrder
   subscriptionPlanHistoryId?: Prisma.SortOrder
-  userSubscriptionPlanId?: Prisma.SortOrder
   totalAmount?: Prisma.SortOrder
   paymentStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -408,23 +391,7 @@ export type subscriptionPlanPaymentStatusCreateNestedOneWithoutUserSubscriptionP
   connect?: Prisma.subscriptionPlanPaymentStatusWhereUniqueInput
 }
 
-export type subscriptionPlanPaymentStatusUncheckedCreateNestedOneWithoutUserSubscriptionPlanInput = {
-  create?: Prisma.XOR<Prisma.subscriptionPlanPaymentStatusCreateWithoutUserSubscriptionPlanInput, Prisma.subscriptionPlanPaymentStatusUncheckedCreateWithoutUserSubscriptionPlanInput>
-  connectOrCreate?: Prisma.subscriptionPlanPaymentStatusCreateOrConnectWithoutUserSubscriptionPlanInput
-  connect?: Prisma.subscriptionPlanPaymentStatusWhereUniqueInput
-}
-
 export type subscriptionPlanPaymentStatusUpdateOneWithoutUserSubscriptionPlanNestedInput = {
-  create?: Prisma.XOR<Prisma.subscriptionPlanPaymentStatusCreateWithoutUserSubscriptionPlanInput, Prisma.subscriptionPlanPaymentStatusUncheckedCreateWithoutUserSubscriptionPlanInput>
-  connectOrCreate?: Prisma.subscriptionPlanPaymentStatusCreateOrConnectWithoutUserSubscriptionPlanInput
-  upsert?: Prisma.subscriptionPlanPaymentStatusUpsertWithoutUserSubscriptionPlanInput
-  disconnect?: Prisma.subscriptionPlanPaymentStatusWhereInput | boolean
-  delete?: Prisma.subscriptionPlanPaymentStatusWhereInput | boolean
-  connect?: Prisma.subscriptionPlanPaymentStatusWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.subscriptionPlanPaymentStatusUpdateToOneWithWhereWithoutUserSubscriptionPlanInput, Prisma.subscriptionPlanPaymentStatusUpdateWithoutUserSubscriptionPlanInput>, Prisma.subscriptionPlanPaymentStatusUncheckedUpdateWithoutUserSubscriptionPlanInput>
-}
-
-export type subscriptionPlanPaymentStatusUncheckedUpdateOneWithoutUserSubscriptionPlanNestedInput = {
   create?: Prisma.XOR<Prisma.subscriptionPlanPaymentStatusCreateWithoutUserSubscriptionPlanInput, Prisma.subscriptionPlanPaymentStatusUncheckedCreateWithoutUserSubscriptionPlanInput>
   connectOrCreate?: Prisma.subscriptionPlanPaymentStatusCreateOrConnectWithoutUserSubscriptionPlanInput
   upsert?: Prisma.subscriptionPlanPaymentStatusUpsertWithoutUserSubscriptionPlanInput
@@ -530,10 +497,10 @@ export type subscriptionPlanPaymentStatusCreateWithoutUserSubscriptionPlanHistor
 export type subscriptionPlanPaymentStatusUncheckedCreateWithoutUserSubscriptionPlanHistoryInput = {
   id?: string
   pi_id: string
-  userSubscriptionPlanId?: string | null
   totalAmount: number
   paymentStatus: string
   createdAt?: Date | string
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutSubscriptionPlanPaymentStatusInput
 }
 
 export type subscriptionPlanPaymentStatusCreateOrConnectWithoutUserSubscriptionPlanHistoryInput = {
@@ -564,10 +531,10 @@ export type subscriptionPlanPaymentStatusUpdateWithoutUserSubscriptionPlanHistor
 export type subscriptionPlanPaymentStatusUncheckedUpdateWithoutUserSubscriptionPlanHistoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   pi_id?: Prisma.StringFieldUpdateOperationsInput | string
-  userSubscriptionPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutSubscriptionPlanPaymentStatusNestedInput
 }
 
 
@@ -576,7 +543,6 @@ export type subscriptionPlanPaymentStatusSelect<ExtArgs extends runtime.Types.Ex
   id?: boolean
   pi_id?: boolean
   subscriptionPlanHistoryId?: boolean
-  userSubscriptionPlanId?: boolean
   totalAmount?: boolean
   paymentStatus?: boolean
   createdAt?: boolean
@@ -588,48 +554,41 @@ export type subscriptionPlanPaymentStatusSelectCreateManyAndReturn<ExtArgs exten
   id?: boolean
   pi_id?: boolean
   subscriptionPlanHistoryId?: boolean
-  userSubscriptionPlanId?: boolean
   totalAmount?: boolean
   paymentStatus?: boolean
   createdAt?: boolean
   userSubscriptionPlanHistory?: boolean | Prisma.userSubscriptionPlanHistoryDefaultArgs<ExtArgs>
-  userSubscriptionPlan?: boolean | Prisma.subscriptionPlanPaymentStatus$userSubscriptionPlanArgs<ExtArgs>
 }, ExtArgs["result"]["subscriptionPlanPaymentStatus"]>
 
 export type subscriptionPlanPaymentStatusSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   pi_id?: boolean
   subscriptionPlanHistoryId?: boolean
-  userSubscriptionPlanId?: boolean
   totalAmount?: boolean
   paymentStatus?: boolean
   createdAt?: boolean
   userSubscriptionPlanHistory?: boolean | Prisma.userSubscriptionPlanHistoryDefaultArgs<ExtArgs>
-  userSubscriptionPlan?: boolean | Prisma.subscriptionPlanPaymentStatus$userSubscriptionPlanArgs<ExtArgs>
 }, ExtArgs["result"]["subscriptionPlanPaymentStatus"]>
 
 export type subscriptionPlanPaymentStatusSelectScalar = {
   id?: boolean
   pi_id?: boolean
   subscriptionPlanHistoryId?: boolean
-  userSubscriptionPlanId?: boolean
   totalAmount?: boolean
   paymentStatus?: boolean
   createdAt?: boolean
 }
 
-export type subscriptionPlanPaymentStatusOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "pi_id" | "subscriptionPlanHistoryId" | "userSubscriptionPlanId" | "totalAmount" | "paymentStatus" | "createdAt", ExtArgs["result"]["subscriptionPlanPaymentStatus"]>
+export type subscriptionPlanPaymentStatusOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "pi_id" | "subscriptionPlanHistoryId" | "totalAmount" | "paymentStatus" | "createdAt", ExtArgs["result"]["subscriptionPlanPaymentStatus"]>
 export type subscriptionPlanPaymentStatusInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   userSubscriptionPlanHistory?: boolean | Prisma.userSubscriptionPlanHistoryDefaultArgs<ExtArgs>
   userSubscriptionPlan?: boolean | Prisma.subscriptionPlanPaymentStatus$userSubscriptionPlanArgs<ExtArgs>
 }
 export type subscriptionPlanPaymentStatusIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   userSubscriptionPlanHistory?: boolean | Prisma.userSubscriptionPlanHistoryDefaultArgs<ExtArgs>
-  userSubscriptionPlan?: boolean | Prisma.subscriptionPlanPaymentStatus$userSubscriptionPlanArgs<ExtArgs>
 }
 export type subscriptionPlanPaymentStatusIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   userSubscriptionPlanHistory?: boolean | Prisma.userSubscriptionPlanHistoryDefaultArgs<ExtArgs>
-  userSubscriptionPlan?: boolean | Prisma.subscriptionPlanPaymentStatus$userSubscriptionPlanArgs<ExtArgs>
 }
 
 export type $subscriptionPlanPaymentStatusPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -642,7 +601,6 @@ export type $subscriptionPlanPaymentStatusPayload<ExtArgs extends runtime.Types.
     id: string
     pi_id: string
     subscriptionPlanHistoryId: string
-    userSubscriptionPlanId: string | null
     totalAmount: number
     paymentStatus: string
     createdAt: Date
@@ -1074,7 +1032,6 @@ export interface subscriptionPlanPaymentStatusFieldRefs {
   readonly id: Prisma.FieldRef<"subscriptionPlanPaymentStatus", 'String'>
   readonly pi_id: Prisma.FieldRef<"subscriptionPlanPaymentStatus", 'String'>
   readonly subscriptionPlanHistoryId: Prisma.FieldRef<"subscriptionPlanPaymentStatus", 'String'>
-  readonly userSubscriptionPlanId: Prisma.FieldRef<"subscriptionPlanPaymentStatus", 'String'>
   readonly totalAmount: Prisma.FieldRef<"subscriptionPlanPaymentStatus", 'Float'>
   readonly paymentStatus: Prisma.FieldRef<"subscriptionPlanPaymentStatus", 'String'>
   readonly createdAt: Prisma.FieldRef<"subscriptionPlanPaymentStatus", 'DateTime'>

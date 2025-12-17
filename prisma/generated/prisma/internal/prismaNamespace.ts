@@ -1979,6 +1979,7 @@ export type ImapConfigurationScalarFieldEnum = (typeof ImapConfigurationScalarFi
 export const UserSubscriptionPlanScalarFieldEnum = {
   id: 'id',
   UserId: 'UserId',
+  subscriptionPlanPaymentStatusId: 'subscriptionPlanPaymentStatusId',
   isLimitedInvoicePerMonth: 'isLimitedInvoicePerMonth',
   perMonthInvoiceCount: 'perMonthInvoiceCount',
   realtimeImapChecking: 'realtimeImapChecking',
@@ -2015,7 +2016,6 @@ export const SubscriptionPlanPaymentStatusScalarFieldEnum = {
   id: 'id',
   pi_id: 'pi_id',
   subscriptionPlanHistoryId: 'subscriptionPlanHistoryId',
-  userSubscriptionPlanId: 'userSubscriptionPlanId',
   totalAmount: 'totalAmount',
   paymentStatus: 'paymentStatus',
   createdAt: 'createdAt'
@@ -2178,10 +2178,6 @@ export const SubscriptionPlanScalarFieldEnum = {
   planName: 'planName',
   isActive: 'isActive',
   description: 'description',
-  isLimitedInvoicePerMonth: 'isLimitedInvoicePerMonth',
-  perMonthInvoiceCount: 'perMonthInvoiceCount',
-  invoiceAutoSyncIntervalIds: 'invoiceAutoSyncIntervalIds',
-  planFeatures: 'planFeatures',
   createdAt: 'createdAt'
 } as const
 
@@ -2190,6 +2186,10 @@ export type SubscriptionPlanScalarFieldEnum = (typeof SubscriptionPlanScalarFiel
 
 export const PackagePricingScalarFieldEnum = {
   id: 'id',
+  isLimitedInvoicePerMonth: 'isLimitedInvoicePerMonth',
+  perMonthInvoiceCount: 'perMonthInvoiceCount',
+  invoiceAutoSyncIntervalIds: 'invoiceAutoSyncIntervalIds',
+  planFeatures: 'planFeatures',
   price: 'price',
   setupFee: 'setupFee',
   freeTrialDays: 'freeTrialDays',

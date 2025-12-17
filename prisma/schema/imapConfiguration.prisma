@@ -29,7 +29,8 @@ model userSubscriptionPlan {
     UserId String @unique
     user   User   @relation(fields: [UserId], references: [id])
 
-    subscriptionPlanPaymentStatus subscriptionPlanPaymentStatus? @relation(name: "PaymentStatusToSubscriptionPlan")
+    subscriptionPlanPaymentStatusId String @unique
+    subscriptionPlanPaymentStatus subscriptionPlanPaymentStatus? @relation(name: "PaymentStatusToSubscriptionPlan", fields: [subscriptionPlanPaymentStatusId], references: [id])
 
     isLimitedInvoicePerMonth Boolean
     perMonthInvoiceCount     Int
@@ -86,12 +87,11 @@ model subscriptionPlanPaymentStatus {
     userSubscriptionPlanHistory userSubscriptionPlanHistory @relation(fields: [subscriptionPlanHistoryId], references: [id])
 
     // user subscription plan relation payment status
-    userSubscriptionPlanId String?               @unique
-    userSubscriptionPlan   userSubscriptionPlan? @relation(name: "PaymentStatusToSubscriptionPlan", fields: [userSubscriptionPlanId], references: [id])
+    userSubscriptionPlan   userSubscriptionPlan? @relation(name: "PaymentStatusToSubscriptionPlan")
 
     totalAmount Float
 
-    paymentStatus String
+    paymentStatus String // e.g., 'PAID', 'PENDING', 'FAILED'
 
     createdAt DateTime @default(now())
 

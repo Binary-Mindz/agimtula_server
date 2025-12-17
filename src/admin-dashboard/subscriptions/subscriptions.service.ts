@@ -14,26 +14,31 @@ export class SubscriptionsService {
         planName: dto.planName,
         isActive: dto.isActive,
         description: dto.description,
-        perMonthInvoiceCount: dto.perMonthInvoiceCount,
-        planFeatures: dto.planFeatures,
         packagePricing: {
           createMany: {
             data: dto.packagePricingDto.map((packageItem) => ({
+              perMonthInvoiceCount: dto.perMonthInvoiceCount,
+              planFeatures: dto.planFeatures,
+              invoiceAutoSyncIntervalIds: dto.invoiceAutoSyncIntervalIds,
+
               price: packageItem.price,
               setupFee: packageItem.setupFee,
               freeTrialDays: packageItem.freeTrialDays,
+
               billingPeriod: packageItem.billingPeriod,
             })),
           },
         },
-        invoiceAutoSyncIntervalIds: dto.invoiceAutoSyncIntervalIds,
       },
       include: {
         packagePricing: true,
       },
     });
 
-    return plan;
+    return cResponseData({
+      message: 'Subscription plan created successfully',
+      data: plan,
+    });
   }
 
   async getSubscriptionPlans() {
@@ -43,11 +48,19 @@ export class SubscriptionsService {
       },
     });
 
+    const invoiceIds = plans
+      .map((plan) =>
+        plan.packagePricing.flatMap(
+          (pricing) => pricing.invoiceAutoSyncIntervalIds,
+        ),
+      )
+      .flat();
+
     // important part to get invoice auto-sync intervals related to plans
     const intervals = await this.prisma.invoiceAutoSyncInterval.findMany({
       where: {
         id: {
-          in: plans.flatMap((plan) => plan.invoiceAutoSyncIntervalIds || []),
+          in: invoiceIds || [],
         },
       },
       distinct: ['id'],
@@ -56,18 +69,18 @@ export class SubscriptionsService {
       intervals.map((interval) => [interval.id, interval]),
     );
 
-    return plans.map((plan) => ({
-      id: plan.id,
-      planName: plan.planName,
-      isActive: plan.isActive,
-      description: plan.description,
-      perMonthInvoiceCount: plan.perMonthInvoiceCount,
-      planFeatures: plan.planFeatures,
-      packagePricing: plan.packagePricing,
-      invoiceAutoSyncIntervals: plan.invoiceAutoSyncIntervalIds?.map(
-        (intervalId: string) => intervalsObject.get(intervalId),
-      ),
-    }));
+    return cResponseData({
+      data: plans.map((plan) => ({
+        id: plan.id,
+        planName: plan.planName,
+        isActive: plan.isActive,
+        description: plan.description,
+        packagePricing: plan.packagePricing,
+        invoiceAutoSyncIntervals: invoiceIds?.map((intervalId: string) =>
+          intervalsObject.get(intervalId),
+        ),
+      })),
+    });
   }
 
   // async getSubscriptionManagementData() {
@@ -91,10 +104,13 @@ export class SubscriptionsService {
     if (!plan) {
       throw new Error('Subscription plan not found');
     }
+
     const interval = await this.prisma.invoiceAutoSyncInterval.findMany({
       where: {
         id: {
-          in: plan.invoiceAutoSyncIntervalIds,
+          in: plan.packagePricing.flatMap(
+            (pricing) => pricing.invoiceAutoSyncIntervalIds,
+          ),
         },
       },
     });
@@ -106,8 +122,6 @@ export class SubscriptionsService {
         planName: plan.planName,
         isActive: plan.isActive,
         description: plan.description,
-        perMonthInvoiceCount: plan.perMonthInvoiceCount,
-        planFeatures: plan.planFeatures,
         packagePricing: plan.packagePricing,
         invoiceAutoSyncIntervals: interval,
       },

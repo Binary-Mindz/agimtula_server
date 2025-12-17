@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { CreateSubscriptionPlanDto } from './dto/create-subscription.dto';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
@@ -13,7 +14,6 @@ export class SubscriptionsService {
         isActive: dto.isActive,
         description: dto.description,
         perMonthInvoiceCount: dto.perMonthInvoiceCount,
-        realtimeImapChecking: dto.realtimeImapChecking,
         planFeatures: dto.planFeatures,
         packagePricing: {
           createMany: {
@@ -25,6 +25,7 @@ export class SubscriptionsService {
             })),
           },
         },
+        invoiceAutoSyncIntervalIds: dto.invoiceAutoSyncIntervalIds,
       },
       include: {
         packagePricing: true,
@@ -36,12 +37,56 @@ export class SubscriptionsService {
 
   async getSubscriptionPlans() {
     const plans = await this.prisma.subscriptionPlan.findMany({
-      include: {
-        packagePricing: true,
+      select: {
+        id: true,
+        planName: true,
+        isActive: true,
+        description: true,
+        perMonthInvoiceCount: true,
+        planFeatures: true,
+        invoiceAutoSyncIntervalIds: true,
+        packagePricing: {
+          select: {
+            id: true,
+            price: true,
+            setupFee: true,
+            freeTrialDays: true,
+            billingPeriod: true,
+          },
+        },
       },
     });
 
-    return { plans, message: 'Subscription plans retrieved successfully' };
+    const intervals = await this.prisma.invoiceAutoSyncInterval.findMany({
+      where: {
+        id: {
+          in: plans.flatMap((plan) => plan.invoiceAutoSyncIntervalIds || []),
+        },
+      },
+    });
+
+    const planing = plans.map((plan) => {
+      const invoiceIntervals = intervals.filter((interval) =>
+        plan.invoiceAutoSyncIntervalIds?.includes(interval.id),
+      );
+      return {
+        plan: {
+          id: plan.id,
+          planName: plan.planName,
+          isActive: plan.isActive,
+          description: plan.description,
+          perMonthInvoiceCount: plan.perMonthInvoiceCount,
+          planFeatures: plan.planFeatures,
+          packagePricing: plan.packagePricing,
+        },
+        invoiceIntervals,
+      };
+    });
+
+    return {
+      planing,
+      message: 'Subscription plans retrieved successfully',
+    };
   }
 
   // async getSubscriptionManagementData() {

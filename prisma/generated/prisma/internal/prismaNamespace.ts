@@ -401,7 +401,6 @@ export const ModelName = {
   NotificationSetting: 'NotificationSetting',
   SubscriptionPlan: 'SubscriptionPlan',
   PackagePricing: 'PackagePricing',
-  realtimeSelectionTime: 'realtimeSelectionTime',
   invoiceAutoSyncInterval: 'invoiceAutoSyncInterval',
   User: 'User',
   Email: 'Email'
@@ -420,7 +419,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "mileage" | "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "profile" | "forgetPass" | "twoFA" | "language" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "realtimeSelectionTime" | "invoiceAutoSyncInterval" | "user" | "email"
+    modelProps: "mileage" | "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "profile" | "forgetPass" | "twoFA" | "language" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "user" | "email"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1682,80 +1681,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    realtimeSelectionTime: {
-      payload: Prisma.$realtimeSelectionTimePayload<ExtArgs>
-      fields: Prisma.realtimeSelectionTimeFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.realtimeSelectionTimeFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$realtimeSelectionTimePayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.realtimeSelectionTimeFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$realtimeSelectionTimePayload>
-        }
-        findFirst: {
-          args: Prisma.realtimeSelectionTimeFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$realtimeSelectionTimePayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.realtimeSelectionTimeFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$realtimeSelectionTimePayload>
-        }
-        findMany: {
-          args: Prisma.realtimeSelectionTimeFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$realtimeSelectionTimePayload>[]
-        }
-        create: {
-          args: Prisma.realtimeSelectionTimeCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$realtimeSelectionTimePayload>
-        }
-        createMany: {
-          args: Prisma.realtimeSelectionTimeCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.realtimeSelectionTimeCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$realtimeSelectionTimePayload>[]
-        }
-        delete: {
-          args: Prisma.realtimeSelectionTimeDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$realtimeSelectionTimePayload>
-        }
-        update: {
-          args: Prisma.realtimeSelectionTimeUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$realtimeSelectionTimePayload>
-        }
-        deleteMany: {
-          args: Prisma.realtimeSelectionTimeDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.realtimeSelectionTimeUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.realtimeSelectionTimeUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$realtimeSelectionTimePayload>[]
-        }
-        upsert: {
-          args: Prisma.realtimeSelectionTimeUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$realtimeSelectionTimePayload>
-        }
-        aggregate: {
-          args: Prisma.RealtimeSelectionTimeAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateRealtimeSelectionTime>
-        }
-        groupBy: {
-          args: Prisma.realtimeSelectionTimeGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.RealtimeSelectionTimeGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.realtimeSelectionTimeCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.RealtimeSelectionTimeCountAggregateOutputType> | number
-        }
-      }
-    }
     invoiceAutoSyncInterval: {
       payload: Prisma.$invoiceAutoSyncIntervalPayload<ExtArgs>
       fields: Prisma.invoiceAutoSyncIntervalFieldRefs
@@ -2088,6 +2013,7 @@ export type UserSubscriptionPlanHistoryScalarFieldEnum = (typeof UserSubscriptio
 
 export const SubscriptionPlanPaymentStatusScalarFieldEnum = {
   id: 'id',
+  pi_id: 'pi_id',
   subscriptionPlanHistoryId: 'subscriptionPlanHistoryId',
   userSubscriptionPlanId: 'userSubscriptionPlanId',
   totalAmount: 'totalAmount',
@@ -2254,7 +2180,7 @@ export const SubscriptionPlanScalarFieldEnum = {
   description: 'description',
   isLimitedInvoicePerMonth: 'isLimitedInvoicePerMonth',
   perMonthInvoiceCount: 'perMonthInvoiceCount',
-  realtimeImapChecking: 'realtimeImapChecking',
+  invoiceAutoSyncIntervalIds: 'invoiceAutoSyncIntervalIds',
   planFeatures: 'planFeatures',
   createdAt: 'createdAt'
 } as const
@@ -2272,14 +2198,6 @@ export const PackagePricingScalarFieldEnum = {
 } as const
 
 export type PackagePricingScalarFieldEnum = (typeof PackagePricingScalarFieldEnum)[keyof typeof PackagePricingScalarFieldEnum]
-
-
-export const RealtimeSelectionTimeScalarFieldEnum = {
-  id: 'id',
-  time: 'time'
-} as const
-
-export type RealtimeSelectionTimeScalarFieldEnum = (typeof RealtimeSelectionTimeScalarFieldEnum)[keyof typeof RealtimeSelectionTimeScalarFieldEnum]
 
 
 export const InvoiceAutoSyncIntervalScalarFieldEnum = {
@@ -2560,7 +2478,6 @@ export type GlobalOmitConfig = {
   notificationSetting?: Prisma.NotificationSettingOmit
   subscriptionPlan?: Prisma.SubscriptionPlanOmit
   packagePricing?: Prisma.PackagePricingOmit
-  realtimeSelectionTime?: Prisma.realtimeSelectionTimeOmit
   invoiceAutoSyncInterval?: Prisma.invoiceAutoSyncIntervalOmit
   user?: Prisma.UserOmit
   email?: Prisma.EmailOmit

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { CreateSubscriptionPlanDto } from './dto/create-subscription.dto';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
@@ -13,7 +14,6 @@ export class SubscriptionsService {
         isActive: dto.isActive,
         description: dto.description,
         perMonthInvoiceCount: dto.perMonthInvoiceCount,
-        realtimeImapChecking: dto.realtimeImapChecking,
         planFeatures: dto.planFeatures,
         packagePricing: {
           createMany: {
@@ -25,6 +25,7 @@ export class SubscriptionsService {
             })),
           },
         },
+        invoiceAutoSyncIntervalIds: dto.invoiceAutoSyncIntervalIds,
       },
       include: {
         packagePricing: true,
@@ -41,7 +42,34 @@ export class SubscriptionsService {
       },
     });
 
-    return { plans, message: 'Subscription plans retrieved successfully' };
+    // important part to get invoice auto-sync intervals related to plans
+    const intervals = await this.prisma.invoiceAutoSyncInterval.findMany({
+      where: {
+        id: {
+          in: plans.flatMap((plan) => plan.invoiceAutoSyncIntervalIds || []),
+        },
+      },
+      distinct: ['id'],
+    });
+    const intervalsObject = new Map<string, any>(
+      intervals.map((interval) => [interval.id, interval]),
+    );
+
+    return {
+      planing: plans.map((plan) => ({
+        id: plan.id,
+        planName: plan.planName,
+        isActive: plan.isActive,
+        description: plan.description,
+        perMonthInvoiceCount: plan.perMonthInvoiceCount,
+        planFeatures: plan.planFeatures,
+        packagePricing: plan.packagePricing,
+        invoiceAutoSyncIntervals: plan.invoiceAutoSyncIntervalIds?.map(
+          (intervalId: string) => intervalsObject.get(intervalId),
+        ),
+      })),
+      message: 'Subscription plans retrieved successfully',
+    };
   }
 
   // async getSubscriptionManagementData() {

@@ -68,7 +68,6 @@ export const ModelName = {
   NotificationSetting: 'NotificationSetting',
   SubscriptionPlan: 'SubscriptionPlan',
   PackagePricing: 'PackagePricing',
-  realtimeSelectionTime: 'realtimeSelectionTime',
   invoiceAutoSyncInterval: 'invoiceAutoSyncInterval',
   User: 'User',
   Email: 'Email'
@@ -161,6 +160,7 @@ export type UserSubscriptionPlanHistoryScalarFieldEnum = (typeof UserSubscriptio
 
 export const SubscriptionPlanPaymentStatusScalarFieldEnum = {
   id: 'id',
+  pi_id: 'pi_id',
   subscriptionPlanHistoryId: 'subscriptionPlanHistoryId',
   userSubscriptionPlanId: 'userSubscriptionPlanId',
   totalAmount: 'totalAmount',
@@ -327,7 +327,7 @@ export const SubscriptionPlanScalarFieldEnum = {
   description: 'description',
   isLimitedInvoicePerMonth: 'isLimitedInvoicePerMonth',
   perMonthInvoiceCount: 'perMonthInvoiceCount',
-  realtimeImapChecking: 'realtimeImapChecking',
+  invoiceAutoSyncIntervalIds: 'invoiceAutoSyncIntervalIds',
   planFeatures: 'planFeatures',
   createdAt: 'createdAt'
 } as const
@@ -345,14 +345,6 @@ export const PackagePricingScalarFieldEnum = {
 } as const
 
 export type PackagePricingScalarFieldEnum = (typeof PackagePricingScalarFieldEnum)[keyof typeof PackagePricingScalarFieldEnum]
-
-
-export const RealtimeSelectionTimeScalarFieldEnum = {
-  id: 'id',
-  time: 'time'
-} as const
-
-export type RealtimeSelectionTimeScalarFieldEnum = (typeof RealtimeSelectionTimeScalarFieldEnum)[keyof typeof RealtimeSelectionTimeScalarFieldEnum]
 
 
 export const InvoiceAutoSyncIntervalScalarFieldEnum = {

@@ -40,21 +40,14 @@ export class ImapApisService {
   createCronForAccount(email: string, minutes: number) {
     const jobName = `cron_${email}`;
     const cronTime = `*/5 * * * * *`; // Every 'minutes' minutes
-    const stopDateT = new Date();
-    const stopDate = new Date();
-    stopDate.setMinutes(stopDate.getMinutes() + 10); // Stop after 10 minutes
 
     this.stopCronForAccount(email); // Stop existing job if any
 
-    let count = 0
+
 
     const job = new CronJob(cronTime, () => {
       // this.runCronJob(email);
-      count += 1
       console.log(`Running cron job for ${email}`);
-      console.log(stopDateT);
-      console.log(stopDate);
-      console.log(count);
     });
 
     //, null, false, null, 'UTC', null, endDate

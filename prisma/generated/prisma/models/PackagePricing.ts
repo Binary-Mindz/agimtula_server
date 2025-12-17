@@ -27,12 +27,14 @@ export type AggregatePackagePricing = {
 }
 
 export type PackagePricingAvgAggregateOutputType = {
+  perMonthInvoiceCount: number | null
   price: number | null
   setupFee: number | null
   freeTrialDays: number | null
 }
 
 export type PackagePricingSumAggregateOutputType = {
+  perMonthInvoiceCount: number | null
   price: number | null
   setupFee: number | null
   freeTrialDays: number | null
@@ -40,6 +42,8 @@ export type PackagePricingSumAggregateOutputType = {
 
 export type PackagePricingMinAggregateOutputType = {
   id: string | null
+  isLimitedInvoicePerMonth: boolean | null
+  perMonthInvoiceCount: number | null
   price: number | null
   setupFee: number | null
   freeTrialDays: number | null
@@ -49,6 +53,8 @@ export type PackagePricingMinAggregateOutputType = {
 
 export type PackagePricingMaxAggregateOutputType = {
   id: string | null
+  isLimitedInvoicePerMonth: boolean | null
+  perMonthInvoiceCount: number | null
   price: number | null
   setupFee: number | null
   freeTrialDays: number | null
@@ -58,6 +64,10 @@ export type PackagePricingMaxAggregateOutputType = {
 
 export type PackagePricingCountAggregateOutputType = {
   id: number
+  isLimitedInvoicePerMonth: number
+  perMonthInvoiceCount: number
+  invoiceAutoSyncIntervalIds: number
+  planFeatures: number
   price: number
   setupFee: number
   freeTrialDays: number
@@ -68,12 +78,14 @@ export type PackagePricingCountAggregateOutputType = {
 
 
 export type PackagePricingAvgAggregateInputType = {
+  perMonthInvoiceCount?: true
   price?: true
   setupFee?: true
   freeTrialDays?: true
 }
 
 export type PackagePricingSumAggregateInputType = {
+  perMonthInvoiceCount?: true
   price?: true
   setupFee?: true
   freeTrialDays?: true
@@ -81,6 +93,8 @@ export type PackagePricingSumAggregateInputType = {
 
 export type PackagePricingMinAggregateInputType = {
   id?: true
+  isLimitedInvoicePerMonth?: true
+  perMonthInvoiceCount?: true
   price?: true
   setupFee?: true
   freeTrialDays?: true
@@ -90,6 +104,8 @@ export type PackagePricingMinAggregateInputType = {
 
 export type PackagePricingMaxAggregateInputType = {
   id?: true
+  isLimitedInvoicePerMonth?: true
+  perMonthInvoiceCount?: true
   price?: true
   setupFee?: true
   freeTrialDays?: true
@@ -99,6 +115,10 @@ export type PackagePricingMaxAggregateInputType = {
 
 export type PackagePricingCountAggregateInputType = {
   id?: true
+  isLimitedInvoicePerMonth?: true
+  perMonthInvoiceCount?: true
+  invoiceAutoSyncIntervalIds?: true
+  planFeatures?: true
   price?: true
   setupFee?: true
   freeTrialDays?: true
@@ -195,6 +215,10 @@ export type PackagePricingGroupByArgs<ExtArgs extends runtime.Types.Extensions.I
 
 export type PackagePricingGroupByOutputType = {
   id: string
+  isLimitedInvoicePerMonth: boolean
+  perMonthInvoiceCount: number
+  invoiceAutoSyncIntervalIds: string[]
+  planFeatures: string[]
   price: number
   setupFee: number
   freeTrialDays: number | null
@@ -227,6 +251,10 @@ export type PackagePricingWhereInput = {
   OR?: Prisma.PackagePricingWhereInput[]
   NOT?: Prisma.PackagePricingWhereInput | Prisma.PackagePricingWhereInput[]
   id?: Prisma.StringFilter<"PackagePricing"> | string
+  isLimitedInvoicePerMonth?: Prisma.BoolFilter<"PackagePricing"> | boolean
+  perMonthInvoiceCount?: Prisma.IntFilter<"PackagePricing"> | number
+  invoiceAutoSyncIntervalIds?: Prisma.StringNullableListFilter<"PackagePricing">
+  planFeatures?: Prisma.StringNullableListFilter<"PackagePricing">
   price?: Prisma.FloatFilter<"PackagePricing"> | number
   setupFee?: Prisma.FloatFilter<"PackagePricing"> | number
   freeTrialDays?: Prisma.IntNullableFilter<"PackagePricing"> | number | null
@@ -237,6 +265,10 @@ export type PackagePricingWhereInput = {
 
 export type PackagePricingOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  isLimitedInvoicePerMonth?: Prisma.SortOrder
+  perMonthInvoiceCount?: Prisma.SortOrder
+  invoiceAutoSyncIntervalIds?: Prisma.SortOrder
+  planFeatures?: Prisma.SortOrder
   price?: Prisma.SortOrder
   setupFee?: Prisma.SortOrder
   freeTrialDays?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -250,6 +282,10 @@ export type PackagePricingWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.PackagePricingWhereInput | Prisma.PackagePricingWhereInput[]
   OR?: Prisma.PackagePricingWhereInput[]
   NOT?: Prisma.PackagePricingWhereInput | Prisma.PackagePricingWhereInput[]
+  isLimitedInvoicePerMonth?: Prisma.BoolFilter<"PackagePricing"> | boolean
+  perMonthInvoiceCount?: Prisma.IntFilter<"PackagePricing"> | number
+  invoiceAutoSyncIntervalIds?: Prisma.StringNullableListFilter<"PackagePricing">
+  planFeatures?: Prisma.StringNullableListFilter<"PackagePricing">
   price?: Prisma.FloatFilter<"PackagePricing"> | number
   setupFee?: Prisma.FloatFilter<"PackagePricing"> | number
   freeTrialDays?: Prisma.IntNullableFilter<"PackagePricing"> | number | null
@@ -260,6 +296,10 @@ export type PackagePricingWhereUniqueInput = Prisma.AtLeast<{
 
 export type PackagePricingOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  isLimitedInvoicePerMonth?: Prisma.SortOrder
+  perMonthInvoiceCount?: Prisma.SortOrder
+  invoiceAutoSyncIntervalIds?: Prisma.SortOrder
+  planFeatures?: Prisma.SortOrder
   price?: Prisma.SortOrder
   setupFee?: Prisma.SortOrder
   freeTrialDays?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -277,6 +317,10 @@ export type PackagePricingScalarWhereWithAggregatesInput = {
   OR?: Prisma.PackagePricingScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PackagePricingScalarWhereWithAggregatesInput | Prisma.PackagePricingScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"PackagePricing"> | string
+  isLimitedInvoicePerMonth?: Prisma.BoolWithAggregatesFilter<"PackagePricing"> | boolean
+  perMonthInvoiceCount?: Prisma.IntWithAggregatesFilter<"PackagePricing"> | number
+  invoiceAutoSyncIntervalIds?: Prisma.StringNullableListFilter<"PackagePricing">
+  planFeatures?: Prisma.StringNullableListFilter<"PackagePricing">
   price?: Prisma.FloatWithAggregatesFilter<"PackagePricing"> | number
   setupFee?: Prisma.FloatWithAggregatesFilter<"PackagePricing"> | number
   freeTrialDays?: Prisma.IntNullableWithAggregatesFilter<"PackagePricing"> | number | null
@@ -286,6 +330,10 @@ export type PackagePricingScalarWhereWithAggregatesInput = {
 
 export type PackagePricingCreateInput = {
   id?: string
+  isLimitedInvoicePerMonth?: boolean
+  perMonthInvoiceCount?: number
+  invoiceAutoSyncIntervalIds?: Prisma.PackagePricingCreateinvoiceAutoSyncIntervalIdsInput | string[]
+  planFeatures?: Prisma.PackagePricingCreateplanFeaturesInput | string[]
   price?: number
   setupFee?: number
   freeTrialDays?: number | null
@@ -295,6 +343,10 @@ export type PackagePricingCreateInput = {
 
 export type PackagePricingUncheckedCreateInput = {
   id?: string
+  isLimitedInvoicePerMonth?: boolean
+  perMonthInvoiceCount?: number
+  invoiceAutoSyncIntervalIds?: Prisma.PackagePricingCreateinvoiceAutoSyncIntervalIdsInput | string[]
+  planFeatures?: Prisma.PackagePricingCreateplanFeaturesInput | string[]
   price?: number
   setupFee?: number
   freeTrialDays?: number | null
@@ -304,6 +356,10 @@ export type PackagePricingUncheckedCreateInput = {
 
 export type PackagePricingUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  isLimitedInvoicePerMonth?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  perMonthInvoiceCount?: Prisma.IntFieldUpdateOperationsInput | number
+  invoiceAutoSyncIntervalIds?: Prisma.PackagePricingUpdateinvoiceAutoSyncIntervalIdsInput | string[]
+  planFeatures?: Prisma.PackagePricingUpdateplanFeaturesInput | string[]
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   setupFee?: Prisma.FloatFieldUpdateOperationsInput | number
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -313,6 +369,10 @@ export type PackagePricingUpdateInput = {
 
 export type PackagePricingUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  isLimitedInvoicePerMonth?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  perMonthInvoiceCount?: Prisma.IntFieldUpdateOperationsInput | number
+  invoiceAutoSyncIntervalIds?: Prisma.PackagePricingUpdateinvoiceAutoSyncIntervalIdsInput | string[]
+  planFeatures?: Prisma.PackagePricingUpdateplanFeaturesInput | string[]
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   setupFee?: Prisma.FloatFieldUpdateOperationsInput | number
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -322,6 +382,10 @@ export type PackagePricingUncheckedUpdateInput = {
 
 export type PackagePricingCreateManyInput = {
   id?: string
+  isLimitedInvoicePerMonth?: boolean
+  perMonthInvoiceCount?: number
+  invoiceAutoSyncIntervalIds?: Prisma.PackagePricingCreateinvoiceAutoSyncIntervalIdsInput | string[]
+  planFeatures?: Prisma.PackagePricingCreateplanFeaturesInput | string[]
   price?: number
   setupFee?: number
   freeTrialDays?: number | null
@@ -331,6 +395,10 @@ export type PackagePricingCreateManyInput = {
 
 export type PackagePricingUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  isLimitedInvoicePerMonth?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  perMonthInvoiceCount?: Prisma.IntFieldUpdateOperationsInput | number
+  invoiceAutoSyncIntervalIds?: Prisma.PackagePricingUpdateinvoiceAutoSyncIntervalIdsInput | string[]
+  planFeatures?: Prisma.PackagePricingUpdateplanFeaturesInput | string[]
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   setupFee?: Prisma.FloatFieldUpdateOperationsInput | number
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -339,6 +407,10 @@ export type PackagePricingUpdateManyMutationInput = {
 
 export type PackagePricingUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  isLimitedInvoicePerMonth?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  perMonthInvoiceCount?: Prisma.IntFieldUpdateOperationsInput | number
+  invoiceAutoSyncIntervalIds?: Prisma.PackagePricingUpdateinvoiceAutoSyncIntervalIdsInput | string[]
+  planFeatures?: Prisma.PackagePricingUpdateplanFeaturesInput | string[]
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   setupFee?: Prisma.FloatFieldUpdateOperationsInput | number
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -358,6 +430,10 @@ export type PackagePricingOrderByRelationAggregateInput = {
 
 export type PackagePricingCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  isLimitedInvoicePerMonth?: Prisma.SortOrder
+  perMonthInvoiceCount?: Prisma.SortOrder
+  invoiceAutoSyncIntervalIds?: Prisma.SortOrder
+  planFeatures?: Prisma.SortOrder
   price?: Prisma.SortOrder
   setupFee?: Prisma.SortOrder
   freeTrialDays?: Prisma.SortOrder
@@ -366,6 +442,7 @@ export type PackagePricingCountOrderByAggregateInput = {
 }
 
 export type PackagePricingAvgOrderByAggregateInput = {
+  perMonthInvoiceCount?: Prisma.SortOrder
   price?: Prisma.SortOrder
   setupFee?: Prisma.SortOrder
   freeTrialDays?: Prisma.SortOrder
@@ -373,6 +450,8 @@ export type PackagePricingAvgOrderByAggregateInput = {
 
 export type PackagePricingMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  isLimitedInvoicePerMonth?: Prisma.SortOrder
+  perMonthInvoiceCount?: Prisma.SortOrder
   price?: Prisma.SortOrder
   setupFee?: Prisma.SortOrder
   freeTrialDays?: Prisma.SortOrder
@@ -382,6 +461,8 @@ export type PackagePricingMaxOrderByAggregateInput = {
 
 export type PackagePricingMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  isLimitedInvoicePerMonth?: Prisma.SortOrder
+  perMonthInvoiceCount?: Prisma.SortOrder
   price?: Prisma.SortOrder
   setupFee?: Prisma.SortOrder
   freeTrialDays?: Prisma.SortOrder
@@ -390,6 +471,7 @@ export type PackagePricingMinOrderByAggregateInput = {
 }
 
 export type PackagePricingSumOrderByAggregateInput = {
+  perMonthInvoiceCount?: Prisma.SortOrder
   price?: Prisma.SortOrder
   setupFee?: Prisma.SortOrder
   freeTrialDays?: Prisma.SortOrder
@@ -437,8 +519,30 @@ export type PackagePricingUncheckedUpdateManyWithoutSubscriptionPlanNestedInput 
   deleteMany?: Prisma.PackagePricingScalarWhereInput | Prisma.PackagePricingScalarWhereInput[]
 }
 
+export type PackagePricingCreateinvoiceAutoSyncIntervalIdsInput = {
+  set: string[]
+}
+
+export type PackagePricingCreateplanFeaturesInput = {
+  set: string[]
+}
+
+export type PackagePricingUpdateinvoiceAutoSyncIntervalIdsInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
+export type PackagePricingUpdateplanFeaturesInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
 export type PackagePricingCreateWithoutSubscriptionPlanInput = {
   id?: string
+  isLimitedInvoicePerMonth?: boolean
+  perMonthInvoiceCount?: number
+  invoiceAutoSyncIntervalIds?: Prisma.PackagePricingCreateinvoiceAutoSyncIntervalIdsInput | string[]
+  planFeatures?: Prisma.PackagePricingCreateplanFeaturesInput | string[]
   price?: number
   setupFee?: number
   freeTrialDays?: number | null
@@ -447,6 +551,10 @@ export type PackagePricingCreateWithoutSubscriptionPlanInput = {
 
 export type PackagePricingUncheckedCreateWithoutSubscriptionPlanInput = {
   id?: string
+  isLimitedInvoicePerMonth?: boolean
+  perMonthInvoiceCount?: number
+  invoiceAutoSyncIntervalIds?: Prisma.PackagePricingCreateinvoiceAutoSyncIntervalIdsInput | string[]
+  planFeatures?: Prisma.PackagePricingCreateplanFeaturesInput | string[]
   price?: number
   setupFee?: number
   freeTrialDays?: number | null
@@ -484,6 +592,10 @@ export type PackagePricingScalarWhereInput = {
   OR?: Prisma.PackagePricingScalarWhereInput[]
   NOT?: Prisma.PackagePricingScalarWhereInput | Prisma.PackagePricingScalarWhereInput[]
   id?: Prisma.StringFilter<"PackagePricing"> | string
+  isLimitedInvoicePerMonth?: Prisma.BoolFilter<"PackagePricing"> | boolean
+  perMonthInvoiceCount?: Prisma.IntFilter<"PackagePricing"> | number
+  invoiceAutoSyncIntervalIds?: Prisma.StringNullableListFilter<"PackagePricing">
+  planFeatures?: Prisma.StringNullableListFilter<"PackagePricing">
   price?: Prisma.FloatFilter<"PackagePricing"> | number
   setupFee?: Prisma.FloatFilter<"PackagePricing"> | number
   freeTrialDays?: Prisma.IntNullableFilter<"PackagePricing"> | number | null
@@ -493,6 +605,10 @@ export type PackagePricingScalarWhereInput = {
 
 export type PackagePricingCreateManySubscriptionPlanInput = {
   id?: string
+  isLimitedInvoicePerMonth?: boolean
+  perMonthInvoiceCount?: number
+  invoiceAutoSyncIntervalIds?: Prisma.PackagePricingCreateinvoiceAutoSyncIntervalIdsInput | string[]
+  planFeatures?: Prisma.PackagePricingCreateplanFeaturesInput | string[]
   price?: number
   setupFee?: number
   freeTrialDays?: number | null
@@ -501,6 +617,10 @@ export type PackagePricingCreateManySubscriptionPlanInput = {
 
 export type PackagePricingUpdateWithoutSubscriptionPlanInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  isLimitedInvoicePerMonth?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  perMonthInvoiceCount?: Prisma.IntFieldUpdateOperationsInput | number
+  invoiceAutoSyncIntervalIds?: Prisma.PackagePricingUpdateinvoiceAutoSyncIntervalIdsInput | string[]
+  planFeatures?: Prisma.PackagePricingUpdateplanFeaturesInput | string[]
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   setupFee?: Prisma.FloatFieldUpdateOperationsInput | number
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -509,6 +629,10 @@ export type PackagePricingUpdateWithoutSubscriptionPlanInput = {
 
 export type PackagePricingUncheckedUpdateWithoutSubscriptionPlanInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  isLimitedInvoicePerMonth?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  perMonthInvoiceCount?: Prisma.IntFieldUpdateOperationsInput | number
+  invoiceAutoSyncIntervalIds?: Prisma.PackagePricingUpdateinvoiceAutoSyncIntervalIdsInput | string[]
+  planFeatures?: Prisma.PackagePricingUpdateplanFeaturesInput | string[]
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   setupFee?: Prisma.FloatFieldUpdateOperationsInput | number
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -517,6 +641,10 @@ export type PackagePricingUncheckedUpdateWithoutSubscriptionPlanInput = {
 
 export type PackagePricingUncheckedUpdateManyWithoutSubscriptionPlanInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  isLimitedInvoicePerMonth?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  perMonthInvoiceCount?: Prisma.IntFieldUpdateOperationsInput | number
+  invoiceAutoSyncIntervalIds?: Prisma.PackagePricingUpdateinvoiceAutoSyncIntervalIdsInput | string[]
+  planFeatures?: Prisma.PackagePricingUpdateplanFeaturesInput | string[]
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   setupFee?: Prisma.FloatFieldUpdateOperationsInput | number
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -527,6 +655,10 @@ export type PackagePricingUncheckedUpdateManyWithoutSubscriptionPlanInput = {
 
 export type PackagePricingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  isLimitedInvoicePerMonth?: boolean
+  perMonthInvoiceCount?: boolean
+  invoiceAutoSyncIntervalIds?: boolean
+  planFeatures?: boolean
   price?: boolean
   setupFee?: boolean
   freeTrialDays?: boolean
@@ -537,6 +669,10 @@ export type PackagePricingSelect<ExtArgs extends runtime.Types.Extensions.Intern
 
 export type PackagePricingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  isLimitedInvoicePerMonth?: boolean
+  perMonthInvoiceCount?: boolean
+  invoiceAutoSyncIntervalIds?: boolean
+  planFeatures?: boolean
   price?: boolean
   setupFee?: boolean
   freeTrialDays?: boolean
@@ -547,6 +683,10 @@ export type PackagePricingSelectCreateManyAndReturn<ExtArgs extends runtime.Type
 
 export type PackagePricingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  isLimitedInvoicePerMonth?: boolean
+  perMonthInvoiceCount?: boolean
+  invoiceAutoSyncIntervalIds?: boolean
+  planFeatures?: boolean
   price?: boolean
   setupFee?: boolean
   freeTrialDays?: boolean
@@ -557,6 +697,10 @@ export type PackagePricingSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
 
 export type PackagePricingSelectScalar = {
   id?: boolean
+  isLimitedInvoicePerMonth?: boolean
+  perMonthInvoiceCount?: boolean
+  invoiceAutoSyncIntervalIds?: boolean
+  planFeatures?: boolean
   price?: boolean
   setupFee?: boolean
   freeTrialDays?: boolean
@@ -564,7 +708,7 @@ export type PackagePricingSelectScalar = {
   SubscriptionPlanId?: boolean
 }
 
-export type PackagePricingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "price" | "setupFee" | "freeTrialDays" | "billingPeriod" | "SubscriptionPlanId", ExtArgs["result"]["packagePricing"]>
+export type PackagePricingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "isLimitedInvoicePerMonth" | "perMonthInvoiceCount" | "invoiceAutoSyncIntervalIds" | "planFeatures" | "price" | "setupFee" | "freeTrialDays" | "billingPeriod" | "SubscriptionPlanId", ExtArgs["result"]["packagePricing"]>
 export type PackagePricingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   subscriptionPlan?: boolean | Prisma.SubscriptionPlanDefaultArgs<ExtArgs>
 }
@@ -582,6 +726,10 @@ export type $PackagePricingPayload<ExtArgs extends runtime.Types.Extensions.Inte
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    isLimitedInvoicePerMonth: boolean
+    perMonthInvoiceCount: number
+    invoiceAutoSyncIntervalIds: string[]
+    planFeatures: string[]
     price: number
     setupFee: number
     freeTrialDays: number | null
@@ -1012,6 +1160,10 @@ export interface Prisma__PackagePricingClient<T, Null = never, ExtArgs extends r
  */
 export interface PackagePricingFieldRefs {
   readonly id: Prisma.FieldRef<"PackagePricing", 'String'>
+  readonly isLimitedInvoicePerMonth: Prisma.FieldRef<"PackagePricing", 'Boolean'>
+  readonly perMonthInvoiceCount: Prisma.FieldRef<"PackagePricing", 'Int'>
+  readonly invoiceAutoSyncIntervalIds: Prisma.FieldRef<"PackagePricing", 'String[]'>
+  readonly planFeatures: Prisma.FieldRef<"PackagePricing", 'String[]'>
   readonly price: Prisma.FieldRef<"PackagePricing", 'Float'>
   readonly setupFee: Prisma.FieldRef<"PackagePricing", 'Float'>
   readonly freeTrialDays: Prisma.FieldRef<"PackagePricing", 'Int'>

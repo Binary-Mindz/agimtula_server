@@ -37,14 +37,7 @@ export class SubscriptionsService {
 
   async getSubscriptionPlans() {
     const plans = await this.prisma.subscriptionPlan.findMany({
-      select: {
-        id: true,
-        planName: true,
-        isActive: true,
-        description: true,
-        perMonthInvoiceCount: true,
-        planFeatures: true,
-        invoiceAutoSyncIntervalIds: true,
+      include: {
         packagePricing: true,
       },
     });

@@ -1,11 +1,11 @@
 model BusinessInfo{
     id String @unique @id @default(uuid())
-    companyName String
-    vatNumber String    
-    address1 String
+    companyName String?
+    vatNumber String? 
+    address1 String?
     address2 String?
     address3 String?
-    country String
+    country String?
     website String?
     logo String?
     logoKey String?
@@ -20,14 +20,14 @@ model PaymentMethod{
     id String @id @default(uuid())
     
     //acc details
-    acc_name String
-    bank_name String
-    sort_code String
-    iban String
-    bic_swift String
+    acc_name String?
+    bank_name String?
+    sort_code String?
+    iban String?
+    bic_swift String?
 
     //payment terms
-    default_payment_term String?
+    default_payment_term Int?
     late_payment_fee Int?
     payment_instructions String?
 
@@ -40,33 +40,51 @@ model PaymentMethod{
 }
 
 model InvoiceLayout {
-    id String @id @default(uuid())
-    
-    // invoice numbering
-    invoice_prefix String
-    quote_prefix String
-    year_format String?
+  id String @id @default(uuid())
 
-    // tax settings
-    default_vat_rate Float?
-    tax_breakdown Boolean @default(false)
-    prices_include_tax Boolean @default(false)
+  invoice_prefix String?
+  quote_prefix String?
+  year_format String?
 
-    // invoice template
-    template_title String?
-    show_company_logo Boolean @default(false)
+  default_vat_rate Float?
+  tax_breakdown Boolean @default(false)
+  prices_include_tax Boolean @default(false)
 
-    // default notes and terms
-    invoice_notes String?
-    terms_and_conditions String?
+  template_title String?
+  footer_text String?
+  show_company_logo Boolean @default(false)
 
-    userId String @unique
-    user User @relation(fields: [userId] , references: [id])
+  invoice_notes String?
+  terms_and_conditions String?
 
-    @@map("invoiceLayout")
+  userId String @unique
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("invoiceLayout")
 }
 
 model NotificationSetting{
-    id String @unique @id @default(uuid())
+  id                    String   @id @default(uuid())
+  userId                String   @unique 
+
+  invoiceSent           Boolean  @default(true)
+  invoicePaid           Boolean  @default(true)
+  paymentOverdue        Boolean  @default(true)
+  quoteViewed           Boolean  @default(true)
+  quoteAccepted         Boolean  @default(true)
+
+  newBankTransactions   Boolean  @default(false)
+  unmatchedTransactions Boolean  @default(true)
+  missingReceipts       Boolean  @default(true)
+
+  weeklySummary         Boolean  @default(true)
+  monthlyReport         Boolean  @default(true)
+  vatFilingReminder     Boolean  @default(true)
+  
+  notificationEmail     String
+  notificationFrequency String   @default("daily")
+
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
 
 }

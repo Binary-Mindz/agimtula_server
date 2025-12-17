@@ -27,8 +27,8 @@ export * from "./enums"
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Profiles
- * const profiles = await prisma.profile.findMany()
+ * // Fetch zero or more Mileages
+ * const mileages = await prisma.mileage.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -38,25 +38,60 @@ export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts exten
 export { Prisma }
 
 /**
+ * Model Mileage
+ * 
+ */
+export type Mileage = Prisma.MileageModel
+/**
+ * Model imapConfiguration
+ * 
+ */
+export type imapConfiguration = Prisma.imapConfigurationModel
+/**
+ * Model userSubscriptionPlan
+ * 
+ */
+export type userSubscriptionPlan = Prisma.userSubscriptionPlanModel
+/**
+ * Model userSubscriptionPlanHistory
+ * 
+ */
+export type userSubscriptionPlanHistory = Prisma.userSubscriptionPlanHistoryModel
+/**
+ * Model subscriptionPlanPaymentStatus
+ * 
+ */
+export type subscriptionPlanPaymentStatus = Prisma.subscriptionPlanPaymentStatusModel
+/**
  * Model Profile
  * 
  */
 export type Profile = Prisma.ProfileModel
-/**
- * Model Email
- * 
- */
-export type Email = Prisma.EmailModel
 /**
  * Model ForgetPass
  * 
  */
 export type ForgetPass = Prisma.ForgetPassModel
 /**
+ * Model TwoFA
+ * 
+ */
+export type TwoFA = Prisma.TwoFAModel
+/**
  * Model Language
  * 
  */
 export type Language = Prisma.LanguageModel
+/**
+ * Model Receipt
+ * 
+ */
+export type Receipt = Prisma.ReceiptModel
+/**
+ * Model ReceiptCategory
+ * 
+ */
+export type ReceiptCategory = Prisma.ReceiptCategoryModel
 /**
  * Model BusinessInfo
  * 
@@ -93,7 +128,17 @@ export type PackagePricing = Prisma.PackagePricingModel
  */
 export type realtimeSelectionTime = Prisma.realtimeSelectionTimeModel
 /**
+ * Model invoiceAutoSyncInterval
+ * 
+ */
+export type invoiceAutoSyncInterval = Prisma.invoiceAutoSyncIntervalModel
+/**
  * Model User
  * 
  */
 export type User = Prisma.UserModel
+/**
+ * Model Email
+ * 
+ */
+export type Email = Prisma.EmailModel

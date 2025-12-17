@@ -5,6 +5,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { SmtpMailModule } from 'src/config/smtp-mail/smtp-mail.module';
 import { JwtStrategy } from './strategies/jwt-strategy';
 import { ForgetPasswordService } from './forget-password.service';
+import { TwoFAService } from './2fa.service';
 
 @Module({
   imports: [
@@ -15,6 +16,6 @@ import { ForgetPasswordService } from './forget-password.service';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, ForgetPasswordService],
+  providers: [AuthService, JwtStrategy, ForgetPasswordService, TwoFAService],
 })
 export class AuthModule {}

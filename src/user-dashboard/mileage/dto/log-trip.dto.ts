@@ -46,7 +46,7 @@ export class LogTripDto {
   )
   @Min(0, { message: 'Distance cannot be negative' })
   @IsNotEmpty({ message: 'Distance is required' })
-  distanceKm: number;
+  distance: number;
 
   @ApiProperty({
     description: 'Type of trip',
@@ -59,8 +59,9 @@ export class LogTripDto {
     description: 'Vehicle used for the trip',
     example: 'car',
   })
-  @IsNotEmpty({ message: 'Vehicle is required' })
-  vehicle: string;
+  @IsString({ message: 'Purpose must be a string' })
+  @IsOptional()
+  vehicle?: string;
 
   @ApiProperty({
     description: 'Purpose of the trip',
@@ -77,6 +78,5 @@ export class LogTripDto {
   })
   @IsOptional()
   @IsString({ message: 'Notes must be a string' })
-  @IsNotEmpty({ message: 'Notes cannot be empty if provided' })
   notes?: string | null;
 }

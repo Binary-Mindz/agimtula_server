@@ -9,6 +9,15 @@
 * 🟢 You can import this file directly.
 */
 
+export const TwoFAPurpose = {
+  LOGIN: 'LOGIN',
+  ENABLE_2FA: 'ENABLE_2FA',
+  DISABLE_2FA: 'DISABLE_2FA'
+} as const
+
+export type TwoFAPurpose = (typeof TwoFAPurpose)[keyof typeof TwoFAPurpose]
+
+
 export const BillingPeriod = {
   MONTHLY: 'MONTHLY',
   YEARLY: 'YEARLY'

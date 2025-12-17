@@ -28,12 +28,10 @@ export type AggregateSubscriptionPlan = {
 
 export type SubscriptionPlanAvgAggregateOutputType = {
   perMonthInvoiceCount: number | null
-  realtimeImapChecking: number | null
 }
 
 export type SubscriptionPlanSumAggregateOutputType = {
   perMonthInvoiceCount: number | null
-  realtimeImapChecking: number | null
 }
 
 export type SubscriptionPlanMinAggregateOutputType = {
@@ -43,7 +41,6 @@ export type SubscriptionPlanMinAggregateOutputType = {
   description: string | null
   isLimitedInvoicePerMonth: boolean | null
   perMonthInvoiceCount: number | null
-  realtimeImapChecking: number | null
   createdAt: Date | null
 }
 
@@ -54,7 +51,6 @@ export type SubscriptionPlanMaxAggregateOutputType = {
   description: string | null
   isLimitedInvoicePerMonth: boolean | null
   perMonthInvoiceCount: number | null
-  realtimeImapChecking: number | null
   createdAt: Date | null
 }
 
@@ -65,7 +61,7 @@ export type SubscriptionPlanCountAggregateOutputType = {
   description: number
   isLimitedInvoicePerMonth: number
   perMonthInvoiceCount: number
-  realtimeImapChecking: number
+  invoiceAutoSyncIntervalIds: number
   planFeatures: number
   createdAt: number
   _all: number
@@ -74,12 +70,10 @@ export type SubscriptionPlanCountAggregateOutputType = {
 
 export type SubscriptionPlanAvgAggregateInputType = {
   perMonthInvoiceCount?: true
-  realtimeImapChecking?: true
 }
 
 export type SubscriptionPlanSumAggregateInputType = {
   perMonthInvoiceCount?: true
-  realtimeImapChecking?: true
 }
 
 export type SubscriptionPlanMinAggregateInputType = {
@@ -89,7 +83,6 @@ export type SubscriptionPlanMinAggregateInputType = {
   description?: true
   isLimitedInvoicePerMonth?: true
   perMonthInvoiceCount?: true
-  realtimeImapChecking?: true
   createdAt?: true
 }
 
@@ -100,7 +93,6 @@ export type SubscriptionPlanMaxAggregateInputType = {
   description?: true
   isLimitedInvoicePerMonth?: true
   perMonthInvoiceCount?: true
-  realtimeImapChecking?: true
   createdAt?: true
 }
 
@@ -111,7 +103,7 @@ export type SubscriptionPlanCountAggregateInputType = {
   description?: true
   isLimitedInvoicePerMonth?: true
   perMonthInvoiceCount?: true
-  realtimeImapChecking?: true
+  invoiceAutoSyncIntervalIds?: true
   planFeatures?: true
   createdAt?: true
   _all?: true
@@ -210,7 +202,7 @@ export type SubscriptionPlanGroupByOutputType = {
   description: string | null
   isLimitedInvoicePerMonth: boolean
   perMonthInvoiceCount: number
-  realtimeImapChecking: number
+  invoiceAutoSyncIntervalIds: string[]
   planFeatures: string[]
   createdAt: Date
   _count: SubscriptionPlanCountAggregateOutputType | null
@@ -245,7 +237,7 @@ export type SubscriptionPlanWhereInput = {
   description?: Prisma.StringNullableFilter<"SubscriptionPlan"> | string | null
   isLimitedInvoicePerMonth?: Prisma.BoolFilter<"SubscriptionPlan"> | boolean
   perMonthInvoiceCount?: Prisma.IntFilter<"SubscriptionPlan"> | number
-  realtimeImapChecking?: Prisma.IntFilter<"SubscriptionPlan"> | number
+  invoiceAutoSyncIntervalIds?: Prisma.StringNullableListFilter<"SubscriptionPlan">
   planFeatures?: Prisma.StringNullableListFilter<"SubscriptionPlan">
   createdAt?: Prisma.DateTimeFilter<"SubscriptionPlan"> | Date | string
   packagePricing?: Prisma.PackagePricingListRelationFilter
@@ -258,7 +250,7 @@ export type SubscriptionPlanOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   isLimitedInvoicePerMonth?: Prisma.SortOrder
   perMonthInvoiceCount?: Prisma.SortOrder
-  realtimeImapChecking?: Prisma.SortOrder
+  invoiceAutoSyncIntervalIds?: Prisma.SortOrder
   planFeatures?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   packagePricing?: Prisma.PackagePricingOrderByRelationAggregateInput
@@ -274,7 +266,7 @@ export type SubscriptionPlanWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringNullableFilter<"SubscriptionPlan"> | string | null
   isLimitedInvoicePerMonth?: Prisma.BoolFilter<"SubscriptionPlan"> | boolean
   perMonthInvoiceCount?: Prisma.IntFilter<"SubscriptionPlan"> | number
-  realtimeImapChecking?: Prisma.IntFilter<"SubscriptionPlan"> | number
+  invoiceAutoSyncIntervalIds?: Prisma.StringNullableListFilter<"SubscriptionPlan">
   planFeatures?: Prisma.StringNullableListFilter<"SubscriptionPlan">
   createdAt?: Prisma.DateTimeFilter<"SubscriptionPlan"> | Date | string
   packagePricing?: Prisma.PackagePricingListRelationFilter
@@ -287,7 +279,7 @@ export type SubscriptionPlanOrderByWithAggregationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   isLimitedInvoicePerMonth?: Prisma.SortOrder
   perMonthInvoiceCount?: Prisma.SortOrder
-  realtimeImapChecking?: Prisma.SortOrder
+  invoiceAutoSyncIntervalIds?: Prisma.SortOrder
   planFeatures?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.SubscriptionPlanCountOrderByAggregateInput
@@ -307,7 +299,7 @@ export type SubscriptionPlanScalarWhereWithAggregatesInput = {
   description?: Prisma.StringNullableWithAggregatesFilter<"SubscriptionPlan"> | string | null
   isLimitedInvoicePerMonth?: Prisma.BoolWithAggregatesFilter<"SubscriptionPlan"> | boolean
   perMonthInvoiceCount?: Prisma.IntWithAggregatesFilter<"SubscriptionPlan"> | number
-  realtimeImapChecking?: Prisma.IntWithAggregatesFilter<"SubscriptionPlan"> | number
+  invoiceAutoSyncIntervalIds?: Prisma.StringNullableListFilter<"SubscriptionPlan">
   planFeatures?: Prisma.StringNullableListFilter<"SubscriptionPlan">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"SubscriptionPlan"> | Date | string
 }
@@ -319,7 +311,7 @@ export type SubscriptionPlanCreateInput = {
   description?: string | null
   isLimitedInvoicePerMonth?: boolean
   perMonthInvoiceCount?: number
-  realtimeImapChecking?: number
+  invoiceAutoSyncIntervalIds?: Prisma.SubscriptionPlanCreateinvoiceAutoSyncIntervalIdsInput | string[]
   planFeatures?: Prisma.SubscriptionPlanCreateplanFeaturesInput | string[]
   createdAt?: Date | string
   packagePricing?: Prisma.PackagePricingCreateNestedManyWithoutSubscriptionPlanInput
@@ -332,7 +324,7 @@ export type SubscriptionPlanUncheckedCreateInput = {
   description?: string | null
   isLimitedInvoicePerMonth?: boolean
   perMonthInvoiceCount?: number
-  realtimeImapChecking?: number
+  invoiceAutoSyncIntervalIds?: Prisma.SubscriptionPlanCreateinvoiceAutoSyncIntervalIdsInput | string[]
   planFeatures?: Prisma.SubscriptionPlanCreateplanFeaturesInput | string[]
   createdAt?: Date | string
   packagePricing?: Prisma.PackagePricingUncheckedCreateNestedManyWithoutSubscriptionPlanInput
@@ -345,7 +337,7 @@ export type SubscriptionPlanUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isLimitedInvoicePerMonth?: Prisma.BoolFieldUpdateOperationsInput | boolean
   perMonthInvoiceCount?: Prisma.IntFieldUpdateOperationsInput | number
-  realtimeImapChecking?: Prisma.IntFieldUpdateOperationsInput | number
+  invoiceAutoSyncIntervalIds?: Prisma.SubscriptionPlanUpdateinvoiceAutoSyncIntervalIdsInput | string[]
   planFeatures?: Prisma.SubscriptionPlanUpdateplanFeaturesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   packagePricing?: Prisma.PackagePricingUpdateManyWithoutSubscriptionPlanNestedInput
@@ -358,7 +350,7 @@ export type SubscriptionPlanUncheckedUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isLimitedInvoicePerMonth?: Prisma.BoolFieldUpdateOperationsInput | boolean
   perMonthInvoiceCount?: Prisma.IntFieldUpdateOperationsInput | number
-  realtimeImapChecking?: Prisma.IntFieldUpdateOperationsInput | number
+  invoiceAutoSyncIntervalIds?: Prisma.SubscriptionPlanUpdateinvoiceAutoSyncIntervalIdsInput | string[]
   planFeatures?: Prisma.SubscriptionPlanUpdateplanFeaturesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   packagePricing?: Prisma.PackagePricingUncheckedUpdateManyWithoutSubscriptionPlanNestedInput
@@ -371,7 +363,7 @@ export type SubscriptionPlanCreateManyInput = {
   description?: string | null
   isLimitedInvoicePerMonth?: boolean
   perMonthInvoiceCount?: number
-  realtimeImapChecking?: number
+  invoiceAutoSyncIntervalIds?: Prisma.SubscriptionPlanCreateinvoiceAutoSyncIntervalIdsInput | string[]
   planFeatures?: Prisma.SubscriptionPlanCreateplanFeaturesInput | string[]
   createdAt?: Date | string
 }
@@ -383,7 +375,7 @@ export type SubscriptionPlanUpdateManyMutationInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isLimitedInvoicePerMonth?: Prisma.BoolFieldUpdateOperationsInput | boolean
   perMonthInvoiceCount?: Prisma.IntFieldUpdateOperationsInput | number
-  realtimeImapChecking?: Prisma.IntFieldUpdateOperationsInput | number
+  invoiceAutoSyncIntervalIds?: Prisma.SubscriptionPlanUpdateinvoiceAutoSyncIntervalIdsInput | string[]
   planFeatures?: Prisma.SubscriptionPlanUpdateplanFeaturesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -395,7 +387,7 @@ export type SubscriptionPlanUncheckedUpdateManyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isLimitedInvoicePerMonth?: Prisma.BoolFieldUpdateOperationsInput | boolean
   perMonthInvoiceCount?: Prisma.IntFieldUpdateOperationsInput | number
-  realtimeImapChecking?: Prisma.IntFieldUpdateOperationsInput | number
+  invoiceAutoSyncIntervalIds?: Prisma.SubscriptionPlanUpdateinvoiceAutoSyncIntervalIdsInput | string[]
   planFeatures?: Prisma.SubscriptionPlanUpdateplanFeaturesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -407,14 +399,13 @@ export type SubscriptionPlanCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   isLimitedInvoicePerMonth?: Prisma.SortOrder
   perMonthInvoiceCount?: Prisma.SortOrder
-  realtimeImapChecking?: Prisma.SortOrder
+  invoiceAutoSyncIntervalIds?: Prisma.SortOrder
   planFeatures?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type SubscriptionPlanAvgOrderByAggregateInput = {
   perMonthInvoiceCount?: Prisma.SortOrder
-  realtimeImapChecking?: Prisma.SortOrder
 }
 
 export type SubscriptionPlanMaxOrderByAggregateInput = {
@@ -424,7 +415,6 @@ export type SubscriptionPlanMaxOrderByAggregateInput = {
   description?: Prisma.SortOrder
   isLimitedInvoicePerMonth?: Prisma.SortOrder
   perMonthInvoiceCount?: Prisma.SortOrder
-  realtimeImapChecking?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -435,13 +425,11 @@ export type SubscriptionPlanMinOrderByAggregateInput = {
   description?: Prisma.SortOrder
   isLimitedInvoicePerMonth?: Prisma.SortOrder
   perMonthInvoiceCount?: Prisma.SortOrder
-  realtimeImapChecking?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type SubscriptionPlanSumOrderByAggregateInput = {
   perMonthInvoiceCount?: Prisma.SortOrder
-  realtimeImapChecking?: Prisma.SortOrder
 }
 
 export type SubscriptionPlanScalarRelationFilter = {
@@ -449,8 +437,17 @@ export type SubscriptionPlanScalarRelationFilter = {
   isNot?: Prisma.SubscriptionPlanWhereInput
 }
 
+export type SubscriptionPlanCreateinvoiceAutoSyncIntervalIdsInput = {
+  set: string[]
+}
+
 export type SubscriptionPlanCreateplanFeaturesInput = {
   set: string[]
+}
+
+export type SubscriptionPlanUpdateinvoiceAutoSyncIntervalIdsInput = {
+  set?: string[]
+  push?: string | string[]
 }
 
 export type SubscriptionPlanUpdateplanFeaturesInput = {
@@ -479,7 +476,7 @@ export type SubscriptionPlanCreateWithoutPackagePricingInput = {
   description?: string | null
   isLimitedInvoicePerMonth?: boolean
   perMonthInvoiceCount?: number
-  realtimeImapChecking?: number
+  invoiceAutoSyncIntervalIds?: Prisma.SubscriptionPlanCreateinvoiceAutoSyncIntervalIdsInput | string[]
   planFeatures?: Prisma.SubscriptionPlanCreateplanFeaturesInput | string[]
   createdAt?: Date | string
 }
@@ -491,7 +488,7 @@ export type SubscriptionPlanUncheckedCreateWithoutPackagePricingInput = {
   description?: string | null
   isLimitedInvoicePerMonth?: boolean
   perMonthInvoiceCount?: number
-  realtimeImapChecking?: number
+  invoiceAutoSyncIntervalIds?: Prisma.SubscriptionPlanCreateinvoiceAutoSyncIntervalIdsInput | string[]
   planFeatures?: Prisma.SubscriptionPlanCreateplanFeaturesInput | string[]
   createdAt?: Date | string
 }
@@ -519,7 +516,7 @@ export type SubscriptionPlanUpdateWithoutPackagePricingInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isLimitedInvoicePerMonth?: Prisma.BoolFieldUpdateOperationsInput | boolean
   perMonthInvoiceCount?: Prisma.IntFieldUpdateOperationsInput | number
-  realtimeImapChecking?: Prisma.IntFieldUpdateOperationsInput | number
+  invoiceAutoSyncIntervalIds?: Prisma.SubscriptionPlanUpdateinvoiceAutoSyncIntervalIdsInput | string[]
   planFeatures?: Prisma.SubscriptionPlanUpdateplanFeaturesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -531,7 +528,7 @@ export type SubscriptionPlanUncheckedUpdateWithoutPackagePricingInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isLimitedInvoicePerMonth?: Prisma.BoolFieldUpdateOperationsInput | boolean
   perMonthInvoiceCount?: Prisma.IntFieldUpdateOperationsInput | number
-  realtimeImapChecking?: Prisma.IntFieldUpdateOperationsInput | number
+  invoiceAutoSyncIntervalIds?: Prisma.SubscriptionPlanUpdateinvoiceAutoSyncIntervalIdsInput | string[]
   planFeatures?: Prisma.SubscriptionPlanUpdateplanFeaturesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -574,7 +571,7 @@ export type SubscriptionPlanSelect<ExtArgs extends runtime.Types.Extensions.Inte
   description?: boolean
   isLimitedInvoicePerMonth?: boolean
   perMonthInvoiceCount?: boolean
-  realtimeImapChecking?: boolean
+  invoiceAutoSyncIntervalIds?: boolean
   planFeatures?: boolean
   createdAt?: boolean
   packagePricing?: boolean | Prisma.SubscriptionPlan$packagePricingArgs<ExtArgs>
@@ -588,7 +585,7 @@ export type SubscriptionPlanSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   description?: boolean
   isLimitedInvoicePerMonth?: boolean
   perMonthInvoiceCount?: boolean
-  realtimeImapChecking?: boolean
+  invoiceAutoSyncIntervalIds?: boolean
   planFeatures?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["subscriptionPlan"]>
@@ -600,7 +597,7 @@ export type SubscriptionPlanSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   description?: boolean
   isLimitedInvoicePerMonth?: boolean
   perMonthInvoiceCount?: boolean
-  realtimeImapChecking?: boolean
+  invoiceAutoSyncIntervalIds?: boolean
   planFeatures?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["subscriptionPlan"]>
@@ -612,12 +609,12 @@ export type SubscriptionPlanSelectScalar = {
   description?: boolean
   isLimitedInvoicePerMonth?: boolean
   perMonthInvoiceCount?: boolean
-  realtimeImapChecking?: boolean
+  invoiceAutoSyncIntervalIds?: boolean
   planFeatures?: boolean
   createdAt?: boolean
 }
 
-export type SubscriptionPlanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "planName" | "isActive" | "description" | "isLimitedInvoicePerMonth" | "perMonthInvoiceCount" | "realtimeImapChecking" | "planFeatures" | "createdAt", ExtArgs["result"]["subscriptionPlan"]>
+export type SubscriptionPlanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "planName" | "isActive" | "description" | "isLimitedInvoicePerMonth" | "perMonthInvoiceCount" | "invoiceAutoSyncIntervalIds" | "planFeatures" | "createdAt", ExtArgs["result"]["subscriptionPlan"]>
 export type SubscriptionPlanInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   packagePricing?: boolean | Prisma.SubscriptionPlan$packagePricingArgs<ExtArgs>
   _count?: boolean | Prisma.SubscriptionPlanCountOutputTypeDefaultArgs<ExtArgs>
@@ -637,7 +634,7 @@ export type $SubscriptionPlanPayload<ExtArgs extends runtime.Types.Extensions.In
     description: string | null
     isLimitedInvoicePerMonth: boolean
     perMonthInvoiceCount: number
-    realtimeImapChecking: number
+    invoiceAutoSyncIntervalIds: string[]
     planFeatures: string[]
     createdAt: Date
   }, ExtArgs["result"]["subscriptionPlan"]>
@@ -1070,7 +1067,7 @@ export interface SubscriptionPlanFieldRefs {
   readonly description: Prisma.FieldRef<"SubscriptionPlan", 'String'>
   readonly isLimitedInvoicePerMonth: Prisma.FieldRef<"SubscriptionPlan", 'Boolean'>
   readonly perMonthInvoiceCount: Prisma.FieldRef<"SubscriptionPlan", 'Int'>
-  readonly realtimeImapChecking: Prisma.FieldRef<"SubscriptionPlan", 'Int'>
+  readonly invoiceAutoSyncIntervalIds: Prisma.FieldRef<"SubscriptionPlan", 'String[]'>
   readonly planFeatures: Prisma.FieldRef<"SubscriptionPlan", 'String[]'>
   readonly createdAt: Prisma.FieldRef<"SubscriptionPlan", 'DateTime'>
 }

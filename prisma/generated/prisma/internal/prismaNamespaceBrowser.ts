@@ -51,10 +51,17 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  Mileage: 'Mileage',
+  imapConfiguration: 'imapConfiguration',
+  userSubscriptionPlan: 'userSubscriptionPlan',
+  userSubscriptionPlanHistory: 'userSubscriptionPlanHistory',
+  subscriptionPlanPaymentStatus: 'subscriptionPlanPaymentStatus',
   Profile: 'Profile',
-  Email: 'Email',
   ForgetPass: 'ForgetPass',
+  TwoFA: 'TwoFA',
   Language: 'Language',
+  Receipt: 'Receipt',
+  ReceiptCategory: 'ReceiptCategory',
   BusinessInfo: 'BusinessInfo',
   PaymentMethod: 'PaymentMethod',
   InvoiceLayout: 'InvoiceLayout',
@@ -62,7 +69,9 @@ export const ModelName = {
   SubscriptionPlan: 'SubscriptionPlan',
   PackagePricing: 'PackagePricing',
   realtimeSelectionTime: 'realtimeSelectionTime',
-  User: 'User'
+  invoiceAutoSyncInterval: 'invoiceAutoSyncInterval',
+  User: 'User',
+  Email: 'Email'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -81,6 +90,87 @@ export const TransactionIsolationLevel = {
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const MileageScalarFieldEnum = {
+  id: 'id',
+  date: 'date',
+  startLocation: 'startLocation',
+  endLocation: 'endLocation',
+  distance: 'distance',
+  tripType: 'tripType',
+  amount: 'amount',
+  vehicle: 'vehicle',
+  purpose: 'purpose',
+  notes: 'notes',
+  userId: 'userId'
+} as const
+
+export type MileageScalarFieldEnum = (typeof MileageScalarFieldEnum)[keyof typeof MileageScalarFieldEnum]
+
+
+export const ImapConfigurationScalarFieldEnum = {
+  id: 'id',
+  host: 'host',
+  port: 'port',
+  username: 'username',
+  password: 'password',
+  secure: 'secure',
+  userId: 'userId',
+  connect: 'connect',
+  sync: 'sync',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type ImapConfigurationScalarFieldEnum = (typeof ImapConfigurationScalarFieldEnum)[keyof typeof ImapConfigurationScalarFieldEnum]
+
+
+export const UserSubscriptionPlanScalarFieldEnum = {
+  id: 'id',
+  UserId: 'UserId',
+  isLimitedInvoicePerMonth: 'isLimitedInvoicePerMonth',
+  perMonthInvoiceCount: 'perMonthInvoiceCount',
+  realtimeImapChecking: 'realtimeImapChecking',
+  price: 'price',
+  setupFee: 'setupFee',
+  freeTrialDays: 'freeTrialDays',
+  startedAt: 'startedAt',
+  expiredAt: 'expiredAt',
+  createdAt: 'createdAt'
+} as const
+
+export type UserSubscriptionPlanScalarFieldEnum = (typeof UserSubscriptionPlanScalarFieldEnum)[keyof typeof UserSubscriptionPlanScalarFieldEnum]
+
+
+export const UserSubscriptionPlanHistoryScalarFieldEnum = {
+  id: 'id',
+  UserId: 'UserId',
+  isLimitedInvoicePerMonth: 'isLimitedInvoicePerMonth',
+  perMonthInvoiceCount: 'perMonthInvoiceCount',
+  realtimeImapChecking: 'realtimeImapChecking',
+  price: 'price',
+  setupFee: 'setupFee',
+  freeTrialDays: 'freeTrialDays',
+  billingPeriod: 'billingPeriod',
+  startedAt: 'startedAt',
+  expiredAt: 'expiredAt',
+  createdAt: 'createdAt'
+} as const
+
+export type UserSubscriptionPlanHistoryScalarFieldEnum = (typeof UserSubscriptionPlanHistoryScalarFieldEnum)[keyof typeof UserSubscriptionPlanHistoryScalarFieldEnum]
+
+
+export const SubscriptionPlanPaymentStatusScalarFieldEnum = {
+  id: 'id',
+  subscriptionPlanHistoryId: 'subscriptionPlanHistoryId',
+  userSubscriptionPlanId: 'userSubscriptionPlanId',
+  totalAmount: 'totalAmount',
+  paymentStatus: 'paymentStatus',
+  createdAt: 'createdAt'
+} as const
+
+export type SubscriptionPlanPaymentStatusScalarFieldEnum = (typeof SubscriptionPlanPaymentStatusScalarFieldEnum)[keyof typeof SubscriptionPlanPaymentStatusScalarFieldEnum]
+
+
 export const ProfileScalarFieldEnum = {
   id: 'id',
   firstName: 'firstName',
@@ -97,15 +187,6 @@ export const ProfileScalarFieldEnum = {
 export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
 
 
-export const EmailScalarFieldEnum = {
-  id: 'id',
-  email: 'email',
-  userId: 'userId'
-} as const
-
-export type EmailScalarFieldEnum = (typeof EmailScalarFieldEnum)[keyof typeof EmailScalarFieldEnum]
-
-
 export const ForgetPassScalarFieldEnum = {
   id: 'id',
   email: 'email',
@@ -117,6 +198,18 @@ export const ForgetPassScalarFieldEnum = {
 export type ForgetPassScalarFieldEnum = (typeof ForgetPassScalarFieldEnum)[keyof typeof ForgetPassScalarFieldEnum]
 
 
+export const TwoFAScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  code: 'code',
+  purpose: 'purpose',
+  attempts: 'attempts',
+  createdAt: 'createdAt'
+} as const
+
+export type TwoFAScalarFieldEnum = (typeof TwoFAScalarFieldEnum)[keyof typeof TwoFAScalarFieldEnum]
+
+
 export const LanguageScalarFieldEnum = {
   id: 'id',
   language: 'language',
@@ -125,6 +218,30 @@ export const LanguageScalarFieldEnum = {
 } as const
 
 export type LanguageScalarFieldEnum = (typeof LanguageScalarFieldEnum)[keyof typeof LanguageScalarFieldEnum]
+
+
+export const ReceiptScalarFieldEnum = {
+  id: 'id',
+  receiptFileUrl: 'receiptFileUrl',
+  receiptFileKey: 'receiptFileKey',
+  vendor: 'vendor',
+  date: 'date',
+  categoryId: 'categoryId',
+  amount: 'amount',
+  notes: 'notes',
+  userId: 'userId',
+  createdAt: 'createdAt'
+} as const
+
+export type ReceiptScalarFieldEnum = (typeof ReceiptScalarFieldEnum)[keyof typeof ReceiptScalarFieldEnum]
+
+
+export const ReceiptCategoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name'
+} as const
+
+export type ReceiptCategoryScalarFieldEnum = (typeof ReceiptCategoryScalarFieldEnum)[keyof typeof ReceiptCategoryScalarFieldEnum]
 
 
 export const BusinessInfoScalarFieldEnum = {
@@ -170,6 +287,7 @@ export const InvoiceLayoutScalarFieldEnum = {
   tax_breakdown: 'tax_breakdown',
   prices_include_tax: 'prices_include_tax',
   template_title: 'template_title',
+  footer_text: 'footer_text',
   show_company_logo: 'show_company_logo',
   invoice_notes: 'invoice_notes',
   terms_and_conditions: 'terms_and_conditions',
@@ -180,7 +298,23 @@ export type InvoiceLayoutScalarFieldEnum = (typeof InvoiceLayoutScalarFieldEnum)
 
 
 export const NotificationSettingScalarFieldEnum = {
-  id: 'id'
+  id: 'id',
+  userId: 'userId',
+  invoiceSent: 'invoiceSent',
+  invoicePaid: 'invoicePaid',
+  paymentOverdue: 'paymentOverdue',
+  quoteViewed: 'quoteViewed',
+  quoteAccepted: 'quoteAccepted',
+  newBankTransactions: 'newBankTransactions',
+  unmatchedTransactions: 'unmatchedTransactions',
+  missingReceipts: 'missingReceipts',
+  weeklySummary: 'weeklySummary',
+  monthlyReport: 'monthlyReport',
+  vatFilingReminder: 'vatFilingReminder',
+  notificationEmail: 'notificationEmail',
+  notificationFrequency: 'notificationFrequency',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type NotificationSettingScalarFieldEnum = (typeof NotificationSettingScalarFieldEnum)[keyof typeof NotificationSettingScalarFieldEnum]
@@ -221,6 +355,16 @@ export const RealtimeSelectionTimeScalarFieldEnum = {
 export type RealtimeSelectionTimeScalarFieldEnum = (typeof RealtimeSelectionTimeScalarFieldEnum)[keyof typeof RealtimeSelectionTimeScalarFieldEnum]
 
 
+export const InvoiceAutoSyncIntervalScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  cronTime: 'cronTime'
+} as const
+
+export type InvoiceAutoSyncIntervalScalarFieldEnum = (typeof InvoiceAutoSyncIntervalScalarFieldEnum)[keyof typeof InvoiceAutoSyncIntervalScalarFieldEnum]
+
+
 export const UserScalarFieldEnum = {
   id: 'id',
   password: 'password',
@@ -232,6 +376,15 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const EmailScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  userId: 'userId'
+} as const
+
+export type EmailScalarFieldEnum = (typeof EmailScalarFieldEnum)[keyof typeof EmailScalarFieldEnum]
 
 
 export const SortOrder = {

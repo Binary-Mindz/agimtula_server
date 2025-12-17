@@ -1,7 +1,5 @@
-// dto/business-info.dto.ts
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
-  IsNotEmpty,
   IsOptional,
   IsString,
   IsUrl,
@@ -14,31 +12,31 @@ export class BusinessInfoDto {
     description: 'Legal business or trading name',
     example: 'Acme Trading Ltd',
   })
-  @IsNotEmpty({ message: 'Company name is required' })
+  @IsOptional()
   @IsString()
   @MaxLength(100)
-  companyName: string;
+  companyName?: string;
 
   @ApiProperty({
     description: 'VAT number (with country prefix, e.g., IE1234567FA)',
     example: 'IE1234567FA',
   })
-  @IsNotEmpty({ message: 'VAT number is required' })
+  @IsOptional()
   @IsString()
   @Matches(/^[A-Z]{2}[0-9A-Z]{8,12}$/, {
     message:
       'Invalid VAT number format. Must include country code (e.g., IE1234567FA)',
   })
-  vatNumber: string;
+  vatNumber?: string;
 
   @ApiProperty({
     description: 'Address line 1 (street address)',
     example: '123 Business Street',
   })
-  @IsNotEmpty({ message: 'Address line 1 is required' })
+  @IsOptional()
   @IsString()
   @MaxLength(200)
-  address1: string;
+  address1?: string;
 
   @ApiPropertyOptional({
     description: 'Address line 2 (apartment, suite, etc.)',
@@ -64,9 +62,9 @@ export class BusinessInfoDto {
     description: 'Country name',
     example: 'Ireland',
   })
-  @IsNotEmpty({ message: 'Country is required' })
+  @IsOptional()
   @IsString()
-  country: string;
+  country?: string;
 
   @ApiPropertyOptional({
     description: 'Company website URL',
@@ -76,8 +74,9 @@ export class BusinessInfoDto {
   @IsString()
   @IsUrl({ require_tld: true }, { message: 'Please enter a valid website URL' })
   website?: string;
+}
 
-  // File upload field
+export class UpdateLogoDto {
   @ApiPropertyOptional({
     type: 'string',
     format: 'binary',

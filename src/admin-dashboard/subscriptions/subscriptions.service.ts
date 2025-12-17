@@ -44,6 +44,14 @@ export class SubscriptionsService {
     return { plans, message: 'Subscription plans retrieved successfully' };
   }
 
+  // async getSubscriptionManagementData() {
+  //   const subscriberCount = await this.prisma.subscriptionPlan.count({
+  //     where: {
+
+  //     }
+  //   });
+  // }
+
   async deleteSubscription(id: string) {
     const plan = await this.prisma.subscriptionPlan.delete({
       where: {

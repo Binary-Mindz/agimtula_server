@@ -12,7 +12,9 @@ model User {
   paymentMethods PaymentMethod[]
   businessInfo BusinessInfo?
   invoiceLayout InvoiceLayout?
-
+  mileages Mileage[]
+  receipts Receipt[]
+  
   // IMAP configurations
   imapConfigurations imapConfiguration?
 
@@ -30,4 +32,13 @@ enum UserRole {
   ADMIN
   USER
   ACCOUNTANT
+}
+
+model Email {
+    id String @id @default(uuid())
+    email String @unique
+    userId String? @unique
+    user User? @relation(fields: [userId],references: [id])
+
+    @@map("email")
 }

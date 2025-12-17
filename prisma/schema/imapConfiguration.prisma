@@ -79,6 +79,8 @@ model userSubscriptionPlanHistory {
 model subscriptionPlanPaymentStatus {
     id String @id @unique @default(uuid())
 
+    pi_id String @unique
+
     // subscription plan history relation payment status
     subscriptionPlanHistoryId   String                      @unique
     userSubscriptionPlanHistory userSubscriptionPlanHistory @relation(fields: [subscriptionPlanHistoryId], references: [id])

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { CreateSubscriptionPlanDto } from './dto/create-subscription.dto';
 import { Injectable } from '@nestjs/common';
+import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
 
 @Injectable()
@@ -32,7 +33,7 @@ export class SubscriptionsService {
       },
     });
 
-    return { plan, message: 'Subscription plan created successfully' };
+    return plan;
   }
 
   async getSubscriptionPlans() {
@@ -55,21 +56,18 @@ export class SubscriptionsService {
       intervals.map((interval) => [interval.id, interval]),
     );
 
-    return {
-      planing: plans.map((plan) => ({
-        id: plan.id,
-        planName: plan.planName,
-        isActive: plan.isActive,
-        description: plan.description,
-        perMonthInvoiceCount: plan.perMonthInvoiceCount,
-        planFeatures: plan.planFeatures,
-        packagePricing: plan.packagePricing,
-        invoiceAutoSyncIntervals: plan.invoiceAutoSyncIntervalIds?.map(
-          (intervalId: string) => intervalsObject.get(intervalId),
-        ),
-      })),
-      message: 'Subscription plans retrieved successfully',
-    };
+    return plans.map((plan) => ({
+      id: plan.id,
+      planName: plan.planName,
+      isActive: plan.isActive,
+      description: plan.description,
+      perMonthInvoiceCount: plan.perMonthInvoiceCount,
+      planFeatures: plan.planFeatures,
+      packagePricing: plan.packagePricing,
+      invoiceAutoSyncIntervals: plan.invoiceAutoSyncIntervalIds?.map(
+        (intervalId: string) => intervalsObject.get(intervalId),
+      ),
+    }));
   }
 
   // async getSubscriptionManagementData() {
@@ -80,6 +78,42 @@ export class SubscriptionsService {
   //   });
   // }
 
+  async getSubscriptionPlan(id: string) {
+    const plan = await this.prisma.subscriptionPlan.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        packagePricing: true,
+      },
+    });
+
+    if (!plan) {
+      throw new Error('Subscription plan not found');
+    }
+    const interval = await this.prisma.invoiceAutoSyncInterval.findMany({
+      where: {
+        id: {
+          in: plan.invoiceAutoSyncIntervalIds,
+        },
+      },
+    });
+
+    return cResponseData({
+      message: 'Subscription plan retrieved successfully',
+      data: {
+        id: plan.id,
+        planName: plan.planName,
+        isActive: plan.isActive,
+        description: plan.description,
+        perMonthInvoiceCount: plan.perMonthInvoiceCount,
+        planFeatures: plan.planFeatures,
+        packagePricing: plan.packagePricing,
+        invoiceAutoSyncIntervals: interval,
+      },
+    });
+  }
+
   async deleteSubscription(id: string) {
     const plan = await this.prisma.subscriptionPlan.delete({
       where: {
@@ -87,7 +121,7 @@ export class SubscriptionsService {
       },
     });
 
-    return { plan, message: 'Subscription plan deleted successfully' };
+    return plan;
   }
 
   updateSubscription(id: string, dto: any) {

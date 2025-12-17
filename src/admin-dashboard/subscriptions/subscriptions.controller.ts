@@ -34,6 +34,12 @@ export class SubscriptionsController {
     return this.subscriptionsService.getSubscriptionPlans();
   }
 
+  @Get('plans/:id')
+  @Roles('ADMIN', 'USER', 'ACCOUNTANT')
+  getSubscriptionPlanById(@Param('id') id: string) {
+    return this.subscriptionsService.getSubscriptionPlan(id);
+  }
+
   @Delete('plans/:id')
   @Roles('ADMIN')
   deleteSubscriptionPlan(@Param('id') id: string) {

@@ -123,11 +123,6 @@ export type SubscriptionPlan = Prisma.SubscriptionPlanModel
  */
 export type PackagePricing = Prisma.PackagePricingModel
 /**
- * Model realtimeSelectionTime
- * 
- */
-export type realtimeSelectionTime = Prisma.realtimeSelectionTimeModel
-/**
  * Model invoiceAutoSyncInterval
  * 
  */

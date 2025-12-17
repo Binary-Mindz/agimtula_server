@@ -68,10 +68,10 @@ export class CreateSubscriptionPlanDto {
   @IsInt()
   perMonthInvoiceCount: number;
 
-  @ApiPropertyOptional({ example: 86400 })
-  @IsNotEmpty()
-  @IsInt()
-  realtimeImapChecking: number;
+  @ApiProperty({ type: [String], example: ['id1', 'id2'] })
+  @IsArray()
+  @IsString({ each: true })
+  invoiceAutoSyncIntervalIds: string[];
 
   @ApiPropertyOptional({
     type: [String],

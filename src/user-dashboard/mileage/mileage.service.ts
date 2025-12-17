@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { LogTripDto } from './dto/log-trip.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
+import { cResponseData } from 'src/common/cResponse';
 
 @Injectable()
 export class MileageService {
@@ -22,10 +23,10 @@ export class MileageService {
       },
     });
 
-    return {
+    return cResponseData({
       message: 'Trip logged successfully',
-      trip,
-    };
+      data:  trip ,
+    });
   }
 
   async getMileageTrack(userId: string) {
@@ -78,7 +79,7 @@ export class MileageService {
         }),
       ]);
 
-    return {
+    return cResponseData({
       message: 'Mileage data retrieved successfully',
       data: {
         totalDistance: totalDistance._sum.distance || 0,
@@ -86,7 +87,7 @@ export class MileageService {
         reimbursement: reimbursement._sum.amount || 0,
         trips,
       },
-    };
+    });
   }
 
   async editLoggedTrip(userId: string, tripId: string, dto: LogTripDto) {
@@ -104,10 +105,10 @@ export class MileageService {
         notes: dto.notes,
       },
     });
-    return {
+    return cResponseData({
       message: 'Trip updated successfully',
-      updatedTrip,
-    };
+     data: updatedTrip,
+    });
   }
 
   async deleteLoggedTrip(userId: string, tripId: string) {

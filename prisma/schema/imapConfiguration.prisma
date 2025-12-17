@@ -73,7 +73,7 @@ model userSubscriptionPlanHistory {
 
     createdAt DateTime @default(now())
 
-    @@map("userSubscriptionPlan")
+    @@map("userSubscriptionPlanHistory")
 }
 
 // payment status for imap configuration and subscription plans

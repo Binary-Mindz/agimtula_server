@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UploadReceiptDto } from './dto/upload-receipt.dto';
 import uploadToCloudinary from 'src/config/cloudinary/cloudinary';
 import { PrismaService } from 'src/config/database/prisma.service';
+import { cResponseData } from 'src/common/cResponse';
 
 @Injectable()
 export class ReceiptsService {
@@ -47,7 +48,7 @@ export class ReceiptsService {
       },
     });
 
-    return { message: 'Receipt uploaded successfully' };
+    return cResponseData({ message: 'Receipt uploaded successfully' });
   }
 
   async getReceiptsData(search: string, filterCategory: string) {
@@ -77,11 +78,11 @@ export class ReceiptsService {
     });
 
     if (receipts.length === 0) {
-      return { message: 'No receipts found' };
+      return cResponseData({ message: 'No receipts found' });
     }
-    return {
+    return cResponseData({
       message: 'Receipts retrieved successfully',
-      receipts,
-    };
+      data: receipts,
+    });
   }
 }

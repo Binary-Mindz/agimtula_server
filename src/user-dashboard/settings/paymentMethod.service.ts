@@ -2,6 +2,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { CreatePaymentMethodDto } from './dto/create-payment-method.dto';
 import { UpdatePaymentMethodDto } from './dto/update-payment-method.dto';
+import { cResponseData } from 'src/common/cResponse';
 
 @Injectable()
 export class PaymentMethodService {
@@ -53,7 +54,7 @@ export class PaymentMethodService {
       },
     });
 
-    return paymentMethod;
+    return cResponseData({ data: paymentMethod });
   }
 
   async updatePaymentMethod(
@@ -89,9 +90,13 @@ export class PaymentMethodService {
       updateData.isDefault = !existing.isDefault;
     }
 
-    return this.prisma.paymentMethod.update({
+    const payment = this.prisma.paymentMethod.update({
       where: { id: paymentMethodId },
       data: updateData,
+    });
+
+    return cResponseData({
+      data: payment,
     });
   }
 
@@ -127,7 +132,10 @@ export class PaymentMethodService {
       data: { isDefault },
     });
 
-    return { success: true, message: 'Payment method updated successfully' };
+    return cResponseData({
+      success: true,
+      message: 'Payment method updated successfully',
+    });
   }
 
   async getPaymentMethods(userId: string) {
@@ -138,6 +146,6 @@ export class PaymentMethodService {
     if (!paymentMethods) {
       throw new Error('No payment methods found');
     }
-    return paymentMethods;
+    return cResponseData({ data: paymentMethods });
   }
 }

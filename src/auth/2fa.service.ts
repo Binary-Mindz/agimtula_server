@@ -2,6 +2,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { SmtpMailService } from 'src/config/smtp-mail/smtp-mail.service';
 import { EnableTwoFADto, VerifyTwoFADto } from './dto/two-fa.dto';
+import { cResponseData } from 'src/common/cResponse';
 
 @Injectable()
 export class TwoFAService {
@@ -72,7 +73,9 @@ export class TwoFAService {
       `,
     );
 
-    return { message: '2FA code sent successfully to your email' };
+    return cResponseData({
+      message: '2FA code sent successfully to your email',
+    });
   }
 
   async verifyAndEnableTwoFA(userId: string, dto: VerifyTwoFADto) {
@@ -111,7 +114,7 @@ export class TwoFAService {
       this.prisma.twoFA.deleteMany({ where: { email } }),
     ]);
 
-    return { message: '2FA enabled successfully' };
+    return cResponseData({ message: '2FA enabled successfully' });
   }
 
   async sendDisableTwoFACode(userId: string, dto: EnableTwoFADto) {
@@ -161,7 +164,7 @@ export class TwoFAService {
     `,
     );
 
-    return { message: 'Disable 2FA code sent to your email' };
+    return cResponseData({ message: 'Disable 2FA code sent to your email' });
   }
 
   async verifyAndDisableTwoFA(userId: string, dto: VerifyTwoFADto) {
@@ -190,6 +193,6 @@ export class TwoFAService {
       this.prisma.twoFA.deleteMany({ where: { email } }),
     ]);
 
-    return { message: '2FA disabled successfully' };
+    return cResponseData({ message: '2FA disabled successfully' });
   }
 }

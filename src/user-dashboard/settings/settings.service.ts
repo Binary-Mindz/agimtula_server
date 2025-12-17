@@ -4,6 +4,7 @@ import { InvoiceLayoutDto } from './dto/invoice-layout.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { deleteFromCloudinary } from 'src/config/cloudinary/deleteImage';
 import uploadToCloudinary from 'src/config/cloudinary/cloudinary';
+import { cResponseData } from 'src/common/cResponse';
 
 @Injectable()
 export class SettingsService {
@@ -21,7 +22,7 @@ export class SettingsService {
       },
     });
 
-    return businessInfo;
+    return cResponseData({ data: businessInfo });
   }
 
   async updateBusinessLogo(userId: string, file: Express.Multer.File) {
@@ -55,10 +56,10 @@ export class SettingsService {
       },
     });
 
-    return {
+    return cResponseData({
       message: 'Business logo updated successfully',
-      logo: uploadResult.secure_url,
-    };
+      data: uploadResult.secure_url,
+    });
   }
 
   async removeBusinessLogo(userId: string) {
@@ -82,16 +83,16 @@ export class SettingsService {
       },
     });
 
-    return {
+    return cResponseData({
       message: 'Business logo removed successfully',
-    };
+    });
   }
 
   async getBusinessInfo(userId: string) {
     const businessInfo = await this.prisma.businessInfo.findUnique({
       where: { userId },
     });
-    return businessInfo;
+    return cResponseData({ data: businessInfo });
   }
 
   invoiceLayout(dto: InvoiceLayoutDto) {

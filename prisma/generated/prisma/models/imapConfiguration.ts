@@ -44,6 +44,7 @@ export type ImapConfigurationMinAggregateOutputType = {
   userId: string | null
   connect: boolean | null
   sync: boolean | null
+  emailNotifications: boolean | null
   realtimeImapCheckingId: string | null
   created_at: Date | null
   updated_at: Date | null
@@ -59,6 +60,7 @@ export type ImapConfigurationMaxAggregateOutputType = {
   userId: string | null
   connect: boolean | null
   sync: boolean | null
+  emailNotifications: boolean | null
   realtimeImapCheckingId: string | null
   created_at: Date | null
   updated_at: Date | null
@@ -74,6 +76,7 @@ export type ImapConfigurationCountAggregateOutputType = {
   userId: number
   connect: number
   sync: number
+  emailNotifications: number
   realtimeImapCheckingId: number
   created_at: number
   updated_at: number
@@ -99,6 +102,7 @@ export type ImapConfigurationMinAggregateInputType = {
   userId?: true
   connect?: true
   sync?: true
+  emailNotifications?: true
   realtimeImapCheckingId?: true
   created_at?: true
   updated_at?: true
@@ -114,6 +118,7 @@ export type ImapConfigurationMaxAggregateInputType = {
   userId?: true
   connect?: true
   sync?: true
+  emailNotifications?: true
   realtimeImapCheckingId?: true
   created_at?: true
   updated_at?: true
@@ -129,6 +134,7 @@ export type ImapConfigurationCountAggregateInputType = {
   userId?: true
   connect?: true
   sync?: true
+  emailNotifications?: true
   realtimeImapCheckingId?: true
   created_at?: true
   updated_at?: true
@@ -231,6 +237,7 @@ export type ImapConfigurationGroupByOutputType = {
   userId: string
   connect: boolean
   sync: boolean
+  emailNotifications: boolean
   realtimeImapCheckingId: string | null
   created_at: Date
   updated_at: Date
@@ -269,6 +276,7 @@ export type imapConfigurationWhereInput = {
   userId?: Prisma.StringFilter<"imapConfiguration"> | string
   connect?: Prisma.BoolFilter<"imapConfiguration"> | boolean
   sync?: Prisma.BoolFilter<"imapConfiguration"> | boolean
+  emailNotifications?: Prisma.BoolFilter<"imapConfiguration"> | boolean
   realtimeImapCheckingId?: Prisma.StringNullableFilter<"imapConfiguration"> | string | null
   created_at?: Prisma.DateTimeFilter<"imapConfiguration"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"imapConfiguration"> | Date | string
@@ -286,6 +294,7 @@ export type imapConfigurationOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
   connect?: Prisma.SortOrder
   sync?: Prisma.SortOrder
+  emailNotifications?: Prisma.SortOrder
   realtimeImapCheckingId?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -307,6 +316,7 @@ export type imapConfigurationWhereUniqueInput = Prisma.AtLeast<{
   secure?: Prisma.BoolFilter<"imapConfiguration"> | boolean
   connect?: Prisma.BoolFilter<"imapConfiguration"> | boolean
   sync?: Prisma.BoolFilter<"imapConfiguration"> | boolean
+  emailNotifications?: Prisma.BoolFilter<"imapConfiguration"> | boolean
   created_at?: Prisma.DateTimeFilter<"imapConfiguration"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"imapConfiguration"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -323,6 +333,7 @@ export type imapConfigurationOrderByWithAggregationInput = {
   userId?: Prisma.SortOrder
   connect?: Prisma.SortOrder
   sync?: Prisma.SortOrder
+  emailNotifications?: Prisma.SortOrder
   realtimeImapCheckingId?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -346,6 +357,7 @@ export type imapConfigurationScalarWhereWithAggregatesInput = {
   userId?: Prisma.StringWithAggregatesFilter<"imapConfiguration"> | string
   connect?: Prisma.BoolWithAggregatesFilter<"imapConfiguration"> | boolean
   sync?: Prisma.BoolWithAggregatesFilter<"imapConfiguration"> | boolean
+  emailNotifications?: Prisma.BoolWithAggregatesFilter<"imapConfiguration"> | boolean
   realtimeImapCheckingId?: Prisma.StringNullableWithAggregatesFilter<"imapConfiguration"> | string | null
   created_at?: Prisma.DateTimeWithAggregatesFilter<"imapConfiguration"> | Date | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"imapConfiguration"> | Date | string
@@ -360,6 +372,7 @@ export type imapConfigurationCreateInput = {
   secure?: boolean
   connect?: boolean
   sync?: boolean
+  emailNotifications?: boolean
   created_at?: Date | string
   updated_at?: Date | string
   user: Prisma.UserCreateNestedOneWithoutImapConfigurationsInput
@@ -376,6 +389,7 @@ export type imapConfigurationUncheckedCreateInput = {
   userId: string
   connect?: boolean
   sync?: boolean
+  emailNotifications?: boolean
   realtimeImapCheckingId?: string | null
   created_at?: Date | string
   updated_at?: Date | string
@@ -390,6 +404,7 @@ export type imapConfigurationUpdateInput = {
   secure?: Prisma.BoolFieldUpdateOperationsInput | boolean
   connect?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sync?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutImapConfigurationsNestedInput
@@ -406,6 +421,7 @@ export type imapConfigurationUncheckedUpdateInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   connect?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sync?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
   realtimeImapCheckingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -421,6 +437,7 @@ export type imapConfigurationCreateManyInput = {
   userId: string
   connect?: boolean
   sync?: boolean
+  emailNotifications?: boolean
   realtimeImapCheckingId?: string | null
   created_at?: Date | string
   updated_at?: Date | string
@@ -435,6 +452,7 @@ export type imapConfigurationUpdateManyMutationInput = {
   secure?: Prisma.BoolFieldUpdateOperationsInput | boolean
   connect?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sync?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -449,6 +467,7 @@ export type imapConfigurationUncheckedUpdateManyInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   connect?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sync?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
   realtimeImapCheckingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -464,6 +483,7 @@ export type imapConfigurationCountOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   connect?: Prisma.SortOrder
   sync?: Prisma.SortOrder
+  emailNotifications?: Prisma.SortOrder
   realtimeImapCheckingId?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -483,6 +503,7 @@ export type imapConfigurationMaxOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   connect?: Prisma.SortOrder
   sync?: Prisma.SortOrder
+  emailNotifications?: Prisma.SortOrder
   realtimeImapCheckingId?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -498,6 +519,7 @@ export type imapConfigurationMinOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   connect?: Prisma.SortOrder
   sync?: Prisma.SortOrder
+  emailNotifications?: Prisma.SortOrder
   realtimeImapCheckingId?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -597,6 +619,7 @@ export type imapConfigurationCreateWithoutRealtimeImapCheckingInput = {
   secure?: boolean
   connect?: boolean
   sync?: boolean
+  emailNotifications?: boolean
   created_at?: Date | string
   updated_at?: Date | string
   user: Prisma.UserCreateNestedOneWithoutImapConfigurationsInput
@@ -612,6 +635,7 @@ export type imapConfigurationUncheckedCreateWithoutRealtimeImapCheckingInput = {
   userId: string
   connect?: boolean
   sync?: boolean
+  emailNotifications?: boolean
   created_at?: Date | string
   updated_at?: Date | string
 }
@@ -641,6 +665,7 @@ export type imapConfigurationUpdateWithoutRealtimeImapCheckingInput = {
   secure?: Prisma.BoolFieldUpdateOperationsInput | boolean
   connect?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sync?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutImapConfigurationsNestedInput
@@ -656,6 +681,7 @@ export type imapConfigurationUncheckedUpdateWithoutRealtimeImapCheckingInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   connect?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sync?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -669,6 +695,7 @@ export type imapConfigurationCreateWithoutUserInput = {
   secure?: boolean
   connect?: boolean
   sync?: boolean
+  emailNotifications?: boolean
   created_at?: Date | string
   updated_at?: Date | string
   realtimeImapChecking?: Prisma.invoiceAutoSyncIntervalCreateNestedOneWithoutImapConfigurationInput
@@ -683,6 +710,7 @@ export type imapConfigurationUncheckedCreateWithoutUserInput = {
   secure?: boolean
   connect?: boolean
   sync?: boolean
+  emailNotifications?: boolean
   realtimeImapCheckingId?: string | null
   created_at?: Date | string
   updated_at?: Date | string
@@ -713,6 +741,7 @@ export type imapConfigurationUpdateWithoutUserInput = {
   secure?: Prisma.BoolFieldUpdateOperationsInput | boolean
   connect?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sync?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   realtimeImapChecking?: Prisma.invoiceAutoSyncIntervalUpdateOneWithoutImapConfigurationNestedInput
@@ -727,6 +756,7 @@ export type imapConfigurationUncheckedUpdateWithoutUserInput = {
   secure?: Prisma.BoolFieldUpdateOperationsInput | boolean
   connect?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sync?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
   realtimeImapCheckingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -744,6 +774,7 @@ export type imapConfigurationSelect<ExtArgs extends runtime.Types.Extensions.Int
   userId?: boolean
   connect?: boolean
   sync?: boolean
+  emailNotifications?: boolean
   realtimeImapCheckingId?: boolean
   created_at?: boolean
   updated_at?: boolean
@@ -761,6 +792,7 @@ export type imapConfigurationSelectCreateManyAndReturn<ExtArgs extends runtime.T
   userId?: boolean
   connect?: boolean
   sync?: boolean
+  emailNotifications?: boolean
   realtimeImapCheckingId?: boolean
   created_at?: boolean
   updated_at?: boolean
@@ -778,6 +810,7 @@ export type imapConfigurationSelectUpdateManyAndReturn<ExtArgs extends runtime.T
   userId?: boolean
   connect?: boolean
   sync?: boolean
+  emailNotifications?: boolean
   realtimeImapCheckingId?: boolean
   created_at?: boolean
   updated_at?: boolean
@@ -795,12 +828,13 @@ export type imapConfigurationSelectScalar = {
   userId?: boolean
   connect?: boolean
   sync?: boolean
+  emailNotifications?: boolean
   realtimeImapCheckingId?: boolean
   created_at?: boolean
   updated_at?: boolean
 }
 
-export type imapConfigurationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "host" | "port" | "username" | "password" | "secure" | "userId" | "connect" | "sync" | "realtimeImapCheckingId" | "created_at" | "updated_at", ExtArgs["result"]["imapConfiguration"]>
+export type imapConfigurationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "host" | "port" | "username" | "password" | "secure" | "userId" | "connect" | "sync" | "emailNotifications" | "realtimeImapCheckingId" | "created_at" | "updated_at", ExtArgs["result"]["imapConfiguration"]>
 export type imapConfigurationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   realtimeImapChecking?: boolean | Prisma.imapConfiguration$realtimeImapCheckingArgs<ExtArgs>
@@ -830,6 +864,7 @@ export type $imapConfigurationPayload<ExtArgs extends runtime.Types.Extensions.I
     userId: string
     connect: boolean
     sync: boolean
+    emailNotifications: boolean
     realtimeImapCheckingId: string | null
     created_at: Date
     updated_at: Date
@@ -1267,6 +1302,7 @@ export interface imapConfigurationFieldRefs {
   readonly userId: Prisma.FieldRef<"imapConfiguration", 'String'>
   readonly connect: Prisma.FieldRef<"imapConfiguration", 'Boolean'>
   readonly sync: Prisma.FieldRef<"imapConfiguration", 'Boolean'>
+  readonly emailNotifications: Prisma.FieldRef<"imapConfiguration", 'Boolean'>
   readonly realtimeImapCheckingId: Prisma.FieldRef<"imapConfiguration", 'String'>
   readonly created_at: Prisma.FieldRef<"imapConfiguration", 'DateTime'>
   readonly updated_at: Prisma.FieldRef<"imapConfiguration", 'DateTime'>

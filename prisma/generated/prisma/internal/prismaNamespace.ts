@@ -1969,6 +1969,7 @@ export const ImapConfigurationScalarFieldEnum = {
   userId: 'userId',
   connect: 'connect',
   sync: 'sync',
+  realtimeImapCheckingId: 'realtimeImapCheckingId',
   created_at: 'created_at',
   updated_at: 'updated_at'
 } as const
@@ -2336,6 +2337,20 @@ export type EnumBillingPeriodFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
  * Reference to a field of type 'BillingPeriod[]'
  */
 export type ListEnumBillingPeriodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BillingPeriod[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PaymentStatus'
+ */
+export type EnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'PaymentStatus[]'
+ */
+export type ListEnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus[]'>
     
 
 

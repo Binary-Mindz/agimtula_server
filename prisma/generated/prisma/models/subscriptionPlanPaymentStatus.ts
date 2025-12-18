@@ -39,7 +39,7 @@ export type SubscriptionPlanPaymentStatusMinAggregateOutputType = {
   pi_id: string | null
   subscriptionPlanHistoryId: string | null
   totalAmount: number | null
-  paymentStatus: string | null
+  paymentStatus: $Enums.PaymentStatus | null
   createdAt: Date | null
 }
 
@@ -48,7 +48,7 @@ export type SubscriptionPlanPaymentStatusMaxAggregateOutputType = {
   pi_id: string | null
   subscriptionPlanHistoryId: string | null
   totalAmount: number | null
-  paymentStatus: string | null
+  paymentStatus: $Enums.PaymentStatus | null
   createdAt: Date | null
 }
 
@@ -190,7 +190,7 @@ export type SubscriptionPlanPaymentStatusGroupByOutputType = {
   pi_id: string
   subscriptionPlanHistoryId: string
   totalAmount: number
-  paymentStatus: string
+  paymentStatus: $Enums.PaymentStatus
   createdAt: Date
   _count: SubscriptionPlanPaymentStatusCountAggregateOutputType | null
   _avg: SubscriptionPlanPaymentStatusAvgAggregateOutputType | null
@@ -222,7 +222,7 @@ export type subscriptionPlanPaymentStatusWhereInput = {
   pi_id?: Prisma.StringFilter<"subscriptionPlanPaymentStatus"> | string
   subscriptionPlanHistoryId?: Prisma.StringFilter<"subscriptionPlanPaymentStatus"> | string
   totalAmount?: Prisma.FloatFilter<"subscriptionPlanPaymentStatus"> | number
-  paymentStatus?: Prisma.StringFilter<"subscriptionPlanPaymentStatus"> | string
+  paymentStatus?: Prisma.EnumPaymentStatusFilter<"subscriptionPlanPaymentStatus"> | $Enums.PaymentStatus
   createdAt?: Prisma.DateTimeFilter<"subscriptionPlanPaymentStatus"> | Date | string
   userSubscriptionPlanHistory?: Prisma.XOR<Prisma.UserSubscriptionPlanHistoryScalarRelationFilter, Prisma.userSubscriptionPlanHistoryWhereInput>
   userSubscriptionPlan?: Prisma.XOR<Prisma.UserSubscriptionPlanNullableScalarRelationFilter, Prisma.userSubscriptionPlanWhereInput> | null
@@ -247,7 +247,7 @@ export type subscriptionPlanPaymentStatusWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.subscriptionPlanPaymentStatusWhereInput[]
   NOT?: Prisma.subscriptionPlanPaymentStatusWhereInput | Prisma.subscriptionPlanPaymentStatusWhereInput[]
   totalAmount?: Prisma.FloatFilter<"subscriptionPlanPaymentStatus"> | number
-  paymentStatus?: Prisma.StringFilter<"subscriptionPlanPaymentStatus"> | string
+  paymentStatus?: Prisma.EnumPaymentStatusFilter<"subscriptionPlanPaymentStatus"> | $Enums.PaymentStatus
   createdAt?: Prisma.DateTimeFilter<"subscriptionPlanPaymentStatus"> | Date | string
   userSubscriptionPlanHistory?: Prisma.XOR<Prisma.UserSubscriptionPlanHistoryScalarRelationFilter, Prisma.userSubscriptionPlanHistoryWhereInput>
   userSubscriptionPlan?: Prisma.XOR<Prisma.UserSubscriptionPlanNullableScalarRelationFilter, Prisma.userSubscriptionPlanWhereInput> | null
@@ -275,7 +275,7 @@ export type subscriptionPlanPaymentStatusScalarWhereWithAggregatesInput = {
   pi_id?: Prisma.StringWithAggregatesFilter<"subscriptionPlanPaymentStatus"> | string
   subscriptionPlanHistoryId?: Prisma.StringWithAggregatesFilter<"subscriptionPlanPaymentStatus"> | string
   totalAmount?: Prisma.FloatWithAggregatesFilter<"subscriptionPlanPaymentStatus"> | number
-  paymentStatus?: Prisma.StringWithAggregatesFilter<"subscriptionPlanPaymentStatus"> | string
+  paymentStatus?: Prisma.EnumPaymentStatusWithAggregatesFilter<"subscriptionPlanPaymentStatus"> | $Enums.PaymentStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"subscriptionPlanPaymentStatus"> | Date | string
 }
 
@@ -283,7 +283,7 @@ export type subscriptionPlanPaymentStatusCreateInput = {
   id?: string
   pi_id: string
   totalAmount: number
-  paymentStatus: string
+  paymentStatus: $Enums.PaymentStatus
   createdAt?: Date | string
   userSubscriptionPlanHistory: Prisma.userSubscriptionPlanHistoryCreateNestedOneWithoutSubscriptionPlanPaymentStatusInput
   userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutSubscriptionPlanPaymentStatusInput
@@ -294,7 +294,7 @@ export type subscriptionPlanPaymentStatusUncheckedCreateInput = {
   pi_id: string
   subscriptionPlanHistoryId: string
   totalAmount: number
-  paymentStatus: string
+  paymentStatus: $Enums.PaymentStatus
   createdAt?: Date | string
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutSubscriptionPlanPaymentStatusInput
 }
@@ -303,7 +303,7 @@ export type subscriptionPlanPaymentStatusUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   pi_id?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateOneRequiredWithoutSubscriptionPlanPaymentStatusNestedInput
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutSubscriptionPlanPaymentStatusNestedInput
@@ -314,7 +314,7 @@ export type subscriptionPlanPaymentStatusUncheckedUpdateInput = {
   pi_id?: Prisma.StringFieldUpdateOperationsInput | string
   subscriptionPlanHistoryId?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutSubscriptionPlanPaymentStatusNestedInput
 }
@@ -324,7 +324,7 @@ export type subscriptionPlanPaymentStatusCreateManyInput = {
   pi_id: string
   subscriptionPlanHistoryId: string
   totalAmount: number
-  paymentStatus: string
+  paymentStatus: $Enums.PaymentStatus
   createdAt?: Date | string
 }
 
@@ -332,7 +332,7 @@ export type subscriptionPlanPaymentStatusUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   pi_id?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -341,7 +341,7 @@ export type subscriptionPlanPaymentStatusUncheckedUpdateManyInput = {
   pi_id?: Prisma.StringFieldUpdateOperationsInput | string
   subscriptionPlanHistoryId?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -433,11 +433,15 @@ export type subscriptionPlanPaymentStatusUncheckedUpdateOneWithoutUserSubscripti
   update?: Prisma.XOR<Prisma.XOR<Prisma.subscriptionPlanPaymentStatusUpdateToOneWithWhereWithoutUserSubscriptionPlanHistoryInput, Prisma.subscriptionPlanPaymentStatusUpdateWithoutUserSubscriptionPlanHistoryInput>, Prisma.subscriptionPlanPaymentStatusUncheckedUpdateWithoutUserSubscriptionPlanHistoryInput>
 }
 
+export type EnumPaymentStatusFieldUpdateOperationsInput = {
+  set?: $Enums.PaymentStatus
+}
+
 export type subscriptionPlanPaymentStatusCreateWithoutUserSubscriptionPlanInput = {
   id?: string
   pi_id: string
   totalAmount: number
-  paymentStatus: string
+  paymentStatus: $Enums.PaymentStatus
   createdAt?: Date | string
   userSubscriptionPlanHistory: Prisma.userSubscriptionPlanHistoryCreateNestedOneWithoutSubscriptionPlanPaymentStatusInput
 }
@@ -447,7 +451,7 @@ export type subscriptionPlanPaymentStatusUncheckedCreateWithoutUserSubscriptionP
   pi_id: string
   subscriptionPlanHistoryId: string
   totalAmount: number
-  paymentStatus: string
+  paymentStatus: $Enums.PaymentStatus
   createdAt?: Date | string
 }
 
@@ -471,7 +475,7 @@ export type subscriptionPlanPaymentStatusUpdateWithoutUserSubscriptionPlanInput 
   id?: Prisma.StringFieldUpdateOperationsInput | string
   pi_id?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateOneRequiredWithoutSubscriptionPlanPaymentStatusNestedInput
 }
@@ -481,7 +485,7 @@ export type subscriptionPlanPaymentStatusUncheckedUpdateWithoutUserSubscriptionP
   pi_id?: Prisma.StringFieldUpdateOperationsInput | string
   subscriptionPlanHistoryId?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -489,7 +493,7 @@ export type subscriptionPlanPaymentStatusCreateWithoutUserSubscriptionPlanHistor
   id?: string
   pi_id: string
   totalAmount: number
-  paymentStatus: string
+  paymentStatus: $Enums.PaymentStatus
   createdAt?: Date | string
   userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutSubscriptionPlanPaymentStatusInput
 }
@@ -498,7 +502,7 @@ export type subscriptionPlanPaymentStatusUncheckedCreateWithoutUserSubscriptionP
   id?: string
   pi_id: string
   totalAmount: number
-  paymentStatus: string
+  paymentStatus: $Enums.PaymentStatus
   createdAt?: Date | string
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutSubscriptionPlanPaymentStatusInput
 }
@@ -523,7 +527,7 @@ export type subscriptionPlanPaymentStatusUpdateWithoutUserSubscriptionPlanHistor
   id?: Prisma.StringFieldUpdateOperationsInput | string
   pi_id?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutSubscriptionPlanPaymentStatusNestedInput
 }
@@ -532,7 +536,7 @@ export type subscriptionPlanPaymentStatusUncheckedUpdateWithoutUserSubscriptionP
   id?: Prisma.StringFieldUpdateOperationsInput | string
   pi_id?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutSubscriptionPlanPaymentStatusNestedInput
 }
@@ -602,7 +606,7 @@ export type $subscriptionPlanPaymentStatusPayload<ExtArgs extends runtime.Types.
     pi_id: string
     subscriptionPlanHistoryId: string
     totalAmount: number
-    paymentStatus: string
+    paymentStatus: $Enums.PaymentStatus
     createdAt: Date
   }, ExtArgs["result"]["subscriptionPlanPaymentStatus"]>
   composites: {}
@@ -1033,7 +1037,7 @@ export interface subscriptionPlanPaymentStatusFieldRefs {
   readonly pi_id: Prisma.FieldRef<"subscriptionPlanPaymentStatus", 'String'>
   readonly subscriptionPlanHistoryId: Prisma.FieldRef<"subscriptionPlanPaymentStatus", 'String'>
   readonly totalAmount: Prisma.FieldRef<"subscriptionPlanPaymentStatus", 'Float'>
-  readonly paymentStatus: Prisma.FieldRef<"subscriptionPlanPaymentStatus", 'String'>
+  readonly paymentStatus: Prisma.FieldRef<"subscriptionPlanPaymentStatus", 'PaymentStatus'>
   readonly createdAt: Prisma.FieldRef<"subscriptionPlanPaymentStatus", 'DateTime'>
 }
     

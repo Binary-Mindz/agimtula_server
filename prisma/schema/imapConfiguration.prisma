@@ -16,7 +16,12 @@ model imapConfiguration {
     connect Boolean @default(false)
     sync    Boolean @default(false)
 
+<<<<<<< HEAD
     
+=======
+    realtimeImapCheckingId String? @unique
+    realtimeImapChecking invoiceAutoSyncInterval? @relation(fields: [realtimeImapCheckingId], references: [id])
+>>>>>>> dev
 
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
@@ -89,7 +94,13 @@ model subscriptionPlanPaymentStatus {
 
     totalAmount Float
 
-    paymentStatus String // e.g., 'PAID', 'PENDING', 'FAILED'
+    paymentStatus PaymentStatus // e.g., 'PAID', 'PENDING', 'FAILED'
 
     createdAt DateTime @default(now())
+}
+
+enum PaymentStatus {
+    PAID 
+    PENDING 
+    FAILED
 }

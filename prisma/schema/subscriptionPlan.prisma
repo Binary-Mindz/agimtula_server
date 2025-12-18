@@ -43,4 +43,6 @@ model invoiceAutoSyncInterval {
     title       String
     description String
     cronTime    String
+
+    imapConfiguration imapConfiguration?
 }

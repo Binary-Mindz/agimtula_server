@@ -51,8 +51,14 @@ export class ReceiptsService {
     return cResponseData({ message: 'Receipt uploaded successfully' });
   }
 
-  async getReceiptsData(search: string, filterCategory: string) {
-    const query = {};
+  async getReceiptsData(
+    userId: string,
+    search: string,
+    filterCategory: string,
+  ) {
+    const query = {
+      userId: userId,
+    };
 
     if (search) {
       query['vendor'] = { contains: search, mode: 'insensitive' };

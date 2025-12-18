@@ -58,7 +58,8 @@ export class ReceiptsController {
   async getReceiptsData(
     @Query('search') search: string,
     @Query('filterCategory') filterCategory: string,
+    @User() user: jwtPayload,
   ) {
-    return await this.receiptsService.getReceiptsData(search, filterCategory);
+    return await this.receiptsService.getReceiptsData(user.sub,search, filterCategory);
   }
 }

@@ -13,15 +13,12 @@ model imapConfiguration {
     userId String @unique
     user   User   @relation(fields: [userId], references: [id])
 
-    connect Boolean @default(false)
-    sync    Boolean @default(false)
+    connect            Boolean @default(false)
+    sync               Boolean @default(false)
+    emailNotifications Boolean @default(false)
 
-<<<<<<< HEAD
-    
-=======
-    realtimeImapCheckingId String? @unique
-    realtimeImapChecking invoiceAutoSyncInterval? @relation(fields: [realtimeImapCheckingId], references: [id])
->>>>>>> dev
+    realtimeImapCheckingId String?                  @unique
+    realtimeImapChecking   invoiceAutoSyncInterval? @relation(fields: [realtimeImapCheckingId], references: [id])
 
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
@@ -36,8 +33,8 @@ model userSubscriptionPlan {
     UserId String @unique
     user   User   @relation(fields: [UserId], references: [id])
 
-    subscriptionPlanPaymentStatusId String @unique
-    subscriptionPlanPaymentStatus subscriptionPlanPaymentStatus? @relation(name: "PaymentStatusToSubscriptionPlan", fields: [subscriptionPlanPaymentStatusId], references: [id])
+    subscriptionPlanPaymentStatusId String                         @unique
+    subscriptionPlanPaymentStatus   subscriptionPlanPaymentStatus? @relation(name: "PaymentStatusToSubscriptionPlan", fields: [subscriptionPlanPaymentStatusId], references: [id])
 
     isLimitedInvoicePerMonth Boolean
     perMonthInvoiceCount     Int
@@ -90,7 +87,7 @@ model subscriptionPlanPaymentStatus {
     userSubscriptionPlanHistory userSubscriptionPlanHistory @relation(fields: [subscriptionPlanHistoryId], references: [id])
 
     // user subscription plan relation payment status
-    userSubscriptionPlan   userSubscriptionPlan? @relation(name: "PaymentStatusToSubscriptionPlan")
+    userSubscriptionPlan userSubscriptionPlan? @relation(name: "PaymentStatusToSubscriptionPlan")
 
     totalAmount Float
 
@@ -100,7 +97,7 @@ model subscriptionPlanPaymentStatus {
 }
 
 enum PaymentStatus {
-    PAID 
-    PENDING 
+    PAID
+    PENDING
     FAILED
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 // import { ImapFlow } from 'imapflow';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { CronJob } from 'cron';
+import { CreateImapApiDto } from './dto/create-imap-api.dto';
 
 // interface EmailData {
 //   uid: number;
@@ -22,17 +23,23 @@ export class ImapApisService {
   //   await this.loadCronJobsFromDB();
   // }
 
-  loadCronJobsFromDB() {
+  getCronJobsKK() {
+    const jobs = this.schedulerRegistry.getCronJobs();
+    console.log(jobs);
+
+    return JSON.stringify([...jobs.keys()]);
+  }
+
+  loadCronJobsFromDB(data: CreateImapApiDto) {
     // const accounts = await this.prisma.emailAccount.findMany();
     // [{email:"user1@gmail.com", timeupdate:5}, ...]
 
-    const accounts: ({ email: string; timeupdate: number } | null)[] = [
-      { email: 'uforcode123@gmail.com', timeupdate: 5 },
-      null,
-    ];
+    // const accounts: ({ email: string; timeupdate: number } | null)[] = [
+    //   { email: 'uforcode123@gmail.com', timeupdate: 5 },
+    //   null,
+    // ];
 
-    if (accounts.length > 0 && accounts[0])
-      this.createCronForAccount(accounts[0].email, accounts[0].timeupdate);
+    if (data.email) this.createCronForAccount(data.email, 5);
 
     return 'Cron jobs loaded from DB';
   }
@@ -42,8 +49,6 @@ export class ImapApisService {
     const cronTime = `*/5 * * * * *`; // Every 'minutes' minutes
 
     this.stopCronForAccount(email); // Stop existing job if any
-
-
 
     const job = new CronJob(cronTime, () => {
       // this.runCronJob(email);

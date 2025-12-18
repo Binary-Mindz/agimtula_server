@@ -116,6 +116,7 @@ export const ImapConfigurationScalarFieldEnum = {
   userId: 'userId',
   connect: 'connect',
   sync: 'sync',
+  emailNotifications: 'emailNotifications',
   realtimeImapCheckingId: 'realtimeImapCheckingId',
   created_at: 'created_at',
   updated_at: 'updated_at'

@@ -174,6 +174,7 @@ export type invoiceAutoSyncIntervalWhereInput = {
   title?: Prisma.StringFilter<"invoiceAutoSyncInterval"> | string
   description?: Prisma.StringFilter<"invoiceAutoSyncInterval"> | string
   cronTime?: Prisma.StringFilter<"invoiceAutoSyncInterval"> | string
+  imapConfiguration?: Prisma.XOR<Prisma.ImapConfigurationNullableScalarRelationFilter, Prisma.imapConfigurationWhereInput> | null
 }
 
 export type invoiceAutoSyncIntervalOrderByWithRelationInput = {
@@ -181,6 +182,7 @@ export type invoiceAutoSyncIntervalOrderByWithRelationInput = {
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   cronTime?: Prisma.SortOrder
+  imapConfiguration?: Prisma.imapConfigurationOrderByWithRelationInput
 }
 
 export type invoiceAutoSyncIntervalWhereUniqueInput = Prisma.AtLeast<{
@@ -191,6 +193,7 @@ export type invoiceAutoSyncIntervalWhereUniqueInput = Prisma.AtLeast<{
   title?: Prisma.StringFilter<"invoiceAutoSyncInterval"> | string
   description?: Prisma.StringFilter<"invoiceAutoSyncInterval"> | string
   cronTime?: Prisma.StringFilter<"invoiceAutoSyncInterval"> | string
+  imapConfiguration?: Prisma.XOR<Prisma.ImapConfigurationNullableScalarRelationFilter, Prisma.imapConfigurationWhereInput> | null
 }, "id" | "id">
 
 export type invoiceAutoSyncIntervalOrderByWithAggregationInput = {
@@ -218,6 +221,7 @@ export type invoiceAutoSyncIntervalCreateInput = {
   title: string
   description: string
   cronTime: string
+  imapConfiguration?: Prisma.imapConfigurationCreateNestedOneWithoutRealtimeImapCheckingInput
 }
 
 export type invoiceAutoSyncIntervalUncheckedCreateInput = {
@@ -225,6 +229,7 @@ export type invoiceAutoSyncIntervalUncheckedCreateInput = {
   title: string
   description: string
   cronTime: string
+  imapConfiguration?: Prisma.imapConfigurationUncheckedCreateNestedOneWithoutRealtimeImapCheckingInput
 }
 
 export type invoiceAutoSyncIntervalUpdateInput = {
@@ -232,6 +237,7 @@ export type invoiceAutoSyncIntervalUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   cronTime?: Prisma.StringFieldUpdateOperationsInput | string
+  imapConfiguration?: Prisma.imapConfigurationUpdateOneWithoutRealtimeImapCheckingNestedInput
 }
 
 export type invoiceAutoSyncIntervalUncheckedUpdateInput = {
@@ -239,6 +245,7 @@ export type invoiceAutoSyncIntervalUncheckedUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   cronTime?: Prisma.StringFieldUpdateOperationsInput | string
+  imapConfiguration?: Prisma.imapConfigurationUncheckedUpdateOneWithoutRealtimeImapCheckingNestedInput
 }
 
 export type invoiceAutoSyncIntervalCreateManyInput = {
@@ -262,6 +269,11 @@ export type invoiceAutoSyncIntervalUncheckedUpdateManyInput = {
   cronTime?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
+export type InvoiceAutoSyncIntervalNullableScalarRelationFilter = {
+  is?: Prisma.invoiceAutoSyncIntervalWhereInput | null
+  isNot?: Prisma.invoiceAutoSyncIntervalWhereInput | null
+}
+
 export type invoiceAutoSyncIntervalCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -283,6 +295,66 @@ export type invoiceAutoSyncIntervalMinOrderByAggregateInput = {
   cronTime?: Prisma.SortOrder
 }
 
+export type invoiceAutoSyncIntervalCreateNestedOneWithoutImapConfigurationInput = {
+  create?: Prisma.XOR<Prisma.invoiceAutoSyncIntervalCreateWithoutImapConfigurationInput, Prisma.invoiceAutoSyncIntervalUncheckedCreateWithoutImapConfigurationInput>
+  connectOrCreate?: Prisma.invoiceAutoSyncIntervalCreateOrConnectWithoutImapConfigurationInput
+  connect?: Prisma.invoiceAutoSyncIntervalWhereUniqueInput
+}
+
+export type invoiceAutoSyncIntervalUpdateOneWithoutImapConfigurationNestedInput = {
+  create?: Prisma.XOR<Prisma.invoiceAutoSyncIntervalCreateWithoutImapConfigurationInput, Prisma.invoiceAutoSyncIntervalUncheckedCreateWithoutImapConfigurationInput>
+  connectOrCreate?: Prisma.invoiceAutoSyncIntervalCreateOrConnectWithoutImapConfigurationInput
+  upsert?: Prisma.invoiceAutoSyncIntervalUpsertWithoutImapConfigurationInput
+  disconnect?: Prisma.invoiceAutoSyncIntervalWhereInput | boolean
+  delete?: Prisma.invoiceAutoSyncIntervalWhereInput | boolean
+  connect?: Prisma.invoiceAutoSyncIntervalWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.invoiceAutoSyncIntervalUpdateToOneWithWhereWithoutImapConfigurationInput, Prisma.invoiceAutoSyncIntervalUpdateWithoutImapConfigurationInput>, Prisma.invoiceAutoSyncIntervalUncheckedUpdateWithoutImapConfigurationInput>
+}
+
+export type invoiceAutoSyncIntervalCreateWithoutImapConfigurationInput = {
+  id?: string
+  title: string
+  description: string
+  cronTime: string
+}
+
+export type invoiceAutoSyncIntervalUncheckedCreateWithoutImapConfigurationInput = {
+  id?: string
+  title: string
+  description: string
+  cronTime: string
+}
+
+export type invoiceAutoSyncIntervalCreateOrConnectWithoutImapConfigurationInput = {
+  where: Prisma.invoiceAutoSyncIntervalWhereUniqueInput
+  create: Prisma.XOR<Prisma.invoiceAutoSyncIntervalCreateWithoutImapConfigurationInput, Prisma.invoiceAutoSyncIntervalUncheckedCreateWithoutImapConfigurationInput>
+}
+
+export type invoiceAutoSyncIntervalUpsertWithoutImapConfigurationInput = {
+  update: Prisma.XOR<Prisma.invoiceAutoSyncIntervalUpdateWithoutImapConfigurationInput, Prisma.invoiceAutoSyncIntervalUncheckedUpdateWithoutImapConfigurationInput>
+  create: Prisma.XOR<Prisma.invoiceAutoSyncIntervalCreateWithoutImapConfigurationInput, Prisma.invoiceAutoSyncIntervalUncheckedCreateWithoutImapConfigurationInput>
+  where?: Prisma.invoiceAutoSyncIntervalWhereInput
+}
+
+export type invoiceAutoSyncIntervalUpdateToOneWithWhereWithoutImapConfigurationInput = {
+  where?: Prisma.invoiceAutoSyncIntervalWhereInput
+  data: Prisma.XOR<Prisma.invoiceAutoSyncIntervalUpdateWithoutImapConfigurationInput, Prisma.invoiceAutoSyncIntervalUncheckedUpdateWithoutImapConfigurationInput>
+}
+
+export type invoiceAutoSyncIntervalUpdateWithoutImapConfigurationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  cronTime?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type invoiceAutoSyncIntervalUncheckedUpdateWithoutImapConfigurationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  cronTime?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
 
 
 export type invoiceAutoSyncIntervalSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -290,6 +362,7 @@ export type invoiceAutoSyncIntervalSelect<ExtArgs extends runtime.Types.Extensio
   title?: boolean
   description?: boolean
   cronTime?: boolean
+  imapConfiguration?: boolean | Prisma.invoiceAutoSyncInterval$imapConfigurationArgs<ExtArgs>
 }, ExtArgs["result"]["invoiceAutoSyncInterval"]>
 
 export type invoiceAutoSyncIntervalSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -314,10 +387,17 @@ export type invoiceAutoSyncIntervalSelectScalar = {
 }
 
 export type invoiceAutoSyncIntervalOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "cronTime", ExtArgs["result"]["invoiceAutoSyncInterval"]>
+export type invoiceAutoSyncIntervalInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  imapConfiguration?: boolean | Prisma.invoiceAutoSyncInterval$imapConfigurationArgs<ExtArgs>
+}
+export type invoiceAutoSyncIntervalIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type invoiceAutoSyncIntervalIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $invoiceAutoSyncIntervalPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "invoiceAutoSyncInterval"
-  objects: {}
+  objects: {
+    imapConfiguration: Prisma.$imapConfigurationPayload<ExtArgs> | null
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     title: string
@@ -717,6 +797,7 @@ readonly fields: invoiceAutoSyncIntervalFieldRefs;
  */
 export interface Prisma__invoiceAutoSyncIntervalClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  imapConfiguration<T extends Prisma.invoiceAutoSyncInterval$imapConfigurationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.invoiceAutoSyncInterval$imapConfigurationArgs<ExtArgs>>): Prisma.Prisma__imapConfigurationClient<runtime.Types.Result.GetResult<Prisma.$imapConfigurationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -767,6 +848,10 @@ export type invoiceAutoSyncIntervalFindUniqueArgs<ExtArgs extends runtime.Types.
    */
   omit?: Prisma.invoiceAutoSyncIntervalOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.invoiceAutoSyncIntervalInclude<ExtArgs> | null
+  /**
    * Filter, which invoiceAutoSyncInterval to fetch.
    */
   where: Prisma.invoiceAutoSyncIntervalWhereUniqueInput
@@ -785,6 +870,10 @@ export type invoiceAutoSyncIntervalFindUniqueOrThrowArgs<ExtArgs extends runtime
    */
   omit?: Prisma.invoiceAutoSyncIntervalOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.invoiceAutoSyncIntervalInclude<ExtArgs> | null
+  /**
    * Filter, which invoiceAutoSyncInterval to fetch.
    */
   where: Prisma.invoiceAutoSyncIntervalWhereUniqueInput
@@ -802,6 +891,10 @@ export type invoiceAutoSyncIntervalFindFirstArgs<ExtArgs extends runtime.Types.E
    * Omit specific fields from the invoiceAutoSyncInterval
    */
   omit?: Prisma.invoiceAutoSyncIntervalOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.invoiceAutoSyncIntervalInclude<ExtArgs> | null
   /**
    * Filter, which invoiceAutoSyncInterval to fetch.
    */
@@ -851,6 +944,10 @@ export type invoiceAutoSyncIntervalFindFirstOrThrowArgs<ExtArgs extends runtime.
    */
   omit?: Prisma.invoiceAutoSyncIntervalOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.invoiceAutoSyncIntervalInclude<ExtArgs> | null
+  /**
    * Filter, which invoiceAutoSyncInterval to fetch.
    */
   where?: Prisma.invoiceAutoSyncIntervalWhereInput
@@ -899,6 +996,10 @@ export type invoiceAutoSyncIntervalFindManyArgs<ExtArgs extends runtime.Types.Ex
    */
   omit?: Prisma.invoiceAutoSyncIntervalOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.invoiceAutoSyncIntervalInclude<ExtArgs> | null
+  /**
    * Filter, which invoiceAutoSyncIntervals to fetch.
    */
   where?: Prisma.invoiceAutoSyncIntervalWhereInput
@@ -941,6 +1042,10 @@ export type invoiceAutoSyncIntervalCreateArgs<ExtArgs extends runtime.Types.Exte
    * Omit specific fields from the invoiceAutoSyncInterval
    */
   omit?: Prisma.invoiceAutoSyncIntervalOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.invoiceAutoSyncIntervalInclude<ExtArgs> | null
   /**
    * The data needed to create a invoiceAutoSyncInterval.
    */
@@ -989,6 +1094,10 @@ export type invoiceAutoSyncIntervalUpdateArgs<ExtArgs extends runtime.Types.Exte
    * Omit specific fields from the invoiceAutoSyncInterval
    */
   omit?: Prisma.invoiceAutoSyncIntervalOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.invoiceAutoSyncIntervalInclude<ExtArgs> | null
   /**
    * The data needed to update a invoiceAutoSyncInterval.
    */
@@ -1056,6 +1165,10 @@ export type invoiceAutoSyncIntervalUpsertArgs<ExtArgs extends runtime.Types.Exte
    */
   omit?: Prisma.invoiceAutoSyncIntervalOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.invoiceAutoSyncIntervalInclude<ExtArgs> | null
+  /**
    * The filter to search for the invoiceAutoSyncInterval to update in case it exists.
    */
   where: Prisma.invoiceAutoSyncIntervalWhereUniqueInput
@@ -1082,6 +1195,10 @@ export type invoiceAutoSyncIntervalDeleteArgs<ExtArgs extends runtime.Types.Exte
    */
   omit?: Prisma.invoiceAutoSyncIntervalOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.invoiceAutoSyncIntervalInclude<ExtArgs> | null
+  /**
    * Filter which invoiceAutoSyncInterval to delete.
    */
   where: Prisma.invoiceAutoSyncIntervalWhereUniqueInput
@@ -1102,6 +1219,25 @@ export type invoiceAutoSyncIntervalDeleteManyArgs<ExtArgs extends runtime.Types.
 }
 
 /**
+ * invoiceAutoSyncInterval.imapConfiguration
+ */
+export type invoiceAutoSyncInterval$imapConfigurationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the imapConfiguration
+   */
+  select?: Prisma.imapConfigurationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the imapConfiguration
+   */
+  omit?: Prisma.imapConfigurationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.imapConfigurationInclude<ExtArgs> | null
+  where?: Prisma.imapConfigurationWhereInput
+}
+
+/**
  * invoiceAutoSyncInterval without action
  */
 export type invoiceAutoSyncIntervalDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1113,4 +1249,8 @@ export type invoiceAutoSyncIntervalDefaultArgs<ExtArgs extends runtime.Types.Ext
    * Omit specific fields from the invoiceAutoSyncInterval
    */
   omit?: Prisma.invoiceAutoSyncIntervalOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.invoiceAutoSyncIntervalInclude<ExtArgs> | null
 }

@@ -6,13 +6,12 @@ import { PrismaService } from 'src/config/database/prisma.service';
 export class CleanupCronService {
   private readonly logger = new Logger(CleanupCronService.name);
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   @Cron(CronExpression.EVERY_MINUTE)
   async cleanExpiredCodes() {
     try {
       const now = new Date();
-
       // --- Clean ForgetPass codes older than 15 minutes ---
       const forgetPassCutoff = new Date(now.getTime() - 5 * 60 * 1000);
       const deletedForgetPass = await this.prisma.forgetPass.deleteMany({

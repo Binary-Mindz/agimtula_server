@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  ForbiddenException,
-  Injectable,
-} from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { ImapEmailConnectionDto } from './dto/imap-email-connection.dto';
 import { cResponseData } from 'src/common/cResponse';
@@ -61,14 +57,6 @@ export class ManageConnectionService {
 
     if (!isImapConfigured) {
       throw new ForbiddenException('IMAP is not configured for this user');
-    }
-
-    const interval = await this.prisma.invoiceAutoSyncInterval.findUnique({
-      where: { id: dto.syncFrequency },
-    });
-
-    if (!interval) {
-      throw new BadRequestException('Invalid sync frequency');
     }
 
     await this.prisma.imapConfiguration.update({

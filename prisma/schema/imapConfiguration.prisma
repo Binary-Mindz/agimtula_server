@@ -44,8 +44,6 @@ model userSubscriptionPlan {
     expiredAt DateTime
 
     createdAt DateTime @default(now())
-
-    @@map("user_subscription_plan")
 }
 
 // user relation with subscription plan based on historyand previous plans 
@@ -72,8 +70,6 @@ model userSubscriptionPlanHistory {
     expiredAt DateTime
 
     createdAt DateTime @default(now())
-
-    @@map("userSubscriptionPlanHistory")
 }
 
 // payment status for imap configuration and subscription plans
@@ -94,6 +90,4 @@ model subscriptionPlanPaymentStatus {
     paymentStatus String // e.g., 'PAID', 'PENDING', 'FAILED'
 
     createdAt DateTime @default(now())
-
-    @@map("subscription_plan_payment_status")
 }

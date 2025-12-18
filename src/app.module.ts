@@ -2,10 +2,45 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ImapApisModule } from './imap-apis/imap-apis.module';
+import { DatabaseModule } from './config/database/database.module';
+import { AuthModule } from './auth/auth.module';
+import { AdminDashboardModule } from './admin-dashboard/admin-dashboard.module';
+import { AccountantDashboardModule } from './accountant-dashboard/accountant-dashboard.module';
+import { UserDashboardModule } from './user-dashboard/user-dashboard.module';
+import { SmtpMailModule } from './config/smtp-mail/smtp-mail.module';
+import { ConfigModule } from '@nestjs/config';
+import { MileageModule } from './user-dashboard/mileage/mileage.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { SettingsModule } from './user-dashboard/settings/settings.module';
+import { AuthGuard } from './auth/guards/auth/auth.guard';
+import { CleanupCronService } from './auth/cron/CleanupCronService';
+import { RedisServiceModule } from './config/redis-service/redis-service.module';
+// import { PaymentsModule } from './admin-dashboard/payments/payments.module';
 
 @Module({
-  imports: [ImapApisModule],
+  imports: [
+    RedisServiceModule,
+    ConfigModule.forRoot({ isGlobal: true }),
+    ScheduleModule.forRoot(),
+    DatabaseModule,
+    ImapApisModule,
+    AuthModule,
+    AdminDashboardModule,
+    AccountantDashboardModule,
+    UserDashboardModule,
+    SmtpMailModule,
+    MileageModule,
+    SettingsModule,
+    // PaymentsModule
+  ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: 'APP_GUARD',
+      useClass: AuthGuard,
+    },
+    CleanupCronService,
+  ],
 })
 export class AppModule {}

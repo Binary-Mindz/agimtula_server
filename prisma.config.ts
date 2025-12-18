@@ -27,8 +27,7 @@
 //   // },
 // } satisfies PrismaConfig;
 
-import 'dotenv/config'; // * loads .env file for database connection
-
+import 'dotenv/config';
 import { defineConfig, env } from 'prisma/config';
 
 export default defineConfig({

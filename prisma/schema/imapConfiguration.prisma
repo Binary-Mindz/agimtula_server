@@ -1,0 +1,103 @@
+// IMAP configuration for users
+model imapConfiguration {
+    id String @id @unique @default(uuid())
+
+    // IMAP server details
+    host     String
+    port     Int
+    username String
+    password String
+    secure   Boolean @default(true)
+
+    // relations
+    userId String @unique
+    user   User   @relation(fields: [userId], references: [id])
+
+    connect            Boolean @default(false)
+    sync               Boolean @default(false)
+    emailNotifications Boolean @default(false)
+
+    realtimeImapCheckingId String?                  @unique
+    realtimeImapChecking   invoiceAutoSyncInterval? @relation(fields: [realtimeImapCheckingId], references: [id])
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    @@map("imap_configuration")
+}
+
+// user relation with subscription plan based on their selected plan
+model userSubscriptionPlan {
+    id String @id @unique @default(uuid())
+
+    UserId String @unique
+    user   User   @relation(fields: [UserId], references: [id])
+
+    subscriptionPlanPaymentStatusId String                         @unique
+    subscriptionPlanPaymentStatus   subscriptionPlanPaymentStatus? @relation(name: "PaymentStatusToSubscriptionPlan", fields: [subscriptionPlanPaymentStatusId], references: [id])
+
+    isLimitedInvoicePerMonth Boolean
+    perMonthInvoiceCount     Int
+    realtimeImapChecking     String[] // in seconds
+
+    price         Float
+    setupFee      Float @default(0.00)
+    freeTrialDays Int?
+
+    startedAt DateTime @default(now())
+    expiredAt DateTime
+
+    createdAt DateTime @default(now())
+}
+
+// user relation with subscription plan based on historyand previous plans 
+model userSubscriptionPlanHistory {
+    id String @id @unique @default(uuid())
+
+    UserId String
+    user   User   @relation(fields: [UserId], references: [id])
+
+    isLimitedInvoicePerMonth Boolean
+    perMonthInvoiceCount     Int
+
+    realtimeImapChecking String[]
+
+    price         Float
+    setupFee      Float @default(0.00)
+    freeTrialDays Int?
+
+    billingPeriod BillingPeriod
+
+    subscriptionPlanPaymentStatus subscriptionPlanPaymentStatus?
+
+    startedAt DateTime @default(now())
+    expiredAt DateTime
+
+    createdAt DateTime @default(now())
+}
+
+// payment status for imap configuration and subscription plans
+model subscriptionPlanPaymentStatus {
+    id String @id @unique @default(uuid())
+
+    pi_id String @unique
+
+    // subscription plan history relation payment status
+    subscriptionPlanHistoryId   String                      @unique
+    userSubscriptionPlanHistory userSubscriptionPlanHistory @relation(fields: [subscriptionPlanHistoryId], references: [id])
+
+    // user subscription plan relation payment status
+    userSubscriptionPlan userSubscriptionPlan? @relation(name: "PaymentStatusToSubscriptionPlan")
+
+    totalAmount Float
+
+    paymentStatus PaymentStatus // e.g., 'PAID', 'PENDING', 'FAILED'
+
+    createdAt DateTime @default(now())
+}
+
+enum PaymentStatus {
+    PAID
+    PENDING
+    FAILED
+}

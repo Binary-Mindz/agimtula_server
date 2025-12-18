@@ -11,7 +11,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     ports:
-      - "${DB_PORT}:5432"
+      - '${DB_PORT}:5432'
     volumes:
       - db_data:/var/lib/postgresql/data
 
@@ -19,11 +19,11 @@ services:
     image: redis:7
     container_name: agimtula_redis
     restart: always
-    profiles: 
+    profiles:
       - dev
       - prod
     ports:
-      - "6379:6379"
+      - '6370:6379'
     volumes:
       - redis_data:/data
 
@@ -31,7 +31,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: sharif780/agimtula_app:latest
+    image: agimtula:latest
     container_name: agimtula_app
     restart: always
     profiles:
@@ -40,7 +40,7 @@ services:
       - db
       - redis
     env_file:
-      - .env 
+      - .env
     # environment:
     #   NODE_ENV: development
     #   PORT: 3000
@@ -54,7 +54,7 @@ services:
     #   # JWT Secret
     #   JWT_SECRET: your_jwt_secret_key_here
     ports:
-      - "${PORT}:${PORT}"
+      - '${PORT}:${PORT}'
     command: pnpm run start:dev
     # volumes:
     #   - .:/usr/src/app

@@ -1,6 +1,8 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ImapApisService } from './imap-apis/imap-apis.service';
+import { Public } from './auth/decorators/public.decorator';
+import { CreateImapApiDto } from './imap-apis/dto/create-imap-api.dto';
 
 @Controller()
 export class AppController {
@@ -14,10 +16,27 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get('getAllInvoice')
-  async getAllInvoice(): Promise<any> {
-    const result = await this.imapApisService.readAllAccounts();
-    console.log(result.length);
+  @Public()
+  @Get('getCronJobsKK')
+  getCronJobsKK(): string {
+    return this.imapApisService.getCronJobsKK();
+  }
+
+  @Public()
+  @Post('getAllInvoice')
+  getAllInvoice(@Body() body: CreateImapApiDto) {
+    const result = this.imapApisService.loadCronJobsFromDB(body);
+    console.log(result);
     return result;
+  }
+
+  @Get('users')
+  async getUsers() {
+    return this.appService.getUsers();
+  }
+
+  @Post('createUser')
+  async createUser() {
+    return this.appService.createUser();
   }
 }

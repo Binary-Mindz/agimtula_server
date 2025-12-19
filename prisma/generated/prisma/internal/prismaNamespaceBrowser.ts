@@ -127,6 +127,7 @@ export type ImapConfigurationScalarFieldEnum = (typeof ImapConfigurationScalarFi
 
 export const UserSubscriptionPlanScalarFieldEnum = {
   id: 'id',
+  planName: 'planName',
   UserId: 'UserId',
   subscriptionPlanPaymentStatusId: 'subscriptionPlanPaymentStatusId',
   isLimitedInvoicePerMonth: 'isLimitedInvoicePerMonth',
@@ -145,6 +146,7 @@ export type UserSubscriptionPlanScalarFieldEnum = (typeof UserSubscriptionPlanSc
 
 export const UserSubscriptionPlanHistoryScalarFieldEnum = {
   id: 'id',
+  planName: 'planName',
   UserId: 'UserId',
   isLimitedInvoicePerMonth: 'isLimitedInvoicePerMonth',
   perMonthInvoiceCount: 'perMonthInvoiceCount',

@@ -384,6 +384,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
+  CustomUser: 'CustomUser',
   Mileage: 'Mileage',
   imapConfiguration: 'imapConfiguration',
   userSubscriptionPlan: 'userSubscriptionPlan',
@@ -419,10 +420,84 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "mileage" | "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "profile" | "forgetPass" | "twoFA" | "language" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "user" | "email"
+    modelProps: "customUser" | "mileage" | "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "profile" | "forgetPass" | "twoFA" | "language" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "user" | "email"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
+    CustomUser: {
+      payload: Prisma.$CustomUserPayload<ExtArgs>
+      fields: Prisma.CustomUserFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CustomUserFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomUserPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CustomUserFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomUserPayload>
+        }
+        findFirst: {
+          args: Prisma.CustomUserFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomUserPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CustomUserFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomUserPayload>
+        }
+        findMany: {
+          args: Prisma.CustomUserFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomUserPayload>[]
+        }
+        create: {
+          args: Prisma.CustomUserCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomUserPayload>
+        }
+        createMany: {
+          args: Prisma.CustomUserCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CustomUserCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomUserPayload>[]
+        }
+        delete: {
+          args: Prisma.CustomUserDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomUserPayload>
+        }
+        update: {
+          args: Prisma.CustomUserUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomUserPayload>
+        }
+        deleteMany: {
+          args: Prisma.CustomUserDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CustomUserUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CustomUserUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomUserPayload>[]
+        }
+        upsert: {
+          args: Prisma.CustomUserUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomUserPayload>
+        }
+        aggregate: {
+          args: Prisma.CustomUserAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCustomUser>
+        }
+        groupBy: {
+          args: Prisma.CustomUserGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CustomUserGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CustomUserCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CustomUserCountAggregateOutputType> | number
+        }
+      }
+    }
     Mileage: {
       payload: Prisma.$MileagePayload<ExtArgs>
       fields: Prisma.MileageFieldRefs
@@ -1942,6 +2017,25 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const CustomUserScalarFieldEnum = {
+  id: 'id',
+  fullName: 'fullName',
+  email: 'email',
+  phoneNumber: 'phoneNumber',
+  companyName: 'companyName',
+  address: 'address',
+  userRole: 'userRole',
+  accountStatus: 'accountStatus',
+  status: 'status',
+  subscriptionPlan: 'subscriptionPlan',
+  password: 'password',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CustomUserScalarFieldEnum = (typeof CustomUserScalarFieldEnum)[keyof typeof CustomUserScalarFieldEnum]
+
+
 export const MileageScalarFieldEnum = {
   id: 'id',
   date: 'date',
@@ -2279,6 +2373,27 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
+ * Reference to a field of type 'CustomUserStatus'
+ */
+export type EnumCustomUserStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CustomUserStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'CustomUserStatus[]'
+ */
+export type ListEnumCustomUserStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CustomUserStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'DateTime'
  */
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -2317,13 +2432,6 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
-
-
-/**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -2477,6 +2585,7 @@ export type PrismaClientOptions = ({
   comments?: runtime.SqlCommenterPlugin[]
 }
 export type GlobalOmitConfig = {
+  customUser?: Prisma.CustomUserOmit
   mileage?: Prisma.MileageOmit
   imapConfiguration?: Prisma.imapConfigurationOmit
   userSubscriptionPlan?: Prisma.userSubscriptionPlanOmit

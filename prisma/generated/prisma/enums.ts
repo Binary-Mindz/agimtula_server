@@ -9,6 +9,24 @@
 * 🟢 You can import this file directly.
 */
 
+export const CustomUserStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  SUSPENDED: 'SUSPENDED'
+} as const
+
+export type CustomUserStatus = (typeof CustomUserStatus)[keyof typeof CustomUserStatus]
+
+
+export const CustomUserRole = {
+  ADMIN: 'ADMIN',
+  USER: 'USER',
+  ACCOUNTANT: 'ACCOUNTANT'
+} as const
+
+export type CustomUserRole = (typeof CustomUserRole)[keyof typeof CustomUserRole]
+
+
 export const PaymentStatus = {
   PAID: 'PAID',
   PENDING: 'PENDING',

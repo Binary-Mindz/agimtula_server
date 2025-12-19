@@ -51,6 +51,7 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  CustomUser: 'CustomUser',
   Mileage: 'Mileage',
   imapConfiguration: 'imapConfiguration',
   userSubscriptionPlan: 'userSubscriptionPlan',
@@ -87,6 +88,25 @@ export const TransactionIsolationLevel = {
 } as const
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
+
+
+export const CustomUserScalarFieldEnum = {
+  id: 'id',
+  fullName: 'fullName',
+  email: 'email',
+  phoneNumber: 'phoneNumber',
+  companyName: 'companyName',
+  address: 'address',
+  userRole: 'userRole',
+  accountStatus: 'accountStatus',
+  status: 'status',
+  subscriptionPlan: 'subscriptionPlan',
+  password: 'password',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CustomUserScalarFieldEnum = (typeof CustomUserScalarFieldEnum)[keyof typeof CustomUserScalarFieldEnum]
 
 
 export const MileageScalarFieldEnum = {

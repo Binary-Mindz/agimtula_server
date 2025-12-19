@@ -30,6 +30,8 @@ model imapConfiguration {
 model userSubscriptionPlan {
     id String @id @unique @default(uuid())
 
+    planName String
+
     UserId String @unique
     user   User   @relation(fields: [UserId], references: [id])
 
@@ -53,6 +55,8 @@ model userSubscriptionPlan {
 // user relation with subscription plan based on historyand previous plans 
 model userSubscriptionPlanHistory {
     id String @id @unique @default(uuid())
+
+    planName String
 
     UserId String
     user   User   @relation(fields: [UserId], references: [id])

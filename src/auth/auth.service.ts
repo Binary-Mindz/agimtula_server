@@ -352,7 +352,6 @@ export class AuthService {
             firstName: data.firstName,
             lastName: data.lastName,
             phone: data.phone,
-            jobTitle: data.jobTitle,
           },
         },
       },
@@ -371,21 +370,14 @@ export class AuthService {
     const user = await this.prisma.user.findFirst({
       where: { id: userId },
       select: {
-        profile: {
-          select: {
-            firstName: true,
-            lastName: true,
-            phone: true,
-            jobTitle: true,
-            profilePicture: true,
-          },
-        },
         password: false,
         email: {
           select: {
             email: true,
           },
         },
+        profile: true,
+        businessInfo: true,
       },
     });
 
@@ -394,14 +386,7 @@ export class AuthService {
     }
 
     return cResponseData({
-      data: {
-        firstName: user.profile?.firstName,
-        lastName: user.profile?.lastName,
-        email: user.email?.email,
-        phone: user.profile?.phone,
-        jobTitle: user.profile?.jobTitle,
-        profilePicture: user.profile?.profilePicture,
-      },
+      data: user,
     });
   }
 

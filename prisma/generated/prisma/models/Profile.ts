@@ -31,9 +31,6 @@ export type ProfileMinAggregateOutputType = {
   profilePicture: string | null
   profilePictureKey: string | null
   phone: string | null
-  jobTitle: string | null
-  businessName: string | null
-  vatNumber: string | null
   userId: string | null
 }
 
@@ -44,9 +41,6 @@ export type ProfileMaxAggregateOutputType = {
   profilePicture: string | null
   profilePictureKey: string | null
   phone: string | null
-  jobTitle: string | null
-  businessName: string | null
-  vatNumber: string | null
   userId: string | null
 }
 
@@ -57,9 +51,6 @@ export type ProfileCountAggregateOutputType = {
   profilePicture: number
   profilePictureKey: number
   phone: number
-  jobTitle: number
-  businessName: number
-  vatNumber: number
   userId: number
   _all: number
 }
@@ -72,9 +63,6 @@ export type ProfileMinAggregateInputType = {
   profilePicture?: true
   profilePictureKey?: true
   phone?: true
-  jobTitle?: true
-  businessName?: true
-  vatNumber?: true
   userId?: true
 }
 
@@ -85,9 +73,6 @@ export type ProfileMaxAggregateInputType = {
   profilePicture?: true
   profilePictureKey?: true
   phone?: true
-  jobTitle?: true
-  businessName?: true
-  vatNumber?: true
   userId?: true
 }
 
@@ -98,9 +83,6 @@ export type ProfileCountAggregateInputType = {
   profilePicture?: true
   profilePictureKey?: true
   phone?: true
-  jobTitle?: true
-  businessName?: true
-  vatNumber?: true
   userId?: true
   _all?: true
 }
@@ -184,9 +166,6 @@ export type ProfileGroupByOutputType = {
   profilePicture: string | null
   profilePictureKey: string | null
   phone: string | null
-  jobTitle: string | null
-  businessName: string | null
-  vatNumber: string | null
   userId: string
   _count: ProfileCountAggregateOutputType | null
   _min: ProfileMinAggregateOutputType | null
@@ -218,9 +197,6 @@ export type ProfileWhereInput = {
   profilePicture?: Prisma.StringNullableFilter<"Profile"> | string | null
   profilePictureKey?: Prisma.StringNullableFilter<"Profile"> | string | null
   phone?: Prisma.StringNullableFilter<"Profile"> | string | null
-  jobTitle?: Prisma.StringNullableFilter<"Profile"> | string | null
-  businessName?: Prisma.StringNullableFilter<"Profile"> | string | null
-  vatNumber?: Prisma.StringNullableFilter<"Profile"> | string | null
   userId?: Prisma.StringFilter<"Profile"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
@@ -232,9 +208,6 @@ export type ProfileOrderByWithRelationInput = {
   profilePicture?: Prisma.SortOrderInput | Prisma.SortOrder
   profilePictureKey?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
-  jobTitle?: Prisma.SortOrderInput | Prisma.SortOrder
-  businessName?: Prisma.SortOrderInput | Prisma.SortOrder
-  vatNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
@@ -250,9 +223,6 @@ export type ProfileWhereUniqueInput = Prisma.AtLeast<{
   profilePicture?: Prisma.StringNullableFilter<"Profile"> | string | null
   profilePictureKey?: Prisma.StringNullableFilter<"Profile"> | string | null
   phone?: Prisma.StringNullableFilter<"Profile"> | string | null
-  jobTitle?: Prisma.StringNullableFilter<"Profile"> | string | null
-  businessName?: Prisma.StringNullableFilter<"Profile"> | string | null
-  vatNumber?: Prisma.StringNullableFilter<"Profile"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "userId">
 
@@ -263,9 +233,6 @@ export type ProfileOrderByWithAggregationInput = {
   profilePicture?: Prisma.SortOrderInput | Prisma.SortOrder
   profilePictureKey?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
-  jobTitle?: Prisma.SortOrderInput | Prisma.SortOrder
-  businessName?: Prisma.SortOrderInput | Prisma.SortOrder
-  vatNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
   _count?: Prisma.ProfileCountOrderByAggregateInput
   _max?: Prisma.ProfileMaxOrderByAggregateInput
@@ -282,9 +249,6 @@ export type ProfileScalarWhereWithAggregatesInput = {
   profilePicture?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
   profilePictureKey?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
   phone?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
-  jobTitle?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
-  businessName?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
-  vatNumber?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
   userId?: Prisma.StringWithAggregatesFilter<"Profile"> | string
 }
 
@@ -295,9 +259,6 @@ export type ProfileCreateInput = {
   profilePicture?: string | null
   profilePictureKey?: string | null
   phone?: string | null
-  jobTitle?: string | null
-  businessName?: string | null
-  vatNumber?: string | null
   user: Prisma.UserCreateNestedOneWithoutProfileInput
 }
 
@@ -308,9 +269,6 @@ export type ProfileUncheckedCreateInput = {
   profilePicture?: string | null
   profilePictureKey?: string | null
   phone?: string | null
-  jobTitle?: string | null
-  businessName?: string | null
-  vatNumber?: string | null
   userId: string
 }
 
@@ -321,9 +279,6 @@ export type ProfileUpdateInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePictureKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutProfileNestedInput
 }
 
@@ -334,9 +289,6 @@ export type ProfileUncheckedUpdateInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePictureKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -347,9 +299,6 @@ export type ProfileCreateManyInput = {
   profilePicture?: string | null
   profilePictureKey?: string | null
   phone?: string | null
-  jobTitle?: string | null
-  businessName?: string | null
-  vatNumber?: string | null
   userId: string
 }
 
@@ -360,9 +309,6 @@ export type ProfileUpdateManyMutationInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePictureKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ProfileUncheckedUpdateManyInput = {
@@ -372,9 +318,6 @@ export type ProfileUncheckedUpdateManyInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePictureKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -385,9 +328,6 @@ export type ProfileCountOrderByAggregateInput = {
   profilePicture?: Prisma.SortOrder
   profilePictureKey?: Prisma.SortOrder
   phone?: Prisma.SortOrder
-  jobTitle?: Prisma.SortOrder
-  businessName?: Prisma.SortOrder
-  vatNumber?: Prisma.SortOrder
   userId?: Prisma.SortOrder
 }
 
@@ -398,9 +338,6 @@ export type ProfileMaxOrderByAggregateInput = {
   profilePicture?: Prisma.SortOrder
   profilePictureKey?: Prisma.SortOrder
   phone?: Prisma.SortOrder
-  jobTitle?: Prisma.SortOrder
-  businessName?: Prisma.SortOrder
-  vatNumber?: Prisma.SortOrder
   userId?: Prisma.SortOrder
 }
 
@@ -411,9 +348,6 @@ export type ProfileMinOrderByAggregateInput = {
   profilePicture?: Prisma.SortOrder
   profilePictureKey?: Prisma.SortOrder
   phone?: Prisma.SortOrder
-  jobTitle?: Prisma.SortOrder
-  businessName?: Prisma.SortOrder
-  vatNumber?: Prisma.SortOrder
   userId?: Prisma.SortOrder
 }
 
@@ -461,9 +395,6 @@ export type ProfileCreateWithoutUserInput = {
   profilePicture?: string | null
   profilePictureKey?: string | null
   phone?: string | null
-  jobTitle?: string | null
-  businessName?: string | null
-  vatNumber?: string | null
 }
 
 export type ProfileUncheckedCreateWithoutUserInput = {
@@ -473,9 +404,6 @@ export type ProfileUncheckedCreateWithoutUserInput = {
   profilePicture?: string | null
   profilePictureKey?: string | null
   phone?: string | null
-  jobTitle?: string | null
-  businessName?: string | null
-  vatNumber?: string | null
 }
 
 export type ProfileCreateOrConnectWithoutUserInput = {
@@ -501,9 +429,6 @@ export type ProfileUpdateWithoutUserInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePictureKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ProfileUncheckedUpdateWithoutUserInput = {
@@ -513,9 +438,6 @@ export type ProfileUncheckedUpdateWithoutUserInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePictureKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -527,9 +449,6 @@ export type ProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   profilePicture?: boolean
   profilePictureKey?: boolean
   phone?: boolean
-  jobTitle?: boolean
-  businessName?: boolean
-  vatNumber?: boolean
   userId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["profile"]>
@@ -541,9 +460,6 @@ export type ProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   profilePicture?: boolean
   profilePictureKey?: boolean
   phone?: boolean
-  jobTitle?: boolean
-  businessName?: boolean
-  vatNumber?: boolean
   userId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["profile"]>
@@ -555,9 +471,6 @@ export type ProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   profilePicture?: boolean
   profilePictureKey?: boolean
   phone?: boolean
-  jobTitle?: boolean
-  businessName?: boolean
-  vatNumber?: boolean
   userId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["profile"]>
@@ -569,13 +482,10 @@ export type ProfileSelectScalar = {
   profilePicture?: boolean
   profilePictureKey?: boolean
   phone?: boolean
-  jobTitle?: boolean
-  businessName?: boolean
-  vatNumber?: boolean
   userId?: boolean
 }
 
-export type ProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "profilePicture" | "profilePictureKey" | "phone" | "jobTitle" | "businessName" | "vatNumber" | "userId", ExtArgs["result"]["profile"]>
+export type ProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "profilePicture" | "profilePictureKey" | "phone" | "userId", ExtArgs["result"]["profile"]>
 export type ProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -598,9 +508,6 @@ export type $ProfilePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     profilePicture: string | null
     profilePictureKey: string | null
     phone: string | null
-    jobTitle: string | null
-    businessName: string | null
-    vatNumber: string | null
     userId: string
   }, ExtArgs["result"]["profile"]>
   composites: {}
@@ -1032,9 +939,6 @@ export interface ProfileFieldRefs {
   readonly profilePicture: Prisma.FieldRef<"Profile", 'String'>
   readonly profilePictureKey: Prisma.FieldRef<"Profile", 'String'>
   readonly phone: Prisma.FieldRef<"Profile", 'String'>
-  readonly jobTitle: Prisma.FieldRef<"Profile", 'String'>
-  readonly businessName: Prisma.FieldRef<"Profile", 'String'>
-  readonly vatNumber: Prisma.FieldRef<"Profile", 'String'>
   readonly userId: Prisma.FieldRef<"Profile", 'String'>
 }
     

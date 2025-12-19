@@ -1,53 +1,85 @@
-// import { PrismaClient, UserRole } from '@prisma/client';
-// import * as bcrypt from 'bcrypt';
+import { PrismaPg } from '@prisma/adapter-pg';
+import { PrismaClient, UserRole } from '../prisma/generated/prisma/client';
+import * as bcrypt from 'bcrypt';
+import 'dotenv/config';
 
 // const prisma = new PrismaClient();
 
-// async function main() {
-//   const superAdminEmail = process.env.SUPER_ADMIN_EMAIL;
-//   const superAdminPassword = process.env.SUPER_ADMIN_PASSWORD;
-//   const superAdminUsername = process.env.SUPER_ADMIN_USERNAME || "superadmin";
+export function createPrismaClient(): PrismaClient {
+  const connectionString = process.env.DATABASE_URL;
+  if (!connectionString) {
+    throw new Error(
+      '❌ DATABASE_URL must be set in the environment variables.',
+    );
+  }
+  const adapter = new PrismaPg({ connectionString });
+  // Return the PrismaClient with the configured adapter and logging
+  const prisma = new PrismaClient({
+    adapter,
+    log: [{ emit: 'event', level: 'error' }],
+  });
+  return prisma;
+}
 
-//   if (!superAdminEmail || !superAdminPassword) {
-//     throw new Error("❌ SUPER_ADMIN_EMAIL and SUPER_ADMIN_PASSWORD must be set in .env");
-//   }
+const prisma = createPrismaClient();
 
-//   // Check if admin already exists
-//   const existing = await prisma.user.findFirst({
-//     where: { email: superAdminEmail },
-//   });
+async function main() {
+  const superAdminFirstName = process.env.SUPER_ADMIN_FIRSTNAME;
+  const superAdminLastName = process.env.SUPER_ADMIN_LASTNAME;
+  const superAdminEmail = process.env.SUPER_ADMIN_EMAIL;
+  const superAdminPassword = process.env.SUPER_ADMIN_PASSWORD;
+  //   const superAdminUsername = process.env.SUPER_ADMIN_USERNAME || 'superadmin';
 
-//   if (existing) {
-//     console.log("⚠️ Super admin already exists. Skipping seed.");
-//     return;
-//   }
+  if (
+    !superAdminEmail ||
+    !superAdminPassword ||
+    !superAdminFirstName ||
+    !superAdminLastName
+  ) {
+    throw new Error(
+      '❌ SUPER_ADMIN_EMAIL and SUPER_ADMIN_PASSWORD must be set in .env',
+    );
+  }
 
-//   const hashed = await bcrypt.hash(superAdminPassword, 10);
+  // Check if admin already exists
+  const existing = await prisma.email.findFirst({
+    where: { email: superAdminEmail },
+  });
 
-//   // ✅ Use Prisma Transaction
-//   const result = await prisma.$transaction(async (tx) => {
-//     const admin = await tx.user.create({
-//       data: {
-//         email: superAdminEmail,
-//         firstName: superAdminUsername,
-//         lastName: 'Admin',
-//         password: hashed,
-//         role: UserRole.ADMIN,
-//         status: true,
-//         isEmailVerified: true,
-//       },
-//     });
-//     return { admin };
-//   });
+  if (existing) {
+    console.log('⚠️ Super admin already exists. Skipping seed.');
+    return;
+  }
 
-//   console.log("✅ Super Admin created successfully:", result);
-// }
+  const hashed = await bcrypt.hash(superAdminPassword, 10);
 
-// main()
-//   .catch((e) => {
-//     console.error("❌ Seeding Error:", e);
-//     process.exit(1);
-//   })
-//   .finally(async () => {
-//     await prisma.$disconnect();
-//   });
+  // ✅ Use Prisma Transaction
+  const result = await prisma.user.create({
+    data: {
+      profile: {
+        create: {
+          firstName: superAdminFirstName,
+          lastName: superAdminLastName,
+        },
+      },
+      email: {
+        create: {
+          email: superAdminEmail,
+        },
+      },
+      password: hashed,
+      role: UserRole.ADMIN,
+    },
+  });
+
+  console.log('✅ Super Admin created successfully:', result);
+}
+
+main()
+  .catch((e) => {
+    console.error('❌ Seeding Error:', e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

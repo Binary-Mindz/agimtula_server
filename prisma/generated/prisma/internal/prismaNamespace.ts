@@ -2035,9 +2035,6 @@ export const ProfileScalarFieldEnum = {
   profilePicture: 'profilePicture',
   profilePictureKey: 'profilePictureKey',
   phone: 'phone',
-  jobTitle: 'jobTitle',
-  businessName: 'businessName',
-  vatNumber: 'vatNumber',
   userId: 'userId'
 } as const
 
@@ -2104,6 +2101,7 @@ export type ReceiptCategoryScalarFieldEnum = (typeof ReceiptCategoryScalarFieldE
 export const BusinessInfoScalarFieldEnum = {
   id: 'id',
   companyName: 'companyName',
+  jobTitle: 'jobTitle',
   vatNumber: 'vatNumber',
   address1: 'address1',
   address2: 'address2',

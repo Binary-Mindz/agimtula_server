@@ -1,6 +1,7 @@
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient, UserRole } from '../prisma/generated/prisma/client';
 import * as bcrypt from 'bcrypt';
+import 'dotenv/config';
 
 // const prisma = new PrismaClient();
 

@@ -1,4 +1,13 @@
 -- CreateEnum
+CREATE TYPE "CustomUserStatus" AS ENUM ('ACTIVE', 'INACTIVE', 'SUSPENDED');
+
+-- CreateEnum
+CREATE TYPE "CustomUserRole" AS ENUM ('ADMIN', 'USER', 'ACCOUNTANT');
+
+-- CreateEnum
+CREATE TYPE "PaymentStatus" AS ENUM ('PAID', 'PENDING', 'FAILED');
+
+-- CreateEnum
 CREATE TYPE "TwoFAPurpose" AS ENUM ('LOGIN', 'ENABLE_2FA', 'DISABLE_2FA');
 
 -- CreateEnum
@@ -8,6 +17,25 @@ CREATE TYPE "BillingPeriod" AS ENUM ('MONTHLY', 'YEARLY');
 CREATE TYPE "UserRole" AS ENUM ('ADMIN', 'USER', 'ACCOUNTANT');
 
 -- CreateTable
+CREATE TABLE "custom_user" (
+    "id" TEXT NOT NULL,
+    "fullName" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "phoneNumber" TEXT,
+    "companyName" TEXT,
+    "address" TEXT,
+    "userRole" "CustomUserRole" NOT NULL DEFAULT 'USER',
+    "accountStatus" BOOLEAN NOT NULL DEFAULT true,
+    "status" "CustomUserStatus" NOT NULL DEFAULT 'ACTIVE',
+    "subscriptionPlan" TEXT,
+    "password" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "custom_user_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "mileage" (
     "id" TEXT NOT NULL,
     "date" TIMESTAMP(3) NOT NULL,
@@ -15,6 +43,7 @@ CREATE TABLE "mileage" (
     "endLocation" TEXT NOT NULL,
     "distance" DOUBLE PRECISION NOT NULL,
     "tripType" TEXT NOT NULL,
+    "amount" DOUBLE PRECISION NOT NULL,
     "vehicle" TEXT,
     "purpose" TEXT NOT NULL,
     "notes" TEXT,
@@ -34,6 +63,8 @@ CREATE TABLE "imap_configuration" (
     "userId" TEXT NOT NULL,
     "connect" BOOLEAN NOT NULL DEFAULT false,
     "sync" BOOLEAN NOT NULL DEFAULT false,
+    "emailNotifications" BOOLEAN NOT NULL DEFAULT false,
+    "realtimeImapCheckingId" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -41,9 +72,10 @@ CREATE TABLE "imap_configuration" (
 );
 
 -- CreateTable
-CREATE TABLE "user_subscription_plan" (
+CREATE TABLE "userSubscriptionPlan" (
     "id" TEXT NOT NULL,
     "UserId" TEXT NOT NULL,
+    "subscriptionPlanPaymentStatusId" TEXT NOT NULL,
     "isLimitedInvoicePerMonth" BOOLEAN NOT NULL,
     "perMonthInvoiceCount" INTEGER NOT NULL,
     "realtimeImapChecking" TEXT[],
@@ -54,11 +86,11 @@ CREATE TABLE "user_subscription_plan" (
     "expiredAt" TIMESTAMP(3) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "user_subscription_plan_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "userSubscriptionPlan_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "userSubscriptionPlan" (
+CREATE TABLE "userSubscriptionPlanHistory" (
     "id" TEXT NOT NULL,
     "UserId" TEXT NOT NULL,
     "isLimitedInvoicePerMonth" BOOLEAN NOT NULL,
@@ -72,19 +104,19 @@ CREATE TABLE "userSubscriptionPlan" (
     "expiredAt" TIMESTAMP(3) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "userSubscriptionPlan_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "userSubscriptionPlanHistory_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "subscription_plan_payment_status" (
+CREATE TABLE "subscriptionPlanPaymentStatus" (
     "id" TEXT NOT NULL,
+    "pi_id" TEXT NOT NULL,
     "subscriptionPlanHistoryId" TEXT NOT NULL,
-    "userSubscriptionPlanId" TEXT,
     "totalAmount" DOUBLE PRECISION NOT NULL,
-    "paymentStatus" TEXT NOT NULL,
+    "paymentStatus" "PaymentStatus" NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "subscription_plan_payment_status_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "subscriptionPlanPaymentStatus_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -242,10 +274,6 @@ CREATE TABLE "subscriptionPlan" (
     "planName" TEXT NOT NULL,
     "isActive" BOOLEAN NOT NULL DEFAULT false,
     "description" TEXT,
-    "isLimitedInvoicePerMonth" BOOLEAN NOT NULL DEFAULT false,
-    "perMonthInvoiceCount" INTEGER NOT NULL DEFAULT 15,
-    "realtimeImapChecking" INTEGER NOT NULL DEFAULT 86400,
-    "planFeatures" TEXT[],
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "subscriptionPlan_pkey" PRIMARY KEY ("id")
@@ -254,6 +282,10 @@ CREATE TABLE "subscriptionPlan" (
 -- CreateTable
 CREATE TABLE "PackagePricing" (
     "id" TEXT NOT NULL,
+    "isLimitedInvoicePerMonth" BOOLEAN NOT NULL DEFAULT false,
+    "perMonthInvoiceCount" INTEGER NOT NULL DEFAULT 15,
+    "invoiceAutoSyncIntervalIds" TEXT[],
+    "planFeatures" TEXT[],
     "price" DOUBLE PRECISION NOT NULL DEFAULT 0.00,
     "setupFee" DOUBLE PRECISION NOT NULL DEFAULT 0.00,
     "freeTrialDays" INTEGER,
@@ -261,14 +293,6 @@ CREATE TABLE "PackagePricing" (
     "SubscriptionPlanId" TEXT NOT NULL,
 
     CONSTRAINT "PackagePricing_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "realtimeSelectionTime" (
-    "id" TEXT NOT NULL,
-    "time" INTEGER NOT NULL,
-
-    CONSTRAINT "realtimeSelectionTime_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -304,28 +328,40 @@ CREATE TABLE "email" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "custom_user_id_key" ON "custom_user"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "custom_user_email_key" ON "custom_user"("email");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "imap_configuration_id_key" ON "imap_configuration"("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "imap_configuration_userId_key" ON "imap_configuration"("userId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "user_subscription_plan_id_key" ON "user_subscription_plan"("id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "user_subscription_plan_UserId_key" ON "user_subscription_plan"("UserId");
+CREATE UNIQUE INDEX "imap_configuration_realtimeImapCheckingId_key" ON "imap_configuration"("realtimeImapCheckingId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "userSubscriptionPlan_id_key" ON "userSubscriptionPlan"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "subscription_plan_payment_status_id_key" ON "subscription_plan_payment_status"("id");
+CREATE UNIQUE INDEX "userSubscriptionPlan_UserId_key" ON "userSubscriptionPlan"("UserId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "subscription_plan_payment_status_subscriptionPlanHistoryId_key" ON "subscription_plan_payment_status"("subscriptionPlanHistoryId");
+CREATE UNIQUE INDEX "userSubscriptionPlan_subscriptionPlanPaymentStatusId_key" ON "userSubscriptionPlan"("subscriptionPlanPaymentStatusId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "subscription_plan_payment_status_userSubscriptionPlanId_key" ON "subscription_plan_payment_status"("userSubscriptionPlanId");
+CREATE UNIQUE INDEX "userSubscriptionPlanHistory_id_key" ON "userSubscriptionPlanHistory"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "subscriptionPlanPaymentStatus_id_key" ON "subscriptionPlanPaymentStatus"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "subscriptionPlanPaymentStatus_pi_id_key" ON "subscriptionPlanPaymentStatus"("pi_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "subscriptionPlanPaymentStatus_subscriptionPlanHistoryId_key" ON "subscriptionPlanPaymentStatus"("subscriptionPlanHistoryId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "profile_userId_key" ON "profile"("userId");
@@ -361,9 +397,6 @@ CREATE UNIQUE INDEX "subscriptionPlan_id_key" ON "subscriptionPlan"("id");
 CREATE UNIQUE INDEX "PackagePricing_id_key" ON "PackagePricing"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "realtimeSelectionTime_id_key" ON "realtimeSelectionTime"("id");
-
--- CreateIndex
 CREATE UNIQUE INDEX "invoiceAutoSyncInterval_id_key" ON "invoiceAutoSyncInterval"("id");
 
 -- CreateIndex
@@ -382,16 +415,19 @@ ALTER TABLE "mileage" ADD CONSTRAINT "mileage_userId_fkey" FOREIGN KEY ("userId"
 ALTER TABLE "imap_configuration" ADD CONSTRAINT "imap_configuration_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "user_subscription_plan" ADD CONSTRAINT "user_subscription_plan_UserId_fkey" FOREIGN KEY ("UserId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "imap_configuration" ADD CONSTRAINT "imap_configuration_realtimeImapCheckingId_fkey" FOREIGN KEY ("realtimeImapCheckingId") REFERENCES "invoiceAutoSyncInterval"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "userSubscriptionPlan" ADD CONSTRAINT "userSubscriptionPlan_UserId_fkey" FOREIGN KEY ("UserId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "subscription_plan_payment_status" ADD CONSTRAINT "subscription_plan_payment_status_subscriptionPlanHistoryId_fkey" FOREIGN KEY ("subscriptionPlanHistoryId") REFERENCES "userSubscriptionPlan"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "userSubscriptionPlan" ADD CONSTRAINT "userSubscriptionPlan_subscriptionPlanPaymentStatusId_fkey" FOREIGN KEY ("subscriptionPlanPaymentStatusId") REFERENCES "subscriptionPlanPaymentStatus"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "subscription_plan_payment_status" ADD CONSTRAINT "subscription_plan_payment_status_userSubscriptionPlanId_fkey" FOREIGN KEY ("userSubscriptionPlanId") REFERENCES "user_subscription_plan"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "userSubscriptionPlanHistory" ADD CONSTRAINT "userSubscriptionPlanHistory_UserId_fkey" FOREIGN KEY ("UserId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "subscriptionPlanPaymentStatus" ADD CONSTRAINT "subscriptionPlanPaymentStatus_subscriptionPlanHistoryId_fkey" FOREIGN KEY ("subscriptionPlanHistoryId") REFERENCES "userSubscriptionPlanHistory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "profile" ADD CONSTRAINT "profile_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;

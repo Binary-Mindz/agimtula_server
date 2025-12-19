@@ -8,7 +8,6 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/CustomUser'
 export type * from './models/Mileage'
 export type * from './models/imapConfiguration'
 export type * from './models/userSubscriptionPlan'

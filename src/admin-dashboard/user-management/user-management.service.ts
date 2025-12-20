@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
 
 @Injectable()
@@ -7,18 +8,31 @@ export class UserManagementService {
 
   async findAllUsers() {
     const users = await this.prisma.user.findMany({
-      include: {
-        userSubscriptionPlan: {
+      select: {
+        id: true,
+        email: { select: { email: true } },
+        role: true,
+        status: true,
+        profile: {
           select: {
-            
-            subscriptionPlanPaymentStatus: { select: { paymentStatus: true } },
+            id: true,
+            firstName: true,
+            lastName: true,
+            profilePicture: true,
           },
         },
+        userSubscriptionPlan: {
+          select: {
+            id: true,
+            planName: true,
+          },
+        },
+        created_at: true,
       },
     });
 
-    console.log(users);
-
-    return `This action returns all userManagement`;
+    return cResponseData({
+      data: users,
+    });
   }
 }

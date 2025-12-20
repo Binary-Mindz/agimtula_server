@@ -21,6 +21,8 @@ export class SubscriptionsController {
     private readonly invoiceAutoSyncIntervalService: InvoiceAutoSyncIntervalService,
   ) {}
 
+  
+
   @Post('plans')
   @Roles('ADMIN')
   @UsePipes(new ValidationPipe({ transform: true }))

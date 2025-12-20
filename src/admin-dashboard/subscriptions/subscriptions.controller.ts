@@ -15,7 +15,7 @@ import { InvoiceAutoSyncDto } from './dto/invoiceAutoSyncDto';
 import { InvoiceAutoSyncIntervalService } from './invoiceAutoSyncInterval.service';
 import { Public } from 'src/auth/decorators/public.decorator';
 
-@Controller('subscriptions')
+@Controller('admin/subscriptions')
 export class SubscriptionsController {
   constructor(
     private readonly subscriptionsService: SubscriptionsService,

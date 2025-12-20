@@ -1,6 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsEmail, IsNotEmpty, IsNumber, Matches } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsNumber,
+  Matches,
+} from 'class-validator';
 
 export class ForgetPassDto {
   @ApiProperty({
@@ -28,25 +33,15 @@ export class ValidateForgetPass {
   @ApiProperty({
     required: true,
     description: 'Verification code sent to the user',
-    example: '123456',
+    example: 123456,
   })
   @IsNotEmpty({ message: 'Verification code should not be empty' })
   @Type(() => Number)
   @IsNumber({}, { message: 'Verification code must be a number' })
-  verificationCode: string;
+  verificationCode: number;
 }
 
 export class ResetPass {
-  @ApiProperty({
-    required: true,
-    type: String,
-    description: 'Email address of the user',
-    example: 'user@example.com',
-  })
-  @IsNotEmpty({ message: 'Email should not be empty' })
-  @IsEmail({}, { message: 'Invalid email format' })
-  email: string;
-
   @ApiProperty({
     required: true,
     type: String,

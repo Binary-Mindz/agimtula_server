@@ -12,13 +12,51 @@ import { PrismaService } from 'src/config/database/prisma.service';
 import { SmtpMailService } from 'src/config/smtp-mail/smtp-mail.service';
 import * as bcrypt from 'bcrypt';
 import { cResponseData } from 'src/common/cResponse';
+import { RedisServiceService } from 'src/config/redis-service/redis-service.service';
+import * as crypto from 'crypto';
 
 @Injectable()
 export class ForgetPasswordService {
   constructor(
     private prisma: PrismaService,
     private mail: SmtpMailService,
+    private redis: RedisServiceService,
   ) {}
+
+  private readonly FORG_PREFIX = 'forPas';
+  private readonly CRYPTO_PREFIX = 'cryp';
+  private readonly EXPIRATION_TIME = 3000;
+
+  private storeRedis = async (
+    key: string,
+    value: string,
+    type: 'CODE' | 'CRYPTO',
+  ) => {
+    if (type === 'CODE') {
+      await this.redis.set(
+        `${this.FORG_PREFIX}_${key}`,
+        value,
+        'EX',
+        this.EXPIRATION_TIME,
+      );
+    } else {
+      await this.redis.set(
+        `${this.CRYPTO_PREFIX}_${key}`,
+        value,
+        'EX',
+        this.EXPIRATION_TIME,
+      );
+    }
+  };
+
+  private generateCrypto(): string {
+    return crypto.randomUUID();
+  }
+
+  private generateRandomCode = () => {
+    return Math.floor(100000 + Math.random() * 900000);
+  };
+
   async sendForgetPassCode(dto: ForgetPassDto) {
     const { email } = dto;
 
@@ -34,44 +72,17 @@ export class ForgetPasswordService {
       throw new UnauthorizedException('User not found');
     }
 
-    const existing = await this.prisma.forgetPass.findFirst({
-      where: { email },
-      orderBy: { createdAt: 'desc' },
-    });
+    const existing = await this.redis.get(`${this.FORG_PREFIX}_${email}`);
 
     let finalCode: number;
 
     if (existing) {
-      const now = new Date();
-      const createdAt = new Date(existing.createdAt);
+      finalCode = Number(existing);
 
-      const diffMinutes = (now.getTime() - createdAt.getTime()) / (1000 * 60);
-
-      if (diffMinutes < 5) {
-        finalCode = existing.code;
-      } else {
-        await this.prisma.forgetPass.deleteMany({
-          where: { email },
-        });
-
-        finalCode = Math.floor(100000 + Math.random() * 900000);
-
-        await this.prisma.forgetPass.create({
-          data: {
-            email,
-            code: finalCode,
-          },
-        });
-      }
+      await this.storeRedis(email, finalCode.toString(), 'CODE');
     } else {
-      finalCode = Math.floor(100000 + Math.random() * 900000);
-
-      await this.prisma.forgetPass.create({
-        data: {
-          email,
-          code: finalCode,
-        },
-      });
+      finalCode = this.generateRandomCode();
+      await this.storeRedis(email, finalCode.toString(), 'CODE');
     }
 
     await this.mail.sendMail(
@@ -91,67 +102,60 @@ export class ForgetPasswordService {
   }
 
   async verifyForgetPassCode(data: ValidateForgetPass) {
-    const code = Number(data.verificationCode);
-    const isValid = await this.prisma.forgetPass.findFirst({
-      where: {
-        email: data.email,
-        code,
-      },
-    });
-    if (!isValid) {
-      throw new ForbiddenException(
-        'Not allowed to forget your password or no account with this mail',
-      );
+    try {
+      const val = await this.redis.get(`${this.FORG_PREFIX}_${data.email}`);
+
+      const user = await this.prisma.user.findFirst({
+        where: {
+          email: {
+            email: data.email,
+          },
+        },
+      });
+
+      if (!user) {
+        throw new UnauthorizedException('User not found');
+      }
+
+      if (!val || val !== data.verificationCode.toString()) {
+        throw new ForbiddenException('Code invalid or expired');
+      }
+
+      await this.redis.del(`${this.FORG_PREFIX}_${data.email}`);
+
+      const newCrypto = this.generateCrypto();
+
+      await this.storeRedis(newCrypto, user.id, 'CRYPTO');
+
+      return cResponseData({
+        message: 'Code is verified, now you can change your password',
+        data: {
+          crypto: newCrypto,
+        },
+      });
+    } catch (error) {
+      console.error('Error in verifyForgetPassCode:', error);
+      throw error;
     }
-
-    const now = new Date().getTime();
-
-    const createdAt = new Date(isValid.createdAt).getTime();
-
-    const ExpirationLimit = 15 * 60 * 1000;
-
-    if (now - createdAt > ExpirationLimit) {
-      throw new ForbiddenException(
-        'Your request to reset code is not valid yet',
-      );
-    }
-
-    await this.prisma.forgetPass.update({
-      where: {
-        id: isValid.id,
-      },
-      data: {
-        isVerified: true,
-      },
-    });
-
-    return cResponseData({
-      message: 'Code is verified, now you can change your password',
-    });
   }
 
-  async changePassword(data: ResetPass) {
-    const user = await this.prisma.user.findFirst({
+  async changePassword(data: ResetPass, cryptoVal: string) {
+    const crypto = cryptoVal;
+
+    const userId = await this.redis.get(`${this.CRYPTO_PREFIX}_${crypto}`);
+
+    if (!userId) {
+      throw new UnauthorizedException('Invalid or expired crypto');
+    }
+
+    const user = await this.prisma.user.findUnique({
       where: {
-        email: {
-          email: data.email,
-        },
+        id: userId,
       },
     });
 
     if (!user) {
       throw new UnauthorizedException('User not found');
-    }
-
-    const isValid = await this.prisma.forgetPass.findFirst({
-      where: {
-        email: data.email,
-        isVerified: true,
-      },
-    });
-
-    if (!isValid) {
-      throw new ForbiddenException('Not allowed to change your password');
     }
 
     const hashedPass = await bcrypt.hash(data.password, 10);
@@ -165,11 +169,7 @@ export class ForgetPasswordService {
       },
     });
 
-    await this.prisma.forgetPass.deleteMany({
-      where: {
-        email: data.email,
-      },
-    });
+    await this.redis.del(`${this.CRYPTO_PREFIX}_${crypto}`);
 
     return cResponseData({
       message: 'Password changed successfully',

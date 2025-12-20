@@ -11,6 +11,7 @@ import {
   UploadedFile,
   Get,
   Delete,
+  Param,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
@@ -28,7 +29,7 @@ import { jwtPayload } from './types/jwt-payload';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { Roles } from './decorators/roles.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiParam } from '@nestjs/swagger';
 import {
   UpdateProfileDto,
   UpdateProfilePicDto,
@@ -121,24 +122,32 @@ export class AuthController {
   // }
 
   @HttpCode(200)
-  @Post('forget-password')
+  @Post('send-forget-password-code')
   @Public()
   forgetPassword(@Body(new ValidationPipe()) dto: ForgetPassDto) {
     return this.forgetPasswordService.sendForgetPassCode(dto);
   }
 
   @HttpCode(200)
-  @Post('verify-forget-password')
+  @Post('verify-forget-password-code')
   @Public()
   verifyForgetPassword(@Body(new ValidationPipe()) data: ValidateForgetPass) {
     return this.forgetPasswordService.verifyForgetPassCode(data);
   }
 
   @HttpCode(200)
-  @Post('change-forgotten-password')
+  @Post('change-password/:crypto')
   @Public()
-  changePassword(@Body(new ValidationPipe()) data: ResetPass) {
-    return this.forgetPasswordService.changePassword(data);
+  @ApiParam({
+    name: 'crypto',
+    description: 'Crypto value sent to the user',
+    example: 'a5d7fa9c87f385f0934fbed3b8cc7c81681360c7dbfe1925bdaa8d0a1d32bf14',
+  })
+  changePassword(
+    @Body(new ValidationPipe()) data: ResetPass,
+    @Param('crypto') crypto: string,
+  ) {
+    return this.forgetPasswordService.changePassword(data, crypto);
   }
 
   // 2fa features

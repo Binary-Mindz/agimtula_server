@@ -273,4 +273,6 @@ export class SubscriptionsService {
   updateSubscription(id: string, dto: any) {
     return { id, dto };
   }
+
+  getSubscriptionData() {}
 }

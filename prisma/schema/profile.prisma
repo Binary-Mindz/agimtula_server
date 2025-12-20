@@ -12,18 +12,6 @@ model Profile {
   @@map("profile")
 }
 
-model ForgetPass {
-  id String @id @default(ulid())
-
-  email      String  @unique
-  code       Int
-  isVerified Boolean @default(false)
-
-  createdAt DateTime @default(now())
-
-  @@map("forgetPass")
-}
-
 model TwoFA {
   id        String       @id @default(uuid())
   email     String

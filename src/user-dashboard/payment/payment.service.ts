@@ -72,23 +72,8 @@ export class PaymentService {
     });
 
     if (createPayment.subscriptionPlanPaymentStatus?.paymentStatus === 'PAID') {
-      await this.prisma.userSubscriptionPlan.upsert({
-        where: {
-          UserId: userId,
-        },
-        update: {
-          planName: getSubscriptionPlanData.planName,
-          isLimitedInvoicePerMonth: pricing.isLimitedInvoicePerMonth,
-          perMonthInvoiceCount: pricing.perMonthInvoiceCount,
-          price: pricing.price,
-          setupFee: pricing.setupFee,
-          freeTrialDays: pricing.freeTrialDays,
-          realtimeImapChecking: pricing.invoiceAutoSyncIntervalIds,
-          expiredAt: expirationDate,
-          subscriptionPlanPaymentStatusId:
-            createPayment.subscriptionPlanPaymentStatus.id,
-        },
-        create: {
+      await this.prisma.userSubscriptionPlan.create({
+        data: {
           UserId: userId,
           planName: getSubscriptionPlanData.planName,
           isLimitedInvoicePerMonth: pricing.isLimitedInvoicePerMonth,
@@ -103,14 +88,14 @@ export class PaymentService {
         },
       });
 
-      // await this.prisma.subscriptionPlanPaymentStatus.update({
-      //   where: {
-      //     id: createPayment.subscriptionPlanPaymentStatus.id,
-      //   },
-      //   data: {
-      //     subscriptionPlanHistoryId: createPayment.id,
-      //   },
-      // });
+      await this.prisma.subscriptionPlanPaymentStatus.update({
+        where: {
+          id: createPayment.subscriptionPlanPaymentStatus.id,
+        },
+        data: {
+          subscriptionPlanHistoryId: createPayment.id,
+        },
+      });
     }
 
     return cResponseData({

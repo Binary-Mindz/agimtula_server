@@ -6,6 +6,7 @@ import { SmtpMailModule } from 'src/config/smtp-mail/smtp-mail.module';
 import { JwtStrategy } from './strategies/jwt-strategy';
 import { ForgetPasswordService } from './forget-password.service';
 import { TwoFAService } from './2fa.service';
+import { RedisServiceModule } from 'src/config/redis-service/redis-service.module';
 
 @Module({
   imports: [
@@ -16,6 +17,12 @@ import { TwoFAService } from './2fa.service';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, ForgetPasswordService, TwoFAService],
+  providers: [
+    AuthService,
+    JwtStrategy,
+    ForgetPasswordService,
+    TwoFAService,
+    RedisServiceModule,
+  ],
 })
 export class AuthModule {}

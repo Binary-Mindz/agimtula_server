@@ -63,6 +63,7 @@ export class SubscriptionsService {
             id: true,
             price: true,
             setupFee: true,
+            planFeatures: true,
             billingPeriod: true,
           },
         },

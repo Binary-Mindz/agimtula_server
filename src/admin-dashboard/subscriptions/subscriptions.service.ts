@@ -44,19 +44,19 @@ export class SubscriptionsService {
   async getSubscriptionPlans() {
     const plans = await this.prisma.subscriptionPlan.findMany({
       include: {
-        packagePricing: true,
+        packagePricing: {
+          select: { id: true },
+        },
       },
     });
 
-    const invoiceIds = plans
-      .map((plan) =>
-        plan.packagePricing.flatMap(
-          (pricing) => pricing.invoiceAutoSyncIntervalIds,
-        ),
-      )
+    // important part to get invoice auto-sync intervals related to plans
+    const packagePricing = await this.prisma.packagePricing.findMany();
+
+    const invoiceIds = packagePricing
+      .map((plan) => plan.invoiceAutoSyncIntervalIds)
       .flat();
 
-    // important part to get invoice auto-sync intervals related to plans
     const intervals = await this.prisma.invoiceAutoSyncInterval.findMany({
       where: {
         id: {
@@ -69,27 +69,36 @@ export class SubscriptionsService {
       intervals.map((interval) => [interval.id, interval]),
     );
 
+    // set PackagePricing to InvoiceAutoSyncInterval
+    const setPackagePricingInvoiceAutoSyncInterval = new Map<string, any>(
+      packagePricing.map((plan) => [
+        plan.id,
+        {
+          id: plan.id,
+          isLimitedInvoicePerMonth: plan.isLimitedInvoicePerMonth,
+          perMonthInvoiceCount: plan.perMonthInvoiceCount,
+          planFeatures: plan.planFeatures,
+          price: plan.price,
+          setupFee: plan.setupFee,
+          freeTrialDays: plan.freeTrialDays,
+          billingPeriod: plan.billingPeriod,
+          SubscriptionPlanId: plan.SubscriptionPlanId,
+          invoiceAutoSyncIntervals: plan.invoiceAutoSyncIntervalIds.map(
+            (iASI) => intervalsObject.get(iASI),
+          ),
+        },
+      ]),
+    );
+
     return cResponseData({
-      data: plans.map((plan) => ({
-        id: plan.id,
-        planName: plan.planName,
-        isActive: plan.isActive,
-        description: plan.description,
-        packagePricing: plan.packagePricing,
-        invoiceAutoSyncIntervals: invoiceIds?.map((intervalId: string) =>
-          intervalsObject.get(intervalId),
+      data: plans.map((plans) => ({
+        ...plans,
+        packagePricing: plans.packagePricing.map((pp) =>
+          setPackagePricingInvoiceAutoSyncInterval.get(pp.id),
         ),
       })),
     });
   }
-
-  // async getSubscriptionManagementData() {
-  //   const subscriberCount = await this.prisma.subscriptionPlan.count({
-  //     where: {
-
-  //     }
-  //   });
-  // }
 
   async getSubscriptionPlan(id: string) {
     const plan = await this.prisma.subscriptionPlan.findUnique({

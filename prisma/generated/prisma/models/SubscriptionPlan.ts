@@ -20,20 +20,8 @@ export type SubscriptionPlanModel = runtime.Types.Result.DefaultSelection<Prisma
 
 export type AggregateSubscriptionPlan = {
   _count: SubscriptionPlanCountAggregateOutputType | null
-  _avg: SubscriptionPlanAvgAggregateOutputType | null
-  _sum: SubscriptionPlanSumAggregateOutputType | null
   _min: SubscriptionPlanMinAggregateOutputType | null
   _max: SubscriptionPlanMaxAggregateOutputType | null
-}
-
-export type SubscriptionPlanAvgAggregateOutputType = {
-  perMonthInvoiceCount: number | null
-  realtimeImapChecking: number | null
-}
-
-export type SubscriptionPlanSumAggregateOutputType = {
-  perMonthInvoiceCount: number | null
-  realtimeImapChecking: number | null
 }
 
 export type SubscriptionPlanMinAggregateOutputType = {
@@ -41,9 +29,6 @@ export type SubscriptionPlanMinAggregateOutputType = {
   planName: string | null
   isActive: boolean | null
   description: string | null
-  isLimitedInvoicePerMonth: boolean | null
-  perMonthInvoiceCount: number | null
-  realtimeImapChecking: number | null
   createdAt: Date | null
 }
 
@@ -52,9 +37,6 @@ export type SubscriptionPlanMaxAggregateOutputType = {
   planName: string | null
   isActive: boolean | null
   description: string | null
-  isLimitedInvoicePerMonth: boolean | null
-  perMonthInvoiceCount: number | null
-  realtimeImapChecking: number | null
   createdAt: Date | null
 }
 
@@ -63,33 +45,16 @@ export type SubscriptionPlanCountAggregateOutputType = {
   planName: number
   isActive: number
   description: number
-  isLimitedInvoicePerMonth: number
-  perMonthInvoiceCount: number
-  realtimeImapChecking: number
-  planFeatures: number
   createdAt: number
   _all: number
 }
 
-
-export type SubscriptionPlanAvgAggregateInputType = {
-  perMonthInvoiceCount?: true
-  realtimeImapChecking?: true
-}
-
-export type SubscriptionPlanSumAggregateInputType = {
-  perMonthInvoiceCount?: true
-  realtimeImapChecking?: true
-}
 
 export type SubscriptionPlanMinAggregateInputType = {
   id?: true
   planName?: true
   isActive?: true
   description?: true
-  isLimitedInvoicePerMonth?: true
-  perMonthInvoiceCount?: true
-  realtimeImapChecking?: true
   createdAt?: true
 }
 
@@ -98,9 +63,6 @@ export type SubscriptionPlanMaxAggregateInputType = {
   planName?: true
   isActive?: true
   description?: true
-  isLimitedInvoicePerMonth?: true
-  perMonthInvoiceCount?: true
-  realtimeImapChecking?: true
   createdAt?: true
 }
 
@@ -109,10 +71,6 @@ export type SubscriptionPlanCountAggregateInputType = {
   planName?: true
   isActive?: true
   description?: true
-  isLimitedInvoicePerMonth?: true
-  perMonthInvoiceCount?: true
-  realtimeImapChecking?: true
-  planFeatures?: true
   createdAt?: true
   _all?: true
 }
@@ -155,18 +113,6 @@ export type SubscriptionPlanAggregateArgs<ExtArgs extends runtime.Types.Extensio
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: SubscriptionPlanAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: SubscriptionPlanSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: SubscriptionPlanMinAggregateInputType
@@ -197,8 +143,6 @@ export type SubscriptionPlanGroupByArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   _count?: SubscriptionPlanCountAggregateInputType | true
-  _avg?: SubscriptionPlanAvgAggregateInputType
-  _sum?: SubscriptionPlanSumAggregateInputType
   _min?: SubscriptionPlanMinAggregateInputType
   _max?: SubscriptionPlanMaxAggregateInputType
 }
@@ -208,14 +152,8 @@ export type SubscriptionPlanGroupByOutputType = {
   planName: string
   isActive: boolean
   description: string | null
-  isLimitedInvoicePerMonth: boolean
-  perMonthInvoiceCount: number
-  realtimeImapChecking: number
-  planFeatures: string[]
   createdAt: Date
   _count: SubscriptionPlanCountAggregateOutputType | null
-  _avg: SubscriptionPlanAvgAggregateOutputType | null
-  _sum: SubscriptionPlanSumAggregateOutputType | null
   _min: SubscriptionPlanMinAggregateOutputType | null
   _max: SubscriptionPlanMaxAggregateOutputType | null
 }
@@ -243,10 +181,6 @@ export type SubscriptionPlanWhereInput = {
   planName?: Prisma.StringFilter<"SubscriptionPlan"> | string
   isActive?: Prisma.BoolFilter<"SubscriptionPlan"> | boolean
   description?: Prisma.StringNullableFilter<"SubscriptionPlan"> | string | null
-  isLimitedInvoicePerMonth?: Prisma.BoolFilter<"SubscriptionPlan"> | boolean
-  perMonthInvoiceCount?: Prisma.IntFilter<"SubscriptionPlan"> | number
-  realtimeImapChecking?: Prisma.IntFilter<"SubscriptionPlan"> | number
-  planFeatures?: Prisma.StringNullableListFilter<"SubscriptionPlan">
   createdAt?: Prisma.DateTimeFilter<"SubscriptionPlan"> | Date | string
   packagePricing?: Prisma.PackagePricingListRelationFilter
 }
@@ -256,10 +190,6 @@ export type SubscriptionPlanOrderByWithRelationInput = {
   planName?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
-  isLimitedInvoicePerMonth?: Prisma.SortOrder
-  perMonthInvoiceCount?: Prisma.SortOrder
-  realtimeImapChecking?: Prisma.SortOrder
-  planFeatures?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   packagePricing?: Prisma.PackagePricingOrderByRelationAggregateInput
 }
@@ -272,10 +202,6 @@ export type SubscriptionPlanWhereUniqueInput = Prisma.AtLeast<{
   planName?: Prisma.StringFilter<"SubscriptionPlan"> | string
   isActive?: Prisma.BoolFilter<"SubscriptionPlan"> | boolean
   description?: Prisma.StringNullableFilter<"SubscriptionPlan"> | string | null
-  isLimitedInvoicePerMonth?: Prisma.BoolFilter<"SubscriptionPlan"> | boolean
-  perMonthInvoiceCount?: Prisma.IntFilter<"SubscriptionPlan"> | number
-  realtimeImapChecking?: Prisma.IntFilter<"SubscriptionPlan"> | number
-  planFeatures?: Prisma.StringNullableListFilter<"SubscriptionPlan">
   createdAt?: Prisma.DateTimeFilter<"SubscriptionPlan"> | Date | string
   packagePricing?: Prisma.PackagePricingListRelationFilter
 }, "id" | "id">
@@ -285,16 +211,10 @@ export type SubscriptionPlanOrderByWithAggregationInput = {
   planName?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
-  isLimitedInvoicePerMonth?: Prisma.SortOrder
-  perMonthInvoiceCount?: Prisma.SortOrder
-  realtimeImapChecking?: Prisma.SortOrder
-  planFeatures?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.SubscriptionPlanCountOrderByAggregateInput
-  _avg?: Prisma.SubscriptionPlanAvgOrderByAggregateInput
   _max?: Prisma.SubscriptionPlanMaxOrderByAggregateInput
   _min?: Prisma.SubscriptionPlanMinOrderByAggregateInput
-  _sum?: Prisma.SubscriptionPlanSumOrderByAggregateInput
 }
 
 export type SubscriptionPlanScalarWhereWithAggregatesInput = {
@@ -305,10 +225,6 @@ export type SubscriptionPlanScalarWhereWithAggregatesInput = {
   planName?: Prisma.StringWithAggregatesFilter<"SubscriptionPlan"> | string
   isActive?: Prisma.BoolWithAggregatesFilter<"SubscriptionPlan"> | boolean
   description?: Prisma.StringNullableWithAggregatesFilter<"SubscriptionPlan"> | string | null
-  isLimitedInvoicePerMonth?: Prisma.BoolWithAggregatesFilter<"SubscriptionPlan"> | boolean
-  perMonthInvoiceCount?: Prisma.IntWithAggregatesFilter<"SubscriptionPlan"> | number
-  realtimeImapChecking?: Prisma.IntWithAggregatesFilter<"SubscriptionPlan"> | number
-  planFeatures?: Prisma.StringNullableListFilter<"SubscriptionPlan">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"SubscriptionPlan"> | Date | string
 }
 
@@ -317,10 +233,6 @@ export type SubscriptionPlanCreateInput = {
   planName: string
   isActive?: boolean
   description?: string | null
-  isLimitedInvoicePerMonth?: boolean
-  perMonthInvoiceCount?: number
-  realtimeImapChecking?: number
-  planFeatures?: Prisma.SubscriptionPlanCreateplanFeaturesInput | string[]
   createdAt?: Date | string
   packagePricing?: Prisma.PackagePricingCreateNestedManyWithoutSubscriptionPlanInput
 }
@@ -330,10 +242,6 @@ export type SubscriptionPlanUncheckedCreateInput = {
   planName: string
   isActive?: boolean
   description?: string | null
-  isLimitedInvoicePerMonth?: boolean
-  perMonthInvoiceCount?: number
-  realtimeImapChecking?: number
-  planFeatures?: Prisma.SubscriptionPlanCreateplanFeaturesInput | string[]
   createdAt?: Date | string
   packagePricing?: Prisma.PackagePricingUncheckedCreateNestedManyWithoutSubscriptionPlanInput
 }
@@ -343,10 +251,6 @@ export type SubscriptionPlanUpdateInput = {
   planName?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isLimitedInvoicePerMonth?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  perMonthInvoiceCount?: Prisma.IntFieldUpdateOperationsInput | number
-  realtimeImapChecking?: Prisma.IntFieldUpdateOperationsInput | number
-  planFeatures?: Prisma.SubscriptionPlanUpdateplanFeaturesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   packagePricing?: Prisma.PackagePricingUpdateManyWithoutSubscriptionPlanNestedInput
 }
@@ -356,10 +260,6 @@ export type SubscriptionPlanUncheckedUpdateInput = {
   planName?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isLimitedInvoicePerMonth?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  perMonthInvoiceCount?: Prisma.IntFieldUpdateOperationsInput | number
-  realtimeImapChecking?: Prisma.IntFieldUpdateOperationsInput | number
-  planFeatures?: Prisma.SubscriptionPlanUpdateplanFeaturesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   packagePricing?: Prisma.PackagePricingUncheckedUpdateManyWithoutSubscriptionPlanNestedInput
 }
@@ -369,10 +269,6 @@ export type SubscriptionPlanCreateManyInput = {
   planName: string
   isActive?: boolean
   description?: string | null
-  isLimitedInvoicePerMonth?: boolean
-  perMonthInvoiceCount?: number
-  realtimeImapChecking?: number
-  planFeatures?: Prisma.SubscriptionPlanCreateplanFeaturesInput | string[]
   createdAt?: Date | string
 }
 
@@ -381,10 +277,6 @@ export type SubscriptionPlanUpdateManyMutationInput = {
   planName?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isLimitedInvoicePerMonth?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  perMonthInvoiceCount?: Prisma.IntFieldUpdateOperationsInput | number
-  realtimeImapChecking?: Prisma.IntFieldUpdateOperationsInput | number
-  planFeatures?: Prisma.SubscriptionPlanUpdateplanFeaturesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -393,19 +285,7 @@ export type SubscriptionPlanUncheckedUpdateManyInput = {
   planName?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isLimitedInvoicePerMonth?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  perMonthInvoiceCount?: Prisma.IntFieldUpdateOperationsInput | number
-  realtimeImapChecking?: Prisma.IntFieldUpdateOperationsInput | number
-  planFeatures?: Prisma.SubscriptionPlanUpdateplanFeaturesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type StringNullableListFilter<$PrismaModel = never> = {
-  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
-  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
-  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
-  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
-  isEmpty?: boolean
 }
 
 export type SubscriptionPlanCountOrderByAggregateInput = {
@@ -413,16 +293,7 @@ export type SubscriptionPlanCountOrderByAggregateInput = {
   planName?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  isLimitedInvoicePerMonth?: Prisma.SortOrder
-  perMonthInvoiceCount?: Prisma.SortOrder
-  realtimeImapChecking?: Prisma.SortOrder
-  planFeatures?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-}
-
-export type SubscriptionPlanAvgOrderByAggregateInput = {
-  perMonthInvoiceCount?: Prisma.SortOrder
-  realtimeImapChecking?: Prisma.SortOrder
 }
 
 export type SubscriptionPlanMaxOrderByAggregateInput = {
@@ -430,9 +301,6 @@ export type SubscriptionPlanMaxOrderByAggregateInput = {
   planName?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  isLimitedInvoicePerMonth?: Prisma.SortOrder
-  perMonthInvoiceCount?: Prisma.SortOrder
-  realtimeImapChecking?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -441,29 +309,12 @@ export type SubscriptionPlanMinOrderByAggregateInput = {
   planName?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  isLimitedInvoicePerMonth?: Prisma.SortOrder
-  perMonthInvoiceCount?: Prisma.SortOrder
-  realtimeImapChecking?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-}
-
-export type SubscriptionPlanSumOrderByAggregateInput = {
-  perMonthInvoiceCount?: Prisma.SortOrder
-  realtimeImapChecking?: Prisma.SortOrder
 }
 
 export type SubscriptionPlanScalarRelationFilter = {
   is?: Prisma.SubscriptionPlanWhereInput
   isNot?: Prisma.SubscriptionPlanWhereInput
-}
-
-export type SubscriptionPlanCreateplanFeaturesInput = {
-  set: string[]
-}
-
-export type SubscriptionPlanUpdateplanFeaturesInput = {
-  set?: string[]
-  push?: string | string[]
 }
 
 export type SubscriptionPlanCreateNestedOneWithoutPackagePricingInput = {
@@ -485,10 +336,6 @@ export type SubscriptionPlanCreateWithoutPackagePricingInput = {
   planName: string
   isActive?: boolean
   description?: string | null
-  isLimitedInvoicePerMonth?: boolean
-  perMonthInvoiceCount?: number
-  realtimeImapChecking?: number
-  planFeatures?: Prisma.SubscriptionPlanCreateplanFeaturesInput | string[]
   createdAt?: Date | string
 }
 
@@ -497,10 +344,6 @@ export type SubscriptionPlanUncheckedCreateWithoutPackagePricingInput = {
   planName: string
   isActive?: boolean
   description?: string | null
-  isLimitedInvoicePerMonth?: boolean
-  perMonthInvoiceCount?: number
-  realtimeImapChecking?: number
-  planFeatures?: Prisma.SubscriptionPlanCreateplanFeaturesInput | string[]
   createdAt?: Date | string
 }
 
@@ -525,10 +368,6 @@ export type SubscriptionPlanUpdateWithoutPackagePricingInput = {
   planName?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isLimitedInvoicePerMonth?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  perMonthInvoiceCount?: Prisma.IntFieldUpdateOperationsInput | number
-  realtimeImapChecking?: Prisma.IntFieldUpdateOperationsInput | number
-  planFeatures?: Prisma.SubscriptionPlanUpdateplanFeaturesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -537,10 +376,6 @@ export type SubscriptionPlanUncheckedUpdateWithoutPackagePricingInput = {
   planName?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isLimitedInvoicePerMonth?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  perMonthInvoiceCount?: Prisma.IntFieldUpdateOperationsInput | number
-  realtimeImapChecking?: Prisma.IntFieldUpdateOperationsInput | number
-  planFeatures?: Prisma.SubscriptionPlanUpdateplanFeaturesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -580,10 +415,6 @@ export type SubscriptionPlanSelect<ExtArgs extends runtime.Types.Extensions.Inte
   planName?: boolean
   isActive?: boolean
   description?: boolean
-  isLimitedInvoicePerMonth?: boolean
-  perMonthInvoiceCount?: boolean
-  realtimeImapChecking?: boolean
-  planFeatures?: boolean
   createdAt?: boolean
   packagePricing?: boolean | Prisma.SubscriptionPlan$packagePricingArgs<ExtArgs>
   _count?: boolean | Prisma.SubscriptionPlanCountOutputTypeDefaultArgs<ExtArgs>
@@ -594,10 +425,6 @@ export type SubscriptionPlanSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   planName?: boolean
   isActive?: boolean
   description?: boolean
-  isLimitedInvoicePerMonth?: boolean
-  perMonthInvoiceCount?: boolean
-  realtimeImapChecking?: boolean
-  planFeatures?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["subscriptionPlan"]>
 
@@ -606,10 +433,6 @@ export type SubscriptionPlanSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   planName?: boolean
   isActive?: boolean
   description?: boolean
-  isLimitedInvoicePerMonth?: boolean
-  perMonthInvoiceCount?: boolean
-  realtimeImapChecking?: boolean
-  planFeatures?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["subscriptionPlan"]>
 
@@ -618,14 +441,10 @@ export type SubscriptionPlanSelectScalar = {
   planName?: boolean
   isActive?: boolean
   description?: boolean
-  isLimitedInvoicePerMonth?: boolean
-  perMonthInvoiceCount?: boolean
-  realtimeImapChecking?: boolean
-  planFeatures?: boolean
   createdAt?: boolean
 }
 
-export type SubscriptionPlanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "planName" | "isActive" | "description" | "isLimitedInvoicePerMonth" | "perMonthInvoiceCount" | "realtimeImapChecking" | "planFeatures" | "createdAt", ExtArgs["result"]["subscriptionPlan"]>
+export type SubscriptionPlanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "planName" | "isActive" | "description" | "createdAt", ExtArgs["result"]["subscriptionPlan"]>
 export type SubscriptionPlanInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   packagePricing?: boolean | Prisma.SubscriptionPlan$packagePricingArgs<ExtArgs>
   _count?: boolean | Prisma.SubscriptionPlanCountOutputTypeDefaultArgs<ExtArgs>
@@ -643,10 +462,6 @@ export type $SubscriptionPlanPayload<ExtArgs extends runtime.Types.Extensions.In
     planName: string
     isActive: boolean
     description: string | null
-    isLimitedInvoicePerMonth: boolean
-    perMonthInvoiceCount: number
-    realtimeImapChecking: number
-    planFeatures: string[]
     createdAt: Date
   }, ExtArgs["result"]["subscriptionPlan"]>
   composites: {}
@@ -1076,10 +891,6 @@ export interface SubscriptionPlanFieldRefs {
   readonly planName: Prisma.FieldRef<"SubscriptionPlan", 'String'>
   readonly isActive: Prisma.FieldRef<"SubscriptionPlan", 'Boolean'>
   readonly description: Prisma.FieldRef<"SubscriptionPlan", 'String'>
-  readonly isLimitedInvoicePerMonth: Prisma.FieldRef<"SubscriptionPlan", 'Boolean'>
-  readonly perMonthInvoiceCount: Prisma.FieldRef<"SubscriptionPlan", 'Int'>
-  readonly realtimeImapChecking: Prisma.FieldRef<"SubscriptionPlan", 'Int'>
-  readonly planFeatures: Prisma.FieldRef<"SubscriptionPlan", 'String[]'>
   readonly createdAt: Prisma.FieldRef<"SubscriptionPlan", 'DateTime'>
 }
     

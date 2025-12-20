@@ -13,9 +13,13 @@ import { MileageModule } from './user-dashboard/mileage/mileage.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { SettingsModule } from './user-dashboard/settings/settings.module';
 import { AuthGuard } from './auth/guards/auth/auth.guard';
+import { CleanupCronService } from './auth/cron/CleanupCronService';
+import { RedisServiceModule } from './config/redis-service/redis-service.module';
+// import { PaymentsModule } from './admin-dashboard/payments/payments.module';
 
 @Module({
   imports: [
+    RedisServiceModule,
     ConfigModule.forRoot({ isGlobal: true }),
     ScheduleModule.forRoot(),
     DatabaseModule,
@@ -27,6 +31,7 @@ import { AuthGuard } from './auth/guards/auth/auth.guard';
     SmtpMailModule,
     MileageModule,
     SettingsModule,
+    // PaymentsModule
   ],
   controllers: [AppController],
   providers: [
@@ -35,6 +40,7 @@ import { AuthGuard } from './auth/guards/auth/auth.guard';
       provide: 'APP_GUARD',
       useClass: AuthGuard,
     },
+    CleanupCronService,
   ],
 })
 export class AppModule {}

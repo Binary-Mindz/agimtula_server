@@ -391,7 +391,7 @@ export class AuthService {
   }
 
   findAll() {
-    return `This action returns all auth`;
+    return 'This section returns all auth related data';
   }
 
   findOne(id: number) {

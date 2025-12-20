@@ -23,7 +23,9 @@ export class SubscriptionsService {
 
     const totalSub = result.length;
     const Subscribers = {};
+    const monthlyTotalRevenue = {};
     const graphCal = {};
+    const totalRevenueGraph = {};
 
     // GraphCal
     result.reduce((acc, curr) => {
@@ -41,7 +43,6 @@ export class SubscriptionsService {
     }
 
     // scal graph cal
-    const totalRevenue = {};
     result.reduce((acc, curr) => {
       const { planName, subscriptionPlanPaymentStatus } = curr;
       if (!acc[planName]) {
@@ -50,7 +51,7 @@ export class SubscriptionsService {
         acc[planName] += subscriptionPlanPaymentStatus?.totalAmount;
       }
       return acc;
-    }, totalRevenue);
+    }, totalRevenueGraph);
 
     // subscription plan list
     const subscriptionPlanList = await this.prisma.subscriptionPlan.findMany({
@@ -101,12 +102,25 @@ export class SubscriptionsService {
         },
       });
 
-    console.log('subscriptionPlanList', subscriptionPlanList);
-    console.log('subscriptionPlanList', monthlyRevenue);
+    monthlyRevenue.reduce((acc, curr) => {
+      const { planName, subscriptionPlanPaymentStatus } = curr;
+      if (!acc[planName]) {
+        acc[planName] = subscriptionPlanPaymentStatus?.totalAmount;
+      } else {
+        acc[planName] += subscriptionPlanPaymentStatus?.totalAmount;
+      }
+      return acc;
+    }, monthlyTotalRevenue);
+
+    const subscriptionPlans = subscriptionPlanList.map((plan) => ({
+      ...plan,
+      subscribers: Subscribers[plan.planName] || 0,
+      monthlyTotalRevenue: monthlyTotalRevenue[plan.planName] || 0,
+    }));
 
     return cResponseData({
       message: 'Subscription plan purchased successfully',
-      data: { Subscribers, graphCal, totalRevenue },
+      data: { graphCal, totalRevenueGraph, subscriptionPlans },
     });
   }
 

@@ -8,6 +8,74 @@ import { PrismaService } from 'src/config/database/prisma.service';
 export class SubscriptionsService {
   constructor(private prisma: PrismaService) {}
 
+  async subscriptionsDashboardGraph() {
+    const result = await this.prisma.userSubscriptionPlanHistory.findMany({
+      where: {
+        subscriptionPlanPaymentStatus: {
+          paymentStatus: 'PAID',
+        },
+      },
+      select: {
+        planName: true,
+        subscriptionPlanPaymentStatus: { select: { totalAmount: true } },
+      },
+    });
+
+    const totalSub = result.length;
+    const Subscribers = {};
+    const graphCal = {};
+
+    // GraphCal
+    result.reduce((acc, curr) => {
+      const { planName } = curr;
+      if (!acc[planName]) {
+        acc[planName] = 1;
+      } else {
+        acc[planName] += 1;
+      }
+      return acc;
+    }, graphCal);
+    for (const key in graphCal) {
+      Subscribers[key] = graphCal[key];
+      graphCal[key] = Number(((graphCal[key] / totalSub) * 100).toFixed(2));
+    }
+
+    // scal graph cal
+    const totalRevenue = {};
+    result.reduce((acc, curr) => {
+      const { planName, subscriptionPlanPaymentStatus } = curr;
+      if (!acc[planName]) {
+        acc[planName] = subscriptionPlanPaymentStatus?.totalAmount;
+      } else {
+        acc[planName] += subscriptionPlanPaymentStatus?.totalAmount;
+      }
+      return acc;
+    }, totalRevenue);
+
+    // // subscription plan list
+    // const subscriptionPlanList = await this.prisma.subscriptionPlan.findMany({
+    //   select: {
+    //     id: true,
+    //     planName: true,
+    //     isActive: true,
+    //     packagePricing: {
+    //       select: {
+    //         id: true,
+    //         price: true,
+    //         setupFee: true,
+    //         freeTrialDays: true,
+    //         billingPeriod: true,
+    //       },
+    //     },
+    //   },
+    // });
+
+    return cResponseData({
+      message: 'Subscription plan purchased successfully',
+      data: { Subscribers, graphCal, totalRevenue },
+    });
+  }
+
   async createSubscription(dto: CreateSubscriptionPlanDto) {
     const plan = await this.prisma.subscriptionPlan.create({
       data: {

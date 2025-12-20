@@ -1,7 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  Param,
+  Patch,
   Post,
   Query,
   UploadedFile,
@@ -16,6 +19,7 @@ import { ApiBody, ApiConsumes, ApiQuery } from '@nestjs/swagger';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { User } from 'src/auth/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
+import { UpdateReceiptDto } from './dto/update-receipt-dto';
 
 @Controller('receipts')
 export class ReceiptsController {
@@ -36,6 +40,15 @@ export class ReceiptsController {
   async getAllReceiptCategories() {
     return await this.receiptsService.getAllReceiptCategories();
   }
+
+  @Delete('delete-category/:id')
+  @Roles('USER')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async deleteCategory(@Param('id') id: string) {
+    return await this.receiptsService.deleteCategory(id);
+  }
+
+  // receipt info
 
   @Post('upload-receipt')
   @Roles('USER')
@@ -58,7 +71,38 @@ export class ReceiptsController {
   async getReceiptsData(
     @Query('search') search: string,
     @Query('filterCategory') filterCategory: string,
+    @User() user: jwtPayload,
   ) {
-    return await this.receiptsService.getReceiptsData(search, filterCategory);
+    return await this.receiptsService.getReceiptsData(
+      user.sub,
+      search,
+      filterCategory,
+    );
+  }
+
+  @Patch('update-receipt')
+  @Roles('USER')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  @ApiBody({
+    schema: {
+      properties: {
+        id: { type: 'string' },
+        vendor: { type: 'string' },
+        amount: { type: 'number' },
+        date: { type: 'string' },
+        category: { type: 'string' },
+        notes: { type: 'string' },
+      },
+    },
+  })
+  async updateReceipt(@Body('id') id: string, @Body() dto: UpdateReceiptDto) {
+    return await this.receiptsService.updateReceiptsData(id, dto);
+  }
+
+  @Delete('delete-receipt')
+  @Roles('USER')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async deleteReceipt(@Param('id') id: string) {
+    return await this.receiptsService.deleteReceiptsData(id);
   }
 }

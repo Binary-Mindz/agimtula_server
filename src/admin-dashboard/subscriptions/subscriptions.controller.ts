@@ -13,6 +13,7 @@ import { CreateSubscriptionPlanDto } from './dto/create-subscription.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { InvoiceAutoSyncDto } from './dto/invoiceAutoSyncDto';
 import { InvoiceAutoSyncIntervalService } from './invoiceAutoSyncInterval.service';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @Controller('subscriptions')
 export class SubscriptionsController {
@@ -20,6 +21,12 @@ export class SubscriptionsController {
     private readonly subscriptionsService: SubscriptionsService,
     private readonly invoiceAutoSyncIntervalService: InvoiceAutoSyncIntervalService,
   ) {}
+
+  @Public()
+  @Get()
+  subscriptionsDashboard() {
+    return this.subscriptionsService.subscriptionsDashboardGraph();
+  }
 
   @Post('plans')
   @Roles('ADMIN')

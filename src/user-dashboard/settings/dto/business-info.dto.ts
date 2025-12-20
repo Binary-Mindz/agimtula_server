@@ -9,6 +9,15 @@ import {
 
 export class BusinessInfoDto {
   @ApiProperty({
+    description: 'Your job title',
+    example: 'Software developer',
+  })
+  @IsOptional()
+  @IsString()
+  @MaxLength(100)
+  jobTitle?: string;
+
+  @ApiProperty({
     description: 'Legal business or trading name',
     example: 'Acme Trading Ltd',
   })

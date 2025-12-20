@@ -148,4 +148,23 @@ export class PaymentMethodService {
     }
     return cResponseData({ data: paymentMethods });
   }
+
+  async deletePaymentMethods(userId: string, paymentMethodId: string) {
+    const existing = await this.prisma.paymentMethod.findUnique({
+      where: { id: paymentMethodId },
+    });
+
+    if (!existing || existing.userId !== userId) {
+      return { success: false, message: 'Payment method not found' };
+    }
+
+    await this.prisma.paymentMethod.delete({
+      where: { id: paymentMethodId },
+    });
+
+    return cResponseData({
+      success: true,
+      message: 'Payment method deleted successfully',
+    });
+  }
 }

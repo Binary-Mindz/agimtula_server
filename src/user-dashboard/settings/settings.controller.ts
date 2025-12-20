@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -128,6 +129,19 @@ export class SettingsController {
       user.sub,
       id,
       makeDefault?.makeDefault,
+    );
+  }
+
+  @Delete('delete-payment-method')
+  @Roles('USER', 'ADMIN')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  deletePaymentMethods(
+    @User() user: jwtPayload,
+    @Param('paymentMethodId') dto: { paymentMethodId: string },
+  ) {
+    return this.paymentMethodService.deletePaymentMethods(
+      user.sub,
+      dto.paymentMethodId,
     );
   }
 

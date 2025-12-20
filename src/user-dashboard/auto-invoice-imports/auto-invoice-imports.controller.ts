@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   HttpCode,
   Patch,
+  Post,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -13,6 +15,7 @@ import { ManageConnectionService } from './manage-connection.service';
 import { User } from 'src/auth/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 import { SyncSettingsDto } from './dto/sync-settings.dto';
+import { UpdateConnectionDto } from './dto/update-connection.dto';
 
 @Controller('auto-invoice-imports')
 export class AutoInvoiceImportsController {
@@ -31,7 +34,7 @@ export class AutoInvoiceImportsController {
 
   // imap configuration
 
-  @Patch('user-subscription')
+  @Post('user-subscription')
   @HttpCode(200)
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
   @UsePipes(new ValidationPipe())
@@ -40,6 +43,20 @@ export class AutoInvoiceImportsController {
     @User() user: jwtPayload,
   ) {
     return this.manageConnectionService.userSubscription(user.sub, dto);
+  }
+
+  @Patch('update-connection')
+  @Roles('USER', 'ADMIN', 'ACCOUNTANT')
+  @UsePipes(new ValidationPipe())
+  updateConnection(@Body() dto: UpdateConnectionDto, @User() user: jwtPayload) {
+    return this.manageConnectionService.updateConnection(user.sub, dto);
+  }
+
+  @Delete('disconnect-connection')
+  @Roles('USER', 'ADMIN', 'ACCOUNTANT')
+  @UsePipes(new ValidationPipe())
+  disconnectConnection(@User() user: jwtPayload) {
+    return this.manageConnectionService.disconnectConnection(user.sub);
   }
 
   // sync settings

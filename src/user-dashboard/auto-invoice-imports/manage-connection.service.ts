@@ -3,6 +3,7 @@ import { PrismaService } from 'src/config/database/prisma.service';
 import { ImapEmailConnectionDto } from './dto/imap-email-connection.dto';
 import { cResponseData } from 'src/common/cResponse';
 import { SyncSettingsDto } from './dto/sync-settings.dto';
+import { UpdateConnectionDto } from './dto/update-connection.dto';
 
 @Injectable()
 export class ManageConnectionService {
@@ -72,5 +73,67 @@ export class ManageConnectionService {
     return cResponseData({
       message: 'Synchronization settings updated successfully',
     });
+  }
+
+  async updateConnection(id: string, dto: UpdateConnectionDto) {
+    try {
+      const isImapConfigured = await this.prisma.imapConfiguration.findFirst({
+        where: {
+          userId: id,
+        },
+      });
+
+      if (!isImapConfigured) {
+        throw new ForbiddenException('IMAP is not configured for this user');
+      }
+
+      await this.prisma.imapConfiguration.update({
+        where: {
+          userId: id,
+        },
+        data: {
+          host: dto.imap_server,
+          port: dto.imap_port,
+          username: dto.imap_username,
+          password: dto.imap_app_password,
+        },
+      });
+
+      return cResponseData({
+        message: 'Email connection updated successfully',
+      });
+    } catch (error) {
+      return cResponseData({
+        message: error.message,
+      });
+    }
+  }
+
+  async disconnectConnection(userId: string) {
+    try {
+      const isImapConfigured = await this.prisma.imapConfiguration.findFirst({
+        where: {
+          userId: userId,
+        },
+      });
+
+      if (!isImapConfigured) {
+        throw new ForbiddenException('IMAP is not configured for this user');
+      }
+
+      await this.prisma.imapConfiguration.delete({
+        where: {
+          userId: userId,
+        },
+      });
+
+      return cResponseData({
+        message: 'Email disconnected successfully',
+      });
+    } catch (error) {
+      return cResponseData({
+        message: error.message,
+      });
+    }
   }
 }

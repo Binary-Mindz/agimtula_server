@@ -34,8 +34,6 @@ export class SettingsService {
       where: { userId },
     });
 
-    console.log(businessInfo);
-
     if (!businessInfo) throw new NotFoundException('Business info not found');
 
     if (businessInfo.logoKey) {

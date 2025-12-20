@@ -52,23 +52,57 @@ export class SubscriptionsService {
       return acc;
     }, totalRevenue);
 
-    // // subscription plan list
-    // const subscriptionPlanList = await this.prisma.subscriptionPlan.findMany({
-    //   select: {
-    //     id: true,
-    //     planName: true,
-    //     isActive: true,
-    //     packagePricing: {
-    //       select: {
-    //         id: true,
-    //         price: true,
-    //         setupFee: true,
-    //         freeTrialDays: true,
-    //         billingPeriod: true,
-    //       },
-    //     },
-    //   },
-    // });
+    // subscription plan list
+    const subscriptionPlanList = await this.prisma.subscriptionPlan.findMany({
+      select: {
+        id: true,
+        planName: true,
+        packagePricing: {
+          select: {
+            id: true,
+            price: true,
+            setupFee: true,
+            billingPeriod: true,
+          },
+        },
+      },
+    });
+
+    // Monthly Revenue
+
+    const currentDate = new Date();
+    // Get the first date of the current month
+    const firstDate = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      1,
+    ).toISOString();
+    // Get the last date of the current month
+    const lastDate = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() + 1,
+      0,
+    ).toISOString();
+
+    const monthlyRevenue =
+      await this.prisma.userSubscriptionPlanHistory.findMany({
+        where: {
+          subscriptionPlanPaymentStatus: {
+            paymentStatus: 'PAID',
+          },
+          createdAt: {
+            gte: firstDate,
+            lte: lastDate,
+          },
+        },
+        select: {
+          planName: true,
+          subscriptionPlanPaymentStatus: { select: { totalAmount: true } },
+        },
+      });
+
+    console.log('subscriptionPlanList', subscriptionPlanList);
+    console.log('subscriptionPlanList', monthlyRevenue);
 
     return cResponseData({
       message: 'Subscription plan purchased successfully',

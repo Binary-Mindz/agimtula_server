@@ -114,7 +114,13 @@ export class SubscriptionsService {
     }, monthlyTotalRevenue);
 
     const subscriptionPlans = subscriptionPlanList.map((plan) => ({
-      ...plan,
+      packagePricing: plan.packagePricing.map((packageItem) => ({
+        billingPeriod: packageItem.billingPeriod,
+        price: Number((packageItem.price + packageItem.setupFee).toFixed(2)),
+      })),
+      planFeatures: plan.packagePricing
+        .map((packageItem) => packageItem.planFeatures)
+        .flat(),
       subscribers: Subscribers[plan.planName] || 0,
       monthlyTotalRevenue: monthlyTotalRevenue[plan.planName] || 0,
     }));

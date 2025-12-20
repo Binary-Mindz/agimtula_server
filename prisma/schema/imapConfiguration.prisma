@@ -13,8 +13,12 @@ model imapConfiguration {
     userId String @unique
     user   User   @relation(fields: [userId], references: [id])
 
-    connect Boolean @default(false)
-    sync    Boolean @default(false)
+    connect            Boolean @default(false)
+    sync               Boolean @default(false)
+    emailNotifications Boolean @default(false)
+
+    realtimeImapCheckingId String?                  @unique
+    realtimeImapChecking   invoiceAutoSyncInterval? @relation(fields: [realtimeImapCheckingId], references: [id])
 
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
@@ -26,10 +30,13 @@ model imapConfiguration {
 model userSubscriptionPlan {
     id String @id @unique @default(uuid())
 
+    planName String
+
     UserId String @unique
     user   User   @relation(fields: [UserId], references: [id])
 
-    subscriptionPlanPaymentStatus subscriptionPlanPaymentStatus? @relation(name: "PaymentStatusToSubscriptionPlan")
+    subscriptionPlanPaymentStatusId String                         @unique
+    subscriptionPlanPaymentStatus   subscriptionPlanPaymentStatus? @relation(name: "PaymentStatusToSubscriptionPlan", fields: [subscriptionPlanPaymentStatusId], references: [id])
 
     isLimitedInvoicePerMonth Boolean
     perMonthInvoiceCount     Int
@@ -43,13 +50,13 @@ model userSubscriptionPlan {
     expiredAt DateTime
 
     createdAt DateTime @default(now())
-
-    @@map("user_subscription_plan")
 }
 
 // user relation with subscription plan based on historyand previous plans 
 model userSubscriptionPlanHistory {
     id String @id @unique @default(uuid())
+
+    planName String
 
     UserId String
     user   User   @relation(fields: [UserId], references: [id])
@@ -71,8 +78,6 @@ model userSubscriptionPlanHistory {
     expiredAt DateTime
 
     createdAt DateTime @default(now())
-
-    @@map("userSubscriptionPlan")
 }
 
 // payment status for imap configuration and subscription plans
@@ -86,14 +91,17 @@ model subscriptionPlanPaymentStatus {
     userSubscriptionPlanHistory userSubscriptionPlanHistory @relation(fields: [subscriptionPlanHistoryId], references: [id])
 
     // user subscription plan relation payment status
-    userSubscriptionPlanId String?               @unique
-    userSubscriptionPlan   userSubscriptionPlan? @relation(name: "PaymentStatusToSubscriptionPlan", fields: [userSubscriptionPlanId], references: [id])
+    userSubscriptionPlan userSubscriptionPlan? @relation(name: "PaymentStatusToSubscriptionPlan")
 
     totalAmount Float
 
-    paymentStatus String
+    paymentStatus PaymentStatus // e.g., 'PAID', 'PENDING', 'FAILED'
 
     createdAt DateTime @default(now())
+}
 
-    @@map("subscription_plan_payment_status")
+enum PaymentStatus {
+    PAID
+    PENDING
+    FAILED
 }

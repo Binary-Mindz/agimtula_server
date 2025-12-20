@@ -32,5 +32,9 @@ export const SwaggerSetting = (app: INestApplication) => {
       ),
     ]),
   );
-  SwaggerModule.setup('doc', app, document);
+  SwaggerModule.setup('doc', app, document, {
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+  });
 };

@@ -1,38 +1,65 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 // import { ImapFlow } from 'imapflow';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { CronJob } from 'cron';
-
-// interface EmailData {
-//   uid: number;
-//   subject?: string;
-//   from?: any;
-//   date?: Date;
-//   seen: boolean;
-// }
+import { CreateImapApiDto } from './dto/create-imap-api.dto';
+import { PrismaService } from 'src/config/database/prisma.service';
 
 @Injectable()
-export class ImapApisService {
+export class ImapApisService implements OnModuleInit, OnModuleDestroy {
   constructor(
     private schedulerRegistry: SchedulerRegistry,
-    // private prisma: PrismaService,       // Your DB service
+    private prisma: PrismaService, // Your DB service
   ) {}
 
-  // async onModuleInit() {
-  //   await this.loadCronJobsFromDB();
-  // }
+  async onModuleInit() {
+    // await this.loadCronJobsFromDB();
+    const imapUserActive = await this.prisma.user.findMany({
+      where: {
+        email: { isNot: null },
+        userSubscriptionPlan: {
+          subscriptionPlanPaymentStatus: {
+            paymentStatus: 'PAID',
+          },
+          expiredAt: { gt: new Date() },
+        },
+        imapConfigurations: {
+          connect: true, 
+          sync: true 
+        },
+      },
+      select: { imapConfigurations: true },
+    });
+    console.log(JSON.stringify(imapUserActive, null, 2));
+  }
 
-  loadCronJobsFromDB() {
+  async onModuleDestroy() {
+    // Clean up cron jobs
+    // const jobs = this.schedulerRegistry.getCronJobs();
+    // for (const jobName of jobs.keys()) {
+    //   const job = this.schedulerRegistry.getCronJob(jobName);
+    //   job.stop();
+    //   this.schedulerRegistry.deleteCronJob(jobName);
+    // }
+  }
+
+  getCronJobsKK() {
+    const jobs = this.schedulerRegistry.getCronJobs();
+    console.log(jobs);
+
+    return JSON.stringify([...jobs.keys()]);
+  }
+
+  loadCronJobsFromDB(data: CreateImapApiDto) {
     // const accounts = await this.prisma.emailAccount.findMany();
     // [{email:"user1@gmail.com", timeupdate:5}, ...]
 
-    const accounts: ({ email: string; timeupdate: number } | null)[] = [
-      { email: 'uforcode123@gmail.com', timeupdate: 5 },
-      null,
-    ];
+    // const accounts: ({ email: string; timeupdate: number } | null)[] = [
+    //   { email: 'uforcode123@gmail.com', timeupdate: 5 },
+    //   null,
+    // ];
 
-    if (accounts.length > 0 && accounts[0])
-      this.createCronForAccount(accounts[0].email, accounts[0].timeupdate);
+    if (data.email) this.createCronForAccount(data.email, 5);
 
     return 'Cron jobs loaded from DB';
   }
@@ -40,21 +67,12 @@ export class ImapApisService {
   createCronForAccount(email: string, minutes: number) {
     const jobName = `cron_${email}`;
     const cronTime = `*/5 * * * * *`; // Every 'minutes' minutes
-    const stopDateT = new Date();
-    const stopDate = new Date();
-    stopDate.setMinutes(stopDate.getMinutes() + 10); // Stop after 10 minutes
 
     this.stopCronForAccount(email); // Stop existing job if any
 
-    let count = 0
-
     const job = new CronJob(cronTime, () => {
       // this.runCronJob(email);
-      count += 1
       console.log(`Running cron job for ${email}`);
-      console.log(stopDateT);
-      console.log(stopDate);
-      console.log(count);
     });
 
     //, null, false, null, 'UTC', null, endDate

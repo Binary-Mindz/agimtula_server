@@ -7,109 +7,70 @@ import {
   MaxLength,
   Min,
 } from 'class-validator';
-import { Transform, Type } from 'class-transformer';
+import { Type } from 'class-transformer';
 
 export class InvoiceLayoutDto {
-  @ApiPropertyOptional({
-    description: 'Prefix for invoice numbers (e.g., INV-, FACT-)',
-    example: 'INV-',
-    maxLength: 10,
-  })
+  // Invoice numbering
+  @ApiPropertyOptional({ example: 'INV-' })
   @IsOptional()
   @IsString()
-  @MaxLength(10, { message: 'Invoice prefix cannot exceed 10 characters' })
+  @MaxLength(10)
   invoice_prefix?: string;
 
-  @ApiPropertyOptional({
-    description: 'Prefix for quote numbers (e.g., QUO-, EST-)',
-    example: 'QUO-',
-    maxLength: 10,
-  })
+  @ApiPropertyOptional({ example: 'Q-' })
   @IsOptional()
   @IsString()
   @MaxLength(10)
   quote_prefix?: string;
 
-  @ApiPropertyOptional({
-    description: 'Year format in invoice/quote numbers',
-    example: 'YY',
-    enum: ['YYYY', 'YY', null],
-    nullable: true,
-  })
+  @ApiPropertyOptional({ example: 'YYYY' })
   @IsOptional()
   @IsString()
   @MaxLength(4)
-  year_format?: string | null;
+  year_format?: string;
 
-  // Tax Settings
-
-  @ApiPropertyOptional({
-    description: 'Default VAT/TAX rate in percent (e.g., 21 for 21%)',
-    example: 21,
-    minimum: 0,
-    maximum: 100,
-  })
+  // Tax settings
+  @ApiPropertyOptional({ example: 15 })
   @IsOptional()
   @Type(() => Number)
-  @IsNumber({ maxDecimalPlaces: 4 })
+  @IsNumber()
   @Min(0)
-  default_vat_rate?: number | null;
+  default_vat_rate?: number;
 
-  @ApiPropertyOptional({
-    description: 'Show tax breakdown on invoices/quotes',
-    example: true,
-    default: false,
-  })
+  @ApiPropertyOptional({ example: true })
   @IsOptional()
-  @Transform(({ value }) => value === 'true' || value === true)
   @IsBoolean()
   tax_breakdown?: boolean;
 
-  @ApiPropertyOptional({
-    description: 'Prices on invoices include tax by default',
-    example: false,
-    default: false,
-  })
+  @ApiPropertyOptional({ example: false })
   @IsOptional()
-  @Transform(({ value }) => value === 'true' || value === true)
   @IsBoolean()
   prices_include_tax?: boolean;
 
-  // Invoice Template
-
-  @ApiPropertyOptional({
-    description: 'Custom title on invoices (e.g., Tax Invoice, Credit Note)',
-    example: 'Tax Invoice',
-  })
+  // Invoice template
+  @ApiPropertyOptional({ example: 'Tax Invoice' })
   @IsOptional()
   @IsString()
-  template_title?: string | null;
+  template_title?: string;
 
-  @ApiPropertyOptional({
-    description: 'Show company logo on invoices and quotes',
-    example: true,
-    default: false,
-  })
+  @ApiPropertyOptional({ example: 'Thank you for your business' })
   @IsOptional()
-  @Transform(({ value }) => value === 'true' || value === true)
+  @IsString()
+  footer_text?: string;
+
+  @ApiPropertyOptional({ example: true })
+  @IsOptional()
   @IsBoolean()
   show_company_logo?: boolean;
 
-  // Default Notes & Terms
-
-  @ApiPropertyOptional({
-    description: 'Default notes added to all invoices',
-    example: 'Payment due within 14 days. Thank you for your business!',
-  })
+  // Notes & terms
+  @ApiPropertyOptional({ example: 'Payment due within 14 days' })
   @IsOptional()
   @IsString()
-  invoice_notes?: string | null;
+  invoice_notes?: string;
 
-  @ApiPropertyOptional({
-    description: 'Default terms and conditions',
-    example: 'Goods remain property of seller until fully paid...',
-  })
+  @ApiPropertyOptional({ example: 'Goods remain property until fully paid' })
   @IsOptional()
   @IsString()
-  terms_and_conditions?: string | null;
+  terms_and_conditions?: string;
 }

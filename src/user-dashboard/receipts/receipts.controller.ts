@@ -1,7 +1,12 @@
 import {
   Body,
   Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
   Post,
+  Query,
   UploadedFile,
   UseInterceptors,
   UsePipes,
@@ -10,12 +15,40 @@ import {
 import { ReceiptsService } from './receipts.service';
 import { UploadReceiptDto } from './dto/upload-receipt.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiQuery } from '@nestjs/swagger';
 import { Roles } from 'src/auth/decorators/roles.decorator';
+import { User } from 'src/auth/decorators/user.decorator';
+import { jwtPayload } from 'src/auth/types/jwt-payload';
+import { UpdateReceiptDto } from './dto/update-receipt-dto';
 
 @Controller('receipts')
 export class ReceiptsController {
   constructor(private readonly receiptsService: ReceiptsService) {}
+
+  // Receipt Category
+
+  @Post('create-category')
+  @Roles('USER')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  @ApiBody({ schema: { properties: { name: { type: 'string' } } } })
+  async createReceiptCategory(@Body('name') name: string) {
+    return await this.receiptsService.createReceiptCategory(name);
+  }
+
+  @Get('categories')
+  @Roles('USER')
+  async getAllReceiptCategories() {
+    return await this.receiptsService.getAllReceiptCategories();
+  }
+
+  @Delete('delete-category/:id')
+  @Roles('USER')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async deleteCategory(@Param('id') id: string) {
+    return await this.receiptsService.deleteCategory(id);
+  }
+
+  // receipt info
 
   @Post('upload-receipt')
   @Roles('USER')
@@ -26,7 +59,50 @@ export class ReceiptsController {
   async uploadReceipt(
     @UploadedFile() receiptFile: Express.Multer.File,
     @Body() dto: UploadReceiptDto,
+    @User() user: jwtPayload,
   ) {
-    return await this.receiptsService.uploadReceipt(dto, receiptFile);
+    return await this.receiptsService.uploadReceipt(user.sub, dto, receiptFile);
+  }
+
+  @Get('data')
+  @Roles('USER')
+  @ApiQuery({ name: 'search', required: false, type: 'string' })
+  @ApiQuery({ name: 'filterCategory', required: false, type: 'string' })
+  async getReceiptsData(
+    @Query('search') search: string,
+    @Query('filterCategory') filterCategory: string,
+    @User() user: jwtPayload,
+  ) {
+    return await this.receiptsService.getReceiptsData(
+      user.sub,
+      search,
+      filterCategory,
+    );
+  }
+
+  @Patch('update-receipt')
+  @Roles('USER')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  @ApiBody({
+    schema: {
+      properties: {
+        id: { type: 'string' },
+        vendor: { type: 'string' },
+        amount: { type: 'number' },
+        date: { type: 'string' },
+        category: { type: 'string' },
+        notes: { type: 'string' },
+      },
+    },
+  })
+  async updateReceipt(@Body('id') id: string, @Body() dto: UpdateReceiptDto) {
+    return await this.receiptsService.updateReceiptsData(id, dto);
+  }
+
+  @Delete('delete-receipt')
+  @Roles('USER')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async deleteReceipt(@Param('id') id: string) {
+    return await this.receiptsService.deleteReceiptsData(id);
   }
 }

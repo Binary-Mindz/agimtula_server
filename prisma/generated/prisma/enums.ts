@@ -9,6 +9,24 @@
 * 🟢 You can import this file directly.
 */
 
+export const PaymentStatus = {
+  PAID: 'PAID',
+  PENDING: 'PENDING',
+  FAILED: 'FAILED'
+} as const
+
+export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
+
+
+export const TwoFAPurpose = {
+  LOGIN: 'LOGIN',
+  ENABLE_2FA: 'ENABLE_2FA',
+  DISABLE_2FA: 'DISABLE_2FA'
+} as const
+
+export type TwoFAPurpose = (typeof TwoFAPurpose)[keyof typeof TwoFAPurpose]
+
+
 export const BillingPeriod = {
   MONTHLY: 'MONTHLY',
   YEARLY: 'YEARLY'

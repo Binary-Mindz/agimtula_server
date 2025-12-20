@@ -27,6 +27,7 @@ export type AggregateBusinessInfo = {
 export type BusinessInfoMinAggregateOutputType = {
   id: string | null
   companyName: string | null
+  jobTitle: string | null
   vatNumber: string | null
   address1: string | null
   address2: string | null
@@ -41,6 +42,7 @@ export type BusinessInfoMinAggregateOutputType = {
 export type BusinessInfoMaxAggregateOutputType = {
   id: string | null
   companyName: string | null
+  jobTitle: string | null
   vatNumber: string | null
   address1: string | null
   address2: string | null
@@ -55,6 +57,7 @@ export type BusinessInfoMaxAggregateOutputType = {
 export type BusinessInfoCountAggregateOutputType = {
   id: number
   companyName: number
+  jobTitle: number
   vatNumber: number
   address1: number
   address2: number
@@ -71,6 +74,7 @@ export type BusinessInfoCountAggregateOutputType = {
 export type BusinessInfoMinAggregateInputType = {
   id?: true
   companyName?: true
+  jobTitle?: true
   vatNumber?: true
   address1?: true
   address2?: true
@@ -85,6 +89,7 @@ export type BusinessInfoMinAggregateInputType = {
 export type BusinessInfoMaxAggregateInputType = {
   id?: true
   companyName?: true
+  jobTitle?: true
   vatNumber?: true
   address1?: true
   address2?: true
@@ -99,6 +104,7 @@ export type BusinessInfoMaxAggregateInputType = {
 export type BusinessInfoCountAggregateInputType = {
   id?: true
   companyName?: true
+  jobTitle?: true
   vatNumber?: true
   address1?: true
   address2?: true
@@ -185,12 +191,13 @@ export type BusinessInfoGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
 
 export type BusinessInfoGroupByOutputType = {
   id: string
-  companyName: string
-  vatNumber: string
-  address1: string
+  companyName: string | null
+  jobTitle: string | null
+  vatNumber: string | null
+  address1: string | null
   address2: string | null
   address3: string | null
-  country: string
+  country: string | null
   website: string | null
   logo: string | null
   logoKey: string | null
@@ -220,12 +227,13 @@ export type BusinessInfoWhereInput = {
   OR?: Prisma.BusinessInfoWhereInput[]
   NOT?: Prisma.BusinessInfoWhereInput | Prisma.BusinessInfoWhereInput[]
   id?: Prisma.StringFilter<"BusinessInfo"> | string
-  companyName?: Prisma.StringFilter<"BusinessInfo"> | string
-  vatNumber?: Prisma.StringFilter<"BusinessInfo"> | string
-  address1?: Prisma.StringFilter<"BusinessInfo"> | string
+  companyName?: Prisma.StringNullableFilter<"BusinessInfo"> | string | null
+  jobTitle?: Prisma.StringNullableFilter<"BusinessInfo"> | string | null
+  vatNumber?: Prisma.StringNullableFilter<"BusinessInfo"> | string | null
+  address1?: Prisma.StringNullableFilter<"BusinessInfo"> | string | null
   address2?: Prisma.StringNullableFilter<"BusinessInfo"> | string | null
   address3?: Prisma.StringNullableFilter<"BusinessInfo"> | string | null
-  country?: Prisma.StringFilter<"BusinessInfo"> | string
+  country?: Prisma.StringNullableFilter<"BusinessInfo"> | string | null
   website?: Prisma.StringNullableFilter<"BusinessInfo"> | string | null
   logo?: Prisma.StringNullableFilter<"BusinessInfo"> | string | null
   logoKey?: Prisma.StringNullableFilter<"BusinessInfo"> | string | null
@@ -235,12 +243,13 @@ export type BusinessInfoWhereInput = {
 
 export type BusinessInfoOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  companyName?: Prisma.SortOrder
-  vatNumber?: Prisma.SortOrder
-  address1?: Prisma.SortOrder
+  companyName?: Prisma.SortOrderInput | Prisma.SortOrder
+  jobTitle?: Prisma.SortOrderInput | Prisma.SortOrder
+  vatNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  address1?: Prisma.SortOrderInput | Prisma.SortOrder
   address2?: Prisma.SortOrderInput | Prisma.SortOrder
   address3?: Prisma.SortOrderInput | Prisma.SortOrder
-  country?: Prisma.SortOrder
+  country?: Prisma.SortOrderInput | Prisma.SortOrder
   website?: Prisma.SortOrderInput | Prisma.SortOrder
   logo?: Prisma.SortOrderInput | Prisma.SortOrder
   logoKey?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -254,12 +263,13 @@ export type BusinessInfoWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.BusinessInfoWhereInput | Prisma.BusinessInfoWhereInput[]
   OR?: Prisma.BusinessInfoWhereInput[]
   NOT?: Prisma.BusinessInfoWhereInput | Prisma.BusinessInfoWhereInput[]
-  companyName?: Prisma.StringFilter<"BusinessInfo"> | string
-  vatNumber?: Prisma.StringFilter<"BusinessInfo"> | string
-  address1?: Prisma.StringFilter<"BusinessInfo"> | string
+  companyName?: Prisma.StringNullableFilter<"BusinessInfo"> | string | null
+  jobTitle?: Prisma.StringNullableFilter<"BusinessInfo"> | string | null
+  vatNumber?: Prisma.StringNullableFilter<"BusinessInfo"> | string | null
+  address1?: Prisma.StringNullableFilter<"BusinessInfo"> | string | null
   address2?: Prisma.StringNullableFilter<"BusinessInfo"> | string | null
   address3?: Prisma.StringNullableFilter<"BusinessInfo"> | string | null
-  country?: Prisma.StringFilter<"BusinessInfo"> | string
+  country?: Prisma.StringNullableFilter<"BusinessInfo"> | string | null
   website?: Prisma.StringNullableFilter<"BusinessInfo"> | string | null
   logo?: Prisma.StringNullableFilter<"BusinessInfo"> | string | null
   logoKey?: Prisma.StringNullableFilter<"BusinessInfo"> | string | null
@@ -268,12 +278,13 @@ export type BusinessInfoWhereUniqueInput = Prisma.AtLeast<{
 
 export type BusinessInfoOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  companyName?: Prisma.SortOrder
-  vatNumber?: Prisma.SortOrder
-  address1?: Prisma.SortOrder
+  companyName?: Prisma.SortOrderInput | Prisma.SortOrder
+  jobTitle?: Prisma.SortOrderInput | Prisma.SortOrder
+  vatNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  address1?: Prisma.SortOrderInput | Prisma.SortOrder
   address2?: Prisma.SortOrderInput | Prisma.SortOrder
   address3?: Prisma.SortOrderInput | Prisma.SortOrder
-  country?: Prisma.SortOrder
+  country?: Prisma.SortOrderInput | Prisma.SortOrder
   website?: Prisma.SortOrderInput | Prisma.SortOrder
   logo?: Prisma.SortOrderInput | Prisma.SortOrder
   logoKey?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -288,12 +299,13 @@ export type BusinessInfoScalarWhereWithAggregatesInput = {
   OR?: Prisma.BusinessInfoScalarWhereWithAggregatesInput[]
   NOT?: Prisma.BusinessInfoScalarWhereWithAggregatesInput | Prisma.BusinessInfoScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"BusinessInfo"> | string
-  companyName?: Prisma.StringWithAggregatesFilter<"BusinessInfo"> | string
-  vatNumber?: Prisma.StringWithAggregatesFilter<"BusinessInfo"> | string
-  address1?: Prisma.StringWithAggregatesFilter<"BusinessInfo"> | string
+  companyName?: Prisma.StringNullableWithAggregatesFilter<"BusinessInfo"> | string | null
+  jobTitle?: Prisma.StringNullableWithAggregatesFilter<"BusinessInfo"> | string | null
+  vatNumber?: Prisma.StringNullableWithAggregatesFilter<"BusinessInfo"> | string | null
+  address1?: Prisma.StringNullableWithAggregatesFilter<"BusinessInfo"> | string | null
   address2?: Prisma.StringNullableWithAggregatesFilter<"BusinessInfo"> | string | null
   address3?: Prisma.StringNullableWithAggregatesFilter<"BusinessInfo"> | string | null
-  country?: Prisma.StringWithAggregatesFilter<"BusinessInfo"> | string
+  country?: Prisma.StringNullableWithAggregatesFilter<"BusinessInfo"> | string | null
   website?: Prisma.StringNullableWithAggregatesFilter<"BusinessInfo"> | string | null
   logo?: Prisma.StringNullableWithAggregatesFilter<"BusinessInfo"> | string | null
   logoKey?: Prisma.StringNullableWithAggregatesFilter<"BusinessInfo"> | string | null
@@ -302,12 +314,13 @@ export type BusinessInfoScalarWhereWithAggregatesInput = {
 
 export type BusinessInfoCreateInput = {
   id?: string
-  companyName: string
-  vatNumber: string
-  address1: string
+  companyName?: string | null
+  jobTitle?: string | null
+  vatNumber?: string | null
+  address1?: string | null
   address2?: string | null
   address3?: string | null
-  country: string
+  country?: string | null
   website?: string | null
   logo?: string | null
   logoKey?: string | null
@@ -316,12 +329,13 @@ export type BusinessInfoCreateInput = {
 
 export type BusinessInfoUncheckedCreateInput = {
   id?: string
-  companyName: string
-  vatNumber: string
-  address1: string
+  companyName?: string | null
+  jobTitle?: string | null
+  vatNumber?: string | null
+  address1?: string | null
   address2?: string | null
   address3?: string | null
-  country: string
+  country?: string | null
   website?: string | null
   logo?: string | null
   logoKey?: string | null
@@ -330,12 +344,13 @@ export type BusinessInfoUncheckedCreateInput = {
 
 export type BusinessInfoUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  companyName?: Prisma.StringFieldUpdateOperationsInput | string
-  vatNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  address1?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address3?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -344,12 +359,13 @@ export type BusinessInfoUpdateInput = {
 
 export type BusinessInfoUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  companyName?: Prisma.StringFieldUpdateOperationsInput | string
-  vatNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  address1?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address3?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -358,12 +374,13 @@ export type BusinessInfoUncheckedUpdateInput = {
 
 export type BusinessInfoCreateManyInput = {
   id?: string
-  companyName: string
-  vatNumber: string
-  address1: string
+  companyName?: string | null
+  jobTitle?: string | null
+  vatNumber?: string | null
+  address1?: string | null
   address2?: string | null
   address3?: string | null
-  country: string
+  country?: string | null
   website?: string | null
   logo?: string | null
   logoKey?: string | null
@@ -372,12 +389,13 @@ export type BusinessInfoCreateManyInput = {
 
 export type BusinessInfoUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  companyName?: Prisma.StringFieldUpdateOperationsInput | string
-  vatNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  address1?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address3?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -385,12 +403,13 @@ export type BusinessInfoUpdateManyMutationInput = {
 
 export type BusinessInfoUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  companyName?: Prisma.StringFieldUpdateOperationsInput | string
-  vatNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  address1?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address3?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -400,6 +419,7 @@ export type BusinessInfoUncheckedUpdateManyInput = {
 export type BusinessInfoCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   companyName?: Prisma.SortOrder
+  jobTitle?: Prisma.SortOrder
   vatNumber?: Prisma.SortOrder
   address1?: Prisma.SortOrder
   address2?: Prisma.SortOrder
@@ -414,6 +434,7 @@ export type BusinessInfoCountOrderByAggregateInput = {
 export type BusinessInfoMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   companyName?: Prisma.SortOrder
+  jobTitle?: Prisma.SortOrder
   vatNumber?: Prisma.SortOrder
   address1?: Prisma.SortOrder
   address2?: Prisma.SortOrder
@@ -428,6 +449,7 @@ export type BusinessInfoMaxOrderByAggregateInput = {
 export type BusinessInfoMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   companyName?: Prisma.SortOrder
+  jobTitle?: Prisma.SortOrder
   vatNumber?: Prisma.SortOrder
   address1?: Prisma.SortOrder
   address2?: Prisma.SortOrder
@@ -478,12 +500,13 @@ export type BusinessInfoUncheckedUpdateOneWithoutUserNestedInput = {
 
 export type BusinessInfoCreateWithoutUserInput = {
   id?: string
-  companyName: string
-  vatNumber: string
-  address1: string
+  companyName?: string | null
+  jobTitle?: string | null
+  vatNumber?: string | null
+  address1?: string | null
   address2?: string | null
   address3?: string | null
-  country: string
+  country?: string | null
   website?: string | null
   logo?: string | null
   logoKey?: string | null
@@ -491,12 +514,13 @@ export type BusinessInfoCreateWithoutUserInput = {
 
 export type BusinessInfoUncheckedCreateWithoutUserInput = {
   id?: string
-  companyName: string
-  vatNumber: string
-  address1: string
+  companyName?: string | null
+  jobTitle?: string | null
+  vatNumber?: string | null
+  address1?: string | null
   address2?: string | null
   address3?: string | null
-  country: string
+  country?: string | null
   website?: string | null
   logo?: string | null
   logoKey?: string | null
@@ -520,12 +544,13 @@ export type BusinessInfoUpdateToOneWithWhereWithoutUserInput = {
 
 export type BusinessInfoUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  companyName?: Prisma.StringFieldUpdateOperationsInput | string
-  vatNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  address1?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address3?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -533,12 +558,13 @@ export type BusinessInfoUpdateWithoutUserInput = {
 
 export type BusinessInfoUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  companyName?: Prisma.StringFieldUpdateOperationsInput | string
-  vatNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  address1?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address3?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -549,6 +575,7 @@ export type BusinessInfoUncheckedUpdateWithoutUserInput = {
 export type BusinessInfoSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   companyName?: boolean
+  jobTitle?: boolean
   vatNumber?: boolean
   address1?: boolean
   address2?: boolean
@@ -564,6 +591,7 @@ export type BusinessInfoSelect<ExtArgs extends runtime.Types.Extensions.Internal
 export type BusinessInfoSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   companyName?: boolean
+  jobTitle?: boolean
   vatNumber?: boolean
   address1?: boolean
   address2?: boolean
@@ -579,6 +607,7 @@ export type BusinessInfoSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
 export type BusinessInfoSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   companyName?: boolean
+  jobTitle?: boolean
   vatNumber?: boolean
   address1?: boolean
   address2?: boolean
@@ -594,6 +623,7 @@ export type BusinessInfoSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
 export type BusinessInfoSelectScalar = {
   id?: boolean
   companyName?: boolean
+  jobTitle?: boolean
   vatNumber?: boolean
   address1?: boolean
   address2?: boolean
@@ -605,7 +635,7 @@ export type BusinessInfoSelectScalar = {
   userId?: boolean
 }
 
-export type BusinessInfoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "companyName" | "vatNumber" | "address1" | "address2" | "address3" | "country" | "website" | "logo" | "logoKey" | "userId", ExtArgs["result"]["businessInfo"]>
+export type BusinessInfoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "companyName" | "jobTitle" | "vatNumber" | "address1" | "address2" | "address3" | "country" | "website" | "logo" | "logoKey" | "userId", ExtArgs["result"]["businessInfo"]>
 export type BusinessInfoInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -623,12 +653,13 @@ export type $BusinessInfoPayload<ExtArgs extends runtime.Types.Extensions.Intern
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    companyName: string
-    vatNumber: string
-    address1: string
+    companyName: string | null
+    jobTitle: string | null
+    vatNumber: string | null
+    address1: string | null
     address2: string | null
     address3: string | null
-    country: string
+    country: string | null
     website: string | null
     logo: string | null
     logoKey: string | null
@@ -1059,6 +1090,7 @@ export interface Prisma__BusinessInfoClient<T, Null = never, ExtArgs extends run
 export interface BusinessInfoFieldRefs {
   readonly id: Prisma.FieldRef<"BusinessInfo", 'String'>
   readonly companyName: Prisma.FieldRef<"BusinessInfo", 'String'>
+  readonly jobTitle: Prisma.FieldRef<"BusinessInfo", 'String'>
   readonly vatNumber: Prisma.FieldRef<"BusinessInfo", 'String'>
   readonly address1: Prisma.FieldRef<"BusinessInfo", 'String'>
   readonly address2: Prisma.FieldRef<"BusinessInfo", 'String'>

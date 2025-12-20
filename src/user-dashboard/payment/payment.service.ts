@@ -49,6 +49,7 @@ export class PaymentService {
     const createPayment = await this.prisma.userSubscriptionPlanHistory.create({
       data: {
         UserId: userId,
+        planName: getSubscriptionPlanData.planName,
         isLimitedInvoicePerMonth: pricing.isLimitedInvoicePerMonth ?? false,
         perMonthInvoiceCount: pricing.perMonthInvoiceCount ?? 0,
         realtimeImapChecking: pricing.invoiceAutoSyncIntervalIds,
@@ -74,6 +75,7 @@ export class PaymentService {
       await this.prisma.userSubscriptionPlan.create({
         data: {
           UserId: userId,
+          planName: getSubscriptionPlanData.planName,
           isLimitedInvoicePerMonth: pricing.isLimitedInvoicePerMonth,
           perMonthInvoiceCount: pricing.perMonthInvoiceCount,
           price: pricing.price,

@@ -10,7 +10,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
   constructor(
     private schedulerRegistry: SchedulerRegistry,
     private prisma: PrismaService, // Your DB service
-  ) {}
+  ) { }
 
   async onModuleInit() {
     // await this.loadCronJobsFromDB();
@@ -24,8 +24,8 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
           expiredAt: { gt: new Date() },
         },
         imapConfigurations: {
-          connect: true, 
-          sync: true 
+          connect: true,
+          sync: true
         },
       },
       select: { imapConfigurations: true },

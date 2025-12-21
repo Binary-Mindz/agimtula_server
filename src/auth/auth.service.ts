@@ -3,7 +3,6 @@ import {
   ConflictException,
   ForbiddenException,
   Injectable,
-  Logger,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -20,6 +19,14 @@ import { deleteFromCloudinary } from 'src/config/cloudinary/deleteImage';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { VerifyTwoFADto } from './dto/two-fa.dto';
 import { cResponseData } from 'src/common/cResponse';
+import { RedisServiceService } from 'src/config/redis-service/redis-service.service';
+
+interface Login2FAPayload {
+  userId: string;
+  code: number;
+  attempts: number;
+  createdAt: number;
+}
 
 @Injectable()
 export class AuthService {
@@ -27,9 +34,21 @@ export class AuthService {
     private prisma: PrismaService,
     private jwt: JwtService,
     private mail: SmtpMailService,
+    private redis: RedisServiceService,
   ) {}
 
-  private readonly logger = new Logger(AuthService.name);
+  private async setRedisValue<T>(key: string, value: T, ttl: number) {
+    await this.redis.set(key, JSON.stringify(value), 'EX', ttl);
+  }
+
+  private async getRedisValue<T>(key: string): Promise<T | null> {
+    const data = await this.redis.get(key);
+    return data ? (JSON.parse(data) as T) : null;
+  }
+
+  private generateCode(): number {
+    return Math.floor(100000 + Math.random() * 900000);
+  }
 
   async generateAccessToken(jwtPayload: jwtPayload) {
     return this.jwt.signAsync(
@@ -90,15 +109,8 @@ export class AuthService {
 
   async login(loginDto: LoginDto) {
     const user = await this.prisma.user.findFirst({
-      where: {
-        email: {
-          email: loginDto.email,
-        },
-      },
-      include: {
-        email: true,
-        profile: true,
-      },
+      where: { email: { email: loginDto.email } },
+      include: { email: true, profile: true },
     });
 
     if (!user) {
@@ -118,43 +130,31 @@ export class AuthService {
       throw new UnauthorizedException('User not valid');
     }
 
-    const is2FAEnabled = user.twoFactorEnabled;
+    // 2FA LOGIN FLOW
+    if (user.twoFactorEnabled) {
+      const redisKey = `2fa:login:${user.email.email}`;
 
-    if (is2FAEnabled) {
-      const existing = await this.prisma.twoFA.findFirst({
-        where: { email: user.email.email },
-      });
+      let payload = await this.getRedisValue<Login2FAPayload>(redisKey);
 
-      let code: number | string;
-      if (existing) {
-        const diffMinutes =
-          (Date.now() - new Date(existing.createdAt).getTime()) / 60000;
+      if (!payload) {
+        payload = {
+          userId: user.id,
+          code: this.generateCode(),
+          attempts: 0,
+          createdAt: Date.now(),
+        };
 
-        if (diffMinutes < 5) {
-          code = existing.code;
-        } else {
-          await this.prisma.twoFA.delete({ where: { id: existing.id } });
-          code = Math.floor(100000 + Math.random() * 900000);
-          await this.prisma.twoFA.create({
-            data: { email: user.email.email, code, purpose: 'LOGIN' },
-          });
-        }
-      } else {
-        code = Math.floor(100000 + Math.random() * 900000);
-        await this.prisma.twoFA.create({
-          data: { email: user.email.email, code, purpose: 'LOGIN' },
-        });
+        await this.setRedisValue(redisKey, payload, 300);
       }
 
       await this.mail.sendMail(
         user.email.email,
         'Your 2FA Verification Code',
         `
-        <h3>Enable Two-Factor Authentication</h3>
+        <h3>Login Verification</h3>
         <p>Your 6-digit verification code:</p>
-        <h2 style="letter-spacing: 4px;">${code}</h2>
+        <h2>${payload.code}</h2>
         <p>This code expires in 5 minutes.</p>
-        <p>If you didn't request this, you can safely ignore this email.</p>
       `,
       );
 
@@ -162,11 +162,12 @@ export class AuthService {
         message: 'Verify your 2FA code to complete login',
         data: {
           twoFactorEnabled: true,
-          userId: user.id,
+          email: user.email.email,
         },
       });
     }
 
+    // NORMAL LOGIN
     const accessToken = await this.generateAccessToken({
       sub: user.id,
       email: user.email.email,
@@ -184,36 +185,38 @@ export class AuthService {
       },
     });
   }
-
   async verifyLogin2FA(dto: VerifyTwoFADto) {
     const { email, code } = dto;
 
-    const record = await this.prisma.twoFA.findFirst({
-      where: { email, purpose: 'LOGIN' },
-    });
+    const redisKey = `2fa:login:${email}`;
+    const payload = await this.getRedisValue<Login2FAPayload>(redisKey);
 
-    if (!record || record.code !== code) {
-      throw new ForbiddenException('Invalid or expired OTP');
+    if (!payload) {
+      throw new ForbiddenException('OTP expired or invalid');
     }
 
-    const isExpired = Date.now() - record.createdAt.getTime() > 5 * 60 * 1000;
-    if (isExpired) {
-      await this.prisma.twoFA.delete({ where: { id: record.id } });
-      throw new ForbiddenException('OTP has expired');
+    if (payload.attempts >= 5) {
+      await this.redis.del(redisKey);
+      throw new ForbiddenException('Maximum attempts exceeded');
     }
 
-    await this.prisma.twoFA.delete({ where: { id: record.id } });
+    if (payload.code !== code) {
+      payload.attempts += 1;
+      await this.setRedisValue(redisKey, payload, 300);
+      throw new ForbiddenException('Invalid OTP');
+    }
+
+    await this.redis.del(redisKey);
 
     const user = await this.prisma.user.findFirst({
-      where: { email: { email } },
+      where: { id: payload.userId },
       include: { email: true, profile: true },
     });
 
-    if (!user) throw new UnauthorizedException('User not found');
-
-    if (!user.email) {
-      throw new UnauthorizedException('User email not found');
+    if (!user || !user.email) {
+      throw new UnauthorizedException('User not found');
     }
+
     const accessToken = await this.generateAccessToken({
       sub: user.id,
       email: user.email.email,

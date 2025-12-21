@@ -345,6 +345,11 @@ export type subscriptionPlanPaymentStatusUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type SubscriptionPlanPaymentStatusScalarRelationFilter = {
+  is?: Prisma.subscriptionPlanPaymentStatusWhereInput
+  isNot?: Prisma.subscriptionPlanPaymentStatusWhereInput
+}
+
 export type SubscriptionPlanPaymentStatusNullableScalarRelationFilter = {
   is?: Prisma.subscriptionPlanPaymentStatusWhereInput | null
   isNot?: Prisma.subscriptionPlanPaymentStatusWhereInput | null
@@ -391,12 +396,10 @@ export type subscriptionPlanPaymentStatusCreateNestedOneWithoutUserSubscriptionP
   connect?: Prisma.subscriptionPlanPaymentStatusWhereUniqueInput
 }
 
-export type subscriptionPlanPaymentStatusUpdateOneWithoutUserSubscriptionPlanNestedInput = {
+export type subscriptionPlanPaymentStatusUpdateOneRequiredWithoutUserSubscriptionPlanNestedInput = {
   create?: Prisma.XOR<Prisma.subscriptionPlanPaymentStatusCreateWithoutUserSubscriptionPlanInput, Prisma.subscriptionPlanPaymentStatusUncheckedCreateWithoutUserSubscriptionPlanInput>
   connectOrCreate?: Prisma.subscriptionPlanPaymentStatusCreateOrConnectWithoutUserSubscriptionPlanInput
   upsert?: Prisma.subscriptionPlanPaymentStatusUpsertWithoutUserSubscriptionPlanInput
-  disconnect?: Prisma.subscriptionPlanPaymentStatusWhereInput | boolean
-  delete?: Prisma.subscriptionPlanPaymentStatusWhereInput | boolean
   connect?: Prisma.subscriptionPlanPaymentStatusWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.subscriptionPlanPaymentStatusUpdateToOneWithWhereWithoutUserSubscriptionPlanInput, Prisma.subscriptionPlanPaymentStatusUpdateWithoutUserSubscriptionPlanInput>, Prisma.subscriptionPlanPaymentStatusUncheckedUpdateWithoutUserSubscriptionPlanInput>
 }

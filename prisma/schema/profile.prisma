@@ -5,11 +5,20 @@ model Profile {
   profilePicture    String?
   profilePictureKey String?
   phone             String?
-
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId            String  @unique
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("profile")
+}
+
+model ForgetPass {
+  id         String   @id @default(ulid())
+  email      String   @unique
+  code       Int
+  isVerified Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  @@map("forgetPass")
 }
 
 model TwoFA {
@@ -24,12 +33,6 @@ model TwoFA {
   @@map("twoFA")
 }
 
-enum TwoFAPurpose {
-  LOGIN
-  ENABLE_2FA
-  DISABLE_2FA
-}
-
 model Language {
   id        String  @id @default(uuid())
   language  String
@@ -38,4 +41,10 @@ model Language {
   user      User    @relation(fields: [userId], references: [id])
 
   @@map("language")
+}
+
+enum TwoFAPurpose {
+  LOGIN
+  ENABLE_2FA
+  DISABLE_2FA
 }

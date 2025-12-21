@@ -27,7 +27,7 @@ export class AuthService {
     private prisma: PrismaService,
     private jwt: JwtService,
     private mail: SmtpMailService,
-  ) {}
+  ) { }
 
   private readonly logger = new Logger(AuthService.name);
 

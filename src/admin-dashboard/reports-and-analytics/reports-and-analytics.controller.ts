@@ -2,7 +2,7 @@ import { Controller, Get } from '@nestjs/common';
 import { ReportsAndAnalyticsService } from './reports-and-analytics.service';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 
-@Controller('reports-and-analytics')
+@Controller('admin/reports-and-analytics')
 export class ReportsAndAnalyticsController {
   constructor(
     private readonly reportsAndAnalyticsService: ReportsAndAnalyticsService,

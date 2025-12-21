@@ -3,13 +3,42 @@ import { PrismaService } from 'src/config/database/prisma.service';
 import { SmtpMailService } from 'src/config/smtp-mail/smtp-mail.service';
 import { EnableTwoFADto, VerifyTwoFADto } from './dto/two-fa.dto';
 import { cResponseData } from 'src/common/cResponse';
+import { RedisServiceService } from 'src/config/redis-service/redis-service.service';
+
+interface TwoFARedisPayload {
+  code: number;
+  attempts: number;
+  createdAt: number;
+}
 
 @Injectable()
 export class TwoFAService {
   constructor(
-    private prisma: PrismaService,
-    private mail: SmtpMailService,
+    private readonly prisma: PrismaService,
+    private readonly mail: SmtpMailService,
+    private readonly redis: RedisServiceService,
   ) {}
+
+
+  private readonly TTL = 300; 
+  private readonly MAX_ATTEMPTS = 5;
+
+  private async setRedisValue<T>(key: string, value: T, ttl: number) {
+    await this.redis.set(key, JSON.stringify(value), 'EX', ttl);
+  }
+
+  private async getRedisValue<T>(key: string): Promise<T | null> {
+    const data = await this.redis.get(key);
+    return data ? (JSON.parse(data) as T) : null;
+  }
+
+  private generateCode(): number {
+    return Math.floor(100000 + Math.random() * 900000);
+  }
+
+  private getRedisKey(email: string, type: 'ENABLE' | 'DISABLE'): string {
+    return `2fa:${type.toLowerCase()}:${email}`;
+  }
 
   private async getUserOrFail(userId: string, email: string) {
     const user = await this.prisma.user.findFirst({
@@ -28,171 +57,132 @@ export class TwoFAService {
 
   async sendTwoFACode(userId: string, dto: EnableTwoFADto) {
     const { email } = dto;
-
     const user = await this.getUserOrFail(userId, email);
 
     if (user.twoFactorEnabled) {
       throw new ForbiddenException('2FA is already enabled');
     }
 
-    const existing = await this.prisma.twoFA.findFirst({
-      where: { email },
-    });
+    const redisKey = this.getRedisKey(email, 'ENABLE');
+    let payload = await this.getRedisValue<TwoFARedisPayload>(redisKey);
 
-    let code: number;
+    if (!payload) {
+      payload = {
+        code: this.generateCode(),
+        attempts: 0,
+        createdAt: Date.now(),
+      };
 
-    if (existing) {
-      const diffMinutes =
-        (Date.now() - new Date(existing.createdAt).getTime()) / 60000;
-
-      if (diffMinutes < 5) {
-        code = existing.code;
-      } else {
-        await this.prisma.twoFA.delete({ where: { id: existing.id } });
-        code = Math.floor(100000 + Math.random() * 900000);
-        await this.prisma.twoFA.create({
-          data: { email, code, purpose: 'ENABLE_2FA' },
-        });
-      }
-    } else {
-      code = Math.floor(100000 + Math.random() * 900000);
-      await this.prisma.twoFA.create({
-        data: { email, code, purpose: 'ENABLE_2FA' },
-      });
+      await this.setRedisValue(redisKey, payload, this.TTL);
     }
 
     await this.mail.sendMail(
       email,
-      'Your 2FA Verification Code',
+      'Enable Two-Factor Authentication',
       `
         <h3>Enable Two-Factor Authentication</h3>
-        <p>Your 6-digit verification code:</p>
-        <h2 style="letter-spacing: 4px;">${code}</h2>
+        <p>Your verification code:</p>
+        <h2>${payload.code}</h2>
         <p>This code expires in 5 minutes.</p>
-        <p>If you didn't request this, you can safely ignore this email.</p>
       `,
     );
 
     return cResponseData({
-      message: '2FA code sent successfully to your email',
+      message: '2FA code sent successfully',
     });
   }
 
   async verifyAndEnableTwoFA(userId: string, dto: VerifyTwoFADto) {
     const { email, code } = dto;
-
     await this.getUserOrFail(userId, email);
 
-    const record = await this.prisma.twoFA.findFirst({
-      where: { email, purpose: 'ENABLE_2FA' },
-    });
+    const redisKey = this.getRedisKey(email, 'ENABLE');
+    const payload = await this.getRedisValue<TwoFARedisPayload>(redisKey);
 
-    if (!record || record.code !== code) {
-      if (record) {
-        await this.prisma.twoFA.update({
-          where: { id: record.id },
-          data: { attempts: { increment: 1 } },
-        });
-      }
-      throw new ForbiddenException('Invalid verification code');
-    }
-
-    if (record.attempts >= 5) {
-      throw new ForbiddenException('Maximum attempts exceeded');
-    }
-
-    if (Date.now() - record.createdAt.getTime() > 5 * 60 * 1000) {
-      await this.prisma.twoFA.delete({ where: { id: record.id } });
+    if (!payload) {
       throw new ForbiddenException('Verification code expired');
     }
 
-    await this.prisma.$transaction([
-      this.prisma.user.update({
-        where: { id: userId },
-        data: { twoFactorEnabled: true },
-      }),
-      this.prisma.twoFA.deleteMany({ where: { email } }),
-    ]);
+    if (payload.attempts >= this.MAX_ATTEMPTS) {
+      await this.redis.del(redisKey);
+      throw new ForbiddenException('Maximum attempts exceeded');
+    }
 
-    return cResponseData({ message: '2FA enabled successfully' });
+    if (payload.code !== code) {
+      payload.attempts += 1;
+      await this.setRedisValue(redisKey, payload, this.TTL);
+      throw new ForbiddenException('Invalid verification code');
+    }
+
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: { twoFactorEnabled: true },
+    });
+
+    await this.redis.del(redisKey);
+
+    return cResponseData({
+      message: '2FA enabled successfully',
+    });
   }
 
   async sendDisableTwoFACode(userId: string, dto: EnableTwoFADto) {
     const { email } = dto;
-
     const user = await this.getUserOrFail(userId, email);
 
     if (!user.twoFactorEnabled) {
       throw new ForbiddenException('2FA is not enabled');
     }
 
-    const existing = await this.prisma.twoFA.findFirst({
-      where: { email },
-    });
+    const redisKey = this.getRedisKey(email, 'DISABLE');
+    let payload = await this.getRedisValue<TwoFARedisPayload>(redisKey);
 
-    let code: number;
+    if (!payload) {
+      payload = {
+        code: this.generateCode(),
+        attempts: 0,
+        createdAt: Date.now(),
+      };
 
-    if (existing) {
-      const diffMinutes =
-        (Date.now() - new Date(existing.createdAt).getTime()) / (1000 * 60);
-
-      if (diffMinutes < 5) {
-        code = existing.code;
-      } else {
-        await this.prisma.twoFA.delete({ where: { id: existing.id } });
-        code = Math.floor(100000 + Math.random() * 900000);
-        await this.prisma.twoFA.create({
-          data: { email, code, purpose: 'DISABLE_2FA' },
-        });
-      }
-    } else {
-      code = Math.floor(100000 + Math.random() * 900000);
-      await this.prisma.twoFA.create({
-        data: { email, code, purpose: 'DISABLE_2FA' },
-      });
+      await this.setRedisValue(redisKey, payload, this.TTL);
     }
 
     await this.mail.sendMail(
       email,
       'Disable Two-Factor Authentication',
       `
-      <h3>Disable Two-Factor Authentication</h3>
-      <p>Your verification code:</p>
-      <h2 style="letter-spacing: 4px;">${code}</h2>
-      <p>This code expires in 5 minutes.</p>
-      <p>If you didn’t request this, ignore this email.</p>
-    `,
+        <h3>Disable Two-Factor Authentication</h3>
+        <p>Your verification code:</p>
+        <h2>${payload.code}</h2>
+        <p>This code expires in 5 minutes.</p>
+      `,
     );
 
-    return cResponseData({ message: 'Disable 2FA code sent to your email' });
+    return cResponseData({
+      message: 'Disable 2FA code sent successfully',
+    });
   }
 
   async verifyAndDisableTwoFA(userId: string, dto: VerifyTwoFADto) {
     const { email, code } = dto;
-
     await this.getUserOrFail(userId, email);
 
-    const record = await this.prisma.twoFA.findFirst({
-      where: { email, purpose: 'DISABLE_2FA' },
+    const redisKey = this.getRedisKey(email, 'DISABLE');
+    const payload = await this.getRedisValue<TwoFARedisPayload>(redisKey);
+
+    if (!payload || payload.code !== code) {
+      throw new ForbiddenException('Invalid or expired verification code');
+    }
+
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: { twoFactorEnabled: false },
     });
 
-    if (!record || record.code !== code) {
-      throw new ForbiddenException('Invalid verification code');
-    }
+    await this.redis.del(redisKey);
 
-    if (Date.now() - record.createdAt.getTime() > 5 * 60 * 1000) {
-      await this.prisma.twoFA.delete({ where: { id: record.id } });
-      throw new ForbiddenException('Verification code expired');
-    }
-
-    await this.prisma.$transaction([
-      this.prisma.user.update({
-        where: { id: userId },
-        data: { twoFactorEnabled: false },
-      }),
-      this.prisma.twoFA.deleteMany({ where: { email } }),
-    ]);
-
-    return cResponseData({ message: '2FA disabled successfully' });
+    return cResponseData({
+      message: '2FA disabled successfully',
+    });
   }
 }

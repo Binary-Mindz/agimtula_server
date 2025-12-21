@@ -1,13 +1,12 @@
-import { Controller, Get, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { ReportsAndAnalyticsService } from './reports-and-analytics.service';
-import { UpdateReportsAndAnalyticDto } from './dto/update-reports-and-analytic.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 
 @Controller('reports-and-analytics')
 export class ReportsAndAnalyticsController {
-  constructor(private readonly reportsAndAnalyticsService: ReportsAndAnalyticsService) { }
-
-
+  constructor(
+    private readonly reportsAndAnalyticsService: ReportsAndAnalyticsService,
+  ) {}
 
   @Get('user-activity')
   @Roles('ADMIN')

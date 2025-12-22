@@ -15,7 +15,7 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 import { User } from 'src/auth/decorators/user.decorator';
 import { ApiParam } from '@nestjs/swagger';
-import { urlPrefix } from '../uel-prefix';
+import { urlPrefix } from '../url-prefix';
 
 @Controller(`${urlPrefix}mileage`)
 export class UserMileageController {

@@ -25,7 +25,7 @@ import { PaymentMethodService } from './paymentMethod.service';
 import { InvoiceLayoutService } from './invoice-layout.service';
 import { NotificationsService } from './notifications.service';
 import { UpdateNotificationSettingsDto } from './dto/update-notification-settings.dto';
-import { urlPrefix } from '../uel-prefix';
+import { urlPrefix } from '../url-prefix';
 
 @Controller(`${urlPrefix}/settings`)
 export class UserSettingsController {

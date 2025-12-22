@@ -14,7 +14,7 @@ import { User } from 'src/auth/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { ApiBody } from '@nestjs/swagger';
-import { urlPrefix } from '../uel-prefix';
+import { urlPrefix } from '../url-prefix';
 
 @Controller(`${urlPrefix}/payment`)
 export class UserPaymentController {

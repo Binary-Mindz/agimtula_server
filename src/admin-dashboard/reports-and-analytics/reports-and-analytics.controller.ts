@@ -1,9 +1,10 @@
 import { Controller, Get } from '@nestjs/common';
 import { ReportsAndAnalyticsService } from './reports-and-analytics.service';
 import { Roles } from 'src/auth/decorators/roles.decorator';
+import { urlPrefix } from '../url-prefix';
 
-@Controller('admin/reports-and-analytics')
-export class ReportsAndAnalyticsController {
+@Controller(`${urlPrefix}/reports-and-analytics`)
+export class AdminReportsAndAnalyticsController {
   constructor(
     private readonly reportsAndAnalyticsService: ReportsAndAnalyticsService,
   ) {}

@@ -1,9 +1,10 @@
 import { Controller, Get } from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
 import { Roles } from 'src/auth/decorators/roles.decorator';
+import { urlPrefix } from '../url-prefix';
 
-@Controller('admin/dashboard')
-export class DashboardController {
+@Controller(`${urlPrefix}/dashboard`)
+export class AdminDashboardController {
   constructor(private readonly dashboardService: DashboardService) {}
 
   @Get()

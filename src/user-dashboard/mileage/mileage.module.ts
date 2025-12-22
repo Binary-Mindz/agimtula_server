@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { MileageService } from './mileage.service';
-import { MileageController } from './mileage.controller';
+import { UserMileageController } from './mileage.controller';
 
 @Module({
-  controllers: [MileageController],
+  controllers: [UserMileageController],
   providers: [MileageService],
 })
 export class MileageModule {}

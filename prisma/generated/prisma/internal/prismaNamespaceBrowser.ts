@@ -57,6 +57,7 @@ export const ModelName = {
   userSubscriptionPlanHistory: 'userSubscriptionPlanHistory',
   subscriptionPlanPaymentStatus: 'subscriptionPlanPaymentStatus',
   Profile: 'Profile',
+  ForgetPass: 'ForgetPass',
   TwoFA: 'TwoFA',
   Language: 'Language',
   Receipt: 'Receipt',
@@ -185,6 +186,17 @@ export const ProfileScalarFieldEnum = {
 } as const
 
 export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
+
+
+export const ForgetPassScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  code: 'code',
+  isVerified: 'isVerified',
+  createdAt: 'createdAt'
+} as const
+
+export type ForgetPassScalarFieldEnum = (typeof ForgetPassScalarFieldEnum)[keyof typeof ForgetPassScalarFieldEnum]
 
 
 export const TwoFAScalarFieldEnum = {

@@ -390,6 +390,7 @@ export const ModelName = {
   userSubscriptionPlanHistory: 'userSubscriptionPlanHistory',
   subscriptionPlanPaymentStatus: 'subscriptionPlanPaymentStatus',
   Profile: 'Profile',
+  ForgetPass: 'ForgetPass',
   TwoFA: 'TwoFA',
   Language: 'Language',
   Receipt: 'Receipt',
@@ -418,7 +419,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "mileage" | "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "profile" | "twoFA" | "language" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "user" | "email"
+    modelProps: "mileage" | "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "profile" | "forgetPass" | "twoFA" | "language" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "user" | "email"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -863,6 +864,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.ProfileCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.ProfileCountAggregateOutputType> | number
+        }
+      }
+    }
+    ForgetPass: {
+      payload: Prisma.$ForgetPassPayload<ExtArgs>
+      fields: Prisma.ForgetPassFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ForgetPassFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ForgetPassPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ForgetPassFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ForgetPassPayload>
+        }
+        findFirst: {
+          args: Prisma.ForgetPassFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ForgetPassPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ForgetPassFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ForgetPassPayload>
+        }
+        findMany: {
+          args: Prisma.ForgetPassFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ForgetPassPayload>[]
+        }
+        create: {
+          args: Prisma.ForgetPassCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ForgetPassPayload>
+        }
+        createMany: {
+          args: Prisma.ForgetPassCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ForgetPassCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ForgetPassPayload>[]
+        }
+        delete: {
+          args: Prisma.ForgetPassDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ForgetPassPayload>
+        }
+        update: {
+          args: Prisma.ForgetPassUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ForgetPassPayload>
+        }
+        deleteMany: {
+          args: Prisma.ForgetPassDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ForgetPassUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ForgetPassUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ForgetPassPayload>[]
+        }
+        upsert: {
+          args: Prisma.ForgetPassUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ForgetPassPayload>
+        }
+        aggregate: {
+          args: Prisma.ForgetPassAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateForgetPass>
+        }
+        groupBy: {
+          args: Prisma.ForgetPassGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ForgetPassGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ForgetPassCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ForgetPassCountAggregateOutputType> | number
         }
       }
     }
@@ -1966,6 +2041,17 @@ export const ProfileScalarFieldEnum = {
 export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
 
 
+export const ForgetPassScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  code: 'code',
+  isVerified: 'isVerified',
+  createdAt: 'createdAt'
+} as const
+
+export type ForgetPassScalarFieldEnum = (typeof ForgetPassScalarFieldEnum)[keyof typeof ForgetPassScalarFieldEnum]
+
+
 export const TwoFAScalarFieldEnum = {
   id: 'id',
   email: 'email',
@@ -2397,6 +2483,7 @@ export type GlobalOmitConfig = {
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryOmit
   subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusOmit
   profile?: Prisma.ProfileOmit
+  forgetPass?: Prisma.ForgetPassOmit
   twoFA?: Prisma.TwoFAOmit
   language?: Prisma.LanguageOmit
   receipt?: Prisma.ReceiptOmit

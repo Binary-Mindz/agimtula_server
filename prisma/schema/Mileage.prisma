@@ -1,5 +1,6 @@
 model Mileage {
   id            String   @id @default(uuid())
+  milage_id     Int  @unique()  @default(autoincrement())
   date          DateTime
   startLocation String
   endLocation   String

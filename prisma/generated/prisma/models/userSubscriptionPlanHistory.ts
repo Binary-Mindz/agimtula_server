@@ -288,8 +288,8 @@ export type userSubscriptionPlanHistoryWhereInput = {
   startedAt?: Prisma.DateTimeFilter<"userSubscriptionPlanHistory"> | Date | string
   expiredAt?: Prisma.DateTimeFilter<"userSubscriptionPlanHistory"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"userSubscriptionPlanHistory"> | Date | string
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   subscriptionPlanPaymentStatus?: Prisma.XOR<Prisma.SubscriptionPlanPaymentStatusNullableScalarRelationFilter, Prisma.subscriptionPlanPaymentStatusWhereInput> | null
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type userSubscriptionPlanHistoryOrderByWithRelationInput = {
@@ -306,8 +306,8 @@ export type userSubscriptionPlanHistoryOrderByWithRelationInput = {
   startedAt?: Prisma.SortOrder
   expiredAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  user?: Prisma.UserOrderByWithRelationInput
   subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusOrderByWithRelationInput
+  user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type userSubscriptionPlanHistoryWhereUniqueInput = Prisma.AtLeast<{
@@ -327,8 +327,8 @@ export type userSubscriptionPlanHistoryWhereUniqueInput = Prisma.AtLeast<{
   startedAt?: Prisma.DateTimeFilter<"userSubscriptionPlanHistory"> | Date | string
   expiredAt?: Prisma.DateTimeFilter<"userSubscriptionPlanHistory"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"userSubscriptionPlanHistory"> | Date | string
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   subscriptionPlanPaymentStatus?: Prisma.XOR<Prisma.SubscriptionPlanPaymentStatusNullableScalarRelationFilter, Prisma.subscriptionPlanPaymentStatusWhereInput> | null
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "id">
 
 export type userSubscriptionPlanHistoryOrderByWithAggregationInput = {
@@ -384,8 +384,8 @@ export type userSubscriptionPlanHistoryCreateInput = {
   startedAt?: Date | string
   expiredAt: Date | string
   createdAt?: Date | string
-  user: Prisma.UserCreateNestedOneWithoutUserSubscriptionPlanHistoryInput
   subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusCreateNestedOneWithoutUserSubscriptionPlanHistoryInput
+  user: Prisma.UserCreateNestedOneWithoutUserSubscriptionPlanHistoryInput
 }
 
 export type userSubscriptionPlanHistoryUncheckedCreateInput = {
@@ -418,8 +418,8 @@ export type userSubscriptionPlanHistoryUpdateInput = {
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutUserSubscriptionPlanHistoryNestedInput
   subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusUpdateOneWithoutUserSubscriptionPlanHistoryNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutUserSubscriptionPlanHistoryNestedInput
 }
 
 export type userSubscriptionPlanHistoryUncheckedUpdateInput = {
@@ -865,8 +865,8 @@ export type userSubscriptionPlanHistorySelect<ExtArgs extends runtime.Types.Exte
   startedAt?: boolean
   expiredAt?: boolean
   createdAt?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   subscriptionPlanPaymentStatus?: boolean | Prisma.userSubscriptionPlanHistory$subscriptionPlanPaymentStatusArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["userSubscriptionPlanHistory"]>
 
 export type userSubscriptionPlanHistorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -921,8 +921,8 @@ export type userSubscriptionPlanHistorySelectScalar = {
 
 export type userSubscriptionPlanHistoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "planName" | "UserId" | "isLimitedInvoicePerMonth" | "perMonthInvoiceCount" | "realtimeImapChecking" | "price" | "setupFee" | "freeTrialDays" | "billingPeriod" | "startedAt" | "expiredAt" | "createdAt", ExtArgs["result"]["userSubscriptionPlanHistory"]>
 export type userSubscriptionPlanHistoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   subscriptionPlanPaymentStatus?: boolean | Prisma.userSubscriptionPlanHistory$subscriptionPlanPaymentStatusArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type userSubscriptionPlanHistoryIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -934,8 +934,8 @@ export type userSubscriptionPlanHistoryIncludeUpdateManyAndReturn<ExtArgs extend
 export type $userSubscriptionPlanHistoryPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "userSubscriptionPlanHistory"
   objects: {
-    user: Prisma.$UserPayload<ExtArgs>
     subscriptionPlanPaymentStatus: Prisma.$subscriptionPlanPaymentStatusPayload<ExtArgs> | null
+    user: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1345,8 +1345,8 @@ readonly fields: userSubscriptionPlanHistoryFieldRefs;
  */
 export interface Prisma__userSubscriptionPlanHistoryClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   subscriptionPlanPaymentStatus<T extends Prisma.userSubscriptionPlanHistory$subscriptionPlanPaymentStatusArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.userSubscriptionPlanHistory$subscriptionPlanPaymentStatusArgs<ExtArgs>>): Prisma.Prisma__subscriptionPlanPaymentStatusClient<runtime.Types.Result.GetResult<Prisma.$subscriptionPlanPaymentStatusPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

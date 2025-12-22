@@ -1,18 +1,16 @@
 model Mileage {
-    id String @id @default(uuid())
-    date DateTime
-    startLocation String
-    endLocation String
-    distance Float
-    tripType String
-    amount Float
-    
-    vehicle String?
-    purpose String
-    notes String?
+  id            String   @id @default(uuid())
+  date          DateTime
+  startLocation String
+  endLocation   String
+  distance      Float
+  tripType      String
+  amount        Float
+  vehicle       String?
+  purpose       String
+  notes         String?
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
 
-    userId String
-    user User @relation(fields: [userId], references: [id])
-
-    @@map("mileage")
+  @@map("mileage")
 }

@@ -289,7 +289,7 @@ export type userSubscriptionPlanWhereInput = {
   expiredAt?: Prisma.DateTimeFilter<"userSubscriptionPlan"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"userSubscriptionPlan"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  subscriptionPlanPaymentStatus?: Prisma.XOR<Prisma.SubscriptionPlanPaymentStatusNullableScalarRelationFilter, Prisma.subscriptionPlanPaymentStatusWhereInput> | null
+  subscriptionPlanPaymentStatus?: Prisma.XOR<Prisma.SubscriptionPlanPaymentStatusScalarRelationFilter, Prisma.subscriptionPlanPaymentStatusWhereInput>
 }
 
 export type userSubscriptionPlanOrderByWithRelationInput = {
@@ -328,7 +328,7 @@ export type userSubscriptionPlanWhereUniqueInput = Prisma.AtLeast<{
   expiredAt?: Prisma.DateTimeFilter<"userSubscriptionPlan"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"userSubscriptionPlan"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  subscriptionPlanPaymentStatus?: Prisma.XOR<Prisma.SubscriptionPlanPaymentStatusNullableScalarRelationFilter, Prisma.subscriptionPlanPaymentStatusWhereInput> | null
+  subscriptionPlanPaymentStatus?: Prisma.XOR<Prisma.SubscriptionPlanPaymentStatusScalarRelationFilter, Prisma.subscriptionPlanPaymentStatusWhereInput>
 }, "id" | "id" | "UserId" | "subscriptionPlanPaymentStatusId">
 
 export type userSubscriptionPlanOrderByWithAggregationInput = {
@@ -384,7 +384,7 @@ export type userSubscriptionPlanCreateInput = {
   expiredAt: Date | string
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutUserSubscriptionPlanInput
-  subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusCreateNestedOneWithoutUserSubscriptionPlanInput
+  subscriptionPlanPaymentStatus: Prisma.subscriptionPlanPaymentStatusCreateNestedOneWithoutUserSubscriptionPlanInput
 }
 
 export type userSubscriptionPlanUncheckedCreateInput = {
@@ -416,7 +416,7 @@ export type userSubscriptionPlanUpdateInput = {
   expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutUserSubscriptionPlanNestedInput
-  subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusUpdateOneWithoutUserSubscriptionPlanNestedInput
+  subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusUpdateOneRequiredWithoutUserSubscriptionPlanNestedInput
 }
 
 export type userSubscriptionPlanUncheckedUpdateInput = {
@@ -723,7 +723,7 @@ export type userSubscriptionPlanCreateWithoutUserInput = {
   startedAt?: Date | string
   expiredAt: Date | string
   createdAt?: Date | string
-  subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusCreateNestedOneWithoutUserSubscriptionPlanInput
+  subscriptionPlanPaymentStatus: Prisma.subscriptionPlanPaymentStatusCreateNestedOneWithoutUserSubscriptionPlanInput
 }
 
 export type userSubscriptionPlanUncheckedCreateWithoutUserInput = {
@@ -769,7 +769,7 @@ export type userSubscriptionPlanUpdateWithoutUserInput = {
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusUpdateOneWithoutUserSubscriptionPlanNestedInput
+  subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusUpdateOneRequiredWithoutUserSubscriptionPlanNestedInput
 }
 
 export type userSubscriptionPlanUncheckedUpdateWithoutUserInput = {
@@ -804,7 +804,7 @@ export type userSubscriptionPlanSelect<ExtArgs extends runtime.Types.Extensions.
   expiredAt?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  subscriptionPlanPaymentStatus?: boolean | Prisma.userSubscriptionPlan$subscriptionPlanPaymentStatusArgs<ExtArgs>
+  subscriptionPlanPaymentStatus?: boolean | Prisma.subscriptionPlanPaymentStatusDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["userSubscriptionPlan"]>
 
 export type userSubscriptionPlanSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -822,7 +822,7 @@ export type userSubscriptionPlanSelectCreateManyAndReturn<ExtArgs extends runtim
   expiredAt?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  subscriptionPlanPaymentStatus?: boolean | Prisma.userSubscriptionPlan$subscriptionPlanPaymentStatusArgs<ExtArgs>
+  subscriptionPlanPaymentStatus?: boolean | Prisma.subscriptionPlanPaymentStatusDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["userSubscriptionPlan"]>
 
 export type userSubscriptionPlanSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -840,7 +840,7 @@ export type userSubscriptionPlanSelectUpdateManyAndReturn<ExtArgs extends runtim
   expiredAt?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  subscriptionPlanPaymentStatus?: boolean | Prisma.userSubscriptionPlan$subscriptionPlanPaymentStatusArgs<ExtArgs>
+  subscriptionPlanPaymentStatus?: boolean | Prisma.subscriptionPlanPaymentStatusDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["userSubscriptionPlan"]>
 
 export type userSubscriptionPlanSelectScalar = {
@@ -862,22 +862,22 @@ export type userSubscriptionPlanSelectScalar = {
 export type userSubscriptionPlanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "planName" | "UserId" | "subscriptionPlanPaymentStatusId" | "isLimitedInvoicePerMonth" | "perMonthInvoiceCount" | "realtimeImapChecking" | "price" | "setupFee" | "freeTrialDays" | "startedAt" | "expiredAt" | "createdAt", ExtArgs["result"]["userSubscriptionPlan"]>
 export type userSubscriptionPlanInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  subscriptionPlanPaymentStatus?: boolean | Prisma.userSubscriptionPlan$subscriptionPlanPaymentStatusArgs<ExtArgs>
+  subscriptionPlanPaymentStatus?: boolean | Prisma.subscriptionPlanPaymentStatusDefaultArgs<ExtArgs>
 }
 export type userSubscriptionPlanIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  subscriptionPlanPaymentStatus?: boolean | Prisma.userSubscriptionPlan$subscriptionPlanPaymentStatusArgs<ExtArgs>
+  subscriptionPlanPaymentStatus?: boolean | Prisma.subscriptionPlanPaymentStatusDefaultArgs<ExtArgs>
 }
 export type userSubscriptionPlanIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  subscriptionPlanPaymentStatus?: boolean | Prisma.userSubscriptionPlan$subscriptionPlanPaymentStatusArgs<ExtArgs>
+  subscriptionPlanPaymentStatus?: boolean | Prisma.subscriptionPlanPaymentStatusDefaultArgs<ExtArgs>
 }
 
 export type $userSubscriptionPlanPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "userSubscriptionPlan"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
-    subscriptionPlanPaymentStatus: Prisma.$subscriptionPlanPaymentStatusPayload<ExtArgs> | null
+    subscriptionPlanPaymentStatus: Prisma.$subscriptionPlanPaymentStatusPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1288,7 +1288,7 @@ readonly fields: userSubscriptionPlanFieldRefs;
 export interface Prisma__userSubscriptionPlanClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  subscriptionPlanPaymentStatus<T extends Prisma.userSubscriptionPlan$subscriptionPlanPaymentStatusArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.userSubscriptionPlan$subscriptionPlanPaymentStatusArgs<ExtArgs>>): Prisma.Prisma__subscriptionPlanPaymentStatusClient<runtime.Types.Result.GetResult<Prisma.$subscriptionPlanPaymentStatusPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  subscriptionPlanPaymentStatus<T extends Prisma.subscriptionPlanPaymentStatusDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.subscriptionPlanPaymentStatusDefaultArgs<ExtArgs>>): Prisma.Prisma__subscriptionPlanPaymentStatusClient<runtime.Types.Result.GetResult<Prisma.$subscriptionPlanPaymentStatusPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1724,25 +1724,6 @@ export type userSubscriptionPlanDeleteManyArgs<ExtArgs extends runtime.Types.Ext
    * Limit how many userSubscriptionPlans to delete.
    */
   limit?: number
-}
-
-/**
- * userSubscriptionPlan.subscriptionPlanPaymentStatus
- */
-export type userSubscriptionPlan$subscriptionPlanPaymentStatusArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the subscriptionPlanPaymentStatus
-   */
-  select?: Prisma.subscriptionPlanPaymentStatusSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the subscriptionPlanPaymentStatus
-   */
-  omit?: Prisma.subscriptionPlanPaymentStatusOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.subscriptionPlanPaymentStatusInclude<ExtArgs> | null
-  where?: Prisma.subscriptionPlanPaymentStatusWhereInput
 }
 
 /**

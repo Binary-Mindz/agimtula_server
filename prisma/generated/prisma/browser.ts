@@ -48,6 +48,11 @@ export type subscriptionPlanPaymentStatus = Prisma.subscriptionPlanPaymentStatus
  */
 export type Profile = Prisma.ProfileModel
 /**
+ * Model ForgetPass
+ * 
+ */
+export type ForgetPass = Prisma.ForgetPassModel
+/**
  * Model TwoFA
  * 
  */

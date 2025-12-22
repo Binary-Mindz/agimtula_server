@@ -27,17 +27,20 @@ export type AggregateMileage = {
 }
 
 export type MileageAvgAggregateOutputType = {
+  milage_id: number | null
   distance: number | null
   amount: number | null
 }
 
 export type MileageSumAggregateOutputType = {
+  milage_id: number | null
   distance: number | null
   amount: number | null
 }
 
 export type MileageMinAggregateOutputType = {
   id: string | null
+  milage_id: number | null
   date: Date | null
   startLocation: string | null
   endLocation: string | null
@@ -52,6 +55,7 @@ export type MileageMinAggregateOutputType = {
 
 export type MileageMaxAggregateOutputType = {
   id: string | null
+  milage_id: number | null
   date: Date | null
   startLocation: string | null
   endLocation: string | null
@@ -66,6 +70,7 @@ export type MileageMaxAggregateOutputType = {
 
 export type MileageCountAggregateOutputType = {
   id: number
+  milage_id: number
   date: number
   startLocation: number
   endLocation: number
@@ -81,17 +86,20 @@ export type MileageCountAggregateOutputType = {
 
 
 export type MileageAvgAggregateInputType = {
+  milage_id?: true
   distance?: true
   amount?: true
 }
 
 export type MileageSumAggregateInputType = {
+  milage_id?: true
   distance?: true
   amount?: true
 }
 
 export type MileageMinAggregateInputType = {
   id?: true
+  milage_id?: true
   date?: true
   startLocation?: true
   endLocation?: true
@@ -106,6 +114,7 @@ export type MileageMinAggregateInputType = {
 
 export type MileageMaxAggregateInputType = {
   id?: true
+  milage_id?: true
   date?: true
   startLocation?: true
   endLocation?: true
@@ -120,6 +129,7 @@ export type MileageMaxAggregateInputType = {
 
 export type MileageCountAggregateInputType = {
   id?: true
+  milage_id?: true
   date?: true
   startLocation?: true
   endLocation?: true
@@ -221,6 +231,7 @@ export type MileageGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 
 export type MileageGroupByOutputType = {
   id: string
+  milage_id: number
   date: Date
   startLocation: string
   endLocation: string
@@ -258,6 +269,7 @@ export type MileageWhereInput = {
   OR?: Prisma.MileageWhereInput[]
   NOT?: Prisma.MileageWhereInput | Prisma.MileageWhereInput[]
   id?: Prisma.StringFilter<"Mileage"> | string
+  milage_id?: Prisma.IntFilter<"Mileage"> | number
   date?: Prisma.DateTimeFilter<"Mileage"> | Date | string
   startLocation?: Prisma.StringFilter<"Mileage"> | string
   endLocation?: Prisma.StringFilter<"Mileage"> | string
@@ -273,6 +285,7 @@ export type MileageWhereInput = {
 
 export type MileageOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  milage_id?: Prisma.SortOrder
   date?: Prisma.SortOrder
   startLocation?: Prisma.SortOrder
   endLocation?: Prisma.SortOrder
@@ -288,6 +301,7 @@ export type MileageOrderByWithRelationInput = {
 
 export type MileageWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  milage_id?: number
   AND?: Prisma.MileageWhereInput | Prisma.MileageWhereInput[]
   OR?: Prisma.MileageWhereInput[]
   NOT?: Prisma.MileageWhereInput | Prisma.MileageWhereInput[]
@@ -302,10 +316,11 @@ export type MileageWhereUniqueInput = Prisma.AtLeast<{
   notes?: Prisma.StringNullableFilter<"Mileage"> | string | null
   userId?: Prisma.StringFilter<"Mileage"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-}, "id">
+}, "id" | "milage_id">
 
 export type MileageOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  milage_id?: Prisma.SortOrder
   date?: Prisma.SortOrder
   startLocation?: Prisma.SortOrder
   endLocation?: Prisma.SortOrder
@@ -328,6 +343,7 @@ export type MileageScalarWhereWithAggregatesInput = {
   OR?: Prisma.MileageScalarWhereWithAggregatesInput[]
   NOT?: Prisma.MileageScalarWhereWithAggregatesInput | Prisma.MileageScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Mileage"> | string
+  milage_id?: Prisma.IntWithAggregatesFilter<"Mileage"> | number
   date?: Prisma.DateTimeWithAggregatesFilter<"Mileage"> | Date | string
   startLocation?: Prisma.StringWithAggregatesFilter<"Mileage"> | string
   endLocation?: Prisma.StringWithAggregatesFilter<"Mileage"> | string
@@ -342,6 +358,7 @@ export type MileageScalarWhereWithAggregatesInput = {
 
 export type MileageCreateInput = {
   id?: string
+  milage_id?: number
   date: Date | string
   startLocation: string
   endLocation: string
@@ -356,6 +373,7 @@ export type MileageCreateInput = {
 
 export type MileageUncheckedCreateInput = {
   id?: string
+  milage_id?: number
   date: Date | string
   startLocation: string
   endLocation: string
@@ -384,6 +402,7 @@ export type MileageUpdateInput = {
 
 export type MileageUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  milage_id?: Prisma.IntFieldUpdateOperationsInput | number
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startLocation?: Prisma.StringFieldUpdateOperationsInput | string
   endLocation?: Prisma.StringFieldUpdateOperationsInput | string
@@ -398,6 +417,7 @@ export type MileageUncheckedUpdateInput = {
 
 export type MileageCreateManyInput = {
   id?: string
+  milage_id?: number
   date: Date | string
   startLocation: string
   endLocation: string
@@ -425,6 +445,7 @@ export type MileageUpdateManyMutationInput = {
 
 export type MileageUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  milage_id?: Prisma.IntFieldUpdateOperationsInput | number
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startLocation?: Prisma.StringFieldUpdateOperationsInput | string
   endLocation?: Prisma.StringFieldUpdateOperationsInput | string
@@ -439,6 +460,7 @@ export type MileageUncheckedUpdateManyInput = {
 
 export type MileageCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  milage_id?: Prisma.SortOrder
   date?: Prisma.SortOrder
   startLocation?: Prisma.SortOrder
   endLocation?: Prisma.SortOrder
@@ -452,12 +474,14 @@ export type MileageCountOrderByAggregateInput = {
 }
 
 export type MileageAvgOrderByAggregateInput = {
+  milage_id?: Prisma.SortOrder
   distance?: Prisma.SortOrder
   amount?: Prisma.SortOrder
 }
 
 export type MileageMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  milage_id?: Prisma.SortOrder
   date?: Prisma.SortOrder
   startLocation?: Prisma.SortOrder
   endLocation?: Prisma.SortOrder
@@ -472,6 +496,7 @@ export type MileageMaxOrderByAggregateInput = {
 
 export type MileageMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  milage_id?: Prisma.SortOrder
   date?: Prisma.SortOrder
   startLocation?: Prisma.SortOrder
   endLocation?: Prisma.SortOrder
@@ -485,6 +510,7 @@ export type MileageMinOrderByAggregateInput = {
 }
 
 export type MileageSumOrderByAggregateInput = {
+  milage_id?: Prisma.SortOrder
   distance?: Prisma.SortOrder
   amount?: Prisma.SortOrder
 }
@@ -517,6 +543,14 @@ export type FloatFieldUpdateOperationsInput = {
 
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
+}
+
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type MileageCreateNestedManyWithoutUserInput = {
@@ -563,6 +597,7 @@ export type MileageUncheckedUpdateManyWithoutUserNestedInput = {
 
 export type MileageCreateWithoutUserInput = {
   id?: string
+  milage_id?: number
   date: Date | string
   startLocation: string
   endLocation: string
@@ -576,6 +611,7 @@ export type MileageCreateWithoutUserInput = {
 
 export type MileageUncheckedCreateWithoutUserInput = {
   id?: string
+  milage_id?: number
   date: Date | string
   startLocation: string
   endLocation: string
@@ -618,6 +654,7 @@ export type MileageScalarWhereInput = {
   OR?: Prisma.MileageScalarWhereInput[]
   NOT?: Prisma.MileageScalarWhereInput | Prisma.MileageScalarWhereInput[]
   id?: Prisma.StringFilter<"Mileage"> | string
+  milage_id?: Prisma.IntFilter<"Mileage"> | number
   date?: Prisma.DateTimeFilter<"Mileage"> | Date | string
   startLocation?: Prisma.StringFilter<"Mileage"> | string
   endLocation?: Prisma.StringFilter<"Mileage"> | string
@@ -632,6 +669,7 @@ export type MileageScalarWhereInput = {
 
 export type MileageCreateManyUserInput = {
   id?: string
+  milage_id?: number
   date: Date | string
   startLocation: string
   endLocation: string
@@ -658,6 +696,7 @@ export type MileageUpdateWithoutUserInput = {
 
 export type MileageUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  milage_id?: Prisma.IntFieldUpdateOperationsInput | number
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startLocation?: Prisma.StringFieldUpdateOperationsInput | string
   endLocation?: Prisma.StringFieldUpdateOperationsInput | string
@@ -671,6 +710,7 @@ export type MileageUncheckedUpdateWithoutUserInput = {
 
 export type MileageUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  milage_id?: Prisma.IntFieldUpdateOperationsInput | number
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startLocation?: Prisma.StringFieldUpdateOperationsInput | string
   endLocation?: Prisma.StringFieldUpdateOperationsInput | string
@@ -686,6 +726,7 @@ export type MileageUncheckedUpdateManyWithoutUserInput = {
 
 export type MileageSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  milage_id?: boolean
   date?: boolean
   startLocation?: boolean
   endLocation?: boolean
@@ -701,6 +742,7 @@ export type MileageSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
 
 export type MileageSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  milage_id?: boolean
   date?: boolean
   startLocation?: boolean
   endLocation?: boolean
@@ -716,6 +758,7 @@ export type MileageSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
 
 export type MileageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  milage_id?: boolean
   date?: boolean
   startLocation?: boolean
   endLocation?: boolean
@@ -731,6 +774,7 @@ export type MileageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 
 export type MileageSelectScalar = {
   id?: boolean
+  milage_id?: boolean
   date?: boolean
   startLocation?: boolean
   endLocation?: boolean
@@ -743,7 +787,7 @@ export type MileageSelectScalar = {
   userId?: boolean
 }
 
-export type MileageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "date" | "startLocation" | "endLocation" | "distance" | "tripType" | "amount" | "vehicle" | "purpose" | "notes" | "userId", ExtArgs["result"]["mileage"]>
+export type MileageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "milage_id" | "date" | "startLocation" | "endLocation" | "distance" | "tripType" | "amount" | "vehicle" | "purpose" | "notes" | "userId", ExtArgs["result"]["mileage"]>
 export type MileageInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -761,6 +805,7 @@ export type $MileagePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    milage_id: number
     date: Date
     startLocation: string
     endLocation: string
@@ -1196,6 +1241,7 @@ export interface Prisma__MileageClient<T, Null = never, ExtArgs extends runtime.
  */
 export interface MileageFieldRefs {
   readonly id: Prisma.FieldRef<"Mileage", 'String'>
+  readonly milage_id: Prisma.FieldRef<"Mileage", 'Int'>
   readonly date: Prisma.FieldRef<"Mileage", 'DateTime'>
   readonly startLocation: Prisma.FieldRef<"Mileage", 'String'>
   readonly endLocation: Prisma.FieldRef<"Mileage", 'String'>

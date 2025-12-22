@@ -169,12 +169,12 @@ export type ReceiptCategoryOrderByWithRelationInput = {
 
 export type ReceiptCategoryWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  name?: string
   AND?: Prisma.ReceiptCategoryWhereInput | Prisma.ReceiptCategoryWhereInput[]
   OR?: Prisma.ReceiptCategoryWhereInput[]
   NOT?: Prisma.ReceiptCategoryWhereInput | Prisma.ReceiptCategoryWhereInput[]
-  name?: Prisma.StringFilter<"ReceiptCategory"> | string
   receipts?: Prisma.ReceiptListRelationFilter
-}, "id" | "id">
+}, "id" | "id" | "name">
 
 export type ReceiptCategoryOrderByWithAggregationInput = {
   id?: Prisma.SortOrder

@@ -102,8 +102,8 @@ export const MileageScalarFieldEnum = {
   purpose: 'purpose',
   notes: 'notes',
   userId: 'userId',
-  created_at: 'created_at',
-  updated_at: 'updated_at'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type MileageScalarFieldEnum = (typeof MileageScalarFieldEnum)[keyof typeof MileageScalarFieldEnum]

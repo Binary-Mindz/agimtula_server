@@ -51,8 +51,8 @@ export type MileageMinAggregateOutputType = {
   purpose: string | null
   notes: string | null
   userId: string | null
-  created_at: Date | null
-  updated_at: Date | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type MileageMaxAggregateOutputType = {
@@ -68,8 +68,8 @@ export type MileageMaxAggregateOutputType = {
   purpose: string | null
   notes: string | null
   userId: string | null
-  created_at: Date | null
-  updated_at: Date | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type MileageCountAggregateOutputType = {
@@ -85,8 +85,8 @@ export type MileageCountAggregateOutputType = {
   purpose: number
   notes: number
   userId: number
-  created_at: number
-  updated_at: number
+  createdAt: number
+  updatedAt: number
   _all: number
 }
 
@@ -116,8 +116,8 @@ export type MileageMinAggregateInputType = {
   purpose?: true
   notes?: true
   userId?: true
-  created_at?: true
-  updated_at?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type MileageMaxAggregateInputType = {
@@ -133,8 +133,8 @@ export type MileageMaxAggregateInputType = {
   purpose?: true
   notes?: true
   userId?: true
-  created_at?: true
-  updated_at?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type MileageCountAggregateInputType = {
@@ -150,8 +150,8 @@ export type MileageCountAggregateInputType = {
   purpose?: true
   notes?: true
   userId?: true
-  created_at?: true
-  updated_at?: true
+  createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -254,8 +254,8 @@ export type MileageGroupByOutputType = {
   purpose: string
   notes: string | null
   userId: string
-  created_at: Date
-  updated_at: Date
+  createdAt: Date
+  updatedAt: Date
   _count: MileageCountAggregateOutputType | null
   _avg: MileageAvgAggregateOutputType | null
   _sum: MileageSumAggregateOutputType | null
@@ -294,8 +294,8 @@ export type MileageWhereInput = {
   purpose?: Prisma.StringFilter<"Mileage"> | string
   notes?: Prisma.StringNullableFilter<"Mileage"> | string | null
   userId?: Prisma.StringFilter<"Mileage"> | string
-  created_at?: Prisma.DateTimeFilter<"Mileage"> | Date | string
-  updated_at?: Prisma.DateTimeFilter<"Mileage"> | Date | string
+  createdAt?: Prisma.DateTimeFilter<"Mileage"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Mileage"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
@@ -312,8 +312,8 @@ export type MileageOrderByWithRelationInput = {
   purpose?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
-  created_at?: Prisma.SortOrder
-  updated_at?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
 
@@ -333,8 +333,8 @@ export type MileageWhereUniqueInput = Prisma.AtLeast<{
   purpose?: Prisma.StringFilter<"Mileage"> | string
   notes?: Prisma.StringNullableFilter<"Mileage"> | string | null
   userId?: Prisma.StringFilter<"Mileage"> | string
-  created_at?: Prisma.DateTimeFilter<"Mileage"> | Date | string
-  updated_at?: Prisma.DateTimeFilter<"Mileage"> | Date | string
+  createdAt?: Prisma.DateTimeFilter<"Mileage"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Mileage"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "milage_id">
 
@@ -351,8 +351,8 @@ export type MileageOrderByWithAggregationInput = {
   purpose?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
-  created_at?: Prisma.SortOrder
-  updated_at?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.MileageCountOrderByAggregateInput
   _avg?: Prisma.MileageAvgOrderByAggregateInput
   _max?: Prisma.MileageMaxOrderByAggregateInput
@@ -376,8 +376,8 @@ export type MileageScalarWhereWithAggregatesInput = {
   purpose?: Prisma.StringWithAggregatesFilter<"Mileage"> | string
   notes?: Prisma.StringNullableWithAggregatesFilter<"Mileage"> | string | null
   userId?: Prisma.StringWithAggregatesFilter<"Mileage"> | string
-  created_at?: Prisma.DateTimeWithAggregatesFilter<"Mileage"> | Date | string
-  updated_at?: Prisma.DateTimeWithAggregatesFilter<"Mileage"> | Date | string
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Mileage"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Mileage"> | Date | string
 }
 
 export type MileageCreateInput = {
@@ -392,8 +392,8 @@ export type MileageCreateInput = {
   vehicle?: string | null
   purpose: string
   notes?: string | null
-  created_at?: Date | string
-  updated_at?: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutMileagesInput
 }
 
@@ -410,8 +410,8 @@ export type MileageUncheckedCreateInput = {
   purpose: string
   notes?: string | null
   userId: string
-  created_at?: Date | string
-  updated_at?: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type MileageUpdateInput = {
@@ -425,8 +425,8 @@ export type MileageUpdateInput = {
   vehicle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutMileagesNestedInput
 }
 
@@ -443,8 +443,8 @@ export type MileageUncheckedUpdateInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type MileageCreateManyInput = {
@@ -460,8 +460,8 @@ export type MileageCreateManyInput = {
   purpose: string
   notes?: string | null
   userId: string
-  created_at?: Date | string
-  updated_at?: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type MileageUpdateManyMutationInput = {
@@ -475,8 +475,8 @@ export type MileageUpdateManyMutationInput = {
   vehicle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type MileageUncheckedUpdateManyInput = {
@@ -492,8 +492,8 @@ export type MileageUncheckedUpdateManyInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type MileageCountOrderByAggregateInput = {
@@ -509,8 +509,8 @@ export type MileageCountOrderByAggregateInput = {
   purpose?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  created_at?: Prisma.SortOrder
-  updated_at?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type MileageAvgOrderByAggregateInput = {
@@ -532,8 +532,8 @@ export type MileageMaxOrderByAggregateInput = {
   purpose?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  created_at?: Prisma.SortOrder
-  updated_at?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type MileageMinOrderByAggregateInput = {
@@ -549,8 +549,8 @@ export type MileageMinOrderByAggregateInput = {
   purpose?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  created_at?: Prisma.SortOrder
-  updated_at?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type MileageSumOrderByAggregateInput = {
@@ -651,8 +651,8 @@ export type MileageCreateWithoutUserInput = {
   vehicle?: string | null
   purpose: string
   notes?: string | null
-  created_at?: Date | string
-  updated_at?: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type MileageUncheckedCreateWithoutUserInput = {
@@ -667,8 +667,8 @@ export type MileageUncheckedCreateWithoutUserInput = {
   vehicle?: string | null
   purpose: string
   notes?: string | null
-  created_at?: Date | string
-  updated_at?: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type MileageCreateOrConnectWithoutUserInput = {
@@ -713,8 +713,8 @@ export type MileageScalarWhereInput = {
   purpose?: Prisma.StringFilter<"Mileage"> | string
   notes?: Prisma.StringNullableFilter<"Mileage"> | string | null
   userId?: Prisma.StringFilter<"Mileage"> | string
-  created_at?: Prisma.DateTimeFilter<"Mileage"> | Date | string
-  updated_at?: Prisma.DateTimeFilter<"Mileage"> | Date | string
+  createdAt?: Prisma.DateTimeFilter<"Mileage"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Mileage"> | Date | string
 }
 
 export type MileageCreateManyUserInput = {
@@ -729,8 +729,8 @@ export type MileageCreateManyUserInput = {
   vehicle?: string | null
   purpose: string
   notes?: string | null
-  created_at?: Date | string
-  updated_at?: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type MileageUpdateWithoutUserInput = {
@@ -744,8 +744,8 @@ export type MileageUpdateWithoutUserInput = {
   vehicle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type MileageUncheckedUpdateWithoutUserInput = {
@@ -760,8 +760,8 @@ export type MileageUncheckedUpdateWithoutUserInput = {
   vehicle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type MileageUncheckedUpdateManyWithoutUserInput = {
@@ -776,8 +776,8 @@ export type MileageUncheckedUpdateManyWithoutUserInput = {
   vehicle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -795,8 +795,8 @@ export type MileageSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   purpose?: boolean
   notes?: boolean
   userId?: boolean
-  created_at?: boolean
-  updated_at?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mileage"]>
 
@@ -813,8 +813,8 @@ export type MileageSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   purpose?: boolean
   notes?: boolean
   userId?: boolean
-  created_at?: boolean
-  updated_at?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mileage"]>
 
@@ -831,8 +831,8 @@ export type MileageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   purpose?: boolean
   notes?: boolean
   userId?: boolean
-  created_at?: boolean
-  updated_at?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mileage"]>
 
@@ -849,11 +849,11 @@ export type MileageSelectScalar = {
   purpose?: boolean
   notes?: boolean
   userId?: boolean
-  created_at?: boolean
-  updated_at?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type MileageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "milage_id" | "date" | "startLocation" | "endLocation" | "distance" | "tripType" | "amount" | "vehicle" | "purpose" | "notes" | "userId" | "created_at" | "updated_at", ExtArgs["result"]["mileage"]>
+export type MileageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "milage_id" | "date" | "startLocation" | "endLocation" | "distance" | "tripType" | "amount" | "vehicle" | "purpose" | "notes" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["mileage"]>
 export type MileageInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -882,8 +882,8 @@ export type $MileagePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     purpose: string
     notes: string | null
     userId: string
-    created_at: Date
-    updated_at: Date
+    createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["mileage"]>
   composites: {}
 }
@@ -1320,8 +1320,8 @@ export interface MileageFieldRefs {
   readonly purpose: Prisma.FieldRef<"Mileage", 'String'>
   readonly notes: Prisma.FieldRef<"Mileage", 'String'>
   readonly userId: Prisma.FieldRef<"Mileage", 'String'>
-  readonly created_at: Prisma.FieldRef<"Mileage", 'DateTime'>
-  readonly updated_at: Prisma.FieldRef<"Mileage", 'DateTime'>
+  readonly createdAt: Prisma.FieldRef<"Mileage", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Mileage", 'DateTime'>
 }
     
 

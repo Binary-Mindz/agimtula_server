@@ -2,9 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ImapSystemMonitorService } from './imap-system-monitor.service';
 import { CreateImapSystemMonitorDto } from './dto/create-imap-system-monitor.dto';
 import { UpdateImapSystemMonitorDto } from './dto/update-imap-system-monitor.dto';
+import { urlPrefix } from '../url-prefix';
 
-@Controller('imap-system-monitor')
-export class ImapSystemMonitorController {
+@Controller(`${urlPrefix}/imap-system-monitor`)
+export class AdminImapSystemMonitorController {
   constructor(private readonly imapSystemMonitorService: ImapSystemMonitorService) {}
 
   @Post()

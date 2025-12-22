@@ -20,9 +20,10 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { User } from 'src/auth/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 import { UpdateReceiptDto } from './dto/update-receipt-dto';
+import { urlPrefix } from '../uel-prefix';
 
-@Controller('receipts')
-export class ReceiptsController {
+@Controller(`${urlPrefix}/receipts`)
+export class UserReceiptsController {
   constructor(private readonly receiptsService: ReceiptsService) {}
 
   // Receipt Category

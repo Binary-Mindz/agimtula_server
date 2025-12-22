@@ -14,9 +14,10 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { InvoiceAutoSyncDto } from './dto/invoiceAutoSyncDto';
 import { InvoiceAutoSyncIntervalService } from './invoiceAutoSyncInterval.service';
 import { Public } from 'src/auth/decorators/public.decorator';
+import { urlPrefix } from '../url-prefix';
 
-@Controller('admin/subscriptions')
-export class SubscriptionsController {
+@Controller(`${urlPrefix}/subscriptions`)
+export class AdminSubscriptionsController {
   constructor(
     private readonly subscriptionsService: SubscriptionsService,
     private readonly invoiceAutoSyncIntervalService: InvoiceAutoSyncIntervalService,

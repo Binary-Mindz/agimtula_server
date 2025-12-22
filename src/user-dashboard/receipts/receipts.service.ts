@@ -12,13 +12,18 @@ export class ReceiptsService {
   // Receipt Category
 
   async createReceiptCategory(name: string) {
+    const receiptName = name.trim().toLowerCase();
+
     try {
-      await this.prisma.receiptCategory.create({
-        data: { name },
+      const rec = await this.prisma.receiptCategory.upsert({
+        where: { name: receiptName },
+        update: {},
+        create: { name: receiptName },
       });
 
       return cResponseData({
         message: 'Receipt category created successfully',
+        data: rec,
       });
     } catch (error) {
       return cResponseData({ message: error.message as string, error: error });
@@ -58,7 +63,7 @@ export class ReceiptsService {
     file: Express.Multer.File,
   ) {
     try {
-      const { vendor, amount, date, category } = dto;
+      const { vendor, amount, date, category, notes } = dto;
 
       let fileName: string | undefined;
       let fileKey: string | undefined;
@@ -69,7 +74,7 @@ export class ReceiptsService {
         fileKey = fileData.public_id;
       }
 
-      await this.prisma.receipt.create({
+      const rec = await this.prisma.receipt.create({
         data: {
           vendor,
           amount,
@@ -78,10 +83,14 @@ export class ReceiptsService {
           receiptFileUrl: fileName,
           receiptFileKey: fileKey,
           userId,
+          notes: notes,
         },
       });
 
-      return cResponseData({ message: 'Receipt uploaded successfully' });
+      return cResponseData({
+        message: 'Receipt uploaded successfully',
+        data: rec,
+      });
     } catch (error) {
       return cResponseData({ message: error.message as string, error: error });
     }
@@ -112,6 +121,8 @@ export class ReceiptsService {
           vendor: true,
           date: true,
           amount: true,
+          receipt_id: true,
+          notes: true,
           category: {
             select: {
               name: true,

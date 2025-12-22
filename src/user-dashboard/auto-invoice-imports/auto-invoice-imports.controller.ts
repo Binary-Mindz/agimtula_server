@@ -16,7 +16,7 @@ import { User } from 'src/auth/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 import { SyncSettingsDto } from './dto/sync-settings.dto';
 import { UpdateConnectionDto } from './dto/update-connection.dto';
-import { urlPrefix } from '../uel-prefix';
+import { urlPrefix } from '../url-prefix';
 
 @Controller(`${urlPrefix}/auto-invoice-imports`)
 export class UserAutoInvoiceImportsController {

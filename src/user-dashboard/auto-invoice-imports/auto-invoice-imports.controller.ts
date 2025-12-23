@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Patch,
   UsePipes,
   ValidationPipe,
@@ -22,8 +23,16 @@ export class UserAutoInvoiceImportsController {
     private readonly manageConnectionService: ManageConnectionService,
   ) {}
 
-  // imap configuration
 
+  @Get('invoice-time-sync-data')
+  @Roles('USER')
+  invoiceTimeSyncData(@User() user: jwtPayload,){
+    return this.manageConnectionService.invoiceTimeSyncData(user.sub);
+  }
+
+
+
+  // imap configuration
   @Patch('imap-configuration')
   @Roles('USER')
   @UsePipes(new ValidationPipe())

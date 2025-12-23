@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateReportsAndAnalyticDto } from './dto/create-reports-and-analytic.dto';
-import { UpdateReportsAndAnalyticDto } from './dto/update-reports-and-analytic.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { cResponseData } from 'src/common/cResponse';
 

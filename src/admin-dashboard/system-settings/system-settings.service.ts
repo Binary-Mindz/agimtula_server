@@ -51,17 +51,24 @@ export class SystemSettingsService {
   }
 
   async findAll() {
-    const templates = await this.prisma.emailTemplate.findMany({
-      select: {
-        key: true,
-        name: true,
-        isActive: true,
-      },
-    });
-    return cResponseData({
-      data: templates,
-      message: 'Email templates retrieved successfully',
-    });
+    try {
+      const templates = await this.prisma.emailTemplate.findMany({
+        select: {
+          key: true,
+          name: true,
+          isActive: true,
+        },
+      });
+      return cResponseData({
+        data: templates,
+        message: 'Email templates retrieved successfully',
+      });
+    } catch (error) {
+      return cResponseData({
+        message: 'Failed to retrieve email templates',
+        error: error.message,
+      });
+    }
   }
 
   async update(id: string, dto: Partial<CreateEmailTemplateDto>) {
@@ -113,24 +120,35 @@ export class SystemSettingsService {
   }
 
   async testApi(dto: TestDto) {
-    const template = await this.prisma.emailTemplate.findFirst({
-      where: {
-        key: 'WELCOME_EMAIL',
-      },
-    });
-
-    if (!template) {
-      throw new HttpException(
-        {
-          message: 'No email template found for testing',
+    try {
+      const template = await this.prisma.emailTemplate.findFirst({
+        where: {
+          key: 'WELCOME_EMAIL',
         },
-        400,
-      );
+      });
+
+      if (!template) {
+        throw new HttpException(
+          {
+            message: 'No email template found for testing',
+          },
+          400,
+        );
+      }
+
+      const subject = render(template.subject, dto.data);
+      const html = render(template.bodyHtml, dto.data);
+
+      await this.mail.sendMail(dto.to, subject, html);
+      
+      return cResponseData({
+        message: 'Test email sent successfully',
+      });
+    } catch (error) {
+      return cResponseData({
+        message: 'Failed to send test email',
+        error: error.message,
+      });
     }
-
-    const subject = render(template.subject as string, dto.data);
-    const html = render(template.bodyHtml as string, dto.data);
-
-    await this.mail.sendMail(dto.to, subject, html);
   }
 }

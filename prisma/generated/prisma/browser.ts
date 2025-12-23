@@ -23,6 +23,11 @@ export * from './enums';
  */
 export type Mileage = Prisma.MileageModel
 /**
+ * Model EmailTemplate
+ * 
+ */
+export type EmailTemplate = Prisma.EmailTemplateModel
+/**
  * Model imapConfiguration
  * 
  */

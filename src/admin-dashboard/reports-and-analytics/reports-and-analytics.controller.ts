@@ -1,13 +1,13 @@
-import { Controller, Get, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { ReportsAndAnalyticsService } from './reports-and-analytics.service';
-import { UpdateReportsAndAnalyticDto } from './dto/update-reports-and-analytic.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
+import { urlPrefix } from '../url-prefix';
 
-@Controller('reports-and-analytics')
-export class ReportsAndAnalyticsController {
-  constructor(private readonly reportsAndAnalyticsService: ReportsAndAnalyticsService) { }
-
-
+@Controller(`${urlPrefix}/reports-and-analytics`)
+export class AdminReportsAndAnalyticsController {
+  constructor(
+    private readonly reportsAndAnalyticsService: ReportsAndAnalyticsService,
+  ) {}
 
   @Get('user-activity')
   @Roles('ADMIN')

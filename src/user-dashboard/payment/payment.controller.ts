@@ -14,9 +14,10 @@ import { User } from 'src/auth/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { ApiBody } from '@nestjs/swagger';
+import { urlPrefix } from '../url-prefix';
 
-@Controller('payment')
-export class PaymentController {
+@Controller(`${urlPrefix}/payment`)
+export class UserPaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 
   @Post('buy-plan/:id')

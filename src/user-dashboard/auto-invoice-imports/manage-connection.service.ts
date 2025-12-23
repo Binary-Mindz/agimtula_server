@@ -9,8 +9,28 @@ import { cResponseData } from 'src/common/cResponse';
 export class ManageConnectionService {
   constructor(private prisma: PrismaService) {}
 
+  // seleted invice auto sync data
+  private async selectedInvoiceTimeSyncData(userId: string) {
+    const selTime = await this.prisma.userSubscriptionPlan.findFirst({
+      where: {
+        UserId: userId,
+        subscriptionPlanPaymentStatus: {
+          paymentStatus: 'PAID',
+        },
+        expiredAt: {
+          gte: new Date(Date.now()),
+        },
+      },
+      select: {
+        realtimeImapChecking: true,
+      },
+    });
+    if (!selTime?.realtimeImapChecking) return [];
+    return selTime?.realtimeImapChecking;
+  }
+
   //get invice auto sync data
-  async invoiceTimeSyncData(userId: string) {
+  async getInvoiceTimeSyncData(userId: string) {
     const seletedTime = await this.selectedInvoiceTimeSyncData(userId);
     const intervalTimeSync = await this.prisma.invoiceAutoSyncInterval.findMany(
       {
@@ -27,25 +47,22 @@ export class ManageConnectionService {
     }));
   }
 
-  // seleted invice auto sync data
-  async selectedInvoiceTimeSyncData(userId: string) {
-    const selTime = await this.prisma.userSubscriptionPlan.findFirst({
+  // get Imap Configuration data to user
+  async getImapConfiguration(userId: string) {
+    const imapConfiguration = await this.prisma.imapConfiguration.findFirst({
       where: {
-        UserId: userId,
-        subscriptionPlanPaymentStatus: {
-          paymentStatus: 'PAID',
-        },
-      },
-      select: {
-        realtimeImapChecking: true,
+        userId: userId,
       },
     });
-    if (!selTime?.realtimeImapChecking) return [];
-    return selTime?.realtimeImapChecking;
+    return cResponseData({
+      message:
+        'Connection successful! Your email is now connected and syncing.',
+      data: imapConfiguration,
+    });
   }
 
   // Imap config data to user
-  async imapConfiguration(userId: string, dto: ImapEmailConnectionDto) {
+  async setImapConfiguration(userId: string, dto: ImapEmailConnectionDto) {
     const subscription = await this.prisma.userSubscriptionPlan.findFirst({
       where: {
         UserId: userId,
@@ -77,7 +94,7 @@ export class ManageConnectionService {
       );
     }
 
-   const c = await this.prisma.imapConfiguration.upsert({
+    const c = await this.prisma.imapConfiguration.upsert({
       where: {
         userId: userId,
       },

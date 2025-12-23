@@ -24,22 +24,29 @@ export class UserAutoInvoiceImportsController {
   ) {}
 
 
-  @Get('invoice-time-sync-data')
+  // get invoice Auto Sync Interval data
+  @Get('get-invoice-time-sync-data')
   @Roles('USER')
-  invoiceTimeSyncData(@User() user: jwtPayload,){
-    return this.manageConnectionService.invoiceTimeSyncData(user.sub);
+  getInvoiceTimeSyncData(@User() user: jwtPayload,){
+    return this.manageConnectionService.getInvoiceTimeSyncData(user.sub);
+  }
+
+  // get invoice Auto Sync Interval data
+  @Get('get-imap-configuration')
+  @Roles('USER')
+  getImapConfiguration(@User() user: jwtPayload,) {
+    return this.manageConnectionService.getImapConfiguration(user.sub);
   }
 
 
-
   // imap configuration
-  @Patch('imap-configuration')
+  @Patch('set-imap-configuration')
   @Roles('USER')
   @UsePipes(new ValidationPipe())
-  imapConfiguration(
+  setImapConfiguration(
     @Body() data: ImapEmailConnectionDto,
     @User() user: jwtPayload,
   ) {
-    return this.manageConnectionService.imapConfiguration(user.sub, data);
+    return this.manageConnectionService.setImapConfiguration(user.sub, data);
   }
 }

@@ -44,7 +44,7 @@ export class ReportsService {
     for (const item of all) {
       const year = item.date.getFullYear();
       const month = item.date.getMonth() + 1;
-      const monthYear = `${month}-${year}`;
+      const monthYear = `${year}-${month}`;
 
       const existingEntry = monthlySummary.find(
         (entry) => entry.monthYear === monthYear,

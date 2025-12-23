@@ -106,7 +106,7 @@ export class DashboardService {
           item.subscriptionPlanPaymentStatus?.createdAt.getMonth() + 1;
         const year =
           item.subscriptionPlanPaymentStatus?.createdAt.getFullYear();
-        const monthYear = `${month}-${year}`;
+        const monthYear = `${year}-${month}`;
         const amount = item.subscriptionPlanPaymentStatus?.totalAmount || 0;
 
         const existingMonth = monthlyData.find(
@@ -129,7 +129,7 @@ export class DashboardService {
     lastSixMonthsUsers.forEach((item) => {
       const month = item.created_at.getMonth() + 1;
       const year = item.created_at.getFullYear();
-      const monthYear = `${month}-${year}`;
+      const monthYear = `${year}-${month}`;
 
       const existingMonth = userMonthlyData.find(
         (m) => m.monthYear === monthYear,

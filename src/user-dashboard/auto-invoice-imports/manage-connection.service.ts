@@ -77,20 +77,35 @@ export class ManageConnectionService {
       );
     }
 
-    // await this.prisma.imapConfiguration.create({
-    //   data: {
-    //     host: dto.imap_server,
-    //     port: dto.imap_port,
-    //     username: dto.imap_username,
-    //     password: dto.imap_app_password,
-    //     userId,
-    //   },
-    // });
+   const c = await this.prisma.imapConfiguration.upsert({
+      where: {
+        userId: userId,
+      },
+      update: {
+        username: dto.imap_username,
+        password: dto.imap_app_password,
+        host: dto.imap_server,
+        port: dto.imap_port,
+        realtimeImapCheckingId: dto.realtimeImapCheckingId,
+        sync: dto.automatic_Sync,
+        emailNotifications: dto.emailNotifications,
+      },
+      create: {
+        username: dto.imap_username,
+        password: dto.imap_app_password,
+        host: dto.imap_server,
+        port: dto.imap_port,
+        realtimeImapCheckingId: dto.realtimeImapCheckingId,
+        sync: dto.automatic_Sync,
+        emailNotifications: dto.emailNotifications,
+        userId: userId,
+      },
+    });
 
     return cResponseData({
       message:
         'Connection successful! Your email is now connected and syncing.',
-      data: subscription,
+      data: c,
     });
   }
 }

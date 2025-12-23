@@ -98,7 +98,7 @@ export class DashboardService {
       }
     });
 
-    const monthlyData: { monthYear: string; amount: number }[] = [];
+    const monthlyData: { month: string; amount: number }[] = [];
 
     lastSixMonthsData.forEach((item) => {
       if (item.subscriptionPlanPaymentStatus?.paymentStatus === 'PAID') {
@@ -109,20 +109,18 @@ export class DashboardService {
         const monthYear = `${year}-${month}`;
         const amount = item.subscriptionPlanPaymentStatus?.totalAmount || 0;
 
-        const existingMonth = monthlyData.find(
-          (m) => m.monthYear === monthYear,
-        );
+        const existingMonth = monthlyData.find((m) => m.month === monthYear);
 
         if (existingMonth) {
           existingMonth.amount += amount;
         } else {
-          monthlyData.push({ monthYear, amount });
+          monthlyData.push({ month: monthYear, amount });
         }
       }
     });
 
     const userMonthlyData: {
-      monthYear: string;
+      month: string;
       userCount: number;
     }[] = [];
 
@@ -131,14 +129,12 @@ export class DashboardService {
       const year = item.created_at.getFullYear();
       const monthYear = `${year}-${month}`;
 
-      const existingMonth = userMonthlyData.find(
-        (m) => m.monthYear === monthYear,
-      );
+      const existingMonth = userMonthlyData.find((m) => m.month === monthYear);
 
       if (existingMonth) {
         existingMonth.userCount += 1;
       } else {
-        userMonthlyData.push({ monthYear, userCount: 1 });
+        userMonthlyData.push({ month: monthYear, userCount: 1 });
       }
     });
 

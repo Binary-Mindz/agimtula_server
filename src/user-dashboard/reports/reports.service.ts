@@ -39,7 +39,7 @@ export class ReportsService {
 
     const all = [...receipt, ...mileage];
 
-    const monthlySummary: { monthYear: string; total: number }[] = [];
+    const monthlySummary: { month: string; total: number }[] = [];
 
     for (const item of all) {
       const year = item.date.getFullYear();
@@ -47,14 +47,14 @@ export class ReportsService {
       const monthYear = `${year}-${month}`;
 
       const existingEntry = monthlySummary.find(
-        (entry) => entry.monthYear === monthYear,
+        (entry) => entry.month === monthYear,
       );
 
       if (existingEntry) {
         existingEntry.total += item.amount;
       } else {
         monthlySummary.push({
-          monthYear,
+          month: monthYear,
           total: item.amount,
         });
       }

@@ -5,29 +5,150 @@ import { PrismaService } from 'src/config/database/prisma.service';
 @Injectable()
 export class DashboardService {
   constructor(private prisma: PrismaService) {}
+
   async getData() {
-    const userCount = await this.prisma.user.count({
-      where: {
-        role: 'USER',
-        status: true,
-      },
+    const firstDayOfThisMonth = new Date(
+      new Date().getFullYear(),
+      new Date().getMonth(),
+      1,
+    );
+    const lastDayOfThisMonth = new Date(
+      new Date().getFullYear(),
+      new Date().getMonth() + 1,
+      0,
+    );
+
+    const lastSixMonths = new Date(
+      new Date().getFullYear(),
+      new Date().getMonth() - 5,
+      1,
+    );
+
+    const [
+      userCount,
+      subscriptionAmountThisMonth,
+      pendingPaymentCount,
+      lastSixMonthsData,
+      lastSixMonthsUsers,
+    ] = await Promise.all([
+      this.prisma.user.count({
+        where: {
+          role: 'USER',
+          status: true,
+        },
+      }),
+
+      this.prisma.userSubscriptionPlanHistory.findMany({
+        where: {
+          createdAt: {
+            gte: firstDayOfThisMonth,
+            lte: lastDayOfThisMonth,
+          },
+        },
+        select: {
+          subscriptionPlanPaymentStatus: {
+            select: {
+              totalAmount: true,
+              paymentStatus: true,
+            },
+          },
+        },
+      }),
+
+      this.prisma.userSubscriptionPlanHistory.count({
+        where: {
+          subscriptionPlanPaymentStatus: {
+            paymentStatus: 'PENDING',
+          },
+        },
+      }),
+      this.prisma.userSubscriptionPlanHistory.findMany({
+        where: {
+          createdAt: {
+            gte: lastSixMonths,
+          },
+        },
+        select: {
+          subscriptionPlanPaymentStatus: {
+            select: {
+              totalAmount: true,
+              paymentStatus: true,
+              createdAt: true,
+            },
+          },
+        },
+      }),
+      this.prisma.user.findMany({
+        where: {
+          created_at: {
+            gte: lastSixMonths,
+          },
+          role: 'USER',
+        },
+        select: { created_at: true },
+      }),
+    ]);
+
+    let subscriptionAmount = 0;
+
+    subscriptionAmountThisMonth.forEach((item) => {
+      if (item.subscriptionPlanPaymentStatus?.paymentStatus === 'PAID') {
+        subscriptionAmount +=
+          item.subscriptionPlanPaymentStatus?.totalAmount || 0;
+      }
     });
 
-    // active subscription total customers sum
+    const monthlyData: { year: number; month: number; amount: number }[] = [];
 
-    // reveneue  sum
+    lastSixMonthsData.forEach((item) => {
+      if (item.subscriptionPlanPaymentStatus?.paymentStatus === 'PAID') {
+        const month =
+          item.subscriptionPlanPaymentStatus?.createdAt.getMonth() + 1;
+        const year =
+          item.subscriptionPlanPaymentStatus?.createdAt.getFullYear();
+        const amount = item.subscriptionPlanPaymentStatus?.totalAmount || 0;
 
-    // pending payment count
+        const existingMonth = monthlyData.find(
+          (m) => m.year === year && m.month === month,
+        );
 
-    // monthly revenue track
-    // user grouth return both . prev and present months
+        if (existingMonth) {
+          existingMonth.amount += amount;
+        } else {
+          monthlyData.push({ year, month, amount });
+        }
+      }
+    });
 
-    // recent activity like create acc, payment related message or anything,
+    const userMonthlyData: {
+      year: number;
+      month: number;
+      userCount: number;
+    }[] = [];
 
-    // make a separate activity log file where every update will call an api to update anyghing like user registered or updated any field or
+    lastSixMonthsUsers.forEach((item) => {
+      const month = item.created_at.getMonth() + 1;
+      const year = item.created_at.getFullYear();
+
+      const existingMonth = userMonthlyData.find(
+        (m) => m.year === year && m.month === month,
+      );
+
+      if (existingMonth) {
+        existingMonth.userCount += 1;
+      } else {
+        userMonthlyData.push({ year, month, userCount: 1 });
+      }
+    });
 
     return cResponseData({
-      data: userCount,
+      data: {
+        userCount,
+        subscriptionAmount,
+        pendingPaymentCount: pendingPaymentCount || 0,
+        monthlyData,
+        userMonthlyData,
+      },
     });
   }
 }

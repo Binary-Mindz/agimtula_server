@@ -25,9 +25,10 @@ import { PaymentMethodService } from './paymentMethod.service';
 import { InvoiceLayoutService } from './invoice-layout.service';
 import { NotificationsService } from './notifications.service';
 import { UpdateNotificationSettingsDto } from './dto/update-notification-settings.dto';
+import { urlPrefix } from '../url-prefix';
 
-@Controller('settings')
-export class SettingsController {
+@Controller(`${urlPrefix}/settings`)
+export class UserSettingsController {
   constructor(
     private readonly settingsService: SettingsService,
     private readonly paymentMethodService: PaymentMethodService,

@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ReceiptsService } from './receipts.service';
-import { ReceiptsController } from './receipts.controller';
+import { UserReceiptsController } from './receipts.controller';
 import { NestjsFormDataModule } from 'nestjs-form-data';
 
 @Module({
   imports: [NestjsFormDataModule],
-  controllers: [ReceiptsController],
+  controllers: [UserReceiptsController],
   providers: [ReceiptsService],
 })
 export class ReceiptsModule {}

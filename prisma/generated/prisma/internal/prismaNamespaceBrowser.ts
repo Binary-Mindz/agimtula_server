@@ -91,6 +91,7 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const MileageScalarFieldEnum = {
   id: 'id',
+  milage_id: 'milage_id',
   date: 'date',
   startLocation: 'startLocation',
   endLocation: 'endLocation',
@@ -100,7 +101,9 @@ export const MileageScalarFieldEnum = {
   vehicle: 'vehicle',
   purpose: 'purpose',
   notes: 'notes',
-  userId: 'userId'
+  userId: 'userId',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
 } as const
 
 export type MileageScalarFieldEnum = (typeof MileageScalarFieldEnum)[keyof typeof MileageScalarFieldEnum]
@@ -223,6 +226,7 @@ export type LanguageScalarFieldEnum = (typeof LanguageScalarFieldEnum)[keyof typ
 
 export const ReceiptScalarFieldEnum = {
   id: 'id',
+  receipt_id: 'receipt_id',
   receiptFileUrl: 'receiptFileUrl',
   receiptFileKey: 'receiptFileKey',
   vendor: 'vendor',

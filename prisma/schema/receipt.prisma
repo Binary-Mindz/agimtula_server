@@ -1,5 +1,6 @@
 model Receipt {
   id             String          @id @unique @default(uuid())
+  receipt_id     Int  @unique()  @default(autoincrement())
   receiptFileUrl String?
   receiptFileKey String?
   vendor         String
@@ -15,6 +16,6 @@ model Receipt {
 
 model ReceiptCategory {
   id       String    @id @unique @default(uuid())
-  name     String
+  name     String @unique()
   receipts Receipt[]
 }

@@ -1944,6 +1944,7 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const MileageScalarFieldEnum = {
   id: 'id',
+  milage_id: 'milage_id',
   date: 'date',
   startLocation: 'startLocation',
   endLocation: 'endLocation',
@@ -1953,7 +1954,9 @@ export const MileageScalarFieldEnum = {
   vehicle: 'vehicle',
   purpose: 'purpose',
   notes: 'notes',
-  userId: 'userId'
+  userId: 'userId',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
 } as const
 
 export type MileageScalarFieldEnum = (typeof MileageScalarFieldEnum)[keyof typeof MileageScalarFieldEnum]
@@ -2076,6 +2079,7 @@ export type LanguageScalarFieldEnum = (typeof LanguageScalarFieldEnum)[keyof typ
 
 export const ReceiptScalarFieldEnum = {
   id: 'id',
+  receipt_id: 'receipt_id',
   receiptFileUrl: 'receiptFileUrl',
   receiptFileKey: 'receiptFileKey',
   vendor: 'vendor',
@@ -2279,6 +2283,20 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
+ * Reference to a field of type 'Int'
+ */
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+/**
+ * Reference to a field of type 'Int[]'
+ */
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
  * Reference to a field of type 'DateTime'
  */
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -2303,20 +2321,6 @@ export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
  * Reference to a field of type 'Float[]'
  */
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
-
-
-/**
- * Reference to a field of type 'Int'
- */
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-/**
- * Reference to a field of type 'Int[]'
- */
-export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 

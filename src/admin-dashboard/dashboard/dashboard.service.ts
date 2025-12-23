@@ -98,7 +98,7 @@ export class DashboardService {
       }
     });
 
-    const monthlyData: { year: number; month: number; amount: number }[] = [];
+    const monthlyData: { monthYear: string; amount: number }[] = [];
 
     lastSixMonthsData.forEach((item) => {
       if (item.subscriptionPlanPaymentStatus?.paymentStatus === 'PAID') {
@@ -106,38 +106,39 @@ export class DashboardService {
           item.subscriptionPlanPaymentStatus?.createdAt.getMonth() + 1;
         const year =
           item.subscriptionPlanPaymentStatus?.createdAt.getFullYear();
+        const monthYear = `${month}-${year}`;
         const amount = item.subscriptionPlanPaymentStatus?.totalAmount || 0;
 
         const existingMonth = monthlyData.find(
-          (m) => m.year === year && m.month === month,
+          (m) => m.monthYear === monthYear,
         );
 
         if (existingMonth) {
           existingMonth.amount += amount;
         } else {
-          monthlyData.push({ year, month, amount });
+          monthlyData.push({ monthYear, amount });
         }
       }
     });
 
     const userMonthlyData: {
-      year: number;
-      month: number;
+      monthYear: string;
       userCount: number;
     }[] = [];
 
     lastSixMonthsUsers.forEach((item) => {
       const month = item.created_at.getMonth() + 1;
       const year = item.created_at.getFullYear();
+      const monthYear = `${month}-${year}`;
 
       const existingMonth = userMonthlyData.find(
-        (m) => m.year === year && m.month === month,
+        (m) => m.monthYear === monthYear,
       );
 
       if (existingMonth) {
         existingMonth.userCount += 1;
       } else {
-        userMonthlyData.push({ year, month, userCount: 1 });
+        userMonthlyData.push({ monthYear, userCount: 1 });
       }
     });
 

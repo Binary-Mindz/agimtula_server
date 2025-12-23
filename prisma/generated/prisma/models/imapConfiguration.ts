@@ -534,10 +534,6 @@ export type ImapConfigurationNullableScalarRelationFilter = {
   isNot?: Prisma.imapConfigurationWhereInput | null
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type imapConfigurationCreateNestedOneWithoutRealtimeImapCheckingInput = {
   create?: Prisma.XOR<Prisma.imapConfigurationCreateWithoutRealtimeImapCheckingInput, Prisma.imapConfigurationUncheckedCreateWithoutRealtimeImapCheckingInput>
   connectOrCreate?: Prisma.imapConfigurationCreateOrConnectWithoutRealtimeImapCheckingInput

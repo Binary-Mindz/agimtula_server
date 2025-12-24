@@ -23,14 +23,12 @@ export class UserAutoInvoiceImportsController {
     private readonly manageConnectionService: ManageConnectionService,
   ) {}
 
-
   // get invoice Auto Sync Interval data
   @Get('get-imap-configuration')
   @Roles('USER')
-  getImapConfiguration(@User() user: jwtPayload,) {
+  getImapConfiguration(@User() user: jwtPayload) {
     return this.manageConnectionService.getImapConfiguration(user.sub);
   }
-
 
   // imap configuration
   @Patch('set-imap-configuration')
@@ -41,5 +39,11 @@ export class UserAutoInvoiceImportsController {
     @User() user: jwtPayload,
   ) {
     return this.manageConnectionService.setImapConfiguration(user.sub, data);
+  }
+
+  @Patch('imap-disconnect')
+  @Roles('USER')
+  imapDisconnect(@User() user: jwtPayload) {
+    return this.manageConnectionService.imap_DisConnect(user.sub);
   }
 }

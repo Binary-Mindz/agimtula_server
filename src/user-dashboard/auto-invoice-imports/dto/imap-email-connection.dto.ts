@@ -58,8 +58,8 @@ export class ImapEmailConnectionDto {
   })
   @IsNotEmpty({ message: 'I-map app password should not be empty' })
   @IsString({ message: 'Invalid I-map app password format' })
-
   imap_app_password: string;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -69,6 +69,16 @@ export class ImapEmailConnectionDto {
   @IsOptional()
   @IsString({ message: 'Invalid real time Imap-Checking Id format' })
   realtimeImapCheckingId?: string;
+
+  @ApiProperty({
+    required: false,
+    type: Boolean,
+    description: ' I-map app service connect',
+    example: true,
+  })
+  @IsOptional()
+  @IsBoolean({ message: 'Invalid connect format' })
+  connect?: boolean;
 
   @ApiProperty({
     required: false,

@@ -25,13 +25,6 @@ export class UserAutoInvoiceImportsController {
 
 
   // get invoice Auto Sync Interval data
-  @Get('get-invoice-time-sync-data')
-  @Roles('USER')
-  getInvoiceTimeSyncData(@User() user: jwtPayload,){
-    return this.manageConnectionService.getInvoiceTimeSyncData(user.sub);
-  }
-
-  // get invoice Auto Sync Interval data
   @Get('get-imap-configuration')
   @Roles('USER')
   getImapConfiguration(@User() user: jwtPayload,) {

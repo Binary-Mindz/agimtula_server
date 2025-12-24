@@ -5,9 +5,11 @@ import axios from 'axios';
 export class BankService {
   private clientId = 'b84ee12c366a4eaf97b1c376dd25934d';
   private clientSecret = '6ee6ec20f25f4af78876fd90976713ca';
-  private redirectUri = 'http://localhost:3000/consent-redirect'; // Update this for production
+  private redirectUri = 'http://localhost:3000/callback'; //  
+
 
   // Scopes for app token
+
   private appScopes = ['authorization:grant', 'user:create'];
   // Scopes for user consent
   private consentScopes = [
@@ -18,7 +20,7 @@ export class BankService {
   ];
 
   // 1️⃣ Get App Token
-  async getAppToken(): Promise<string> {
+  async getAppToken() {
     const res = await axios.post(
       'https://api.tink.com/api/v1/oauth/token',
       new URLSearchParams({
@@ -65,7 +67,7 @@ export class BankService {
       // 🔗 Frontend redirect URL
       const code = consentRes.data.code;
 
-      const consentUrl = `https://link.tink.com/1.0/account-check/?client_id=${this.clientId}&redirect_uri=https%3A%2F%2Fconsole.tink.com%2Fcallback&market=SE&locale=en_US`;
+      const consentUrl = `https://link.tink.com/1.0/account-check/?client_id=${this.clientId}&redirect_uri=${this.redirectUri}&market=SE&locale=en_US`;
 
 
       console.log('🔗 Consent URL:', consentUrl);

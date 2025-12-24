@@ -101,3 +101,37 @@ export class ImapEmailConnectionDto {
   @IsBoolean({ message: 'Invalid Email Notifications format' })
   emailNotifications?: boolean;
 }
+
+export class ImapTest {
+  @ApiProperty({
+    required: true,
+    type: String,
+    description: 'I-map server name of the user',
+    example: 'imap.gmail.com',
+  })
+  host: string;
+
+  @ApiProperty({
+    required: true,
+    type: Number,
+    description: 'I-map port of the user',
+    example: 993,
+  })
+  port: number;
+
+  @ApiProperty({
+    required: true,
+    type: String,
+    description: 'I-map user name of the user',
+    example: 'uforcode123@gmail.com',
+  })
+  username: string;
+
+  @ApiProperty({
+    required: true,
+    type: String,
+    description: 'I-map app password of the user',
+    example: 'eoxt djqk wqtf banr',
+  })
+  password: string;
+}

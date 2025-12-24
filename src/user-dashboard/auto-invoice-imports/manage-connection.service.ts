@@ -2,6 +2,10 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { ImapEmailConnectionDto } from './dto/imap-email-connection.dto';
 import { cResponseData } from 'src/common/cResponse';
+import {
+  GetIntervalTimes,
+  ImapConfiguration,
+} from './types/getInvoiceTime.type';
 // import { SyncSettingsDto } from './dto/sync-settings.dto';
 // import { UpdateConnectionDto } from './dto/update-connection.dto';
 
@@ -30,7 +34,10 @@ export class ManageConnectionService {
   }
 
   //get invice auto sync data
-  async getInvoiceTimeSyncData(userId: string) {
+  async getInvoiceTimeSyncData(
+    userId: string,
+    seleteItem?: string | null,
+  ): Promise<GetIntervalTimes[]> {
     const seletedTime = await this.selectedInvoiceTimeSyncData(userId);
     const intervalTimeSync = await this.prisma.invoiceAutoSyncInterval.findMany(
       {
@@ -44,20 +51,37 @@ export class ManageConnectionService {
     return intervalTimeSync.map((item) => ({
       ...item,
       selected: seletedTime?.includes(item.id),
+      seleteItem: seleteItem ? seleteItem == item.id : false,
     }));
   }
 
   // get Imap Configuration data to user
   async getImapConfiguration(userId: string) {
-    const imapConfiguration = await this.prisma.imapConfiguration.findFirst({
-      where: {
-        userId: userId,
-      },
-    });
+    const imapConfiguration: ImapConfiguration =
+      await this.prisma.imapConfiguration.findFirst({
+        where: {
+          userId: userId,
+        },
+      });
+
+    if (!imapConfiguration)
+      return cResponseData({
+        message: 'You have no Imap Configuration',
+        data: {
+          syncFrequency: await this.getInvoiceTimeSyncData(userId),
+        },
+      });
+
+    const { realtimeImapCheckingId, ...plan } = imapConfiguration;
+    const syncFrequency = await this.getInvoiceTimeSyncData(
+      userId,
+      realtimeImapCheckingId,
+    );
+
     return cResponseData({
       message:
         'Connection successful! Your email is now connected and syncing.',
-      data: imapConfiguration,
+      data: { ...plan, syncFrequency },
     });
   }
 

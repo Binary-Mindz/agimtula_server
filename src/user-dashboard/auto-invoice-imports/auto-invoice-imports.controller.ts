@@ -46,6 +46,7 @@ export class UserAutoInvoiceImportsController {
     return this.manageConnectionService.setImapConfiguration(user.sub, data);
   }
 
+  // Disconnect Imap
   @Patch('imap-disconnect')
   @Roles('USER')
   imapDisconnect(@User() user: jwtPayload) {

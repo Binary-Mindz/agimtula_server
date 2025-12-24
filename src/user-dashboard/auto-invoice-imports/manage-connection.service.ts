@@ -178,6 +178,7 @@ export class ManageConnectionService {
     });
   }
 
+  // imap_DisConnect
   async imap_DisConnect(userId: string) {
     const disconnect = await this.prisma.imapConfiguration.update({
       where: {

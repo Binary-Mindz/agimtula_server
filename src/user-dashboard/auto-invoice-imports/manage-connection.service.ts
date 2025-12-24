@@ -137,6 +137,7 @@ export class ManageConnectionService {
         host: dto.imap_server,
         port: dto.imap_port,
         realtimeImapCheckingId: dto.realtimeImapCheckingId,
+        connect: true,
         sync: dto.automatic_Sync,
         emailNotifications: dto.emailNotifications,
         userId: userId,
@@ -147,6 +148,23 @@ export class ManageConnectionService {
       message:
         'Connection successful! Your email is now connected and syncing.',
       data: c,
+    });
+  }
+
+  async imap_DisConnect(userId: string) {
+    const disconnect = await this.prisma.imapConfiguration.update({
+      where: {
+        userId: userId,
+      },
+      data: {
+        connect: false,
+        sync: false,
+        emailNotifications: false,
+      },
+    });
+    return cResponseData({
+      message: 'Imap Disconnected',
+      data: disconnect,
     });
   }
 }

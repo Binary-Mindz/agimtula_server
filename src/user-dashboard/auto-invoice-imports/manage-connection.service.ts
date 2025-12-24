@@ -118,6 +118,19 @@ export class ManageConnectionService {
       );
     }
 
+    const imapConnectService = {};
+    if (dto.connect === false) {
+      imapConnectService['connect'] = false;
+      imapConnectService['sync'] = false;
+      imapConnectService['emailNotifications'] = false;
+    }
+    if (dto.connect === true) {
+      imapConnectService['connect'] = true;
+      imapConnectService['sync'] = dto.automatic_Sync || false;
+      imapConnectService['emailNotifications'] =
+        dto.emailNotifications || false;
+    }
+
     const c = await this.prisma.imapConfiguration.upsert({
       where: {
         userId: userId,
@@ -128,8 +141,7 @@ export class ManageConnectionService {
         host: dto.imap_server,
         port: dto.imap_port,
         realtimeImapCheckingId: dto.realtimeImapCheckingId,
-        sync: dto.automatic_Sync,
-        emailNotifications: dto.emailNotifications,
+        ...imapConnectService,
       },
       create: {
         username: dto.imap_username,
@@ -137,12 +149,27 @@ export class ManageConnectionService {
         host: dto.imap_server,
         port: dto.imap_port,
         realtimeImapCheckingId: dto.realtimeImapCheckingId,
-        connect: true,
-        sync: dto.automatic_Sync,
-        emailNotifications: dto.emailNotifications,
         userId: userId,
+        ...imapConnectService,
       },
     });
+
+    if (dto.connect == null && c.connect == true) {
+      const cUp = await this.prisma.imapConfiguration.update({
+        where: {
+          userId: userId,
+        },
+        data: {
+          sync: dto.automatic_Sync,
+          emailNotifications: dto.emailNotifications,
+        },
+      });
+      return cResponseData({
+        message:
+          'Connection successful! Your email is now connected and syncing.',
+        data: cUp,
+      });
+    }
 
     return cResponseData({
       message:

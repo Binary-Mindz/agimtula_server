@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ImapApisModule } from './imap-apis/imap-apis.module';
 import { DatabaseModule } from './config/database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { AdminDashboardModule } from './admin-dashboard/admin-dashboard.module';
@@ -22,7 +21,6 @@ import { RedisServiceModule } from './config/redis-service/redis-service.module'
     ConfigModule.forRoot({ isGlobal: true }),
     ScheduleModule.forRoot(),
     DatabaseModule,
-    ImapApisModule,
     AuthModule,
     AdminDashboardModule,
     AccountantDashboardModule,

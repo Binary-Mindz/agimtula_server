@@ -60,4 +60,10 @@ export class UserAutoInvoiceImportsController {
   imapTest(@Body() data: ImapTest, @Res() res: Response) {
     return this.imapApisService.testConnection(data, res);
   }
+
+  @Public()
+  @Get('imap-Connection-Test')
+  imapConnectionTest() {
+    return this.imapApisService.imapConnectionTest();
+  }
 }

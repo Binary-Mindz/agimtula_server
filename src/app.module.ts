@@ -14,8 +14,8 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { SettingsModule } from './user-dashboard/settings/settings.module';
 import { AuthGuard } from './auth/guards/auth/auth.guard';
 import { RedisServiceModule } from './config/redis-service/redis-service.module';
-// import { PaymentsModule } from './admin-dashboard/payments/payments.module';
 import { BankModule } from './bank/bank.module';
+
 
 @Module({
   imports: [
@@ -43,4 +43,4 @@ import { BankModule } from './bank/bank.module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }

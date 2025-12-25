@@ -58,6 +58,38 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
     // }
   }
 
+  // user imap connection list test
+  async imapConnectionTest() {
+    const imapUserActive = await this.prisma.user.findMany({
+      where: {
+        email: { isNot: null },
+        userSubscriptionPlan: {
+          subscriptionPlanPaymentStatus: {
+            paymentStatus: 'PAID',
+          },
+          expiredAt: { gt: new Date() },
+        },
+      },
+      select: {
+        profile: { select: { firstName: true, lastName: true } },
+        imapConfigurations: true,
+      },
+    });
+
+    const redisDataSet = {
+      user_Name: `${imapUserActive[0].profile?.firstName} ${imapUserActive[0].profile?.lastName}`,
+      email: imapUserActive[0].imapConfigurations?.username,
+      status: imapUserActive[0].imapConfigurations?.connect
+        ? 'Connected'
+        : 'Not Connected',
+      lastSync: null,
+      importedToday: `${0} ${imapUserActive[0].imapConfigurations?.connect ? 'Active' : ''}`,
+      error: null,
+    };
+
+    return redisDataSet;
+  }
+
   // Test IMAP Connection
   async testConnection(clint: ImapClient, response: Response) {
     try {

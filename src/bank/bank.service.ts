@@ -82,7 +82,7 @@ export class BankService {
       const state = crypto.randomBytes(16).toString('hex');
       const consentUrl = `https://link.tink.com/1.0/account-check/?client_id=${encodeURIComponent(
         this.clientId,
-      )}&redirect_uri=${encodeURIComponent(`${this.redirectUri}?code=${encodeURIComponent(grantCode)}`)}&sharif="01998769191"&code=${encodeURIComponent(grantCode)}&market=NL&locale=nl_NL&state=${encodeURIComponent(
+      )}&redirect_uri=${encodeURIComponent(`${this.redirectUri}?code=${encodeURIComponent(grantCode)}`)}&code=${encodeURIComponent(grantCode)}&market=NL&locale=nl_NL&state=${encodeURIComponent(
         state,
       )}`;
       console.log(consentUrl);
@@ -110,7 +110,7 @@ export class BankService {
     return res.data;
   }
   async getUserAccountsWithToken(userAccessToken: string) {
-    const url = 'https://api.tink.com/api/v1/accounts';
+    const url = 'https://api.tink.com/data/v2/transactions';
     try {
       const res = await axios.get(url, {
         headers: { Authorization: `Bearer ${userAccessToken}` },

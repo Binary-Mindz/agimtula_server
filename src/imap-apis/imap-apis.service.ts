@@ -29,23 +29,23 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
 
   async onModuleInit() {
     // await this.loadCronJobsFromDB();
-    const imapUserActive = await this.prisma.user.findMany({
-      where: {
-        email: { isNot: null },
-        userSubscriptionPlan: {
-          subscriptionPlanPaymentStatus: {
-            paymentStatus: 'PAID',
-          },
-          expiredAt: { gt: new Date() },
-        },
-        imapConfigurations: {
-          connect: true,
-          sync: true,
-        },
-      },
-      select: { imapConfigurations: true },
-    });
-    console.log(JSON.stringify(imapUserActive, null, 2));
+    // const imapUserActive = await this.prisma.user.findMany({
+    //   where: {
+    //     email: { isNot: null },
+    //     userSubscriptionPlan: {
+    //       subscriptionPlanPaymentStatus: {
+    //         paymentStatus: 'PAID',
+    //       },
+    //       expiredAt: { gt: new Date() },
+    //     },
+    //     imapConfigurations: {
+    //       connect: true,
+    //       sync: true
+    //     },
+    //   },
+    //   select: { imapConfigurations: true },
+    // });
+    // console.log(JSON.stringify(imapUserActive, null, 2));
   }
 
   async onModuleDestroy() {

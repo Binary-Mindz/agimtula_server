@@ -1,11 +1,24 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ImapFlow } from 'imapflow';
 import { SchedulerRegistry } from '@nestjs/schedule';
+import * as imaps from 'imap-simple';
+import { simpleParser } from 'mailparser';
 // import { CreateImapApiDto } from './dto/create-imap-api.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { ImapClient } from './types/imapService.type';
 import { cResponseData } from 'src/common/cResponse';
 import { Response } from 'express';
+
+interface TransactionInvoice {
+  invoiceId: string;
+  accountNumber: string;
+  transactionDate: string;
+  transactionType: string;
+  amount: string;
+  status: string;
+  from: string;
+  attachments: string[];
+}
 
 @Injectable()
 export class ImapApisService implements OnModuleInit, OnModuleDestroy {
@@ -28,6 +41,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
   }
 
   async onModuleInit() {
+    // await this.readEmailByAccountTest()
     // await this.loadCronJobsFromDB();
     // const imapUserActive = await this.prisma.user.findMany({
     //   where: {
@@ -119,31 +133,101 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
     return;
   }
 
-  async readEmailByAccountTest(email: string) {
-    // Create IMAP Flow client for each email
-    // const account = await this.prisma.emailAccount.findUnique({
-    //   where: { email },
-    // });
+  extractInvoiceData(
+    body: string,
+    from: string,
+    attachments: string[],
+  ): TransactionInvoice | null {
+    const getValue = (label: string) => {
+      const match = body.match(new RegExp(`${label}:\\s*(.*)`));
+      return match ? match[1].trim() : '';
+    };
 
-    const client = new ImapFlow({
-      host: 'imap.gmail.com',
-      port: 993,
-      auth: {
-        user: '',
-        pass: '',
-      },
-    });
+    const invoiceId = getValue('Invoice ID') || getValue('Transaction ID');
 
-    await client.connect();
+    if (!invoiceId) return null;
 
-    const inbox = await client.getMailboxLock('INBOX');
+    return {
+      invoiceId,
+      accountNumber: getValue('Account Number'),
+      transactionDate: getValue('Transaction Date'),
+      transactionType: getValue('Transaction Type'),
+      amount: getValue('Amount'),
+      status: getValue('Status'),
+      from,
+      attachments, // 👈 attach filenames here
+    };
+  }
+
+  async readEmailByAccountTest(): Promise<{
+    count: number;
+    invoices: TransactionInvoice[];
+  }> {
     try {
-      for await (const msg of client.fetch('1:*', { envelope: true })) {
-        // console.log(`[${email}] → ${msg.envelope.subject}`);
+      const config = {
+        imap: {
+          user: process.env.MAIL_USER!,
+          password: process.env.MAIL_PASS!,
+          host: 'imap.gmail.com',
+          port: 993,
+          tls: true,
+          authTimeout: 10000,
+          tlsOptions: { rejectUnauthorized: false },
+        },
+      };
+
+      const connection = await imaps.connect(config);
+      await connection.openBox('INBOX');
+
+      const searchCriterias = [
+        ['SUBJECT', 'invoice'],
+        ['SUBJECT', 'transaction'],
+        ['SUBJECT', 'salary'],
+        ['BODY', 'Transaction ID'],
+      ];
+
+      const allInvoices: TransactionInvoice[] = [];
+
+      for (const criteria of searchCriterias) {
+        const messages = await connection.search([criteria], {
+          bodies: '',
+          markSeen: false,
+        });
+
+        for (const message of messages) {
+          const parsed = await simpleParser(message.parts[0].body);
+
+          const body = parsed.text || parsed.html || '';
+
+          // 🔹 Extract attachment file names only
+          const attachmentNames =
+            parsed.attachments
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+              ?.map((att) => att.filename)
+              .filter((filename): filename is string => Boolean(filename)) ||
+            [];
+
+          const invoice = this.extractInvoiceData(
+            body as string,
+            (parsed.from?.text as string) || 'Unknown',
+            attachmentNames as string[],
+          );
+
+          if (invoice) {
+            allInvoices.push(invoice);
+          }
+        }
       }
-    } finally {
-      inbox.release();
-      await client.logout();
+
+      connection.end();
+
+      return {
+        count: allInvoices.length,
+        invoices: allInvoices,
+      };
+    } catch (error: any) {
+      console.error('Email read failed:', error.message);
+      throw new Error(`Email read failed: ${error.message}`);
     }
   }
 }

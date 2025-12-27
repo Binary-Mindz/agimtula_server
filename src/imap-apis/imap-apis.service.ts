@@ -139,7 +139,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
     const inbox = await client.getMailboxLock('INBOX');
     try {
       for await (const msg of client.fetch('1:*', { envelope: true })) {
-        console.log(`[${email}] → ${msg.envelope.subject}`);
+        // console.log(`[${email}] → ${msg.envelope.subject}`);
       }
     } finally {
       inbox.release();

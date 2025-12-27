@@ -14,29 +14,30 @@ import {
 } from './dto/tink.dto';
 
 @ApiTags('Tink Bank Integration')
-@Controller('tink')
+@Controller()
 export class TinkController {
-  constructor(private tinkService: TinkService) { }
+  constructor(private tinkService: TinkService) {}
 
   @Post('connect-bank')
   @Public()
   @ApiOperation({
     summary: 'Generate bank connection URL',
-    description: 'Creates Tink authorization URL to initiate bank connection flow. Open the returned URL in browser to connect your bank.',
+    description:
+      'Creates Tink authorization URL to initiate bank connection flow. Open the returned URL in browser to connect your bank.',
   })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Authorization URL generated successfully',
     type: ConnectBankResponseDto,
   })
-  connectBank(
-    @Body() dto: ConnectBankDto,
-  ): ConnectBankResponseDto {
+  connectBank(@Body() dto: ConnectBankDto): ConnectBankResponseDto {
     const market = dto.market || 'NL';
     const locale = dto.locale || 'en_US';
 
-    const clientId = process.env.TINK_CLIENT_ID || 'b84ee12c366a4eaf97b1c376dd25934d';
-    const redirectUri = process.env.TINK_REDIRECT_URI || 'http://localhost:3001/tink/callback';
+    const clientId =
+      process.env.TINK_CLIENT_ID || 'b84ee12c366a4eaf97b1c376dd25934d';
+    const redirectUri =
+      process.env.TINK_REDIRECT_URI || 'http://localhost:3000/callback';
 
     const authorizationUrl = `https://link.tink.com/1.0/transactions/connect-accounts?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&market=${market}&locale=${locale}`;
 
@@ -47,12 +48,12 @@ export class TinkController {
     };
   }
 
-
   @Get('callback')
   @Public()
   @ApiOperation({
     summary: 'OAuth callback handler',
-    description: 'Receives authorization code from Tink OAuth flow, exchanges it for access token, and fetches transactions',
+    description:
+      'Receives authorization code from Tink OAuth flow, exchanges it for access token, and fetches transactions',
   })
   @ApiQuery({
     name: 'code',
@@ -107,7 +108,9 @@ export class TinkController {
       console.log('Access Token:', accessToken);
       console.log(`Found ${trxData.transactions.length} transactions\n`);
 
-      const formattedTransactions = this.tinkService.formatTransactions(trxData.transactions);
+      const formattedTransactions = this.tinkService.formatTransactions(
+        trxData.transactions,
+      );
       formattedTransactions.forEach((trx, idx) => {
         console.log(`[${idx + 1}] ${trx.description}`);
         console.log(`    ${trx.amount} ${trx.currency} - ${trx.date}\n`);
@@ -131,7 +134,6 @@ export class TinkController {
       };
     }
   }
-
 
   @Post('exchange-token')
   @Public()
@@ -163,12 +165,12 @@ export class TinkController {
     }
   }
 
-
   @Post('get-transactions')
   @Public()
   @ApiOperation({
     summary: 'Fetch transactions using access token',
-    description: 'Retrieve user transactions from Tink using a valid access token',
+    description:
+      'Retrieve user transactions from Tink using a valid access token',
   })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -186,7 +188,9 @@ export class TinkController {
     try {
       const trxData = await this.tinkService.getTransactions(dto.accessToken);
       console.log({ trxData });
-      const formattedTransactions = this.tinkService.formatTransactions(trxData.transactions);
+      const formattedTransactions = this.tinkService.formatTransactions(
+        trxData.transactions,
+      );
       return formattedTransactions;
     } catch (err) {
       return {
@@ -195,6 +199,4 @@ export class TinkController {
       };
     }
   }
-
-
 }

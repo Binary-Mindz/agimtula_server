@@ -1,4 +1,3 @@
-
 // import { Injectable } from '@nestjs/common';
 
 // @Injectable()
@@ -41,17 +40,24 @@ export class BankService {
   private readonly logger = new Logger(BankService.name);
 
   // NOTE: move these to process.env in production and rotate if leaked.
-  private clientId = 'b84ee12c366a4eaf97b1c376dd25934d';
-  private clientSecret = '8e7c162045fa44738ca5ab88b1164f7a';
-  private redirectUri = 'http://localhost:3000/bank/callback'; // must match Tink Console exactly
+  private clientId =
+    process.env.TINK_CLIENT_ID || 'b84ee12c366a4eaf97b1c376dd25934d';
+  private clientSecret =
+    process.env.TINK_CLIENT_SECRET || '8e7c162045fa44738ca5ab88b1164f7a';
+  private redirectUri = 'http://localhost:3000/callback'; // must match Tink Console exactly
 
   // Scopes for app token
   private appScopes = ['authorization:grant', 'user:create'];
   // Scopes for user consent
-  private consentScopes = ['accounts:read', 'transactions:read', 'user:read', 'credentials:read'];
+  private consentScopes = [
+    'accounts:read',
+    'transactions:read',
+    'user:read',
+    'credentials:read',
+  ];
 
   // 1️⃣ Get App Token (client_credentials)
-  async getAppToken() {
+  async getAppToken(): Promise<any> {
     const body = new URLSearchParams({
       grant_type: 'client_credentials',
       client_id: this.clientId,
@@ -59,9 +65,13 @@ export class BankService {
       scope: this.appScopes.join(' '),
     }).toString();
 
-    const res = await axios.post('https://api.tink.com/api/v1/oauth/token', body, {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    });
+    const res = await axios.post(
+      'https://api.tink.com/api/v1/oauth/token',
+      body,
+      {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      },
+    );
 
     return res.data;
   }
@@ -77,7 +87,12 @@ export class BankService {
       const userRes = await axios.post(
         'https://api.tink.com/api/v1/user/create',
         { market: 'NL', locale: 'nl_NL' },
-        { headers: { Authorization: `Bearer ${appToken}`, 'Content-Type': 'application/json' } },
+        {
+          headers: {
+            Authorization: `Bearer ${appToken}`,
+            'Content-Type': 'application/json',
+          },
+        },
       );
 
       const userId = userRes.data.user_id;
@@ -90,26 +105,38 @@ export class BankService {
         redirect_uri: this.redirectUri,
       }).toString();
 
-      const consentRes = await axios.post('https://api.tink.com/api/v1/oauth/authorization-grant', grantBody, {
-        headers: {
-          Authorization: `Bearer ${appToken}`,
-          'Content-Type': 'application/x-www-form-urlencoded',
+      const consentRes = await axios.post(
+        'https://api.tink.com/api/v1/oauth/authorization-grant',
+        grantBody,
+        {
+          headers: {
+            Authorization: `Bearer ${appToken}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
         },
-      });
+      );
       console.log({ consentRes });
       const grantData = consentRes.data;
-      this.logger.debug('authorization-grant response: ' + JSON.stringify(grantData));
+      this.logger.debug(
+        'authorization-grant response: ' + JSON.stringify(grantData),
+      );
 
       const grantCode = grantData?.code;
       if (!grantCode) {
         // Some responses may provide a ready-made URL instead — handle that case if needed
-        const providedUrl = grantData?.url || grantData?.redirect_url || grantData?.link_url || null;
+        const providedUrl =
+          grantData?.url ||
+          grantData?.redirect_url ||
+          grantData?.link_url ||
+          null;
         if (providedUrl) {
           // create state and return providedUrl
           const state = crypto.randomBytes(16).toString('hex');
           return { userId, consentUrl: providedUrl, state, grantData };
         }
-        throw new Error('authorization-grant did not return a grant code or link URL');
+        throw new Error(
+          'authorization-grant did not return a grant code or link URL',
+        );
       }
 
       const state = crypto.randomBytes(16).toString('hex');
@@ -122,12 +149,15 @@ export class BankService {
       this.logger.log('🔗 Consent URL constructed');
       return { userId, consentUrl, state, grantData };
     } catch (error: any) {
-      this.logger.error('❌ Error creating Tink user or consent session:', error.response?.data || error.message);
+      this.logger.error(
+        '❌ Error creating Tink user or consent session:',
+        error.response?.data || error.message,
+      );
       throw error;
     }
   }
 
-  async getUserAccessToken(authCode: string) {
+  async getUserAccessToken(authCode: string): Promise<any> {
     const body = new URLSearchParams({
       client_id: this.clientId,
       client_secret: this.clientSecret,
@@ -136,9 +166,13 @@ export class BankService {
       redirect_uri: this.redirectUri,
     }).toString();
 
-    const res = await axios.post('https://api.tink.com/api/v1/oauth/token', body, {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    });
+    const res = await axios.post(
+      'https://api.tink.com/api/v1/oauth/token',
+      body,
+      {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      },
+    );
     console.log({ res });
     return res.data;
   }
@@ -152,7 +186,9 @@ export class BankService {
       // res.data likely contains an array or object with accounts; inspect in dev
       return cResponseData(res.data);
     } catch (err: any) {
-      this.logger.error('getUserAccounts failed: ' + (err.response?.data || err.message));
+      this.logger.error(
+        'getUserAccounts failed: ' + (err.response?.data || err.message),
+      );
       throw err;
     }
   }

@@ -20,6 +20,7 @@ interface Transaction {
   };
   descriptions: {
     display: string;
+    original: string;
   };
   [key: string]: unknown;
 }
@@ -36,11 +37,15 @@ export class TinkService {
    * Exchange authorization code for access token
    */
   async exchangeToken(code: string): Promise<TokenData> {
-    const clientId = process.env.TINK_CLIENT_ID || 'b84ee12c366a4eaf97b1c376dd25934d';
-    const clientSecret = process.env.TINK_CLIENT_SECRET || '8d5c0a8c21a9413480ade6b99f50ae5b';
+    const clientId =
+      process.env.TINK_CLIENT_ID || 'b84ee12c366a4eaf97b1c376dd25934d';
+    const clientSecret =
+      process.env.TINK_CLIENT_SECRET || '8d5c0a8c21a9413480ade6b99f50ae5b';
 
     if (!clientSecret) {
-      throw new Error('TINK_CLIENT_SECRET is not configured. Please set it in .env file.');
+      throw new Error(
+        'TINK_CLIENT_SECRET is not configured. Please set it in .env file.',
+      );
     }
 
     const body = new URLSearchParams({
@@ -67,7 +72,9 @@ export class TinkService {
         client_secret: '***MASKED***',
         grant_type: 'authorization_code',
       });
-      throw new Error(`Tink token error: ${res.status} - ${res.statusText}. Response: ${errorBody}`);
+      throw new Error(
+        `Tink token error: ${res.status} - ${res.statusText}. Response: ${errorBody}`,
+      );
     }
     return (await res.json()) as TokenData;
   }
@@ -85,15 +92,31 @@ export class TinkService {
     });
 
     if (!res.ok) {
-      throw new Error(`Failed to fetch transactions: ${res.status} - ${res.statusText}`);
+      throw new Error(
+        `Failed to fetch transactions: ${res.status} - ${res.statusText}`,
+      );
     }
-    return (await res.json()) as TransactionData;
+
+    const data = (await res.json()) as TransactionData;
+
+    const formattedTransactions = data.transactions?.map((trx: Transaction) => {
+      console.log(
+        `date: ${trx.dates.booked}, description: ${trx.descriptions.display}, category:${trx.descriptions.original} amount: ${(trx.amount.value.unscaledValue / 10 ** trx.amount.value.scale).toFixed(2)} ${trx.amount.currencyCode}`,
+      );
+    });
+
+    console.log(formattedTransactions);
+
+    return data;
   }
 
   /**
    * Parse transaction amount
    */
-  parseTransactionAmount(transaction: Transaction): { amount: number; currency: string } {
+  parseTransactionAmount(transaction: Transaction): {
+    amount: number;
+    currency: string;
+  } {
     const { unscaledValue, scale } = transaction.amount.value;
     const amount = unscaledValue / 10 ** scale;
     return {

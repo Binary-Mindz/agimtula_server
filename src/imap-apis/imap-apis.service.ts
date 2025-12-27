@@ -119,31 +119,31 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
     return;
   }
 
-  // async readEmailByAccount(email: string) {
-  //   // Create IMAP Flow client for each email
-  //   const account = await this.prisma.emailAccount.findUnique({
-  //     where: { email },
-  //   });
+  async readEmailByAccountTest(email: string) {
+    // Create IMAP Flow client for each email
+    // const account = await this.prisma.emailAccount.findUnique({
+    //   where: { email },
+    // });
 
-  //   const client = new ImapFlow({
-  //     host: 'imap.gmail.com',
-  //     port: 993,
-  //     auth: {
-  //       user: account.email,
-  //       pass: account.password,
-  //     },
-  //   });
+    const client = new ImapFlow({
+      host: 'imap.gmail.com',
+      port: 993,
+      auth: {
+        user: '',
+        pass: '',
+      },
+    });
 
-  //   await client.connect();
+    await client.connect();
 
-  //   const inbox = await client.getMailboxLock('INBOX');
-  //   try {
-  //     for await (const msg of client.fetch('1:*', { envelope: true })) {
-  //       console.log(`[${email}] → ${msg.envelope.subject}`);
-  //     }
-  //   } finally {
-  //     inbox.release();
-  //     await client.logout();
-  //   }
-  // }
+    const inbox = await client.getMailboxLock('INBOX');
+    try {
+      for await (const msg of client.fetch('1:*', { envelope: true })) {
+        console.log(`[${email}] → ${msg.envelope.subject}`);
+      }
+    } finally {
+      inbox.release();
+      await client.logout();
+    }
+  }
 }

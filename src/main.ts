@@ -21,6 +21,6 @@ async function bootstrap(): Promise<void> {
     new PrismaExceptionFilter(),
     new PrismaValidationExceptionFilter(),
   );
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 3003);
 }
 void bootstrap();

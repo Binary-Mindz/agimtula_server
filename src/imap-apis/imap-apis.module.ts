@@ -2,10 +2,11 @@ import { Module } from '@nestjs/common';
 import { ImapApisService } from './imap-apis.service';
 import { ScheduleModule } from '@nestjs/schedule';
 import { CronConfigService } from './cronConfig.service';
+import { ImapApisController } from './imap-apis.controller';
 
 @Module({
   imports: [ScheduleModule.forRoot()],
-  controllers: [],
+  controllers: [ImapApisController],
   providers: [ImapApisService, CronConfigService],
   exports: [ImapApisService],
 })

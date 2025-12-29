@@ -15,6 +15,7 @@ import { AuthGuard } from './auth/guards/auth/auth.guard';
 import { RedisServiceModule } from './config/redis-service/redis-service.module';
 import { BankModule } from './bank/bank.module';
 import { ImapApisModule } from './imap-apis/imap-apis.module';
+import { BankTransactionModule } from './user-dashboard/bank-transaction/transaction.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ImapApisModule } from './imap-apis/imap-apis.module';
     SettingsModule,
     BankModule,
     ImapApisModule,
+    BankTransactionModule,
     // PaymentsModule
   ],
   controllers: [AppController],

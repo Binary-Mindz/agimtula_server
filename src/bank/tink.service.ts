@@ -6,7 +6,7 @@ export interface TransactionRow {
   category?: string;
   amount: number;
   currency: string;
-  status: 'Matched' | 'Unmatched';
+  status: 'MATCHED' | 'UNMATCHED';
   linkedInvoiceId?: string;
   attachments?: string[];
   from?: string;
@@ -120,7 +120,7 @@ export class TinkService {
         category: trx.descriptions.original || 'Not categorized',
         amount,
         currency,
-        status: 'Unmatched' as const,
+        status: 'UNMATCHED' as const,
         from: 'Tink Bank',
       };
     }) || [];

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Injectable } from '@nestjs/common';
 
 export interface TransactionRow {
@@ -40,6 +39,22 @@ interface Transaction {
 
 interface TransactionData {
   transactions: Transaction[];
+}
+
+interface Account {
+  name: string;
+  type: string;
+  balances: {
+    booked?: {
+      amount: Amount;
+    };
+  };
+  identifiers?: {
+    financialInstitution?: {
+      accountNumber: string;
+    };
+  };
+  [key: string]: unknown;
 }
 
 @Injectable()
@@ -175,11 +190,11 @@ export class TinkService {
       const data = await res.json();
       console.log('Connected accounts:', data.accounts);
 
-      data.accounts.forEach((account) => {
+      data.accounts.forEach((account: Account) => {
         console.log(`Name: ${account.name}`);
         console.log(`Type: ${account.type}`);
         console.log(
-          `Balance: ${account.balances.booked?.amount.value.unscaledValue / Math.pow(10, account.balances.booked?.amount.value.scale)} ${account.balances.booked?.amount.currencyCode}`,
+          `Balance: ${account.balances.booked?.amount.value.unscaledValue ? account.balances.booked.amount.value.unscaledValue / Math.pow(10, account.balances.booked.amount.value.scale) : 0} ${account.balances.booked?.amount.currencyCode || 'N/A'}`,
         );
         console.log(
           `Account Number: ${account.identifiers?.financialInstitution?.accountNumber}`,
@@ -188,12 +203,13 @@ export class TinkService {
       });
 
       return {
-        accounts: data.accounts.map((account) => ({
+        accounts: data.accounts.map((account: Account) => ({
           name: account.name,
           type: account.type,
-          balance:
-            account.balances.booked?.amount.value.unscaledValue /
-            Math.pow(10, account.balances.booked?.amount.value.scale),
+          balance: account.balances.booked?.amount.value.unscaledValue
+            ? account.balances.booked.amount.value.unscaledValue /
+              Math.pow(10, account.balances.booked.amount.value.scale)
+            : 0,
           currency: account.balances.booked?.amount.currencyCode,
           accountNumber:
             account.identifiers?.financialInstitution?.accountNumber,

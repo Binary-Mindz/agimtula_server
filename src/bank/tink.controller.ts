@@ -1,6 +1,7 @@
 import { Controller, Get, Query, Post, Body, HttpStatus } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { TinkService } from './tink.service';
+import { TransactionService } from 'src/user-dashboard/bank-transaction/transaction.service';
 import { Public } from 'src/auth/decorators/public.decorator';
 import {
   ConnectBankDto,
@@ -16,7 +17,10 @@ import {
 @ApiTags('Tink Bank Integration')
 @Controller()
 export class TinkController {
-  constructor(private tinkService: TinkService) {}
+  constructor(
+    private tinkService: TinkService,
+    private transactionService: TransactionService,
+  ) {}
 
   @Post('connect-bank')
   @Public()
@@ -102,6 +106,9 @@ export class TinkController {
       // 2️⃣ Fetch transactions
       const transactions = await this.tinkService.getTransactions(accessToken);
 
+      // Store in database
+      await this.transactionService.storeTransactions(transactions);
+
       // 3️⃣ Log to server console
       console.log('===== TINK TRANSACTIONS =====');
       console.log('CredentialsId:', credentialsId);
@@ -116,13 +123,13 @@ export class TinkController {
       console.log('==============================\n');
 
       // 4️⃣ Return success response with transaction data
-      const formattedTransactions = transactions.map(trx => ({
+      const formattedTransactions = transactions.map((trx) => ({
         description: trx.description,
         amount: trx.amount.toFixed(2),
         currency: trx.currency,
         date: trx.date,
       }));
-      
+
       return {
         success: true,
         message: 'Transactions fetched successfully',
@@ -130,7 +137,7 @@ export class TinkController {
         transactionCount: transactions.length,
         transactions: formattedTransactions,
       };
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Tink callback error:', err);
       return {
         error: 'Tink callback error',
@@ -161,7 +168,7 @@ export class TinkController {
     try {
       const tokenData = await this.tinkService.exchangeToken(dto.code);
       return tokenData;
-    } catch (err) {
+    } catch (err: unknown) {
       return {
         error: 'Token exchange failed',
         message: err instanceof Error ? err.message : 'Unknown error',
@@ -190,19 +197,23 @@ export class TinkController {
     @Body() dto: GetTransactionsDto,
   ): Promise<TransactionResponseDto[] | TinkErrorResponseDto> {
     try {
-      const transactions = await this.tinkService.getTransactions(dto.accessToken);
-      console.log({ transactions });
-      
+      const transactions = await this.tinkService.getTransactions(
+        dto.accessToken,
+      );
+
+      // Store in database
+      await this.transactionService.storeTransactions(transactions);
+
       // Convert to expected format
-      const formattedTransactions = transactions.map(trx => ({
+      const formattedTransactions = transactions.map((trx) => ({
         description: trx.description,
         amount: trx.amount.toFixed(2),
         currency: trx.currency,
         date: trx.date,
       }));
-      
+
       return formattedTransactions;
-    } catch (err) {
+    } catch (err: unknown) {
       return {
         error: 'Failed to fetch transactions',
         message: err instanceof Error ? err.message : 'Unknown error',

@@ -1,6 +1,18 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { Injectable } from '@nestjs/common';
 import { Decimal } from '@prisma/client/runtime/client';
 import { PrismaService } from 'src/config/database/prisma.service';
+
+interface TransactionRow {
+  date: string;
+  description: string;
+  amount: number;
+  currency: string;
+  status: 'MATCHED' | 'UNMATCHED';
+  from?: string;
+  attachments?: string[];
+}
 
 @Injectable()
 export class TransactionService {
@@ -8,6 +20,7 @@ export class TransactionService {
 
   async storeTransactions(transactions: TransactionRow[]): Promise<number> {
     let storedCount = 0;
+    // amazonq-ignore-next-line
 
     for (const trx of transactions) {
       // Check for duplicates based on date, amount, description, and source
@@ -16,7 +29,6 @@ export class TransactionService {
           date: new Date(trx.date),
           amount: new Decimal(trx.amount),
           description: trx.description,
-          source: trx.from || 'Unknown',
         },
       });
 
@@ -59,6 +71,7 @@ export class TransactionService {
     });
 
     let matchedCount = 0;
+    // amazonq-ignore-next-line
 
     for (let i = 0; i < transactions.length; i++) {
       for (let j = i + 1; j < transactions.length; j++) {

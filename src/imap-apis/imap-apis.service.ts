@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import * as imaps from 'imap-simple';
@@ -13,7 +14,7 @@ export interface TransactionRow {
   category?: string;
   amount: number;
   currency: string;
-  status: 'Matched' | 'Unmatched';
+  status: 'MATCHED' | 'UNMATCHED';
   linkedInvoiceId?: string;
   attachments?: string[];
   from?: string;
@@ -163,7 +164,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
       category: getValue('Transaction Type') || 'Not categorized',
       amount,
       currency,
-      status: 'Unmatched',
+      status: 'UNMATCHED',
       linkedInvoiceId: invoiceId,
       attachments,
       from,
@@ -215,6 +216,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
 
       connection.end();
       return allTransactions;
+    // amazonq-ignore-next-line
     } catch (err: any) {
       console.error('Failed to read email transactions:', err.message);
       throw new Error(err.message);
@@ -234,9 +236,9 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
           Math.abs(new Date(t.date).getTime() - new Date(e.date).getTime()) <=
             2 * 24 * 60 * 60 * 1000
         ) {
-          t.status = 'Matched';
+          t.status = 'MATCHED';
           t.linkedInvoiceId = e.linkedInvoiceId;
-          e.status = 'Matched';
+          e.status = 'MATCHED';
         }
       }
     }

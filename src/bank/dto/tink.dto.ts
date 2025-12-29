@@ -267,5 +267,5 @@ export class TransactionResponseDto {
     type: 'object',
     additionalProperties: true,
   })
-  raw: any;
+  raw?: any;
 }

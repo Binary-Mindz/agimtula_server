@@ -43,6 +43,11 @@ export { Prisma }
  */
 export type Mileage = Prisma.MileageModel
 /**
+ * Model Transaction
+ * 
+ */
+export type Transaction = Prisma.TransactionModel
+/**
  * Model EmailTemplate
  * 
  */

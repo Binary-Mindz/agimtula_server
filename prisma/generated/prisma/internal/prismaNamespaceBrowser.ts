@@ -52,6 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Mileage: 'Mileage',
+  Transaction: 'Transaction',
   EmailTemplate: 'EmailTemplate',
   imapConfiguration: 'imapConfiguration',
   userSubscriptionPlan: 'userSubscriptionPlan',
@@ -108,6 +109,21 @@ export const MileageScalarFieldEnum = {
 } as const
 
 export type MileageScalarFieldEnum = (typeof MileageScalarFieldEnum)[keyof typeof MileageScalarFieldEnum]
+
+
+export const TransactionScalarFieldEnum = {
+  id: 'id',
+  date: 'date',
+  description: 'description',
+  amount: 'amount',
+  currency: 'currency',
+  status: 'status',
+  source: 'source',
+  attachments: 'attachments',
+  createdAt: 'createdAt'
+} as const
+
+export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
 
 
 export const EmailTemplateScalarFieldEnum = {

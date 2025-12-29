@@ -8,8 +8,6 @@ export class ImapApisController {
   @Get('iii')
   @Public()
   async readEmailByAccountTest(): Promise<any> {
-    return await this.imapService.readEmailByAccountTest(
-      
-    );
+    return await this.imapService.readEmailTransactions();
   }
 }

@@ -100,18 +100,15 @@ export class TinkController {
       const accessToken = tokenData.access_token;
 
       // 2️⃣ Fetch transactions
-      const trxData = await this.tinkService.getTransactions(accessToken);
+      const transactions = await this.tinkService.getTransactions(accessToken);
 
       // 3️⃣ Log to server console
       console.log('===== TINK TRANSACTIONS =====');
       console.log('CredentialsId:', credentialsId);
       console.log('Access Token:', accessToken);
-      console.log(`Found ${trxData.transactions.length} transactions\n`);
+      console.log(`Found ${transactions.length} transactions\n`);
 
-      const formattedTransactions = this.tinkService.formatTransactions(
-        trxData.transactions,
-      );
-      formattedTransactions.forEach((trx, idx) => {
+      transactions.forEach((trx, idx) => {
         console.log(`[${idx + 1}] ${trx.description}`);
         console.log(`    ${trx.amount} ${trx.currency} - ${trx.date}\n`);
       });
@@ -119,11 +116,18 @@ export class TinkController {
       console.log('==============================\n');
 
       // 4️⃣ Return success response with transaction data
+      const formattedTransactions = transactions.map(trx => ({
+        description: trx.description,
+        amount: trx.amount.toFixed(2),
+        currency: trx.currency,
+        date: trx.date,
+      }));
+      
       return {
         success: true,
         message: 'Transactions fetched successfully',
         credentialsId,
-        transactionCount: trxData.transactions.length,
+        transactionCount: transactions.length,
         transactions: formattedTransactions,
       };
     } catch (err) {
@@ -186,11 +190,17 @@ export class TinkController {
     @Body() dto: GetTransactionsDto,
   ): Promise<TransactionResponseDto[] | TinkErrorResponseDto> {
     try {
-      const trxData = await this.tinkService.getTransactions(dto.accessToken);
-      console.log({ trxData });
-      const formattedTransactions = this.tinkService.formatTransactions(
-        trxData.transactions,
-      );
+      const transactions = await this.tinkService.getTransactions(dto.accessToken);
+      console.log({ transactions });
+      
+      // Convert to expected format
+      const formattedTransactions = transactions.map(trx => ({
+        description: trx.description,
+        amount: trx.amount.toFixed(2),
+        currency: trx.currency,
+        date: trx.date,
+      }));
+      
       return formattedTransactions;
     } catch (err) {
       return {

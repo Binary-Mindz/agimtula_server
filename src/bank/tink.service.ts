@@ -1,5 +1,17 @@
 import { Injectable } from '@nestjs/common';
 
+export interface TransactionRow {
+  date: string;
+  description: string;
+  category?: string;
+  amount: number;
+  currency: string;
+  status: 'Matched' | 'Unmatched';
+  linkedInvoiceId?: string;
+  attachments?: string[];
+  from?: string;
+}
+
 interface TokenData {
   access_token: string;
   [key: string]: unknown;
@@ -80,9 +92,9 @@ export class TinkService {
   }
 
   /**
-   * Fetch transactions using access token
+   * Fetch transactions using access token and return as TransactionRow[]
    */
-  async getTransactions(accessToken: string): Promise<TransactionData> {
+  async getTransactions(accessToken: string): Promise<TransactionRow[]> {
     const res = await fetch(`${this.apiUrl}/data/v2/transactions`, {
       method: 'GET',
       headers: {
@@ -99,15 +111,19 @@ export class TinkService {
 
     const data = (await res.json()) as TransactionData;
 
-    const formattedTransactions = data.transactions?.map((trx: Transaction) => {
-      console.log(
-        `date: ${trx.dates.booked}, description: ${trx.descriptions.display}, category:${trx.descriptions.original} amount: ${(trx.amount.value.unscaledValue / 10 ** trx.amount.value.scale).toFixed(2)} ${trx.amount.currencyCode}`,
-      );
-    });
-
-    console.log(formattedTransactions);
-
-    return data;
+    // Convert to TransactionRow format
+    return data.transactions?.map((trx: Transaction) => {
+      const { amount, currency } = this.parseTransactionAmount(trx);
+      return {
+        date: trx.dates.booked,
+        description: trx.descriptions.display,
+        category: trx.descriptions.original || 'Not categorized',
+        amount,
+        currency,
+        status: 'Unmatched' as const,
+        from: 'Tink Bank',
+      };
+    }) || [];
   }
 
   /**

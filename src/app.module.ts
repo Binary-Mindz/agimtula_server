@@ -14,6 +14,7 @@ import { SettingsModule } from './user-dashboard/settings/settings.module';
 import { AuthGuard } from './auth/guards/auth/auth.guard';
 import { RedisServiceModule } from './config/redis-service/redis-service.module';
 import { BankModule } from './bank/bank.module';
+import { QuotationsModule } from './quotations/quotations.module';
 
 
 @Module({
@@ -30,6 +31,7 @@ import { BankModule } from './bank/bank.module';
     MileageModule,
     SettingsModule,
     BankModule,
+    QuotationsModule,
     // PaymentsModule
   ],
   controllers: [AppController],

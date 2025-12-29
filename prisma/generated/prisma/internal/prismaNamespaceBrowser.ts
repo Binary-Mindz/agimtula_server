@@ -60,6 +60,7 @@ export const ModelName = {
   ForgetPass: 'ForgetPass',
   TwoFA: 'TwoFA',
   Language: 'Language',
+  quotation: 'quotation',
   Receipt: 'Receipt',
   ReceiptCategory: 'ReceiptCategory',
   BusinessInfo: 'BusinessInfo',
@@ -222,6 +223,22 @@ export const LanguageScalarFieldEnum = {
 } as const
 
 export type LanguageScalarFieldEnum = (typeof LanguageScalarFieldEnum)[keyof typeof LanguageScalarFieldEnum]
+
+
+export const QuotationScalarFieldEnum = {
+  id: 'id',
+  clientName: 'clientName',
+  clientEmail: 'clientEmail',
+  clientPhone: 'clientPhone',
+  date: 'date',
+  amount: 'amount',
+  status: 'status',
+  senderId: 'senderId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type QuotationScalarFieldEnum = (typeof QuotationScalarFieldEnum)[keyof typeof QuotationScalarFieldEnum]
 
 
 export const ReceiptScalarFieldEnum = {

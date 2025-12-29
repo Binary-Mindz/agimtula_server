@@ -63,6 +63,11 @@ export type TwoFA = Prisma.TwoFAModel
  */
 export type Language = Prisma.LanguageModel
 /**
+ * Model quotation
+ * 
+ */
+export type quotation = Prisma.quotationModel
+/**
  * Model Receipt
  * 
  */

@@ -393,6 +393,7 @@ export const ModelName = {
   ForgetPass: 'ForgetPass',
   TwoFA: 'TwoFA',
   Language: 'Language',
+  quotation: 'quotation',
   Receipt: 'Receipt',
   ReceiptCategory: 'ReceiptCategory',
   BusinessInfo: 'BusinessInfo',
@@ -419,7 +420,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "mileage" | "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "profile" | "forgetPass" | "twoFA" | "language" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "user" | "email"
+    modelProps: "mileage" | "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "profile" | "forgetPass" | "twoFA" | "language" | "quotation" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "user" | "email"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1086,6 +1087,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.LanguageCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.LanguageCountAggregateOutputType> | number
+        }
+      }
+    }
+    quotation: {
+      payload: Prisma.$quotationPayload<ExtArgs>
+      fields: Prisma.quotationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.quotationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$quotationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.quotationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$quotationPayload>
+        }
+        findFirst: {
+          args: Prisma.quotationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$quotationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.quotationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$quotationPayload>
+        }
+        findMany: {
+          args: Prisma.quotationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$quotationPayload>[]
+        }
+        create: {
+          args: Prisma.quotationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$quotationPayload>
+        }
+        createMany: {
+          args: Prisma.quotationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.quotationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$quotationPayload>[]
+        }
+        delete: {
+          args: Prisma.quotationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$quotationPayload>
+        }
+        update: {
+          args: Prisma.quotationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$quotationPayload>
+        }
+        deleteMany: {
+          args: Prisma.quotationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.quotationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.quotationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$quotationPayload>[]
+        }
+        upsert: {
+          args: Prisma.quotationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$quotationPayload>
+        }
+        aggregate: {
+          args: Prisma.QuotationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateQuotation>
+        }
+        groupBy: {
+          args: Prisma.quotationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.QuotationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.quotationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.QuotationCountAggregateOutputType> | number
         }
       }
     }
@@ -2077,6 +2152,22 @@ export const LanguageScalarFieldEnum = {
 export type LanguageScalarFieldEnum = (typeof LanguageScalarFieldEnum)[keyof typeof LanguageScalarFieldEnum]
 
 
+export const QuotationScalarFieldEnum = {
+  id: 'id',
+  clientName: 'clientName',
+  clientEmail: 'clientEmail',
+  clientPhone: 'clientPhone',
+  date: 'date',
+  amount: 'amount',
+  status: 'status',
+  senderId: 'senderId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type QuotationScalarFieldEnum = (typeof QuotationScalarFieldEnum)[keyof typeof QuotationScalarFieldEnum]
+
+
 export const ReceiptScalarFieldEnum = {
   id: 'id',
   receipt_id: 'receipt_id',
@@ -2374,6 +2465,20 @@ export type ListEnumTwoFAPurposeFieldRefInput<$PrismaModel> = FieldRefInputType<
 
 
 /**
+ * Reference to a field of type 'deliveryStatus'
+ */
+export type EnumdeliveryStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'deliveryStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'deliveryStatus[]'
+ */
+export type ListEnumdeliveryStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'deliveryStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'UserRole'
  */
 export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole'>
@@ -2490,6 +2595,7 @@ export type GlobalOmitConfig = {
   forgetPass?: Prisma.ForgetPassOmit
   twoFA?: Prisma.TwoFAOmit
   language?: Prisma.LanguageOmit
+  quotation?: Prisma.quotationOmit
   receipt?: Prisma.ReceiptOmit
   receiptCategory?: Prisma.ReceiptCategoryOmit
   businessInfo?: Prisma.BusinessInfoOmit

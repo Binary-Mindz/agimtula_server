@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-redundant-type-constituents */
 import { Controller, Get, Query, Post, Body, HttpStatus } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { TinkService } from './tink.service';
@@ -216,6 +217,36 @@ export class TinkController {
     } catch (err: unknown) {
       return {
         error: 'Failed to fetch transactions',
+        message: err instanceof Error ? err.message : 'Unknown error',
+      };
+    }
+  }
+
+  @Get('connected-accounts')
+  @Public()
+  @ApiOperation({
+    summary: 'Fetch connected accounts',
+    description: 'Retrieve user connected accounts from Tink',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Connected accounts fetched successfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Invalid token or fetch failed',
+    type: TinkErrorResponseDto,
+  })
+  async getConnectedAccounts(
+    @Query('accessToken') accessToken: string,
+  ): Promise<any | TinkErrorResponseDto> {
+    try {
+      const accounts =
+        await this.tinkService.fetchConnectedAccounts(accessToken);
+      return accounts;
+    } catch (err: unknown) {
+      return {
+        error: 'Failed to fetch connected accounts',
         message: err instanceof Error ? err.message : 'Unknown error',
       };
     }

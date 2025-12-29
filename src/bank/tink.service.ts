@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Injectable } from '@nestjs/common';
 
 export interface TransactionRow {
@@ -112,18 +113,20 @@ export class TinkService {
     const data = (await res.json()) as TransactionData;
 
     // Convert to TransactionRow format
-    return data.transactions?.map((trx: Transaction) => {
-      const { amount, currency } = this.parseTransactionAmount(trx);
-      return {
-        date: trx.dates.booked,
-        description: trx.descriptions.display,
-        category: trx.descriptions.original || 'Not categorized',
-        amount,
-        currency,
-        status: 'UNMATCHED' as const,
-        from: 'Tink Bank',
-      };
-    }) || [];
+    return (
+      data.transactions?.map((trx: Transaction) => {
+        const { amount, currency } = this.parseTransactionAmount(trx);
+        return {
+          date: trx.dates.booked,
+          description: trx.descriptions.display,
+          category: trx.descriptions.original || 'Not categorized',
+          amount,
+          currency,
+          status: 'UNMATCHED' as const,
+          from: 'Tink Bank',
+        };
+      }) || []
+    );
   }
 
   /**
@@ -155,5 +158,49 @@ export class TinkService {
         raw: trx,
       };
     });
+  }
+
+  async fetchConnectedAccounts(accessToken: string) {
+    try {
+      const res = await fetch('https://api.tink.com/data/v2/accounts', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error(`Failed to fetch accounts: ${res.status}`);
+      }
+
+      const data = await res.json();
+      console.log('Connected accounts:', data.accounts);
+
+      data.accounts.forEach((account) => {
+        console.log(`Name: ${account.name}`);
+        console.log(`Type: ${account.type}`);
+        console.log(
+          `Balance: ${account.balances.booked?.amount.value.unscaledValue / Math.pow(10, account.balances.booked?.amount.value.scale)} ${account.balances.booked?.amount.currencyCode}`,
+        );
+        console.log(
+          `Account Number: ${account.identifiers?.financialInstitution?.accountNumber}`,
+        );
+        console.log('---------------------------');
+      });
+
+      return {
+        accounts: data.accounts.map((account) => ({
+          name: account.name,
+          type: account.type,
+          balance:
+            account.balances.booked?.amount.value.unscaledValue /
+            Math.pow(10, account.balances.booked?.amount.value.scale),
+          currency: account.balances.booked?.amount.currencyCode,
+          accountNumber:
+            account.identifiers?.financialInstitution?.accountNumber,
+        })),
+      };
+    } catch (err) {
+      console.error('Error fetching accounts:', err.message);
+    }
   }
 }

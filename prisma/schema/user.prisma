@@ -17,6 +17,7 @@ model User {
   profile                     Profile?
   userSubscriptionPlan        userSubscriptionPlan?
   userSubscriptionPlanHistory userSubscriptionPlanHistory[]
+  quotations                  quotation[]
 
   @@map("user")
 }

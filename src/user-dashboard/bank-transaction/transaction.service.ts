@@ -29,6 +29,7 @@ export class TransactionService {
           date: new Date(trx.date),
           amount: new Decimal(trx.amount),
           description: trx.description,
+          source: trx.from || 'Unknown',
         },
       });
 
@@ -78,14 +79,14 @@ export class TransactionService {
         const trx1 = transactions[i];
         const trx2 = transactions[j];
 
-        // Match if same amount, currency, and within 2 days
+        // Match if same amount, currency, and within 1 Hours
         if (
           trx1.currency === trx2.currency &&
           trx1.amount.equals(trx2.amount) &&
           Math.abs(
             new Date(trx1.date).getTime() - new Date(trx2.date).getTime(),
           ) <=
-            2 * 24 * 60 * 60 * 1000
+            60 * 60 * 1000
         ) {
           await this.prisma.transaction.updateMany({
             where: { id: { in: [trx1.id, trx2.id] } },

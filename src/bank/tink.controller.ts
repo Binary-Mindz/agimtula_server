@@ -211,6 +211,7 @@ export class TinkController {
         amount: trx.amount.toFixed(2),
         currency: trx.currency,
         date: trx.date,
+        bankId: trx.accountId,
       }));
 
       return formattedTransactions;

@@ -1,4 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/config/database/prisma.service';
 
 export interface TransactionRow {
   date: string;
@@ -10,6 +13,7 @@ export interface TransactionRow {
   linkedInvoiceId?: string;
   attachments?: string[];
   from?: string;
+  accountId?: string; // Only accountId from transaction
 }
 
 interface TokenData {
@@ -34,6 +38,11 @@ interface Transaction {
     display: string;
     original: string;
   };
+  accountId?: string;
+  account?: {
+    accountNumber?: string;
+    name?: string;
+  };
   [key: string]: unknown;
 }
 
@@ -42,24 +51,140 @@ interface TransactionData {
 }
 
 interface Account {
+  id: string;
+  accountNumber: string;
   name: string;
   type: string;
-  balances: {
-    booked?: {
-      amount: Amount;
-    };
-  };
-  identifiers?: {
-    financialInstitution?: {
-      accountNumber: string;
-    };
-  };
+  balance: number;
+  bankId: string;
+  credentialsId: string;
+  currencyCode: string;
+  iban?: string;
+  holderName?: string;
   [key: string]: unknown;
 }
 
 @Injectable()
 export class TinkService {
   private apiUrl = 'https://api.tink.com';
+
+  constructor(private prisma: PrismaService) {}
+
+  async getBankName(bankId: string, accessToken: string): Promise<string> {
+    try {
+      const res = await fetch(`${this.apiUrl}/api/v1/providers/${bankId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      
+      if (res.ok) {
+        const bankData = await res.json();
+        return bankData.displayName || 'Tink Bank';
+      }
+    } catch (error) {
+      console.error('Error fetching bank name:', error);
+    }
+    return 'Tink Bank';
+  }
+
+  /**
+   * Get or create bank account
+   */
+  async getOrCreateBank(
+    account: Account,
+  ): Promise<string> {
+    const existingBank = await this.prisma.bank.findFirst({
+      where: {
+        accountId: account.id,
+      },
+    });
+
+    if (existingBank) {
+      return existingBank.id;
+    }
+
+    const newBank = await this.prisma.bank.create({
+      data: {
+        accountId: account.id,
+        accountNumber: account.accountNumber,
+        name: account.name,
+        type: account.type,
+        bankName: 'Tink Bank',
+        balance: account.balance,
+        currencyCode: account.currencyCode,
+        iban: account.iban,
+        holderName: account.holderName,
+        bankId: account.bankId,
+        credentialsId: account.credentialsId,
+      },
+    });
+
+    return newBank.id;
+  }
+
+  /**
+   * Match account ID with account number
+   */
+  async matchAccountIdWithNumber(accountId: string, accountNumber: string): Promise<void> {
+    await this.prisma.bank.updateMany({
+      where: {
+        OR: [
+          { accountId },
+          { accountNumber: { contains: accountNumber } },
+        ],
+      },
+      data: { accountId },
+    });
+  }
+
+  /**
+   * Update bank last sync time
+   */
+  async updateBankLastSync(bankId: string): Promise<void> {
+    await this.prisma.bank.update({
+      where: { id: bankId },
+      data: { lastSync: new Date() },
+    });
+  }
+
+  /**
+   * Save transactions to database without duplicates
+   */
+  async saveTransactions(
+    transactions: TransactionRow[],
+  ): Promise<number> {
+    let savedCount = 0;
+
+    for (const transaction of transactions) {
+      try {
+        await this.prisma.transaction.create({
+          data: {
+            date: new Date(transaction.date),
+            description: transaction.description,
+            amount: transaction.amount,
+            currency: transaction.currency,
+            status: transaction.status,
+            source: 'Bank',
+            attachments: transaction.attachments || [],
+            accountId: transaction.accountId, // Store accountId from transaction
+          },
+        });
+        savedCount++;
+      } catch (error) {
+        // Skip duplicate transactions (unique constraint violation)
+        if (error.code === 'P2002') {
+          console.log(
+            `Skipping duplicate transaction: ${transaction.description}`,
+          );
+          continue;
+        }
+        throw error;
+      }
+    }
+
+    return savedCount;
+  }
 
   /**
    * Exchange authorization code for access token
@@ -110,7 +235,9 @@ export class TinkService {
   /**
    * Fetch transactions using access token and return as TransactionRow[]
    */
-  async getTransactions(accessToken: string): Promise<TransactionRow[]> {
+  async getTransactions(
+    accessToken: string,
+  ): Promise<TransactionRow[]> {
     const res = await fetch(`${this.apiUrl}/data/v2/transactions`, {
       method: 'GET',
       headers: {
@@ -127,6 +254,8 @@ export class TinkService {
 
     const data = (await res.json()) as TransactionData;
 
+    // console.log(JSON.stringify(data));
+
     // Convert to TransactionRow format
     return (
       data.transactions?.map((trx: Transaction) => {
@@ -139,9 +268,23 @@ export class TinkService {
           currency,
           status: 'UNMATCHED' as const,
           from: 'Tink Bank',
+          accountId: trx.accountId, // Store accountId directly from transaction
         };
       }) || []
     );
+  }
+
+  /**
+   * Fetch transactions with account info using access token
+   */
+  async getTransactionsWithAccountInfo(
+    accessToken: string,
+  ): Promise<{ transactions: TransactionRow[]; accounts: any[] }> {
+    const accountsData = await this.fetchConnectedAccounts(accessToken);
+
+    const transactions = await this.getTransactions(accessToken);
+
+    return { transactions, accounts: accountsData?.accounts || [] };
   }
 
   /**
@@ -177,7 +320,7 @@ export class TinkService {
 
   async fetchConnectedAccounts(accessToken: string) {
     try {
-      const res = await fetch('https://api.tink.com/data/v2/accounts', {
+      const res = await fetch('https://api.tink.com/api/v1/accounts/list', {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -190,29 +333,18 @@ export class TinkService {
       const data = await res.json();
       console.log('Connected accounts:', data.accounts);
 
-      data.accounts.forEach((account: Account) => {
-        console.log(`Name: ${account.name}`);
-        console.log(`Type: ${account.type}`);
-        console.log(
-          `Balance: ${account.balances.booked?.amount.value.unscaledValue ? account.balances.booked.amount.value.unscaledValue / Math.pow(10, account.balances.booked.amount.value.scale) : 0} ${account.balances.booked?.amount.currencyCode || 'N/A'}`,
-        );
-        console.log(
-          `Account Number: ${account.identifiers?.financialInstitution?.accountNumber}`,
-        );
-        console.log('---------------------------');
-      });
-
       return {
-        accounts: data.accounts.map((account: Account) => ({
+        accounts: data.accounts.map((account: any) => ({
+          id: account.id,
+          accountNumber: account.accountNumber,
           name: account.name,
           type: account.type,
-          balance: account.balances.booked?.amount.value.unscaledValue
-            ? account.balances.booked.amount.value.unscaledValue /
-              Math.pow(10, account.balances.booked.amount.value.scale)
-            : 0,
-          currency: account.balances.booked?.amount.currencyCode,
-          accountNumber:
-            account.identifiers?.financialInstitution?.accountNumber,
+          balance: account.balance,
+          currencyCode: account.currencyCode,
+          iban: account.iban,
+          holderName: account.holderName,
+          bankId: account.bankId,
+          credentialsId: account.credentialsId,
         })),
       };
     } catch (err) {

@@ -7,8 +7,11 @@ model Transaction {
     status      TransactionStatus @default(UNMATCHED)
     source      String // "Bank" or "Email"
     attachments String[] // Cloudinary URLs
+    accountId   String?
     createdAt   DateTime          @default(now())
 
+    // Prevent duplicate transactions
+    @@unique([date, description, amount])
     @@map("transactions")
 }
 

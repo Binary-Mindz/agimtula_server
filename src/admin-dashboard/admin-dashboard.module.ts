@@ -6,8 +6,9 @@ import { ReportsAndAnalyticsModule } from './reports-and-analytics/reports-and-a
 import { ImapSystemMonitorModule } from './imap-system-monitor/imap-system-monitor.module';
 import { SystemSettingsModule } from './system-settings/system-settings.module';
 import { SupplierImportsModule } from './supplier-imports/supplier-imports.module';
+import { BankDataModule } from './bank-data/bank-data.module';
 
 @Module({
-  imports: [SubscriptionsModule, DashboardModule, UserManagementModule, ReportsAndAnalyticsModule, ImapSystemMonitorModule, SystemSettingsModule, SupplierImportsModule],
+  imports: [SubscriptionsModule, DashboardModule, UserManagementModule, ReportsAndAnalyticsModule, ImapSystemMonitorModule, SystemSettingsModule, SupplierImportsModule, BankDataModule],
 })
 export class AdminDashboardModule { }

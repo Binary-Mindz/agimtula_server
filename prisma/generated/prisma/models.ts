@@ -11,6 +11,7 @@
 export type * from './models/Bank'
 export type * from './models/Mileage'
 export type * from './models/Transaction'
+export type * from './models/AccountantRequest'
 export type * from './models/EmailTemplate'
 export type * from './models/imapConfiguration'
 export type * from './models/userSubscriptionPlan'

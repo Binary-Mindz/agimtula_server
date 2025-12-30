@@ -18,6 +18,9 @@ model User {
   userSubscriptionPlan        userSubscriptionPlan?
   userSubscriptionPlanHistory userSubscriptionPlanHistory[]
 
+  haveAccountant Boolean @default(false)
+  accountantId String?
+
   @@map("user")
 }
 

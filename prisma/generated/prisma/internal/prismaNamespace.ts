@@ -387,6 +387,7 @@ export const ModelName = {
   Bank: 'Bank',
   Mileage: 'Mileage',
   Transaction: 'Transaction',
+  AccountantRequest: 'AccountantRequest',
   EmailTemplate: 'EmailTemplate',
   imapConfiguration: 'imapConfiguration',
   userSubscriptionPlan: 'userSubscriptionPlan',
@@ -422,7 +423,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "bank" | "mileage" | "transaction" | "emailTemplate" | "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "profile" | "forgetPass" | "twoFA" | "language" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "user" | "email"
+    modelProps: "bank" | "mileage" | "transaction" | "accountantRequest" | "emailTemplate" | "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "profile" | "forgetPass" | "twoFA" | "language" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "user" | "email"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -645,6 +646,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.TransactionCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.TransactionCountAggregateOutputType> | number
+        }
+      }
+    }
+    AccountantRequest: {
+      payload: Prisma.$AccountantRequestPayload<ExtArgs>
+      fields: Prisma.AccountantRequestFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AccountantRequestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccountantRequestPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AccountantRequestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccountantRequestPayload>
+        }
+        findFirst: {
+          args: Prisma.AccountantRequestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccountantRequestPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AccountantRequestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccountantRequestPayload>
+        }
+        findMany: {
+          args: Prisma.AccountantRequestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccountantRequestPayload>[]
+        }
+        create: {
+          args: Prisma.AccountantRequestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccountantRequestPayload>
+        }
+        createMany: {
+          args: Prisma.AccountantRequestCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AccountantRequestCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccountantRequestPayload>[]
+        }
+        delete: {
+          args: Prisma.AccountantRequestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccountantRequestPayload>
+        }
+        update: {
+          args: Prisma.AccountantRequestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccountantRequestPayload>
+        }
+        deleteMany: {
+          args: Prisma.AccountantRequestDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AccountantRequestUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AccountantRequestUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccountantRequestPayload>[]
+        }
+        upsert: {
+          args: Prisma.AccountantRequestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccountantRequestPayload>
+        }
+        aggregate: {
+          args: Prisma.AccountantRequestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAccountantRequest>
+        }
+        groupBy: {
+          args: Prisma.AccountantRequestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AccountantRequestGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AccountantRequestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AccountantRequestCountAggregateOutputType> | number
         }
       }
     }
@@ -2224,6 +2299,19 @@ export const TransactionScalarFieldEnum = {
 export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
 
 
+export const AccountantRequestScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  purpose: 'purpose',
+  description: 'description',
+  status: 'status',
+  requestedAt: 'requestedAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AccountantRequestScalarFieldEnum = (typeof AccountantRequestScalarFieldEnum)[keyof typeof AccountantRequestScalarFieldEnum]
+
+
 export const EmailTemplateScalarFieldEnum = {
   id: 'id',
   key: 'key',
@@ -2501,7 +2589,9 @@ export const UserScalarFieldEnum = {
   twoFactorEnabled: 'twoFactorEnabled',
   status: 'status',
   created_at: 'created_at',
-  updated_at: 'updated_at'
+  updated_at: 'updated_at',
+  haveAccountant: 'haveAccountant',
+  accountantId: 'accountantId'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -2627,6 +2717,20 @@ export type EnumTransactionStatusFieldRefInput<$PrismaModel> = FieldRefInputType
  * Reference to a field of type 'TransactionStatus[]'
  */
 export type ListEnumTransactionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Status'
+ */
+export type EnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status'>
+    
+
+
+/**
+ * Reference to a field of type 'Status[]'
+ */
+export type ListEnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status[]'>
     
 
 
@@ -2790,6 +2894,7 @@ export type GlobalOmitConfig = {
   bank?: Prisma.BankOmit
   mileage?: Prisma.MileageOmit
   transaction?: Prisma.TransactionOmit
+  accountantRequest?: Prisma.AccountantRequestOmit
   emailTemplate?: Prisma.EmailTemplateOmit
   imapConfiguration?: Prisma.imapConfigurationOmit
   userSubscriptionPlan?: Prisma.userSubscriptionPlanOmit

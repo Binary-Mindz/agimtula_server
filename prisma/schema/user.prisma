@@ -18,6 +18,7 @@ model User {
   userSubscriptionPlan        userSubscriptionPlan?
   userSubscriptionPlanHistory userSubscriptionPlanHistory[]
   quotations                  quotation[]
+  userModuleAccess            UserModuleAccess[] // Module access only
 
   @@map("user")
 }

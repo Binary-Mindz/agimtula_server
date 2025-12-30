@@ -7,6 +7,10 @@ import { JwtStrategy } from './strategies/jwt-strategy';
 import { ForgetPasswordService } from './forget-password.service';
 import { TwoFAService } from './2fa.service';
 import { RedisServiceModule } from 'src/config/redis-service/redis-service.module';
+import { PermissionService } from './permission-management/permission.service';
+import { AuthGuard } from './guard/auth.guard';
+import { ModuleAccessGuard } from './guard/module-access.guard';
+import { PermissionManagementController } from './permission-management/permission-management.controller';
 
 @Module({
   imports: [
@@ -16,13 +20,17 @@ import { RedisServiceModule } from 'src/config/redis-service/redis-service.modul
       signOptions: { expiresIn: '1h' },
     }),
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, PermissionManagementController],
   providers: [
     AuthService,
     JwtStrategy,
     ForgetPasswordService,
     TwoFAService,
     RedisServiceModule,
+    PermissionService,
+    ModuleAccessGuard,
+    AuthGuard
   ],
+  exports: [PermissionService, ModuleAccessGuard, AuthGuard],
 })
-export class AuthModule {}
+export class AuthModule { }

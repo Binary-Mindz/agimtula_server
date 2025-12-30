@@ -11,7 +11,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MileageModule } from './user-dashboard/mileage/mileage.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { SettingsModule } from './user-dashboard/settings/settings.module';
-import { AuthGuard } from './auth/guards/auth/auth.guard';
+import { AuthGuard } from './auth/guard/auth.guard';
 import { RedisServiceModule } from './config/redis-service/redis-service.module';
 import { BankModule } from './bank/bank.module';
 import { QuotationsModule } from './quotations/quotations.module';

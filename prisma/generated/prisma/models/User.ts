@@ -32,6 +32,8 @@ export type UserMinAggregateOutputType = {
   status: boolean | null
   created_at: Date | null
   updated_at: Date | null
+  haveAccountant: boolean | null
+  accountantId: string | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -42,6 +44,8 @@ export type UserMaxAggregateOutputType = {
   status: boolean | null
   created_at: Date | null
   updated_at: Date | null
+  haveAccountant: boolean | null
+  accountantId: string | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -52,6 +56,8 @@ export type UserCountAggregateOutputType = {
   status: number
   created_at: number
   updated_at: number
+  haveAccountant: number
+  accountantId: number
   _all: number
 }
 
@@ -64,6 +70,8 @@ export type UserMinAggregateInputType = {
   status?: true
   created_at?: true
   updated_at?: true
+  haveAccountant?: true
+  accountantId?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -74,6 +82,8 @@ export type UserMaxAggregateInputType = {
   status?: true
   created_at?: true
   updated_at?: true
+  haveAccountant?: true
+  accountantId?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -84,6 +94,8 @@ export type UserCountAggregateInputType = {
   status?: true
   created_at?: true
   updated_at?: true
+  haveAccountant?: true
+  accountantId?: true
   _all?: true
 }
 
@@ -167,6 +179,8 @@ export type UserGroupByOutputType = {
   status: boolean
   created_at: Date
   updated_at: Date
+  haveAccountant: boolean
+  accountantId: string | null
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
@@ -198,6 +212,8 @@ export type UserWhereInput = {
   status?: Prisma.BoolFilter<"User"> | boolean
   created_at?: Prisma.DateTimeFilter<"User"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"User"> | Date | string
+  haveAccountant?: Prisma.BoolFilter<"User"> | boolean
+  accountantId?: Prisma.StringNullableFilter<"User"> | string | null
   receipts?: Prisma.ReceiptListRelationFilter
   businessInfo?: Prisma.XOR<Prisma.BusinessInfoNullableScalarRelationFilter, Prisma.BusinessInfoWhereInput> | null
   email?: Prisma.XOR<Prisma.EmailNullableScalarRelationFilter, Prisma.EmailWhereInput> | null
@@ -219,6 +235,8 @@ export type UserOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
+  haveAccountant?: Prisma.SortOrder
+  accountantId?: Prisma.SortOrderInput | Prisma.SortOrder
   receipts?: Prisma.ReceiptOrderByRelationAggregateInput
   businessInfo?: Prisma.BusinessInfoOrderByWithRelationInput
   email?: Prisma.EmailOrderByWithRelationInput
@@ -243,6 +261,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.BoolFilter<"User"> | boolean
   created_at?: Prisma.DateTimeFilter<"User"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"User"> | Date | string
+  haveAccountant?: Prisma.BoolFilter<"User"> | boolean
+  accountantId?: Prisma.StringNullableFilter<"User"> | string | null
   receipts?: Prisma.ReceiptListRelationFilter
   businessInfo?: Prisma.XOR<Prisma.BusinessInfoNullableScalarRelationFilter, Prisma.BusinessInfoWhereInput> | null
   email?: Prisma.XOR<Prisma.EmailNullableScalarRelationFilter, Prisma.EmailWhereInput> | null
@@ -264,6 +284,8 @@ export type UserOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
+  haveAccountant?: Prisma.SortOrder
+  accountantId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
@@ -280,6 +302,8 @@ export type UserScalarWhereWithAggregatesInput = {
   status?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   created_at?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
+  haveAccountant?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  accountantId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
 }
 
 export type UserCreateInput = {
@@ -290,6 +314,8 @@ export type UserCreateInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
   receipts?: Prisma.ReceiptCreateNestedManyWithoutUserInput
   businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
   email?: Prisma.EmailCreateNestedOneWithoutUserInput
@@ -311,6 +337,8 @@ export type UserUncheckedCreateInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
   receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutUserInput
   businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
   email?: Prisma.EmailUncheckedCreateNestedOneWithoutUserInput
@@ -332,6 +360,8 @@ export type UserUpdateInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receipts?: Prisma.ReceiptUpdateManyWithoutUserNestedInput
   businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
   email?: Prisma.EmailUpdateOneWithoutUserNestedInput
@@ -353,6 +383,8 @@ export type UserUncheckedUpdateInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutUserNestedInput
   businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
   email?: Prisma.EmailUncheckedUpdateOneWithoutUserNestedInput
@@ -374,6 +406,8 @@ export type UserCreateManyInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
 }
 
 export type UserUpdateManyMutationInput = {
@@ -384,6 +418,8 @@ export type UserUpdateManyMutationInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -394,6 +430,8 @@ export type UserUncheckedUpdateManyInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UserScalarRelationFilter = {
@@ -409,6 +447,8 @@ export type UserCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
+  haveAccountant?: Prisma.SortOrder
+  accountantId?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -419,6 +459,8 @@ export type UserMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
+  haveAccountant?: Prisma.SortOrder
+  accountantId?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -429,6 +471,8 @@ export type UserMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
+  haveAccountant?: Prisma.SortOrder
+  accountantId?: Prisma.SortOrder
 }
 
 export type UserNullableScalarRelationFilter = {
@@ -604,6 +648,8 @@ export type UserCreateWithoutMileagesInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
   receipts?: Prisma.ReceiptCreateNestedManyWithoutUserInput
   businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
   email?: Prisma.EmailCreateNestedOneWithoutUserInput
@@ -624,6 +670,8 @@ export type UserUncheckedCreateWithoutMileagesInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
   receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutUserInput
   businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
   email?: Prisma.EmailUncheckedCreateNestedOneWithoutUserInput
@@ -660,6 +708,8 @@ export type UserUpdateWithoutMileagesInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receipts?: Prisma.ReceiptUpdateManyWithoutUserNestedInput
   businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
   email?: Prisma.EmailUpdateOneWithoutUserNestedInput
@@ -680,6 +730,8 @@ export type UserUncheckedUpdateWithoutMileagesInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutUserNestedInput
   businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
   email?: Prisma.EmailUncheckedUpdateOneWithoutUserNestedInput
@@ -700,6 +752,8 @@ export type UserCreateWithoutImapConfigurationsInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
   receipts?: Prisma.ReceiptCreateNestedManyWithoutUserInput
   businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
   email?: Prisma.EmailCreateNestedOneWithoutUserInput
@@ -720,6 +774,8 @@ export type UserUncheckedCreateWithoutImapConfigurationsInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
   receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutUserInput
   businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
   email?: Prisma.EmailUncheckedCreateNestedOneWithoutUserInput
@@ -756,6 +812,8 @@ export type UserUpdateWithoutImapConfigurationsInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receipts?: Prisma.ReceiptUpdateManyWithoutUserNestedInput
   businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
   email?: Prisma.EmailUpdateOneWithoutUserNestedInput
@@ -776,6 +834,8 @@ export type UserUncheckedUpdateWithoutImapConfigurationsInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutUserNestedInput
   businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
   email?: Prisma.EmailUncheckedUpdateOneWithoutUserNestedInput
@@ -796,6 +856,8 @@ export type UserCreateWithoutUserSubscriptionPlanInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
   receipts?: Prisma.ReceiptCreateNestedManyWithoutUserInput
   businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
   email?: Prisma.EmailCreateNestedOneWithoutUserInput
@@ -816,6 +878,8 @@ export type UserUncheckedCreateWithoutUserSubscriptionPlanInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
   receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutUserInput
   businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
   email?: Prisma.EmailUncheckedCreateNestedOneWithoutUserInput
@@ -852,6 +916,8 @@ export type UserUpdateWithoutUserSubscriptionPlanInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receipts?: Prisma.ReceiptUpdateManyWithoutUserNestedInput
   businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
   email?: Prisma.EmailUpdateOneWithoutUserNestedInput
@@ -872,6 +938,8 @@ export type UserUncheckedUpdateWithoutUserSubscriptionPlanInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutUserNestedInput
   businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
   email?: Prisma.EmailUncheckedUpdateOneWithoutUserNestedInput
@@ -892,6 +960,8 @@ export type UserCreateWithoutUserSubscriptionPlanHistoryInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
   receipts?: Prisma.ReceiptCreateNestedManyWithoutUserInput
   businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
   email?: Prisma.EmailCreateNestedOneWithoutUserInput
@@ -912,6 +982,8 @@ export type UserUncheckedCreateWithoutUserSubscriptionPlanHistoryInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
   receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutUserInput
   businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
   email?: Prisma.EmailUncheckedCreateNestedOneWithoutUserInput
@@ -948,6 +1020,8 @@ export type UserUpdateWithoutUserSubscriptionPlanHistoryInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receipts?: Prisma.ReceiptUpdateManyWithoutUserNestedInput
   businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
   email?: Prisma.EmailUpdateOneWithoutUserNestedInput
@@ -968,6 +1042,8 @@ export type UserUncheckedUpdateWithoutUserSubscriptionPlanHistoryInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutUserNestedInput
   businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
   email?: Prisma.EmailUncheckedUpdateOneWithoutUserNestedInput
@@ -988,6 +1064,8 @@ export type UserCreateWithoutProfileInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
   receipts?: Prisma.ReceiptCreateNestedManyWithoutUserInput
   businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
   email?: Prisma.EmailCreateNestedOneWithoutUserInput
@@ -1008,6 +1086,8 @@ export type UserUncheckedCreateWithoutProfileInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
   receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutUserInput
   businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
   email?: Prisma.EmailUncheckedCreateNestedOneWithoutUserInput
@@ -1044,6 +1124,8 @@ export type UserUpdateWithoutProfileInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receipts?: Prisma.ReceiptUpdateManyWithoutUserNestedInput
   businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
   email?: Prisma.EmailUpdateOneWithoutUserNestedInput
@@ -1064,6 +1146,8 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutUserNestedInput
   businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
   email?: Prisma.EmailUncheckedUpdateOneWithoutUserNestedInput
@@ -1084,6 +1168,8 @@ export type UserCreateWithoutLanguagesInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
   receipts?: Prisma.ReceiptCreateNestedManyWithoutUserInput
   businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
   email?: Prisma.EmailCreateNestedOneWithoutUserInput
@@ -1104,6 +1190,8 @@ export type UserUncheckedCreateWithoutLanguagesInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
   receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutUserInput
   businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
   email?: Prisma.EmailUncheckedCreateNestedOneWithoutUserInput
@@ -1140,6 +1228,8 @@ export type UserUpdateWithoutLanguagesInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receipts?: Prisma.ReceiptUpdateManyWithoutUserNestedInput
   businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
   email?: Prisma.EmailUpdateOneWithoutUserNestedInput
@@ -1160,6 +1250,8 @@ export type UserUncheckedUpdateWithoutLanguagesInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutUserNestedInput
   businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
   email?: Prisma.EmailUncheckedUpdateOneWithoutUserNestedInput
@@ -1180,6 +1272,8 @@ export type UserCreateWithoutReceiptsInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
   businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
   email?: Prisma.EmailCreateNestedOneWithoutUserInput
   imapConfigurations?: Prisma.imapConfigurationCreateNestedOneWithoutUserInput
@@ -1200,6 +1294,8 @@ export type UserUncheckedCreateWithoutReceiptsInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
   businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
   email?: Prisma.EmailUncheckedCreateNestedOneWithoutUserInput
   imapConfigurations?: Prisma.imapConfigurationUncheckedCreateNestedOneWithoutUserInput
@@ -1236,6 +1332,8 @@ export type UserUpdateWithoutReceiptsInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
   email?: Prisma.EmailUpdateOneWithoutUserNestedInput
   imapConfigurations?: Prisma.imapConfigurationUpdateOneWithoutUserNestedInput
@@ -1256,6 +1354,8 @@ export type UserUncheckedUpdateWithoutReceiptsInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
   email?: Prisma.EmailUncheckedUpdateOneWithoutUserNestedInput
   imapConfigurations?: Prisma.imapConfigurationUncheckedUpdateOneWithoutUserNestedInput
@@ -1276,6 +1376,8 @@ export type UserCreateWithoutBusinessInfoInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
   receipts?: Prisma.ReceiptCreateNestedManyWithoutUserInput
   email?: Prisma.EmailCreateNestedOneWithoutUserInput
   imapConfigurations?: Prisma.imapConfigurationCreateNestedOneWithoutUserInput
@@ -1296,6 +1398,8 @@ export type UserUncheckedCreateWithoutBusinessInfoInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
   receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutUserInput
   email?: Prisma.EmailUncheckedCreateNestedOneWithoutUserInput
   imapConfigurations?: Prisma.imapConfigurationUncheckedCreateNestedOneWithoutUserInput
@@ -1332,6 +1436,8 @@ export type UserUpdateWithoutBusinessInfoInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receipts?: Prisma.ReceiptUpdateManyWithoutUserNestedInput
   email?: Prisma.EmailUpdateOneWithoutUserNestedInput
   imapConfigurations?: Prisma.imapConfigurationUpdateOneWithoutUserNestedInput
@@ -1352,6 +1458,8 @@ export type UserUncheckedUpdateWithoutBusinessInfoInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutUserNestedInput
   email?: Prisma.EmailUncheckedUpdateOneWithoutUserNestedInput
   imapConfigurations?: Prisma.imapConfigurationUncheckedUpdateOneWithoutUserNestedInput
@@ -1372,6 +1480,8 @@ export type UserCreateWithoutPaymentMethodsInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
   receipts?: Prisma.ReceiptCreateNestedManyWithoutUserInput
   businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
   email?: Prisma.EmailCreateNestedOneWithoutUserInput
@@ -1392,6 +1502,8 @@ export type UserUncheckedCreateWithoutPaymentMethodsInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
   receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutUserInput
   businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
   email?: Prisma.EmailUncheckedCreateNestedOneWithoutUserInput
@@ -1428,6 +1540,8 @@ export type UserUpdateWithoutPaymentMethodsInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receipts?: Prisma.ReceiptUpdateManyWithoutUserNestedInput
   businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
   email?: Prisma.EmailUpdateOneWithoutUserNestedInput
@@ -1448,6 +1562,8 @@ export type UserUncheckedUpdateWithoutPaymentMethodsInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutUserNestedInput
   businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
   email?: Prisma.EmailUncheckedUpdateOneWithoutUserNestedInput
@@ -1468,6 +1584,8 @@ export type UserCreateWithoutInvoiceLayoutInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
   receipts?: Prisma.ReceiptCreateNestedManyWithoutUserInput
   businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
   email?: Prisma.EmailCreateNestedOneWithoutUserInput
@@ -1488,6 +1606,8 @@ export type UserUncheckedCreateWithoutInvoiceLayoutInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
   receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutUserInput
   businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
   email?: Prisma.EmailUncheckedCreateNestedOneWithoutUserInput
@@ -1524,6 +1644,8 @@ export type UserUpdateWithoutInvoiceLayoutInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receipts?: Prisma.ReceiptUpdateManyWithoutUserNestedInput
   businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
   email?: Prisma.EmailUpdateOneWithoutUserNestedInput
@@ -1544,6 +1666,8 @@ export type UserUncheckedUpdateWithoutInvoiceLayoutInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutUserNestedInput
   businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
   email?: Prisma.EmailUncheckedUpdateOneWithoutUserNestedInput
@@ -1564,6 +1688,8 @@ export type UserCreateWithoutEmailInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
   receipts?: Prisma.ReceiptCreateNestedManyWithoutUserInput
   businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
   imapConfigurations?: Prisma.imapConfigurationCreateNestedOneWithoutUserInput
@@ -1584,6 +1710,8 @@ export type UserUncheckedCreateWithoutEmailInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
   receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutUserInput
   businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
   imapConfigurations?: Prisma.imapConfigurationUncheckedCreateNestedOneWithoutUserInput
@@ -1620,6 +1748,8 @@ export type UserUpdateWithoutEmailInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receipts?: Prisma.ReceiptUpdateManyWithoutUserNestedInput
   businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
   imapConfigurations?: Prisma.imapConfigurationUpdateOneWithoutUserNestedInput
@@ -1640,6 +1770,8 @@ export type UserUncheckedUpdateWithoutEmailInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutUserNestedInput
   businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
   imapConfigurations?: Prisma.imapConfigurationUncheckedUpdateOneWithoutUserNestedInput
@@ -1727,6 +1859,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   status?: boolean
   created_at?: boolean
   updated_at?: boolean
+  haveAccountant?: boolean
+  accountantId?: boolean
   receipts?: boolean | Prisma.User$receiptsArgs<ExtArgs>
   businessInfo?: boolean | Prisma.User$businessInfoArgs<ExtArgs>
   email?: boolean | Prisma.User$emailArgs<ExtArgs>
@@ -1749,6 +1883,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   status?: boolean
   created_at?: boolean
   updated_at?: boolean
+  haveAccountant?: boolean
+  accountantId?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1759,6 +1895,8 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   status?: boolean
   created_at?: boolean
   updated_at?: boolean
+  haveAccountant?: boolean
+  accountantId?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -1769,9 +1907,11 @@ export type UserSelectScalar = {
   status?: boolean
   created_at?: boolean
   updated_at?: boolean
+  haveAccountant?: boolean
+  accountantId?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "password" | "role" | "twoFactorEnabled" | "status" | "created_at" | "updated_at", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "password" | "role" | "twoFactorEnabled" | "status" | "created_at" | "updated_at" | "haveAccountant" | "accountantId", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   receipts?: boolean | Prisma.User$receiptsArgs<ExtArgs>
   businessInfo?: boolean | Prisma.User$businessInfoArgs<ExtArgs>
@@ -1812,6 +1952,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     status: boolean
     created_at: Date
     updated_at: Date
+    haveAccountant: boolean
+    accountantId: string | null
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -2253,6 +2395,8 @@ export interface UserFieldRefs {
   readonly status: Prisma.FieldRef<"User", 'Boolean'>
   readonly created_at: Prisma.FieldRef<"User", 'DateTime'>
   readonly updated_at: Prisma.FieldRef<"User", 'DateTime'>
+  readonly haveAccountant: Prisma.FieldRef<"User", 'Boolean'>
+  readonly accountantId: Prisma.FieldRef<"User", 'String'>
 }
     
 

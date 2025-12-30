@@ -33,6 +33,11 @@ export type Mileage = Prisma.MileageModel
  */
 export type Transaction = Prisma.TransactionModel
 /**
+ * Model AccountantRequest
+ * 
+ */
+export type AccountantRequest = Prisma.AccountantRequestModel
+/**
  * Model EmailTemplate
  * 
  */

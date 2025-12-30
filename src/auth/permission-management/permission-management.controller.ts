@@ -73,17 +73,4 @@ export class PermissionManagementController {
     return await this.permissionService.getAllModules();
   }
 
-  @Get(':moduleName')
-  @ApiOperation({ summary: 'Get module details by name' })
-  @ApiResponse({ status: 200, description: 'Module details retrieved successfully' })
-  async getModuleByName(@Param('moduleName') moduleName: string) {
-    return await this.permissionService.getModuleByName(moduleName);
-  }
-
-  @Get(':moduleName/users')
-  @ApiOperation({ summary: 'Get users with access to a specific module' })
-  @ApiResponse({ status: 200, description: 'Users with module access retrieved successfully' })
-  async getUsersWithModuleAccess(@Param('moduleName') moduleName: string) {
-    return await this.permissionService.getUsersWithModuleAccess(moduleName);
-  }
 }

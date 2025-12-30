@@ -18,6 +18,7 @@ export class QuotationsController {
 
   @Post('create-quotation')
   @Roles('USER', 'ACCOUNTANT', 'ADMIN')
+  @HasModuleAccess('quotations')
   async create(@Body() createQuotationDto: CreateQuotationDto, @User() user: jwtPayload,) {
     return await this.quotationsService.create(createQuotationDto, user.sub);
   }

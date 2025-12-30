@@ -12,6 +12,7 @@ interface TransactionRow {
   status: 'MATCHED' | 'UNMATCHED';
   from?: string;
   attachments?: string[];
+  accountId?: string;
 }
 
 @Injectable()
@@ -43,6 +44,7 @@ export class TransactionService {
             status: trx.status,
             source: trx.from || 'Unknown',
             attachments: trx.attachments || [],
+            accountId: trx.accountId,
           },
         });
         storedCount++;

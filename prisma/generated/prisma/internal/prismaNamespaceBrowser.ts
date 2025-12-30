@@ -51,6 +51,7 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  Bank: 'Bank',
   Mileage: 'Mileage',
   Transaction: 'Transaction',
   EmailTemplate: 'EmailTemplate',
@@ -91,6 +92,27 @@ export const TransactionIsolationLevel = {
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const BankScalarFieldEnum = {
+  id: 'id',
+  accountId: 'accountId',
+  accountNumber: 'accountNumber',
+  name: 'name',
+  type: 'type',
+  bankName: 'bankName',
+  balance: 'balance',
+  currencyCode: 'currencyCode',
+  iban: 'iban',
+  holderName: 'holderName',
+  bankId: 'bankId',
+  credentialsId: 'credentialsId',
+  lastSync: 'lastSync',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BankScalarFieldEnum = (typeof BankScalarFieldEnum)[keyof typeof BankScalarFieldEnum]
+
+
 export const MileageScalarFieldEnum = {
   id: 'id',
   milage_id: 'milage_id',
@@ -120,6 +142,7 @@ export const TransactionScalarFieldEnum = {
   status: 'status',
   source: 'source',
   attachments: 'attachments',
+  accountId: 'accountId',
   createdAt: 'createdAt'
 } as const
 

@@ -16,6 +16,7 @@ import { RedisServiceModule } from './config/redis-service/redis-service.module'
 import { BankModule } from './bank/bank.module';
 import { ImapApisModule } from './imap-apis/imap-apis.module';
 import { BankTransactionModule } from './user-dashboard/bank-transaction/transaction.module';
+import { BankDataModule } from './admin-dashboard/bank-data/bank-data.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { BankTransactionModule } from './user-dashboard/bank-transaction/transac
     BankModule,
     ImapApisModule,
     BankTransactionModule,
+    BankDataModule,
     // PaymentsModule
   ],
   controllers: [AppController],

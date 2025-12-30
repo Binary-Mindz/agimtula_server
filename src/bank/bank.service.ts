@@ -54,6 +54,7 @@ export class BankService {
     'transactions:read',
     'user:read',
     'credentials:read',
+    'account-verification-reports:read',
   ];
 
   // 1️⃣ Get App Token (client_credentials)

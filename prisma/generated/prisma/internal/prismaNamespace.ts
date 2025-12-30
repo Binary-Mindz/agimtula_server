@@ -384,6 +384,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
+  Bank: 'Bank',
   Mileage: 'Mileage',
   Transaction: 'Transaction',
   EmailTemplate: 'EmailTemplate',
@@ -421,10 +422,84 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "mileage" | "transaction" | "emailTemplate" | "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "profile" | "forgetPass" | "twoFA" | "language" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "user" | "email"
+    modelProps: "bank" | "mileage" | "transaction" | "emailTemplate" | "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "profile" | "forgetPass" | "twoFA" | "language" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "user" | "email"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
+    Bank: {
+      payload: Prisma.$BankPayload<ExtArgs>
+      fields: Prisma.BankFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BankFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BankPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BankFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BankPayload>
+        }
+        findFirst: {
+          args: Prisma.BankFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BankPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BankFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BankPayload>
+        }
+        findMany: {
+          args: Prisma.BankFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BankPayload>[]
+        }
+        create: {
+          args: Prisma.BankCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BankPayload>
+        }
+        createMany: {
+          args: Prisma.BankCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BankCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BankPayload>[]
+        }
+        delete: {
+          args: Prisma.BankDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BankPayload>
+        }
+        update: {
+          args: Prisma.BankUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BankPayload>
+        }
+        deleteMany: {
+          args: Prisma.BankDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BankUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BankUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BankPayload>[]
+        }
+        upsert: {
+          args: Prisma.BankUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BankPayload>
+        }
+        aggregate: {
+          args: Prisma.BankAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBank>
+        }
+        groupBy: {
+          args: Prisma.BankGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BankGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BankCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BankCountAggregateOutputType> | number
+        }
+      }
+    }
     Mileage: {
       payload: Prisma.$MileagePayload<ExtArgs>
       fields: Prisma.MileageFieldRefs
@@ -2092,6 +2167,27 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const BankScalarFieldEnum = {
+  id: 'id',
+  accountId: 'accountId',
+  accountNumber: 'accountNumber',
+  name: 'name',
+  type: 'type',
+  bankName: 'bankName',
+  balance: 'balance',
+  currencyCode: 'currencyCode',
+  iban: 'iban',
+  holderName: 'holderName',
+  bankId: 'bankId',
+  credentialsId: 'credentialsId',
+  lastSync: 'lastSync',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BankScalarFieldEnum = (typeof BankScalarFieldEnum)[keyof typeof BankScalarFieldEnum]
+
+
 export const MileageScalarFieldEnum = {
   id: 'id',
   milage_id: 'milage_id',
@@ -2121,6 +2217,7 @@ export const TransactionScalarFieldEnum = {
   status: 'status',
   source: 'source',
   attachments: 'attachments',
+  accountId: 'accountId',
   createdAt: 'createdAt'
 } as const
 
@@ -2464,16 +2561,16 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
- * Reference to a field of type 'Int'
+ * Reference to a field of type 'Decimal'
  */
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
     
 
 
 /**
- * Reference to a field of type 'Int[]'
+ * Reference to a field of type 'Decimal[]'
  */
-export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
     
 
 
@@ -2492,6 +2589,20 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'Int'
+ */
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+/**
+ * Reference to a field of type 'Int[]'
+ */
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -2502,20 +2613,6 @@ export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
  * Reference to a field of type 'Float[]'
  */
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
-
-
-/**
- * Reference to a field of type 'Decimal'
- */
-export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
-    
-
-
-/**
- * Reference to a field of type 'Decimal[]'
- */
-export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
     
 
 
@@ -2690,6 +2787,7 @@ export type PrismaClientOptions = ({
   comments?: runtime.SqlCommenterPlugin[]
 }
 export type GlobalOmitConfig = {
+  bank?: Prisma.BankOmit
   mileage?: Prisma.MileageOmit
   transaction?: Prisma.TransactionOmit
   emailTemplate?: Prisma.EmailTemplateOmit

@@ -103,48 +103,7 @@ export class PermissionService {
     });
   }
 
-  async getModuleByName(moduleName: string) {
-    const module = await this.prisma.module.findUnique({
-      where: { name: moduleName },
-      include: {
-        userModuleAccess: {
-          where: { isEnabled: true },
-        },
-      },
-    });
 
-    if (!module) {
-      throw new NotFoundException(`Module '${moduleName}' not found`);
-    }
 
-    return module;
-  }
 
-  async getUsersWithModuleAccess(moduleName: string) {
-    const module = await this.prisma.module.findUnique({
-      where: { name: moduleName },
-    });
-
-    if (!module) {
-      throw new NotFoundException(`Module '${moduleName}' not found`);
-    }
-
-    const result = await this.prisma.userModuleAccess.findMany({
-      where: {
-        moduleId: module.id,
-        isEnabled: true,
-      },
-      include: {
-        user: {
-          select: {
-            id: true,
-            role: true,
-            email: true,
-            profile: true,
-          },
-        },
-      },
-    });
-    return result;
-  }
 }

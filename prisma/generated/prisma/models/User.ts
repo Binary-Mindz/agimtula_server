@@ -210,6 +210,7 @@ export type UserWhereInput = {
   userSubscriptionPlan?: Prisma.XOR<Prisma.UserSubscriptionPlanNullableScalarRelationFilter, Prisma.userSubscriptionPlanWhereInput> | null
   userSubscriptionPlanHistory?: Prisma.UserSubscriptionPlanHistoryListRelationFilter
   quotations?: Prisma.QuotationListRelationFilter
+  userModuleAccess?: Prisma.UserModuleAccessListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -232,6 +233,7 @@ export type UserOrderByWithRelationInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanOrderByWithRelationInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryOrderByRelationAggregateInput
   quotations?: Prisma.quotationOrderByRelationAggregateInput
+  userModuleAccess?: Prisma.UserModuleAccessOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -257,6 +259,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   userSubscriptionPlan?: Prisma.XOR<Prisma.UserSubscriptionPlanNullableScalarRelationFilter, Prisma.userSubscriptionPlanWhereInput> | null
   userSubscriptionPlanHistory?: Prisma.UserSubscriptionPlanHistoryListRelationFilter
   quotations?: Prisma.QuotationListRelationFilter
+  userModuleAccess?: Prisma.UserModuleAccessListRelationFilter
 }, "id" | "id">
 
 export type UserOrderByWithAggregationInput = {
@@ -305,6 +308,7 @@ export type UserCreateInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationCreateNestedManyWithoutSenderInput
+  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -327,6 +331,7 @@ export type UserUncheckedCreateInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationUncheckedCreateNestedManyWithoutSenderInput
+  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -349,6 +354,7 @@ export type UserUpdateInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUpdateManyWithoutSenderNestedInput
+  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -371,6 +377,7 @@ export type UserUncheckedUpdateInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUncheckedUpdateManyWithoutSenderNestedInput
+  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -497,6 +504,20 @@ export type UserUpdateOneRequiredWithoutUserSubscriptionPlanHistoryNestedInput =
   upsert?: Prisma.UserUpsertWithoutUserSubscriptionPlanHistoryInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUserSubscriptionPlanHistoryInput, Prisma.UserUpdateWithoutUserSubscriptionPlanHistoryInput>, Prisma.UserUncheckedUpdateWithoutUserSubscriptionPlanHistoryInput>
+}
+
+export type UserCreateNestedOneWithoutUserModuleAccessInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUserModuleAccessInput, Prisma.UserUncheckedCreateWithoutUserModuleAccessInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserModuleAccessInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutUserModuleAccessNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUserModuleAccessInput, Prisma.UserUncheckedCreateWithoutUserModuleAccessInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserModuleAccessInput
+  upsert?: Prisma.UserUpsertWithoutUserModuleAccessInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUserModuleAccessInput, Prisma.UserUpdateWithoutUserModuleAccessInput>, Prisma.UserUncheckedUpdateWithoutUserModuleAccessInput>
 }
 
 export type UserCreateNestedOneWithoutProfileInput = {
@@ -636,6 +657,7 @@ export type UserCreateWithoutMileagesInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationCreateNestedManyWithoutSenderInput
+  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutMileagesInput = {
@@ -657,6 +679,7 @@ export type UserUncheckedCreateWithoutMileagesInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationUncheckedCreateNestedManyWithoutSenderInput
+  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutMileagesInput = {
@@ -694,6 +717,7 @@ export type UserUpdateWithoutMileagesInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUpdateManyWithoutSenderNestedInput
+  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMileagesInput = {
@@ -715,6 +739,7 @@ export type UserUncheckedUpdateWithoutMileagesInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUncheckedUpdateManyWithoutSenderNestedInput
+  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutImapConfigurationsInput = {
@@ -736,6 +761,7 @@ export type UserCreateWithoutImapConfigurationsInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationCreateNestedManyWithoutSenderInput
+  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutImapConfigurationsInput = {
@@ -757,6 +783,7 @@ export type UserUncheckedCreateWithoutImapConfigurationsInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationUncheckedCreateNestedManyWithoutSenderInput
+  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutImapConfigurationsInput = {
@@ -794,6 +821,7 @@ export type UserUpdateWithoutImapConfigurationsInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUpdateManyWithoutSenderNestedInput
+  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutImapConfigurationsInput = {
@@ -815,6 +843,7 @@ export type UserUncheckedUpdateWithoutImapConfigurationsInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUncheckedUpdateManyWithoutSenderNestedInput
+  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutUserSubscriptionPlanInput = {
@@ -836,6 +865,7 @@ export type UserCreateWithoutUserSubscriptionPlanInput = {
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationCreateNestedManyWithoutSenderInput
+  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutUserSubscriptionPlanInput = {
@@ -857,6 +887,7 @@ export type UserUncheckedCreateWithoutUserSubscriptionPlanInput = {
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationUncheckedCreateNestedManyWithoutSenderInput
+  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutUserSubscriptionPlanInput = {
@@ -894,6 +925,7 @@ export type UserUpdateWithoutUserSubscriptionPlanInput = {
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUpdateManyWithoutSenderNestedInput
+  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUserSubscriptionPlanInput = {
@@ -915,6 +947,7 @@ export type UserUncheckedUpdateWithoutUserSubscriptionPlanInput = {
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUncheckedUpdateManyWithoutSenderNestedInput
+  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutUserSubscriptionPlanHistoryInput = {
@@ -936,6 +969,7 @@ export type UserCreateWithoutUserSubscriptionPlanHistoryInput = {
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
   userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
   quotations?: Prisma.quotationCreateNestedManyWithoutSenderInput
+  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutUserSubscriptionPlanHistoryInput = {
@@ -957,6 +991,7 @@ export type UserUncheckedCreateWithoutUserSubscriptionPlanHistoryInput = {
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
   quotations?: Prisma.quotationUncheckedCreateNestedManyWithoutSenderInput
+  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutUserSubscriptionPlanHistoryInput = {
@@ -994,6 +1029,7 @@ export type UserUpdateWithoutUserSubscriptionPlanHistoryInput = {
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
   quotations?: Prisma.quotationUpdateManyWithoutSenderNestedInput
+  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUserSubscriptionPlanHistoryInput = {
@@ -1014,6 +1050,111 @@ export type UserUncheckedUpdateWithoutUserSubscriptionPlanHistoryInput = {
   paymentMethods?: Prisma.PaymentMethodUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
+  quotations?: Prisma.quotationUncheckedUpdateManyWithoutSenderNestedInput
+  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutUserModuleAccessInput = {
+  id?: string
+  password: string
+  role?: $Enums.UserRole
+  twoFactorEnabled?: boolean
+  status?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  receipts?: Prisma.ReceiptCreateNestedManyWithoutUserInput
+  businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
+  email?: Prisma.EmailCreateNestedOneWithoutUserInput
+  imapConfigurations?: Prisma.imapConfigurationCreateNestedOneWithoutUserInput
+  invoiceLayout?: Prisma.InvoiceLayoutCreateNestedOneWithoutUserInput
+  languages?: Prisma.LanguageCreateNestedManyWithoutUserInput
+  mileages?: Prisma.MileageCreateNestedManyWithoutUserInput
+  paymentMethods?: Prisma.PaymentMethodCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
+  quotations?: Prisma.quotationCreateNestedManyWithoutSenderInput
+}
+
+export type UserUncheckedCreateWithoutUserModuleAccessInput = {
+  id?: string
+  password: string
+  role?: $Enums.UserRole
+  twoFactorEnabled?: boolean
+  status?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutUserInput
+  businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
+  email?: Prisma.EmailUncheckedCreateNestedOneWithoutUserInput
+  imapConfigurations?: Prisma.imapConfigurationUncheckedCreateNestedOneWithoutUserInput
+  invoiceLayout?: Prisma.InvoiceLayoutUncheckedCreateNestedOneWithoutUserInput
+  languages?: Prisma.LanguageUncheckedCreateNestedManyWithoutUserInput
+  mileages?: Prisma.MileageUncheckedCreateNestedManyWithoutUserInput
+  paymentMethods?: Prisma.PaymentMethodUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
+  quotations?: Prisma.quotationUncheckedCreateNestedManyWithoutSenderInput
+}
+
+export type UserCreateOrConnectWithoutUserModuleAccessInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutUserModuleAccessInput, Prisma.UserUncheckedCreateWithoutUserModuleAccessInput>
+}
+
+export type UserUpsertWithoutUserModuleAccessInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutUserModuleAccessInput, Prisma.UserUncheckedUpdateWithoutUserModuleAccessInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutUserModuleAccessInput, Prisma.UserUncheckedCreateWithoutUserModuleAccessInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutUserModuleAccessInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutUserModuleAccessInput, Prisma.UserUncheckedUpdateWithoutUserModuleAccessInput>
+}
+
+export type UserUpdateWithoutUserModuleAccessInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  receipts?: Prisma.ReceiptUpdateManyWithoutUserNestedInput
+  businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
+  email?: Prisma.EmailUpdateOneWithoutUserNestedInput
+  imapConfigurations?: Prisma.imapConfigurationUpdateOneWithoutUserNestedInput
+  invoiceLayout?: Prisma.InvoiceLayoutUpdateOneWithoutUserNestedInput
+  languages?: Prisma.LanguageUpdateManyWithoutUserNestedInput
+  mileages?: Prisma.MileageUpdateManyWithoutUserNestedInput
+  paymentMethods?: Prisma.PaymentMethodUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
+  quotations?: Prisma.quotationUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutUserModuleAccessInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutUserNestedInput
+  businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
+  email?: Prisma.EmailUncheckedUpdateOneWithoutUserNestedInput
+  imapConfigurations?: Prisma.imapConfigurationUncheckedUpdateOneWithoutUserNestedInput
+  invoiceLayout?: Prisma.InvoiceLayoutUncheckedUpdateOneWithoutUserNestedInput
+  languages?: Prisma.LanguageUncheckedUpdateManyWithoutUserNestedInput
+  mileages?: Prisma.MileageUncheckedUpdateManyWithoutUserNestedInput
+  paymentMethods?: Prisma.PaymentMethodUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
+  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUncheckedUpdateManyWithoutSenderNestedInput
 }
 
@@ -1036,6 +1177,7 @@ export type UserCreateWithoutProfileInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationCreateNestedManyWithoutSenderInput
+  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProfileInput = {
@@ -1057,6 +1199,7 @@ export type UserUncheckedCreateWithoutProfileInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationUncheckedCreateNestedManyWithoutSenderInput
+  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProfileInput = {
@@ -1094,6 +1237,7 @@ export type UserUpdateWithoutProfileInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUpdateManyWithoutSenderNestedInput
+  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfileInput = {
@@ -1115,6 +1259,7 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUncheckedUpdateManyWithoutSenderNestedInput
+  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutLanguagesInput = {
@@ -1136,6 +1281,7 @@ export type UserCreateWithoutLanguagesInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationCreateNestedManyWithoutSenderInput
+  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutLanguagesInput = {
@@ -1157,6 +1303,7 @@ export type UserUncheckedCreateWithoutLanguagesInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationUncheckedCreateNestedManyWithoutSenderInput
+  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutLanguagesInput = {
@@ -1194,6 +1341,7 @@ export type UserUpdateWithoutLanguagesInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUpdateManyWithoutSenderNestedInput
+  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLanguagesInput = {
@@ -1215,6 +1363,7 @@ export type UserUncheckedUpdateWithoutLanguagesInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUncheckedUpdateManyWithoutSenderNestedInput
+  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutQuotationsInput = {
@@ -1236,6 +1385,7 @@ export type UserCreateWithoutQuotationsInput = {
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
   userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
+  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutQuotationsInput = {
@@ -1257,6 +1407,7 @@ export type UserUncheckedCreateWithoutQuotationsInput = {
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
+  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutQuotationsInput = {
@@ -1294,6 +1445,7 @@ export type UserUpdateWithoutQuotationsInput = {
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
+  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutQuotationsInput = {
@@ -1315,6 +1467,7 @@ export type UserUncheckedUpdateWithoutQuotationsInput = {
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
+  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutReceiptsInput = {
@@ -1336,6 +1489,7 @@ export type UserCreateWithoutReceiptsInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationCreateNestedManyWithoutSenderInput
+  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutReceiptsInput = {
@@ -1357,6 +1511,7 @@ export type UserUncheckedCreateWithoutReceiptsInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationUncheckedCreateNestedManyWithoutSenderInput
+  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutReceiptsInput = {
@@ -1394,6 +1549,7 @@ export type UserUpdateWithoutReceiptsInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUpdateManyWithoutSenderNestedInput
+  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReceiptsInput = {
@@ -1415,6 +1571,7 @@ export type UserUncheckedUpdateWithoutReceiptsInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUncheckedUpdateManyWithoutSenderNestedInput
+  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutBusinessInfoInput = {
@@ -1436,6 +1593,7 @@ export type UserCreateWithoutBusinessInfoInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationCreateNestedManyWithoutSenderInput
+  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutBusinessInfoInput = {
@@ -1457,6 +1615,7 @@ export type UserUncheckedCreateWithoutBusinessInfoInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationUncheckedCreateNestedManyWithoutSenderInput
+  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutBusinessInfoInput = {
@@ -1494,6 +1653,7 @@ export type UserUpdateWithoutBusinessInfoInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUpdateManyWithoutSenderNestedInput
+  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBusinessInfoInput = {
@@ -1515,6 +1675,7 @@ export type UserUncheckedUpdateWithoutBusinessInfoInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUncheckedUpdateManyWithoutSenderNestedInput
+  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPaymentMethodsInput = {
@@ -1536,6 +1697,7 @@ export type UserCreateWithoutPaymentMethodsInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationCreateNestedManyWithoutSenderInput
+  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPaymentMethodsInput = {
@@ -1557,6 +1719,7 @@ export type UserUncheckedCreateWithoutPaymentMethodsInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationUncheckedCreateNestedManyWithoutSenderInput
+  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPaymentMethodsInput = {
@@ -1594,6 +1757,7 @@ export type UserUpdateWithoutPaymentMethodsInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUpdateManyWithoutSenderNestedInput
+  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPaymentMethodsInput = {
@@ -1615,6 +1779,7 @@ export type UserUncheckedUpdateWithoutPaymentMethodsInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUncheckedUpdateManyWithoutSenderNestedInput
+  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutInvoiceLayoutInput = {
@@ -1636,6 +1801,7 @@ export type UserCreateWithoutInvoiceLayoutInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationCreateNestedManyWithoutSenderInput
+  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutInvoiceLayoutInput = {
@@ -1657,6 +1823,7 @@ export type UserUncheckedCreateWithoutInvoiceLayoutInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationUncheckedCreateNestedManyWithoutSenderInput
+  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutInvoiceLayoutInput = {
@@ -1694,6 +1861,7 @@ export type UserUpdateWithoutInvoiceLayoutInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUpdateManyWithoutSenderNestedInput
+  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutInvoiceLayoutInput = {
@@ -1715,6 +1883,7 @@ export type UserUncheckedUpdateWithoutInvoiceLayoutInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUncheckedUpdateManyWithoutSenderNestedInput
+  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutEmailInput = {
@@ -1736,6 +1905,7 @@ export type UserCreateWithoutEmailInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationCreateNestedManyWithoutSenderInput
+  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutEmailInput = {
@@ -1757,6 +1927,7 @@ export type UserUncheckedCreateWithoutEmailInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationUncheckedCreateNestedManyWithoutSenderInput
+  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutEmailInput = {
@@ -1794,6 +1965,7 @@ export type UserUpdateWithoutEmailInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUpdateManyWithoutSenderNestedInput
+  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutEmailInput = {
@@ -1815,6 +1987,7 @@ export type UserUncheckedUpdateWithoutEmailInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUncheckedUpdateManyWithoutSenderNestedInput
+  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1829,6 +2002,7 @@ export type UserCountOutputType = {
   paymentMethods: number
   userSubscriptionPlanHistory: number
   quotations: number
+  userModuleAccess: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1838,6 +2012,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   paymentMethods?: boolean | UserCountOutputTypeCountPaymentMethodsArgs
   userSubscriptionPlanHistory?: boolean | UserCountOutputTypeCountUserSubscriptionPlanHistoryArgs
   quotations?: boolean | UserCountOutputTypeCountQuotationsArgs
+  userModuleAccess?: boolean | UserCountOutputTypeCountUserModuleAccessArgs
 }
 
 /**
@@ -1892,6 +2067,13 @@ export type UserCountOutputTypeCountQuotationsArgs<ExtArgs extends runtime.Types
   where?: Prisma.quotationWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountUserModuleAccessArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserModuleAccessWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1913,6 +2095,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   userSubscriptionPlan?: boolean | Prisma.User$userSubscriptionPlanArgs<ExtArgs>
   userSubscriptionPlanHistory?: boolean | Prisma.User$userSubscriptionPlanHistoryArgs<ExtArgs>
   quotations?: boolean | Prisma.User$quotationsArgs<ExtArgs>
+  userModuleAccess?: boolean | Prisma.User$userModuleAccessArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1960,6 +2143,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   userSubscriptionPlan?: boolean | Prisma.User$userSubscriptionPlanArgs<ExtArgs>
   userSubscriptionPlanHistory?: boolean | Prisma.User$userSubscriptionPlanHistoryArgs<ExtArgs>
   quotations?: boolean | Prisma.User$quotationsArgs<ExtArgs>
+  userModuleAccess?: boolean | Prisma.User$userModuleAccessArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1980,6 +2164,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     userSubscriptionPlan: Prisma.$userSubscriptionPlanPayload<ExtArgs> | null
     userSubscriptionPlanHistory: Prisma.$userSubscriptionPlanHistoryPayload<ExtArgs>[]
     quotations: Prisma.$quotationPayload<ExtArgs>[]
+    userModuleAccess: Prisma.$UserModuleAccessPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2395,6 +2580,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   userSubscriptionPlan<T extends Prisma.User$userSubscriptionPlanArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$userSubscriptionPlanArgs<ExtArgs>>): Prisma.Prisma__userSubscriptionPlanClient<runtime.Types.Result.GetResult<Prisma.$userSubscriptionPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   userSubscriptionPlanHistory<T extends Prisma.User$userSubscriptionPlanHistoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$userSubscriptionPlanHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$userSubscriptionPlanHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   quotations<T extends Prisma.User$quotationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$quotationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$quotationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  userModuleAccess<T extends Prisma.User$userModuleAccessArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$userModuleAccessArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserModuleAccessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3074,6 +3260,30 @@ export type User$quotationsArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.QuotationScalarFieldEnum | Prisma.QuotationScalarFieldEnum[]
+}
+
+/**
+ * User.userModuleAccess
+ */
+export type User$userModuleAccessArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserModuleAccess
+   */
+  select?: Prisma.UserModuleAccessSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserModuleAccess
+   */
+  omit?: Prisma.UserModuleAccessOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserModuleAccessInclude<ExtArgs> | null
+  where?: Prisma.UserModuleAccessWhereInput
+  orderBy?: Prisma.UserModuleAccessOrderByWithRelationInput | Prisma.UserModuleAccessOrderByWithRelationInput[]
+  cursor?: Prisma.UserModuleAccessWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserModuleAccessScalarFieldEnum | Prisma.UserModuleAccessScalarFieldEnum[]
 }
 
 /**

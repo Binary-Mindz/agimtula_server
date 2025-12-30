@@ -1,83 +1,122 @@
 import { PrismaPg } from '@prisma/adapter-pg';
-import { PrismaClient, UserRole } from '../prisma/generated/prisma/client';
+import { PrismaClient, UserRole } from './generated/prisma/client';
 import * as bcrypt from 'bcrypt';
 import 'dotenv/config';
 
-// const prisma = new PrismaClient();
-
-export function createPrismaClient(): PrismaClient {
+/* ----------------------------------
+   Prisma Client Factory
+----------------------------------- */
+function createPrismaClient(): PrismaClient {
   const connectionString = process.env.DATABASE_URL;
+
   if (!connectionString) {
-    throw new Error(
-      '❌ DATABASE_URL must be set in the environment variables.',
-    );
+    throw new Error('❌ DATABASE_URL must be set in environment variables.');
   }
+
   const adapter = new PrismaPg({ connectionString });
-  // Return the PrismaClient with the configured adapter and logging
-  const prisma = new PrismaClient({
+
+  return new PrismaClient({
     adapter,
     log: [{ emit: 'event', level: 'error' }],
   });
-  return prisma;
 }
 
 const prisma = createPrismaClient();
 
-async function main() {
-  const superAdminFirstName = process.env.SUPER_ADMIN_FIRSTNAME;
-  const superAdminLastName = process.env.SUPER_ADMIN_LASTNAME;
-  const superAdminEmail = process.env.SUPER_ADMIN_EMAIL;
-  const superAdminPassword = process.env.SUPER_ADMIN_PASSWORD;
-  //   const superAdminUsername = process.env.SUPER_ADMIN_USERNAME || 'superadmin';
+/* ----------------------------------
+   Seed Super Admin
+----------------------------------- */
+async function seedSuperAdmin() {
+  const {
+    SUPER_ADMIN_FIRSTNAME,
+    SUPER_ADMIN_LASTNAME,
+    SUPER_ADMIN_EMAIL,
+    SUPER_ADMIN_PASSWORD,
+  } = process.env;
 
   if (
-    !superAdminEmail ||
-    !superAdminPassword ||
-    !superAdminFirstName ||
-    !superAdminLastName
+    !SUPER_ADMIN_FIRSTNAME ||
+    !SUPER_ADMIN_LASTNAME ||
+    !SUPER_ADMIN_EMAIL ||
+    !SUPER_ADMIN_PASSWORD
   ) {
     throw new Error(
-      '❌ SUPER_ADMIN_EMAIL and SUPER_ADMIN_PASSWORD must be set in .env',
+      '❌ SUPER_ADMIN_* environment variables must be set.',
     );
   }
 
-  // Check if admin already exists
   const existing = await prisma.email.findFirst({
-    where: { email: superAdminEmail },
+    where: { email: SUPER_ADMIN_EMAIL },
   });
 
   if (existing) {
-    console.log('⚠️ Super admin already exists. Skipping seed.');
+    console.log('⚠️ Super Admin already exists. Skipping...');
     return;
   }
 
-  const hashed = await bcrypt.hash(superAdminPassword, 10);
+  const hashedPassword = await bcrypt.hash('Admin@12A', 10);
 
-  // ✅ Use Prisma Transaction
-  const result = await prisma.user.create({
+  await prisma.user.create({
     data: {
       profile: {
         create: {
-          firstName: superAdminFirstName,
-          lastName: superAdminLastName,
+          firstName: SUPER_ADMIN_FIRSTNAME,
+          lastName: SUPER_ADMIN_LASTNAME,
         },
       },
       email: {
         create: {
-          email: superAdminEmail,
+          email: 'admin@gmail.com',
         },
       },
-      password: hashed,
+      password: hashedPassword,
       role: UserRole.ADMIN,
     },
   });
 
-  console.log('✅ Super Admin created successfully:', result);
+  console.log('✅ Super Admin created successfully');
+}
+
+/* ----------------------------------
+   Seed Modules & Permissions
+----------------------------------- */
+async function seedPermissions() {
+  const modules = [
+    { name: 'quotations', displayName: 'Quotations Management' },
+    { name: 'receipts', displayName: 'Receipts Management' },
+    { name: 'users', displayName: 'User Management' },
+    { name: 'reports', displayName: 'Reports & Analytics' },
+  ];
+
+
+  for (const mod of modules) {
+    await prisma.module.upsert({
+      where: { name: mod.name },
+      create: mod,
+      update: mod,
+    });
+
+
+  }
+
+  console.log('✅ Modules & Permissions seeded successfully');
+}
+
+/* ----------------------------------
+   Main Runner
+----------------------------------- */
+async function main() {
+  console.log('🚀 Seeding started...');
+
+  await seedSuperAdmin();
+  await seedPermissions();
+
+  console.log('🎉 Seeding completed successfully');
 }
 
 main()
-  .catch((e) => {
-    console.error('❌ Seeding Error:', e);
+  .catch((error) => {
+    console.error('❌ Seeding failed:', error);
     process.exit(1);
   })
   .finally(async () => {

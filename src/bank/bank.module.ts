@@ -5,7 +5,7 @@ import { TransactionService } from 'src/user-dashboard/bank-transaction/transact
 
 @Module({
   controllers: [TinkController],
-  providers: [TinkService],
+  providers: [TinkService, TransactionService],
   exports: [TinkService],
 })
 export class BankModule {}

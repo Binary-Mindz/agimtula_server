@@ -1,0 +1,25 @@
+model quotation {
+  id Int @id @default(autoincrement())
+
+  clientName  String
+  clientEmail String
+  clientPhone String
+
+  date   DateTime
+  amount Float
+  status deliveryStatus @default(SENT)
+
+  senderId String
+  sender   User   @relation(fields: [senderId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum deliveryStatus {
+  SENT
+  DELIVERED
+  VIEWED
+  ACCEPTED
+  REJECTED
+}

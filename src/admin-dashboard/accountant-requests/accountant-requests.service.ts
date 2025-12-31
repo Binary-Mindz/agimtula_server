@@ -13,8 +13,8 @@ export class AccountantRequestsService {
       },
     });
   }
-  getAccountantRequests() {
-    const requests = this.prisma.accountantRequest.findMany({
+  async getAccountantRequests() {
+    const requests = await this.prisma.accountantRequest.findMany({
       where: {
         status: 'PENDING',
       },
@@ -26,49 +26,55 @@ export class AccountantRequestsService {
     });
   }
 
-  async approveAccountantRequest(
-    userId: string,
-    accountantId: string,
-    requestId: string,
-  ) {
-    const approved = await this.prisma.accountantRequest.update({
-      where: {
-        id: requestId,
-      },
-      data: {
-        status: 'APPROVED',
-      },
-    });
+  async approveAccountantRequest(accountantId: string, requestId: string) {
+    try {
+      const approved = await this.prisma.accountantRequest.update({
+        where: {
+          id: requestId,
+        },
+        data: {
+          status: 'APPROVED',
+        },
+      });
 
-    await this.prisma.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        haveAccountant: true,
-        accountantId,
-      },
-    });
+      await this.prisma.user.update({
+        where: {
+          id: approved.userId,
+        },
+        data: {
+          haveAccountant: true,
+          accountantId: accountantId,
+        },
+      });
 
-    return cResponseData({
-      data: approved,
-      message: 'Accountant request approved successfully',
-    });
+      return cResponseData({
+        data: approved,
+        message: 'Accountant request approved successfully',
+      });
+    } catch (error) {
+      console.error('Database error:', error);
+      throw new Error(`Failed to approve accountant request: ${error.message}`);
+    }
   }
 
   async rejectAccountantRequest(requestId: string) {
-    const rejected = await this.prisma.accountantRequest.update({
-      where: {
-        id: requestId,
-      },
-      data: {
-        status: 'REJECTED',
-      },
-    });
+    try {
+      const rejected = await this.prisma.accountantRequest.update({
+        where: {
+          id: requestId,
+        },
+        data: {
+          status: 'REJECTED',
+        },
+      });
 
-    return cResponseData({
-      message: 'Accountant request rejected',
-      data: rejected,
-    });
+      return cResponseData({
+        message: 'Accountant request rejected',
+        data: rejected,
+      });
+    } catch (error) {
+      console.error('Database error:', error);
+      throw new Error(`Failed to reject accountant request: ${error.message}`);
+    }
   }
 }

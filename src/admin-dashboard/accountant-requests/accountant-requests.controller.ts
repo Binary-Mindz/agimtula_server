@@ -12,7 +12,7 @@ export class AccountantRequestsController {
   @Get('getAccountantRequests')
   @Roles('ADMIN')
   getAccountantRequests() {
-    this.accountantRequestsService.getAccountantRequests();
+   return this.accountantRequestsService.getAccountantRequests();
   }
 
   @Get('getAccountantIds')
@@ -24,15 +24,12 @@ export class AccountantRequestsController {
   @Patch('approve/:id')
   @Roles('ADMIN')
   @ApiQuery({ name: 'accountantId', required: true })
-  @ApiQuery({ name: 'userId', required: true })
   @ApiParam({ name: 'id', required: true })
   approveAccountantRequest(
-    @Query() accountantId: string,
-    @Query() userId: string,
+    @Query('accountantId') accountantId: string,
     @Param('id') id: string,
   ) {
     return this.accountantRequestsService.approveAccountantRequest(
-      userId,
       accountantId,
       id,
     );

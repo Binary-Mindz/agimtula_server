@@ -43,6 +43,16 @@ export type userSubscriptionPlanHistory = Prisma.userSubscriptionPlanHistoryMode
  */
 export type subscriptionPlanPaymentStatus = Prisma.subscriptionPlanPaymentStatusModel
 /**
+ * Model Module
+ * 
+ */
+export type Module = Prisma.ModuleModel
+/**
+ * Model UserModuleAccess
+ * 
+ */
+export type UserModuleAccess = Prisma.UserModuleAccessModel
+/**
  * Model Profile
  * 
  */
@@ -62,6 +72,11 @@ export type TwoFA = Prisma.TwoFAModel
  * 
  */
 export type Language = Prisma.LanguageModel
+/**
+ * Model quotation
+ * 
+ */
+export type quotation = Prisma.quotationModel
 /**
  * Model Receipt
  * 

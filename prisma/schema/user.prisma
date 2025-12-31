@@ -17,6 +17,8 @@ model User {
   profile                     Profile?
   userSubscriptionPlan        userSubscriptionPlan?
   userSubscriptionPlanHistory userSubscriptionPlanHistory[]
+  quotations                  quotation[]
+  userModuleAccess            UserModuleAccess[] // Module access only
 
   haveAccountant Boolean @default(false)
   accountantId String?

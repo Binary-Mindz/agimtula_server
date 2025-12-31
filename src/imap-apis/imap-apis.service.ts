@@ -32,7 +32,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
   constructor(
     private schedulerRegistry: SchedulerRegistry,
     private prisma: PrismaService, // Your DB service
-  ) {}
+  ) { }
 
   private async imapClient({ host, port, username, password }: ImapClient) {
     return await imaps.connect({
@@ -62,7 +62,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
     //     },
     //     imapConfigurations: {
     //       connect: true,
-    //       sync: true
+    //       sync: true,
     //     },
     //   },
     //   select: { imapConfigurations: true },

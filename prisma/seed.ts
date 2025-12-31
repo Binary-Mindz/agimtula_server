@@ -77,16 +77,37 @@ async function seedSuperAdmin() {
   console.log('✅ Super Admin created successfully');
 }
 
-/* ----------------------------------
-   Seed Modules & Permissions
------------------------------------ */
+
 async function seedPermissions() {
   const modules = [
     { name: 'quotations', displayName: 'Quotations Management' },
     { name: 'receipts', displayName: 'Receipts Management' },
     { name: 'users', displayName: 'User Management' },
     { name: 'reports', displayName: 'Reports & Analytics' },
+    { name: 'settings', displayName: 'Application Settings' },
+    { name: 'invoices', displayName: 'Invoices Management' },
+    { name: 'dashboard', displayName: 'Dashboard' },
+    { name: 'auto_invoice_import', displayName: 'Auto Invoice Import' },
+    { name: 'bank_transactions', displayName: 'Bank Transactions' },
+    { name: 'mileage', displayName: 'Mileage Tracking' },
+    { name: 'imap_system_monitor', displayName: 'IMAP System Monitor' },
+    { name: 'subscriptions', displayName: 'Subscriptions' },
+    { name: 'modules', displayName: 'Modules Management' },
+    { name: 'profile', displayName: 'Profile Settings' },
+    { name: 'system_settings', displayName: 'System Settings' },
+    { name: 'support', displayName: 'Support' },
+    { name: 'payments', displayName: 'Payments' },
+    { name: 'supplier_imports', displayName: 'Supplier Imports' },
+    { name: 'bank_integration_monitor', displayName: 'Bank Integration Monitor' },
+    { name: 'eu_invoice', displayName: 'EU Invoice' },
+    { name: 'overview', displayName: 'Overview' },
+    { name: 'clients', displayName: 'Clients Management' },
+    { name: 'purchases', displayName: 'Purchases Management' },
+    { name: 'sales_invoices', displayName: 'Sales Invoices' },
+    { name: 'expenses', displayName: 'Receipts / Expenses' },
+    { name: 'vat_overview', displayName: 'VAT Overview' },
   ];
+
 
 
   for (const mod of modules) {

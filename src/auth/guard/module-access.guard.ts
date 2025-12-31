@@ -23,7 +23,7 @@ export class ModuleAccessGuard implements CanActivate {
     ]);
 
     if (!moduleConfig) {
-      return true; // No module access check required
+      return true;
     }
 
     const request = context.switchToHttp().getRequest();
@@ -41,7 +41,7 @@ export class ModuleAccessGuard implements CanActivate {
     const hasAccess = await this.checkModuleAccess(
       user.sub,
       user.role,
-      moduleName,
+      moduleName as string,
     );
 
     if (!hasAccess) {

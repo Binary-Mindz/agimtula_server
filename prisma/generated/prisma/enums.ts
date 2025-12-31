@@ -44,6 +44,17 @@ export const TwoFAPurpose = {
 export type TwoFAPurpose = (typeof TwoFAPurpose)[keyof typeof TwoFAPurpose]
 
 
+export const deliveryStatus = {
+  SENT: 'SENT',
+  DELIVERED: 'DELIVERED',
+  VIEWED: 'VIEWED',
+  ACCEPTED: 'ACCEPTED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type deliveryStatus = (typeof deliveryStatus)[keyof typeof deliveryStatus]
+
+
 export const BillingPeriod = {
   MONTHLY: 'MONTHLY',
   YEARLY: 'YEARLY'

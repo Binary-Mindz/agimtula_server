@@ -1138,6 +1138,8 @@ export type UserCreateWithoutUserModuleAccessInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
   receipts?: Prisma.ReceiptCreateNestedManyWithoutUserInput
   businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
   email?: Prisma.EmailCreateNestedOneWithoutUserInput
@@ -1160,6 +1162,8 @@ export type UserUncheckedCreateWithoutUserModuleAccessInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
   receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutUserInput
   businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
   email?: Prisma.EmailUncheckedCreateNestedOneWithoutUserInput
@@ -1198,6 +1202,8 @@ export type UserUpdateWithoutUserModuleAccessInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receipts?: Prisma.ReceiptUpdateManyWithoutUserNestedInput
   businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
   email?: Prisma.EmailUpdateOneWithoutUserNestedInput
@@ -1220,6 +1226,8 @@ export type UserUncheckedUpdateWithoutUserModuleAccessInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutUserNestedInput
   businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
   email?: Prisma.EmailUncheckedUpdateOneWithoutUserNestedInput
@@ -1466,6 +1474,8 @@ export type UserCreateWithoutQuotationsInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
   receipts?: Prisma.ReceiptCreateNestedManyWithoutUserInput
   businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
   email?: Prisma.EmailCreateNestedOneWithoutUserInput
@@ -1488,6 +1498,8 @@ export type UserUncheckedCreateWithoutQuotationsInput = {
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
+  haveAccountant?: boolean
+  accountantId?: string | null
   receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutUserInput
   businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
   email?: Prisma.EmailUncheckedCreateNestedOneWithoutUserInput
@@ -1526,6 +1538,8 @@ export type UserUpdateWithoutQuotationsInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receipts?: Prisma.ReceiptUpdateManyWithoutUserNestedInput
   businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
   email?: Prisma.EmailUpdateOneWithoutUserNestedInput
@@ -1548,6 +1562,8 @@ export type UserUncheckedUpdateWithoutQuotationsInput = {
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutUserNestedInput
   businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
   email?: Prisma.EmailUncheckedUpdateOneWithoutUserNestedInput

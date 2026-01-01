@@ -393,6 +393,7 @@ export const ModelName = {
   userSubscriptionPlan: 'userSubscriptionPlan',
   userSubscriptionPlanHistory: 'userSubscriptionPlanHistory',
   subscriptionPlanPaymentStatus: 'subscriptionPlanPaymentStatus',
+  Loggers: 'Loggers',
   Module: 'Module',
   UserModuleAccess: 'UserModuleAccess',
   Profile: 'Profile',
@@ -426,7 +427,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "mileage" | "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "module" | "userModuleAccess" | "profile" | "forgetPass" | "twoFA" | "language" | "quotation" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "user" | "email"
+    modelProps: "bank" | "mileage" | "transaction" | "accountantRequest" | "emailTemplate" | "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "loggers" | "module" | "userModuleAccess" | "profile" | "forgetPass" | "twoFA" | "language" | "quotation" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "user" | "email"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1093,6 +1094,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.subscriptionPlanPaymentStatusCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.SubscriptionPlanPaymentStatusCountAggregateOutputType> | number
+        }
+      }
+    }
+    Loggers: {
+      payload: Prisma.$LoggersPayload<ExtArgs>
+      fields: Prisma.LoggersFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LoggersFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoggersPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LoggersFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoggersPayload>
+        }
+        findFirst: {
+          args: Prisma.LoggersFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoggersPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LoggersFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoggersPayload>
+        }
+        findMany: {
+          args: Prisma.LoggersFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoggersPayload>[]
+        }
+        create: {
+          args: Prisma.LoggersCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoggersPayload>
+        }
+        createMany: {
+          args: Prisma.LoggersCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LoggersCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoggersPayload>[]
+        }
+        delete: {
+          args: Prisma.LoggersDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoggersPayload>
+        }
+        update: {
+          args: Prisma.LoggersUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoggersPayload>
+        }
+        deleteMany: {
+          args: Prisma.LoggersDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LoggersUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LoggersUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoggersPayload>[]
+        }
+        upsert: {
+          args: Prisma.LoggersUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoggersPayload>
+        }
+        aggregate: {
+          args: Prisma.LoggersAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLoggers>
+        }
+        groupBy: {
+          args: Prisma.LoggersGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LoggersGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LoggersCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LoggersCountAggregateOutputType> | number
         }
       }
     }
@@ -2622,6 +2697,16 @@ export const SubscriptionPlanPaymentStatusScalarFieldEnum = {
 export type SubscriptionPlanPaymentStatusScalarFieldEnum = (typeof SubscriptionPlanPaymentStatusScalarFieldEnum)[keyof typeof SubscriptionPlanPaymentStatusScalarFieldEnum]
 
 
+export const LoggersScalarFieldEnum = {
+  id: 'id',
+  level: 'level',
+  logpriority: 'logpriority',
+  timestamp: 'timestamp'
+} as const
+
+export type LoggersScalarFieldEnum = (typeof LoggersScalarFieldEnum)[keyof typeof LoggersScalarFieldEnum]
+
+
 export const ModuleScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -3037,6 +3122,34 @@ export type ListEnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType
 
 
 /**
+ * Reference to a field of type 'LogType'
+ */
+export type EnumLogTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LogType'>
+    
+
+
+/**
+ * Reference to a field of type 'LogType[]'
+ */
+export type ListEnumLogTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LogType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'logpriority'
+ */
+export type EnumlogpriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'logpriority'>
+    
+
+
+/**
+ * Reference to a field of type 'logpriority[]'
+ */
+export type ListEnumlogpriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'logpriority[]'>
+    
+
+
+/**
  * Reference to a field of type 'TwoFAPurpose'
  */
 export type EnumTwoFAPurposeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TwoFAPurpose'>
@@ -3181,6 +3294,7 @@ export type GlobalOmitConfig = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanOmit
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryOmit
   subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusOmit
+  loggers?: Prisma.LoggersOmit
   module?: Prisma.ModuleOmit
   userModuleAccess?: Prisma.UserModuleAccessOmit
   profile?: Prisma.ProfileOmit

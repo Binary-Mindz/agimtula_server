@@ -58,47 +58,53 @@ export class ForgetPasswordService {
   };
 
   async sendForgetPassCode(dto: ForgetPassDto) {
-    const { email } = dto;
+    try {
+      const { email } = dto;
 
-    const user = await this.prisma.user.findFirst({
-      where: {
-        email: {
-          email: email,
+      const user = await this.prisma.user.findFirst({
+        where: {
+          email: {
+            email: email,
+          },
         },
-      },
-    });
+      });
 
-    if (!user) {
-      throw new UnauthorizedException('User not found');
-    }
+      if (!user) {
+        throw new UnauthorizedException('User not found');
+      }
 
-    const existing = await this.redis.get(`${this.FORG_PREFIX}_${email}`);
+      const existing = await this.redis.get(`${this.FORG_PREFIX}_${email}`);
 
-    let finalCode: number;
+      let finalCode: number;
 
-    if (existing) {
-      finalCode = Number(existing);
+      if (existing) {
+        finalCode = Number(existing);
 
-      await this.storeRedis(email, finalCode.toString(), 'CODE');
-    } else {
-      finalCode = this.generateRandomCode();
-      await this.storeRedis(email, finalCode.toString(), 'CODE');
-    }
+        await this.storeRedis(email, finalCode.toString(), 'CODE');
+      } else {
+        finalCode = this.generateRandomCode();
+        await this.storeRedis(email, finalCode.toString(), 'CODE');
+      }
 
-    await this.mail.sendMail(
-      dto.email,
-      'Forget Password Code',
-      `
+      await this.mail.sendMail(
+        dto.email,
+        'Forget Password Code',
+        `
         <h3>AuthSystem</h3>
         <p>Your email verification code:</p>
         <h2>${finalCode}</h2>
         <p>This code is valid for 5 minutes.</p>
       `,
-    );
+      );
 
-    return cResponseData({
-      message: 'Forget password code sent successfully',
-    });
+      return cResponseData({
+        message: 'Forget password code sent successfully',
+      });
+    } catch (error) {
+      return cResponseData({
+        message: error.message || 'Failed to send forget password code',
+      });
+    }
   }
 
   async verifyForgetPassCode(data: ValidateForgetPass) {
@@ -140,39 +146,45 @@ export class ForgetPasswordService {
   }
 
   async changePassword(data: ResetPass, cryptoVal: string) {
-    const crypto = cryptoVal;
+    try {
+      const crypto = cryptoVal;
 
-    const userId = await this.redis.get(`${this.CRYPTO_PREFIX}_${crypto}`);
+      const userId = await this.redis.get(`${this.CRYPTO_PREFIX}_${crypto}`);
 
-    if (!userId) {
-      throw new UnauthorizedException('Invalid or expired crypto');
+      if (!userId) {
+        throw new UnauthorizedException('Invalid or expired crypto');
+      }
+
+      const user = await this.prisma.user.findUnique({
+        where: {
+          id: userId,
+        },
+      });
+
+      if (!user) {
+        throw new UnauthorizedException('User not found');
+      }
+
+      const hashedPass = await bcrypt.hash(data.password, 10);
+
+      await this.prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          password: hashedPass,
+        },
+      });
+
+      await this.redis.del(`${this.CRYPTO_PREFIX}_${crypto}`);
+
+      return cResponseData({
+        message: 'Password changed successfully',
+      });
+    } catch (error) {
+      return cResponseData({
+        message: error.message || 'Failed to change password',
+      });
     }
-
-    const user = await this.prisma.user.findUnique({
-      where: {
-        id: userId,
-      },
-    });
-
-    if (!user) {
-      throw new UnauthorizedException('User not found');
-    }
-
-    const hashedPass = await bcrypt.hash(data.password, 10);
-
-    await this.prisma.user.update({
-      where: {
-        id: user.id,
-      },
-      data: {
-        password: hashedPass,
-      },
-    });
-
-    await this.redis.del(`${this.CRYPTO_PREFIX}_${crypto}`);
-
-    return cResponseData({
-      message: 'Password changed successfully',
-    });
   }
 }

@@ -51,7 +51,11 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  Bank: 'Bank',
   Mileage: 'Mileage',
+  Transaction: 'Transaction',
+  AccountantRequest: 'AccountantRequest',
+  EmailTemplate: 'EmailTemplate',
   imapConfiguration: 'imapConfiguration',
   userSubscriptionPlan: 'userSubscriptionPlan',
   userSubscriptionPlanHistory: 'userSubscriptionPlanHistory',
@@ -92,6 +96,27 @@ export const TransactionIsolationLevel = {
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const BankScalarFieldEnum = {
+  id: 'id',
+  accountId: 'accountId',
+  accountNumber: 'accountNumber',
+  name: 'name',
+  type: 'type',
+  bankName: 'bankName',
+  balance: 'balance',
+  currencyCode: 'currencyCode',
+  iban: 'iban',
+  holderName: 'holderName',
+  bankId: 'bankId',
+  credentialsId: 'credentialsId',
+  lastSync: 'lastSync',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BankScalarFieldEnum = (typeof BankScalarFieldEnum)[keyof typeof BankScalarFieldEnum]
+
+
 export const MileageScalarFieldEnum = {
   id: 'id',
   milage_id: 'milage_id',
@@ -105,11 +130,56 @@ export const MileageScalarFieldEnum = {
   purpose: 'purpose',
   notes: 'notes',
   userId: 'userId',
-  created_at: 'created_at',
-  updated_at: 'updated_at'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type MileageScalarFieldEnum = (typeof MileageScalarFieldEnum)[keyof typeof MileageScalarFieldEnum]
+
+
+export const TransactionScalarFieldEnum = {
+  id: 'id',
+  date: 'date',
+  description: 'description',
+  amount: 'amount',
+  currency: 'currency',
+  status: 'status',
+  source: 'source',
+  attachments: 'attachments',
+  accountId: 'accountId',
+  createdAt: 'createdAt'
+} as const
+
+export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
+
+
+export const AccountantRequestScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  purpose: 'purpose',
+  description: 'description',
+  status: 'status',
+  requestedAt: 'requestedAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AccountantRequestScalarFieldEnum = (typeof AccountantRequestScalarFieldEnum)[keyof typeof AccountantRequestScalarFieldEnum]
+
+
+export const EmailTemplateScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  name: 'name',
+  description: 'description',
+  subject: 'subject',
+  bodyHtml: 'bodyHtml',
+  variables: 'variables',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EmailTemplateScalarFieldEnum = (typeof EmailTemplateScalarFieldEnum)[keyof typeof EmailTemplateScalarFieldEnum]
 
 
 export const ImapConfigurationScalarFieldEnum = {
@@ -415,7 +485,9 @@ export const UserScalarFieldEnum = {
   twoFactorEnabled: 'twoFactorEnabled',
   status: 'status',
   created_at: 'created_at',
-  updated_at: 'updated_at'
+  updated_at: 'updated_at',
+  haveAccountant: 'haveAccountant',
+  accountantId: 'accountantId'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]

@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
 
 @Injectable()
@@ -6,31 +7,66 @@ export class ReportsService {
   constructor(private prisma: PrismaService) {}
 
   async getReportData(userId: string) {
-    const [receipt, mileage] = await Promise.all([
+    const sixMonthsAgo = new Date(
+      new Date().getFullYear(),
+      new Date().getMonth() - 5,
+      1,
+    );
+
+    const [totalReceipt, totalMileage, receipt, mileage] = await Promise.all([
       this.prisma.receipt.aggregate({
-        where: {
-          userId,
-        },
+        where: { userId },
         _sum: { amount: true },
       }),
       this.prisma.mileage.aggregate({
-        where: {
-          userId,
-        },
+        where: { userId },
         _sum: { amount: true },
       }),
-
+      this.prisma.receipt.findMany({
+        where: { userId, date: { gte: sixMonthsAgo } },
+        select: { amount: true, date: true },
+      }),
+      this.prisma.mileage.findMany({
+        where: {
+          userId,
+          date: { gte: sixMonthsAgo },
+        },
+        select: { amount: true, date: true },
+      }),
     ]);
 
-    const receiptTotal = receipt._sum.amount || 0;
-    const mileageTotal = mileage._sum.amount || 0;
+    console.log(receipt, mileage);
 
-    const report = {
-      expenseSummury: receiptTotal + mileageTotal,
-      receiptTotal,
-      mileageTotal,
-    };
+    const all = [...receipt, ...mileage];
 
-    // monthly receipt data
+    const monthlySummary: { month: string; total: number }[] = [];
+
+    for (const item of all) {
+      const year = item.date.getFullYear();
+      const month = item.date.getMonth() + 1;
+      const monthYear = `${year}-${month}`;
+
+      const existingEntry = monthlySummary.find(
+        (entry) => entry.month === monthYear,
+      );
+
+      if (existingEntry) {
+        existingEntry.total += item.amount;
+      } else {
+        monthlySummary.push({
+          month: monthYear,
+          total: item.amount,
+        });
+      }
+    }
+
+    return cResponseData({
+      message: 'Retrived reports data',
+      data: {
+        totalReceipt: totalReceipt._sum.amount || 0,
+        totalMileage: totalMileage._sum.amount || 0,
+        monthlySummary,
+      },
+    });
   }
 }

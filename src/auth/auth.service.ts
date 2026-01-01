@@ -61,178 +61,196 @@ export class AuthService {
   }
 
   async create(createAuthDto: CreateAuthDto) {
-    const isUser = await this.prisma.user.findFirst({
-      where: {
-        email: {
-          email: createAuthDto.email,
-        },
-      },
-    });
-
-    if (isUser) {
-      throw new ConflictException('User already exists');
-    }
-
-    const hashedPass = await bcrypt.hash(createAuthDto.password, 10);
-
-    const user = await this.prisma.user.create({
-      data: {
-        profile: {
-          create: {
-            firstName: createAuthDto.firstName,
-            lastName: createAuthDto.lastName,
-          },
-        },
-        email: {
-          create: {
+    try {
+      const isUser = await this.prisma.user.findFirst({
+        where: {
+          email: {
             email: createAuthDto.email,
           },
         },
-        password: hashedPass,
-      },
-      include: {
-        profile: true,
-        email: true,
-      },
-    });
+      });
 
-    return cResponseData({
-      message: 'User created successfully',
-      data: {
-        id: user.id,
-        firstName: user.profile?.firstName,
-        lastName: user.profile?.lastName,
-        email: user.email?.email,
-      },
-    });
+      if (isUser) {
+        throw new ConflictException('User already exists');
+      }
+
+      const hashedPass = await bcrypt.hash(createAuthDto.password, 10);
+
+      const user = await this.prisma.user.create({
+        data: {
+          profile: {
+            create: {
+              firstName: createAuthDto.firstName,
+              lastName: createAuthDto.lastName,
+            },
+          },
+          email: {
+            create: {
+              email: createAuthDto.email,
+            },
+          },
+          password: hashedPass,
+        },
+        include: {
+          profile: true,
+          email: true,
+        },
+      });
+
+      return cResponseData({
+        message: 'User created successfully',
+        data: {
+          id: user.id,
+          firstName: user.profile?.firstName,
+          lastName: user.profile?.lastName,
+          email: user.email?.email,
+        },
+      });
+    } catch (error) {
+      return cResponseData({
+        message: error.message || 'Failed to create user',
+      });
+    }
   }
 
   async login(loginDto: LoginDto) {
-    const user = await this.prisma.user.findFirst({
-      where: { email: { email: loginDto.email } },
-      include: { email: true, profile: true },
-    });
+    try {
+      const user = await this.prisma.user.findFirst({
+        where: { email: { email: loginDto.email } },
+        include: { email: true, profile: true },
+      });
 
-    if (!user) {
-      throw new UnauthorizedException('User not found');
-    }
-
-    const isPasswordValid = await bcrypt.compare(
-      loginDto.password,
-      user.password,
-    );
-
-    if (!isPasswordValid) {
-      throw new ForbiddenException('Invalid credentials');
-    }
-
-    if (!user.email) {
-      throw new UnauthorizedException('User not valid');
-    }
-
-    // 2FA LOGIN FLOW
-    if (user.twoFactorEnabled) {
-      const redisKey = `2fa:login:${user.email.email}`;
-
-      let payload = await this.getRedisValue<Login2FAPayload>(redisKey);
-
-      if (!payload) {
-        payload = {
-          userId: user.id,
-          code: this.generateCode(),
-          attempts: 0,
-          createdAt: Date.now(),
-        };
-
-        await this.setRedisValue(redisKey, payload, 300);
+      if (!user) {
+        throw new UnauthorizedException('User not found');
       }
 
-      await this.mail.sendMail(
-        user.email.email,
-        'Your 2FA Verification Code',
-        `
+      const isPasswordValid = await bcrypt.compare(
+        loginDto.password,
+        user.password,
+      );
+
+      if (!isPasswordValid) {
+        throw new ForbiddenException('Invalid credentials');
+      }
+
+      if (!user.email) {
+        throw new UnauthorizedException('User not valid');
+      }
+
+      // 2FA LOGIN FLOW
+      if (user.twoFactorEnabled) {
+        const redisKey = `2fa:login:${user.email.email}`;
+
+        let payload = await this.getRedisValue<Login2FAPayload>(redisKey);
+
+        if (!payload) {
+          payload = {
+            userId: user.id,
+            code: this.generateCode(),
+            attempts: 0,
+            createdAt: Date.now(),
+          };
+
+          await this.setRedisValue(redisKey, payload, 300);
+        }
+
+        await this.mail.sendMail(
+          user.email.email,
+          'Your 2FA Verification Code',
+          `
         <h3>Login Verification</h3>
         <p>Your 6-digit verification code:</p>
         <h2>${payload.code}</h2>
         <p>This code expires in 5 minutes.</p>
       `,
-      );
+        );
+
+        return cResponseData({
+          message: 'Verify your 2FA code to complete login',
+          data: {
+            twoFactorEnabled: true,
+            email: user.email.email,
+          },
+        });
+      }
+
+      // NORMAL LOGIN
+      const accessToken = await this.generateAccessToken({
+        sub: user.id,
+        email: user.email.email,
+        role: user.role,
+      });
 
       return cResponseData({
-        message: 'Verify your 2FA code to complete login',
+        message: 'Login successful',
         data: {
-          twoFactorEnabled: true,
+          id: user.id,
+          firstName: user.profile?.firstName,
+          lastName: user.profile?.lastName,
           email: user.email.email,
+          accessToken,
         },
       });
+    } catch (error) {
+      return cResponseData({
+        message: error.message || 'Login failed',
+      });
     }
-
-    // NORMAL LOGIN
-    const accessToken = await this.generateAccessToken({
-      sub: user.id,
-      email: user.email.email,
-      role: user.role,
-    });
-
-    return cResponseData({
-      message: 'Login successful',
-      data: {
-        id: user.id,
-        firstName: user.profile?.firstName,
-        lastName: user.profile?.lastName,
-        email: user.email.email,
-        accessToken,
-      },
-    });
   }
   async verifyLogin2FA(dto: VerifyTwoFADto) {
-    const { email, code } = dto;
+    try {
+      const { email, code } = dto;
 
-    const redisKey = `2fa:login:${email}`;
-    const payload = await this.getRedisValue<Login2FAPayload>(redisKey);
+      const redisKey = `2fa:login:${email}`;
+      const payload = await this.getRedisValue<Login2FAPayload>(redisKey);
 
-    if (!payload) {
-      throw new ForbiddenException('OTP expired or invalid');
-    }
+      if (!payload) {
+        throw new ForbiddenException('OTP expired or invalid');
+      }
 
-    if (payload.attempts >= 5) {
+      if (payload.attempts >= 5) {
+        await this.redis.del(redisKey);
+        throw new ForbiddenException('Maximum attempts exceeded');
+      }
+
+      if (payload.code !== code) {
+        payload.attempts += 1;
+        await this.setRedisValue(redisKey, payload, 300);
+        throw new ForbiddenException('Invalid OTP');
+      }
+
       await this.redis.del(redisKey);
-      throw new ForbiddenException('Maximum attempts exceeded');
-    }
 
-    if (payload.code !== code) {
-      payload.attempts += 1;
-      await this.setRedisValue(redisKey, payload, 300);
-      throw new ForbiddenException('Invalid OTP');
-    }
+      const user = await this.prisma.user.findFirst({
+        where: { id: payload.userId },
+        include: { email: true, profile: true },
+      });
 
-    await this.redis.del(redisKey);
+      if (!user || !user.email) {
+        throw new UnauthorizedException('User not found');
+      }
 
-    const user = await this.prisma.user.findFirst({
-      where: { id: payload.userId },
-      include: { email: true, profile: true },
-    });
-
-    if (!user || !user.email) {
-      throw new UnauthorizedException('User not found');
-    }
-
-    const accessToken = await this.generateAccessToken({
-      sub: user.id,
-      email: user.email.email,
-      role: user.role,
-    });
-
-    return cResponseData({
-      message: 'Login successful',
-      data: {
-        id: user.id,
-        firstName: user.profile?.firstName,
-        lastName: user.profile?.lastName,
+      const accessToken = await this.generateAccessToken({
+        sub: user.id,
         email: user.email.email,
-        accessToken,
-      },
-    });
+        role: user.role,
+      });
+
+      return cResponseData({
+        message: 'Login successful',
+        data: {
+          id: user.id,
+          firstName: user.profile?.firstName,
+          lastName: user.profile?.lastName,
+          email: user.email.email,
+          accessToken,
+        },
+      });
+    } catch (error) {
+      return cResponseData({
+        message: error.message || '2FA verification failed',
+      });
+    }
   }
 
   async updatePassword(
@@ -240,157 +258,193 @@ export class AuthService {
     oldPassword: string,
     newPassword: string,
   ) {
-    const user = await this.prisma.user.findUnique({
-      where: { id: userId },
-    });
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: { id: userId },
+      });
 
-    if (!user) {
-      throw new UnauthorizedException('User not found');
+      if (!user) {
+        throw new UnauthorizedException('User not found');
+      }
+
+      const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
+
+      if (!isPasswordValid) {
+        throw new ForbiddenException('Invalid password');
+      }
+
+      const hashedPass = await bcrypt.hash(newPassword, 10);
+
+      await this.prisma.user.update({
+        where: { id: userId },
+        data: {
+          password: hashedPass,
+        },
+      });
+
+      return cResponseData({ message: 'Password updated successfully' });
+    } catch (error) {
+      return cResponseData({
+        message: error.message || 'Failed to update password',
+      });
     }
-
-    const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
-
-    if (!isPasswordValid) {
-      throw new ForbiddenException('Invalid password');
-    }
-
-    const hashedPass = await bcrypt.hash(newPassword, 10);
-
-    await this.prisma.user.update({
-      where: { id: userId },
-      data: {
-        password: hashedPass,
-      },
-    });
-
-    return cResponseData({ message: 'Password updated successfully' });
   }
 
   async deleteAccount(userId: string) {
-    await this.prisma.email.delete({
-      where: { userId },
-    });
+    try {
+      await this.prisma.email.delete({
+        where: { userId },
+      });
 
-    return cResponseData({
-      message: 'Account deleted successfully',
-    });
+      return cResponseData({
+        message: 'Account deleted successfully',
+      });
+    } catch (error) {
+      return cResponseData({
+        message: error.message || 'Failed to delete account',
+      });
+    }
   }
 
   async updateProfilepic(file: Express.Multer.File, userId: string) {
-    if (!file) {
-      throw new NotFoundException('File not found');
-    }
+    try {
+      if (!file) {
+        throw new NotFoundException('File not found');
+      }
 
-    const userProfile = await this.prisma.user.findFirst({
-      where: { id: userId },
-      select: { profile: true },
-    });
+      const userProfile = await this.prisma.user.findFirst({
+        where: { id: userId },
+        select: { profile: true },
+      });
 
-    if (!userProfile) {
-      throw new NotFoundException('User not found');
-    }
+      if (!userProfile) {
+        throw new NotFoundException('User not found');
+      }
 
-    if (userProfile.profile?.profilePictureKey) {
-      await deleteFromCloudinary(userProfile.profile?.profilePictureKey);
-    }
+      if (userProfile.profile?.profilePictureKey) {
+        await deleteFromCloudinary(userProfile.profile?.profilePictureKey);
+      }
 
-    const uploadResult = await uploadToCloudinary(file);
-    const profilePicture = uploadResult.secure_url;
-    const profilePictureKey = uploadResult.public_id;
+      const uploadResult = await uploadToCloudinary(file);
+      const profilePicture = uploadResult.secure_url;
+      const profilePictureKey = uploadResult.public_id;
 
-    const user = await this.prisma.user.update({
-      where: { id: userId },
-      data: {
-        profile: {
-          update: {
-            profilePicture,
-            profilePictureKey,
+      const user = await this.prisma.user.update({
+        where: { id: userId },
+        data: {
+          profile: {
+            update: {
+              profilePicture,
+              profilePictureKey,
+            },
           },
         },
-      },
-    });
+      });
 
-    if (!user) {
-      throw new BadRequestException('User Updation Failed');
+      if (!user) {
+        throw new BadRequestException('User Updation Failed');
+      }
+
+      return cResponseData({
+        message: 'Profile picture updated successfully',
+        data: { profilePicture },
+      });
+    } catch (error) {
+      return cResponseData({
+        message: error.message || 'Failed to update profile picture',
+      });
     }
-
-    return cResponseData({
-      message: 'Profile picture updated successfully',
-      data: { profilePicture },
-    });
   }
 
   async removeProfilePic(userId: string) {
-    const userProfile = await this.prisma.user.findFirst({
-      where: { id: userId },
-      select: { profile: true },
-    });
+    try {
+      const userProfile = await this.prisma.user.findFirst({
+        where: { id: userId },
+        select: { profile: true },
+      });
 
-    if (userProfile?.profile?.profilePictureKey) {
-      await deleteFromCloudinary(userProfile.profile?.profilePictureKey);
-    }
-    await this.prisma.user.update({
-      where: { id: userId },
-      data: {
-        profile: {
-          update: {
-            profilePicture: null,
-            profilePictureKey: null,
+      if (userProfile?.profile?.profilePictureKey) {
+        await deleteFromCloudinary(userProfile.profile?.profilePictureKey);
+      }
+      await this.prisma.user.update({
+        where: { id: userId },
+        data: {
+          profile: {
+            update: {
+              profilePicture: null,
+              profilePictureKey: null,
+            },
           },
         },
-      },
-    });
+      });
 
-    return cResponseData({
-      message: 'Profile picture removed successfully',
-    });
+      return cResponseData({
+        message: 'Profile picture removed successfully',
+      });
+    } catch (error) {
+      return cResponseData({
+        message: error.message || 'Failed to remove profile picture',
+      });
+    }
   }
 
   async updateProfile(userId: string, data: UpdateProfileDto) {
-    const user = await this.prisma.user.update({
-      where: { id: userId },
-      data: {
-        profile: {
-          update: {
-            firstName: data.firstName,
-            lastName: data.lastName,
-            phone: data.phone,
+    try {
+      const user = await this.prisma.user.update({
+        where: { id: userId },
+        data: {
+          profile: {
+            update: {
+              firstName: data.firstName,
+              lastName: data.lastName,
+              phone: data.phone,
+            },
           },
         },
-      },
-    });
+      });
 
-    if (!user) {
-      throw new BadRequestException('User Updation Failed');
+      if (!user) {
+        throw new BadRequestException('User Updation Failed');
+      }
+
+      return cResponseData({
+        message: 'Profile updated successfully',
+      });
+    } catch (error) {
+      return cResponseData({
+        message: error.message || 'Failed to update profile',
+      });
     }
-
-    return cResponseData({
-      message: 'Profile updated successfully',
-    });
   }
 
   async getProfile(userId: string) {
-    const user = await this.prisma.user.findFirst({
-      where: { id: userId },
-      select: {
-        password: false,
-        email: {
-          select: {
-            email: true,
+    try {
+      const user = await this.prisma.user.findFirst({
+        where: { id: userId },
+        select: {
+          password: false,
+          email: {
+            select: {
+              email: true,
+            },
           },
+          profile: true,
+          businessInfo: true,
         },
-        profile: true,
-        businessInfo: true,
-      },
-    });
+      });
 
-    if (!user) {
-      throw new NotFoundException('User not found');
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+
+      return cResponseData({
+        data: user,
+      });
+    } catch (error) {
+      return cResponseData({
+        message: error.message || 'Failed to get profile',
+      });
     }
-
-    return cResponseData({
-      data: user,
-    });
   }
 
   findAll() {

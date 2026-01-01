@@ -56,133 +56,157 @@ export class TwoFAService {
   }
 
   async sendTwoFACode(userId: string, dto: EnableTwoFADto) {
-    const { email } = dto;
-    const user = await this.getUserOrFail(userId, email);
+    try {
+      const { email } = dto;
+      const user = await this.getUserOrFail(userId, email);
 
-    if (user.twoFactorEnabled) {
-      throw new ForbiddenException('2FA is already enabled');
-    }
+      if (user.twoFactorEnabled) {
+        throw new ForbiddenException('2FA is already enabled');
+      }
 
-    const redisKey = this.getRedisKey(email, 'ENABLE');
-    let payload = await this.getRedisValue<TwoFARedisPayload>(redisKey);
+      const redisKey = this.getRedisKey(email, 'ENABLE');
+      let payload = await this.getRedisValue<TwoFARedisPayload>(redisKey);
 
-    if (!payload) {
-      payload = {
-        code: this.generateCode(),
-        attempts: 0,
-        createdAt: Date.now(),
-      };
+      if (!payload) {
+        payload = {
+          code: this.generateCode(),
+          attempts: 0,
+          createdAt: Date.now(),
+        };
 
-      await this.setRedisValue(redisKey, payload, this.TTL);
-    }
+        await this.setRedisValue(redisKey, payload, this.TTL);
+      }
 
-    await this.mail.sendMail(
-      email,
-      'Enable Two-Factor Authentication',
-      `
+      await this.mail.sendMail(
+        email,
+        'Enable Two-Factor Authentication',
+        `
         <h3>Enable Two-Factor Authentication</h3>
         <p>Your verification code:</p>
         <h2>${payload.code}</h2>
         <p>This code expires in 5 minutes.</p>
       `,
-    );
+      );
 
-    return cResponseData({
-      message: '2FA code sent successfully',
-    });
+      return cResponseData({
+        message: '2FA code sent successfully',
+      });
+    } catch (error) {
+      return cResponseData({
+        message: error.message || 'Failed to send 2FA code',
+      });
+    }
   }
 
   async verifyAndEnableTwoFA(userId: string, dto: VerifyTwoFADto) {
-    const { email, code } = dto;
-    await this.getUserOrFail(userId, email);
+    try {
+      const { email, code } = dto;
+      await this.getUserOrFail(userId, email);
 
-    const redisKey = this.getRedisKey(email, 'ENABLE');
-    const payload = await this.getRedisValue<TwoFARedisPayload>(redisKey);
+      const redisKey = this.getRedisKey(email, 'ENABLE');
+      const payload = await this.getRedisValue<TwoFARedisPayload>(redisKey);
 
-    if (!payload) {
-      throw new ForbiddenException('Verification code expired');
-    }
+      if (!payload) {
+        throw new ForbiddenException('Verification code expired');
+      }
 
-    if (payload.attempts >= this.MAX_ATTEMPTS) {
+      if (payload.attempts >= this.MAX_ATTEMPTS) {
+        await this.redis.del(redisKey);
+        throw new ForbiddenException('Maximum attempts exceeded');
+      }
+
+      if (payload.code !== code) {
+        payload.attempts += 1;
+        await this.setRedisValue(redisKey, payload, this.TTL);
+        throw new ForbiddenException('Invalid verification code');
+      }
+
+      await this.prisma.user.update({
+        where: { id: userId },
+        data: { twoFactorEnabled: true },
+      });
+
       await this.redis.del(redisKey);
-      throw new ForbiddenException('Maximum attempts exceeded');
+
+      return cResponseData({
+        message: '2FA enabled successfully',
+      });
+    } catch (error) {
+      return cResponseData({
+        message: error.message || 'Failed to enable 2FA',
+      });
     }
-
-    if (payload.code !== code) {
-      payload.attempts += 1;
-      await this.setRedisValue(redisKey, payload, this.TTL);
-      throw new ForbiddenException('Invalid verification code');
-    }
-
-    await this.prisma.user.update({
-      where: { id: userId },
-      data: { twoFactorEnabled: true },
-    });
-
-    await this.redis.del(redisKey);
-
-    return cResponseData({
-      message: '2FA enabled successfully',
-    });
   }
 
   async sendDisableTwoFACode(userId: string, dto: EnableTwoFADto) {
-    const { email } = dto;
-    const user = await this.getUserOrFail(userId, email);
+    try {
+      const { email } = dto;
+      const user = await this.getUserOrFail(userId, email);
 
-    if (!user.twoFactorEnabled) {
-      throw new ForbiddenException('2FA is not enabled');
-    }
+      if (!user.twoFactorEnabled) {
+        throw new ForbiddenException('2FA is not enabled');
+      }
 
-    const redisKey = this.getRedisKey(email, 'DISABLE');
-    let payload = await this.getRedisValue<TwoFARedisPayload>(redisKey);
+      const redisKey = this.getRedisKey(email, 'DISABLE');
+      let payload = await this.getRedisValue<TwoFARedisPayload>(redisKey);
 
-    if (!payload) {
-      payload = {
-        code: this.generateCode(),
-        attempts: 0,
-        createdAt: Date.now(),
-      };
+      if (!payload) {
+        payload = {
+          code: this.generateCode(),
+          attempts: 0,
+          createdAt: Date.now(),
+        };
 
-      await this.setRedisValue(redisKey, payload, this.TTL);
-    }
+        await this.setRedisValue(redisKey, payload, this.TTL);
+      }
 
-    await this.mail.sendMail(
-      email,
-      'Disable Two-Factor Authentication',
-      `
+      await this.mail.sendMail(
+        email,
+        'Disable Two-Factor Authentication',
+        `
         <h3>Disable Two-Factor Authentication</h3>
         <p>Your verification code:</p>
         <h2>${payload.code}</h2>
         <p>This code expires in 5 minutes.</p>
       `,
-    );
+      );
 
-    return cResponseData({
-      message: 'Disable 2FA code sent successfully',
-    });
+      return cResponseData({
+        message: 'Disable 2FA code sent successfully',
+      });
+    } catch (error) {
+      return cResponseData({
+        message: error.message || 'Failed to send disable 2FA code',
+      });
+    }
   }
 
   async verifyAndDisableTwoFA(userId: string, dto: VerifyTwoFADto) {
-    const { email, code } = dto;
-    await this.getUserOrFail(userId, email);
+    try {
+      const { email, code } = dto;
+      await this.getUserOrFail(userId, email);
 
-    const redisKey = this.getRedisKey(email, 'DISABLE');
-    const payload = await this.getRedisValue<TwoFARedisPayload>(redisKey);
+      const redisKey = this.getRedisKey(email, 'DISABLE');
+      const payload = await this.getRedisValue<TwoFARedisPayload>(redisKey);
 
-    if (!payload || payload.code !== code) {
-      throw new ForbiddenException('Invalid or expired verification code');
+      if (!payload || payload.code !== code) {
+        throw new ForbiddenException('Invalid or expired verification code');
+      }
+
+      await this.prisma.user.update({
+        where: { id: userId },
+        data: { twoFactorEnabled: false },
+      });
+
+      await this.redis.del(redisKey);
+
+      return cResponseData({
+        message: '2FA disabled successfully',
+      });
+    } catch (error) {
+      return cResponseData({
+        message: error.message || 'Failed to disable 2FA',
+      });
     }
-
-    await this.prisma.user.update({
-      where: { id: userId },
-      data: { twoFactorEnabled: false },
-    });
-
-    await this.redis.del(redisKey);
-
-    return cResponseData({
-      message: '2FA disabled successfully',
-    });
   }
 }

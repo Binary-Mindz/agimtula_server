@@ -1,0 +1,19 @@
+model Bank {
+    id                String   @id @default(cuid())
+    accountId         String   @unique // Tink account ID
+    accountNumber     String?
+    name              String
+    type              String
+    bankName          String   @default("Tink Bank")
+    balance           Decimal? @db.Decimal(10, 2)
+    currencyCode      String?
+    iban              String?
+    holderName        String?
+    bankId            String? // Tink bankId
+    credentialsId     String?
+    lastSync          DateTime?
+    createdAt         DateTime @default(now())
+    updatedAt         DateTime @updatedAt
+
+    @@map("banks")
+}

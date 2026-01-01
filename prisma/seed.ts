@@ -1,53 +1,145 @@
-// import { PrismaClient, UserRole } from '@prisma/client';
-// import * as bcrypt from 'bcrypt';
+import { PrismaPg } from '@prisma/adapter-pg';
+import { PrismaClient, UserRole } from './generated/prisma/client';
+import * as bcrypt from 'bcrypt';
+import 'dotenv/config';
 
-// const prisma = new PrismaClient();
+/* ----------------------------------
+   Prisma Client Factory
+----------------------------------- */
+function createPrismaClient(): PrismaClient {
+  const connectionString = process.env.DATABASE_URL;
 
-// async function main() {
-//   const superAdminEmail = process.env.SUPER_ADMIN_EMAIL;
-//   const superAdminPassword = process.env.SUPER_ADMIN_PASSWORD;
-//   const superAdminUsername = process.env.SUPER_ADMIN_USERNAME || "superadmin";
+  if (!connectionString) {
+    throw new Error('❌ DATABASE_URL must be set in environment variables.');
+  }
 
-//   if (!superAdminEmail || !superAdminPassword) {
-//     throw new Error("❌ SUPER_ADMIN_EMAIL and SUPER_ADMIN_PASSWORD must be set in .env");
-//   }
+  const adapter = new PrismaPg({ connectionString });
 
-//   // Check if admin already exists
-//   const existing = await prisma.user.findFirst({
-//     where: { email: superAdminEmail },
-//   });
+  return new PrismaClient({
+    adapter,
+    log: [{ emit: 'event', level: 'error' }],
+  });
+}
 
-//   if (existing) {
-//     console.log("⚠️ Super admin already exists. Skipping seed.");
-//     return;
-//   }
+const prisma = createPrismaClient();
 
-//   const hashed = await bcrypt.hash(superAdminPassword, 10);
+/* ----------------------------------
+   Seed Super Admin
+----------------------------------- */
+async function seedSuperAdmin() {
+  const {
+    SUPER_ADMIN_FIRSTNAME,
+    SUPER_ADMIN_LASTNAME,
+    SUPER_ADMIN_EMAIL,
+    SUPER_ADMIN_PASSWORD,
+  } = process.env;
 
-//   // ✅ Use Prisma Transaction
-//   const result = await prisma.$transaction(async (tx) => {
-//     const admin = await tx.user.create({
-//       data: {
-//         email: superAdminEmail,
-//         firstName: superAdminUsername,
-//         lastName: 'Admin',
-//         password: hashed,
-//         role: UserRole.ADMIN,
-//         status: true,
-//         isEmailVerified: true,
-//       },
-//     });
-//     return { admin };
-//   });
+  if (
+    !SUPER_ADMIN_FIRSTNAME ||
+    !SUPER_ADMIN_LASTNAME ||
+    !SUPER_ADMIN_EMAIL ||
+    !SUPER_ADMIN_PASSWORD
+  ) {
+    throw new Error(
+      '❌ SUPER_ADMIN_* environment variables must be set.',
+    );
+  }
 
-//   console.log("✅ Super Admin created successfully:", result);
-// }
+  const existing = await prisma.email.findFirst({
+    where: { email: SUPER_ADMIN_EMAIL },
+  });
 
-// main()
-//   .catch((e) => {
-//     console.error("❌ Seeding Error:", e);
-//     process.exit(1);
-//   })
-//   .finally(async () => {
-//     await prisma.$disconnect();
-//   });
+  if (existing) {
+    console.log('⚠️ Super Admin already exists. Skipping...');
+    return;
+  }
+
+  const hashedPassword = await bcrypt.hash('Admin@12A', 10);
+
+  await prisma.user.create({
+    data: {
+      profile: {
+        create: {
+          firstName: SUPER_ADMIN_FIRSTNAME,
+          lastName: SUPER_ADMIN_LASTNAME,
+        },
+      },
+      email: {
+        create: {
+          email: 'admin@gmail.com',
+        },
+      },
+      password: hashedPassword,
+      role: UserRole.ADMIN,
+    },
+  });
+
+  console.log('✅ Super Admin created successfully');
+}
+
+
+async function seedPermissions() {
+  const modules = [
+    { name: 'quotations', displayName: 'Quotations Management' },
+    { name: 'receipts', displayName: 'Receipts Management' },
+    { name: 'users', displayName: 'User Management' },
+    { name: 'reports', displayName: 'Reports & Analytics' },
+    { name: 'settings', displayName: 'Application Settings' },
+    { name: 'invoices', displayName: 'Invoices Management' },
+    { name: 'dashboard', displayName: 'Dashboard' },
+    { name: 'auto_invoice_import', displayName: 'Auto Invoice Import' },
+    { name: 'bank_transactions', displayName: 'Bank Transactions' },
+    { name: 'mileage', displayName: 'Mileage Tracking' },
+    { name: 'imap_system_monitor', displayName: 'IMAP System Monitor' },
+    { name: 'subscriptions', displayName: 'Subscriptions' },
+    { name: 'modules', displayName: 'Modules Management' },
+    { name: 'profile', displayName: 'Profile Settings' },
+    { name: 'system_settings', displayName: 'System Settings' },
+    { name: 'support', displayName: 'Support' },
+    { name: 'payments', displayName: 'Payments' },
+    { name: 'supplier_imports', displayName: 'Supplier Imports' },
+    { name: 'bank_integration_monitor', displayName: 'Bank Integration Monitor' },
+    { name: 'eu_invoice', displayName: 'EU Invoice' },
+    { name: 'overview', displayName: 'Overview' },
+    { name: 'clients', displayName: 'Clients Management' },
+    { name: 'purchases', displayName: 'Purchases Management' },
+    { name: 'sales_invoices', displayName: 'Sales Invoices' },
+    { name: 'expenses', displayName: 'Receipts / Expenses' },
+    { name: 'vat_overview', displayName: 'VAT Overview' },
+  ];
+
+
+
+  for (const mod of modules) {
+    await prisma.module.upsert({
+      where: { name: mod.name },
+      create: mod,
+      update: mod,
+    });
+
+
+  }
+
+  console.log('✅ Modules & Permissions seeded successfully');
+}
+
+/* ----------------------------------
+   Main Runner
+----------------------------------- */
+async function main() {
+  console.log('🚀 Seeding started...');
+
+  await seedSuperAdmin();
+  await seedPermissions();
+
+  console.log('🎉 Seeding completed successfully');
+}
+
+main()
+  .catch((error) => {
+    console.error('❌ Seeding failed:', error);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

@@ -1,0 +1,55 @@
+import {
+  Controller,
+  Post,
+  Body,
+  UsePipes,
+  ValidationPipe,
+  Get,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
+import { MileageService } from './mileage.service';
+import { LogTripDto } from './dto/log-trip.dto';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { jwtPayload } from 'src/auth/types/jwt-payload';
+import { User } from 'src/auth/decorators/user.decorator';
+import { ApiParam } from '@nestjs/swagger';
+import { urlPrefix } from '../url-prefix';
+
+@Controller(`${urlPrefix}mileage`)
+export class UserMileageController {
+  constructor(private readonly mileageService: MileageService) {}
+
+  @Post('log-trip')
+  @Roles('USER')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async logTrip(@Body() dto: LogTripDto, @User() user: jwtPayload) {
+    return await this.mileageService.logTrip(user.sub, dto);
+  }
+
+  @Get('mileage-track')
+  @Roles('USER')
+  async getMileageTrack(@User() user: jwtPayload) {
+    return await this.mileageService.getMileageTrack(user.sub);
+  }
+
+  @Patch('edit-trip/:id')
+  @Roles('USER')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  @ApiParam({ name: 'id', type: 'string' })
+  async editTrip(
+    @Body() dto: LogTripDto,
+    @User() user: jwtPayload,
+    @Param('id') tripId: string,
+  ) {
+    return await this.mileageService.editLoggedTrip(user.sub, tripId, dto);
+  }
+
+  @Delete('delete-trip/:id')
+  @Roles('USER')
+  @ApiParam({ name: 'id', type: 'string' })
+  async deleteTrip(@User() user: jwtPayload, @Param('id') tripId: string) {
+    return await this.mileageService.deleteLoggedTrip(user.sub, tripId);
+  }
+}

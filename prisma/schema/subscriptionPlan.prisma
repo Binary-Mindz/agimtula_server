@@ -1,0 +1,37 @@
+model SubscriptionPlan {
+  id             String           @id @unique @default(uuid())
+  planName       String
+  isActive       Boolean          @default(false)
+  description    String?
+  createdAt      DateTime         @default(now())
+  packagePricing PackagePricing[]
+
+  @@map("subscriptionPlan")
+}
+
+model PackagePricing {
+  id                         String           @id @unique @default(uuid())
+  isLimitedInvoicePerMonth   Boolean          @default(false)
+  perMonthInvoiceCount       Int              @default(15)
+  invoiceAutoSyncIntervalIds String[]
+  planFeatures               String[]
+  price                      Float            @default(0.00)
+  setupFee                   Float            @default(0.00)
+  freeTrialDays              Int?
+  billingPeriod              BillingPeriod    @default(MONTHLY)
+  SubscriptionPlanId         String
+  subscriptionPlan           SubscriptionPlan @relation(fields: [SubscriptionPlanId], references: [id], onDelete: Cascade)
+}
+
+model invoiceAutoSyncInterval {
+  id                String             @id @unique @default(uuid())
+  title             String
+  description       String
+  cronTime          String
+  imapConfiguration imapConfiguration?
+}
+
+enum BillingPeriod {
+  MONTHLY
+  YEARLY
+}

@@ -1,0 +1,73 @@
+model BusinessInfo {
+  id          String  @id @unique @default(uuid())
+  companyName String?
+  jobTitle    String?
+  vatNumber   String?
+  address1    String?
+  address2    String?
+  address3    String?
+  country     String?
+  website     String?
+  logo        String?
+  logoKey     String?
+  userId      String  @unique
+  user        User    @relation(fields: [userId], references: [id])
+
+  @@map("businessInfo")
+}
+
+model PaymentMethod {
+  id                   String  @id @default(uuid())
+  acc_name             String?
+  bank_name            String?
+  sort_code            String?
+  iban                 String?
+  bic_swift            String?
+  default_payment_term Int?
+  late_payment_fee     Int?
+  payment_instructions String?
+  isDefault            Boolean @default(false)
+  userId               String
+  user                 User    @relation(fields: [userId], references: [id])
+
+  @@map("paymentMethod")
+}
+
+model InvoiceLayout {
+  id                   String  @id @default(uuid())
+  invoice_prefix       String?
+  quote_prefix         String?
+  year_format          String?
+  default_vat_rate     Float?
+  tax_breakdown        Boolean @default(false)
+  prices_include_tax   Boolean @default(false)
+  template_title       String?
+  footer_text          String?
+  show_company_logo    Boolean @default(false)
+  invoice_notes        String?
+  terms_and_conditions String?
+  userId               String  @unique
+  user                 User    @relation(fields: [userId], references: [id])
+
+  @@map("invoiceLayout")
+}
+
+model NotificationSetting {
+  id                    String   @id @default(uuid())
+  userId                String   @unique
+  invoiceSent           Boolean  @default(true)
+  invoicePaid           Boolean  @default(true)
+  paymentOverdue        Boolean  @default(true)
+  quoteViewed           Boolean  @default(true)
+  quoteAccepted         Boolean  @default(true)
+  newBankTransactions   Boolean  @default(false)
+  unmatchedTransactions Boolean  @default(true)
+  missingReceipts       Boolean  @default(true)
+  weeklySummary         Boolean  @default(true)
+  monthlyReport         Boolean  @default(true)
+  vatFilingReminder     Boolean  @default(true)
+  notificationEmail     String
+  notificationFrequency String   @default("daily")
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}

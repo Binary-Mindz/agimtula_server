@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.053.001.02">
+  <BkToCstmrStmt>
+    <Stmt>
+      <Id>STMT20240102001</Id>
+      <CreDtTm>2024-01-02T10:30:00</CreDtTm>
+      <FrToDt>
+        <FrDtTm>2024-01-01T00:00:00</FrDtTm>
+        <ToDtTm>2024-01-02T23:59:59</ToDtTm>
+      </FrToDt>
+      <Acct>
+        <Id>
+          <IBAN>DE89370400440532013000</IBAN>
+        </Id>
+        <Ccy>EUR</Ccy>
+      </Acct>
+      <Bal>
+        <Tp>
+          <CdOrPrtry>
+            <Cd>OPBD</Cd>
+          </CdOrPrtry>
+        </Tp>
+        <Amt Ccy="EUR">10000.00</Amt>
+        <CdtDbtInd>CRDT</CdtDbtInd>
+        <Dt>
+          <Dt>2024-01-01</Dt>
+        </Dt>
+      </Bal>
+      <Bal>
+        <Tp>
+          <CdOrPrtry>
+            <Cd>CLBD</Cd>
+          </CdOrPrtry>
+        </Tp>
+        <Amt Ccy="EUR">9250.50</Amt>
+        <CdtDbtInd>CRDT</CdtDbtInd>
+        <Dt>
+          <Dt>2024-01-02</Dt>
+        </Dt>
+      </Bal>
+      <Ntry>
+        <Amt Ccy="EUR">500.00</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts>BOOK</Sts>
+        <BookgDt>
+          <Dt>2024-01-01</Dt>
+        </BookgDt>
+        <ValDt>
+          <Dt>2024-01-01</Dt>
+        </ValDt>
+        <AcctSvcrRef>REF123456</AcctSvcrRef>
+        <NtryDtls>
+          <TxDtls>
+            <Refs>
+              <EndToEndId>E2E123</EndToEndId>
+              <TxId>TXN001</TxId>
+            </Refs>
+            <Amt Ccy="EUR">500.00</Amt>
+            <CdtDbtInd>DBIT</CdtDbtInd>
+            <RltdPties>
+              <Cdtr>
+                <Nm>ABC Supplier Ltd</Nm>
+              </Cdtr>
+              <CdtrAcct>
+                <Id>
+                  <IBAN>GB82WEST12345698765432</IBAN>
+                </Id>
+              </CdtrAcct>
+            </RltdPties>
+            <RmtInf>
+              <Ustrd>Payment for Invoice INV-2024-001</Ustrd>
+            </RmtInf>
+          </TxDtls>
+        </NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="EUR">1750.00</Amt>
+        <CdtDbtInd>CRDT</CdtDbtInd>
+        <Sts>BOOK</Sts>
+        <BookgDt>
+          <Dt>2024-01-02</Dt>
+        </BookgDt>
+        <ValDt>
+          <Dt>2024-01-02</Dt>
+        </ValDt>
+        <AcctSvcrRef>REF123457</AcctSvcrRef>
+        <NtryDtls>
+          <TxDtls>
+            <Refs>
+              <EndToEndId>E2E124</EndToEndId>
+              <TxId>TXN002</TxId>
+            </Refs>
+            <Amt Ccy="EUR">1750.00</Amt>
+            <CdtDbtInd>CRDT</CdtDbtInd>
+            <RltdPties>
+              <Dbtr>
+                <Nm>XYZ Customer Corp</Nm>
+              </Dbtr>
+              <DbtrAcct>
+                <Id>
+                  <IBAN>FR1420041010050500013M02606</IBAN>
+                </Id>
+              </DbtrAcct>
+            </RltdPties>
+            <RmtInf>
+              <Ustrd>Payment received for services</Ustrd>
+            </RmtInf>
+          </TxDtls>
+        </NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="EUR">1499.50</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts>BOOK</Sts>
+        <BookgDt>
+          <Dt>2024-01-02</Dt>
+        </BookgDt>
+        <ValDt>
+          <Dt>2024-01-02</Dt>
+        </ValDt>
+        <AcctSvcrRef>REF123458</AcctSvcrRef>
+        <NtryDtls>
+          <TxDtls>
+            <Refs>
+              <EndToEndId>E2E125</EndToEndId>
+              <TxId>TXN003</TxId>
+            </Refs>
+            <Amt Ccy="EUR">1499.50</Amt>
+            <CdtDbtInd>DBIT</CdtDbtInd>
+            <RltdPties>
+              <Cdtr>
+                <Nm>Office Equipment Store</Nm>
+              </Cdtr>
+              <CdtrAcct>
+                <Id>
+                  <IBAN>NL91ABNA0417164300</IBAN>
+                </Id>
+              </CdtrAcct>
+            </RltdPties>
+            <RmtInf>
+              <Ustrd>Purchase of office equipment</Ustrd>
+            </RmtInf>
+          </TxDtls>
+        </NtryDtls>
+      </Ntry>
+    </Stmt>
+  </BkToCstmrStmt>
+</Document>

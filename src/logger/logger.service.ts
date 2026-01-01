@@ -57,8 +57,8 @@ export class LoggerService {
       };
       return cResponseData(res);
     } catch (error) {
-      console.error('Error fetching logs:', error.message);
-      throw new InternalServerErrorException('Failed to fetch logs');
+      console.error(error.message);
+      throw new InternalServerErrorException('Failed to fetch logs all data');
     }
   }
 

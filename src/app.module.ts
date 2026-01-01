@@ -14,6 +14,9 @@ import { SettingsModule } from './user-dashboard/settings/settings.module';
 import { AuthGuard } from './auth/guard/auth.guard';
 import { RedisServiceModule } from './config/redis-service/redis-service.module';
 import { BankModule } from './bank/bank.module';
+import { ImapApisModule } from './imap-apis/imap-apis.module';
+import { BankTransactionModule } from './user-dashboard/bank-transaction/transaction.module';
+import { BankDataModule } from './admin-dashboard/bank-data/bank-data.module';
 import { QuotationsModule } from './quotations/quotations.module';
 
 
@@ -31,6 +34,9 @@ import { QuotationsModule } from './quotations/quotations.module';
     MileageModule,
     SettingsModule,
     BankModule,
+    ImapApisModule,
+    BankTransactionModule,
+    BankDataModule,
     QuotationsModule,
     // PaymentsModule
   ],
@@ -43,4 +49,4 @@ import { QuotationsModule } from './quotations/quotations.module';
     },
   ],
 })
-export class AppModule { }
+export class AppModule {}

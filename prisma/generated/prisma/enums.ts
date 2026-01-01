@@ -9,6 +9,23 @@
 * 🟢 You can import this file directly.
 */
 
+export const TransactionStatus = {
+  MATCHED: 'MATCHED',
+  UNMATCHED: 'UNMATCHED'
+} as const
+
+export type TransactionStatus = (typeof TransactionStatus)[keyof typeof TransactionStatus]
+
+
+export const Status = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type Status = (typeof Status)[keyof typeof Status]
+
+
 export const PaymentStatus = {
   PAID: 'PAID',
   PENDING: 'PENDING',

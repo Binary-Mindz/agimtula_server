@@ -1,11 +1,31 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
-import { ImapFlow } from 'imapflow';
 import { SchedulerRegistry } from '@nestjs/schedule';
+import * as imaps from 'imap-simple';
+import { simpleParser } from 'mailparser';
 // import { CreateImapApiDto } from './dto/create-imap-api.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
-import { ImapClient } from './types/imapService.type';
 import { cResponseData } from 'src/common/cResponse';
 import { Response } from 'express';
+
+export interface TransactionRow {
+  date: string;
+  description: string;
+  category?: string;
+  amount: number;
+  currency: string;
+  status: 'MATCHED' | 'UNMATCHED';
+  linkedInvoiceId?: string;
+  attachments?: string[];
+  from?: string;
+}
+
+export interface ImapClient {
+  host: string;
+  port: number;
+  username: string;
+  password: string;
+}
 
 @Injectable()
 export class ImapApisService implements OnModuleInit, OnModuleDestroy {
@@ -14,20 +34,22 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
     private prisma: PrismaService, // Your DB service
   ) { }
 
-  private imapClient({ host, port, username, password }: ImapClient): any {
-    return new ImapFlow({
-      host,
-      port,
-      auth: {
+  private async imapClient({ host, port, username, password }: ImapClient) {
+    return await imaps.connect({
+      imap: {
         user: username,
-        pass: password,
+        password,
+        host,
+        port,
+        tls: true,
+        authTimeout: 10000,
+        tlsOptions: { rejectUnauthorized: false },
       },
-      logger: false,
-      // socketTimeout: 60000,
     });
   }
 
   async onModuleInit() {
+    // await this.readEmailByAccountTest()
     // await this.loadCronJobsFromDB();
     // const imapUserActive = await this.prisma.user.findMany({
     //   where: {
@@ -93,8 +115,10 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
   // Test IMAP Connection
   async testConnection(clint: ImapClient, response: Response) {
     try {
-      await this.imapClient(clint).connect();
-      // console.log('IMAP connection successful!');
+      const connection = await this.imapClient(clint);
+      await connection.openBox('INBOX');
+      connection.end();
+      
       response
         .send(
           cResponseData({
@@ -104,7 +128,6 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
         )
         .status(200);
     } catch (err) {
-      // console.log('IMAP connection error:', err);
       response
         .send(
           cResponseData({
@@ -113,37 +136,114 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
           }),
         )
         .status(500);
-    } finally {
-      this.imapClient(clint).disconnect();
     }
     return;
   }
+  private extractInvoiceData(
+    body: string,
+    from: string,
+    attachments: string[],
+  ): TransactionRow | null {
+    const getValue = (label: string) => {
+      const match = body.match(new RegExp(`${label}:\\s*(.*)`));
+      return match ? match[1].trim() : '';
+    };
 
-  async readEmailByAccountTest(email: string) {
-    // Create IMAP Flow client for each email
-    // const account = await this.prisma.emailAccount.findUnique({
-    //   where: { email },
-    // });
+    const invoiceId = getValue('Invoice ID') || getValue('Transaction ID');
+    if (!invoiceId) return null;
 
-    const client = new ImapFlow({
-      host: 'imap.gmail.com',
-      port: 993,
-      auth: {
-        user: '',
-        pass: '',
-      },
-    });
+    const amountStr = getValue('Amount')
+      .replace(/[^\d.,]/g, '')
+      .replace(',', '.');
+    const amount = parseFloat(amountStr) || 0;
+    const currency = getValue('Amount').includes('€') ? 'EUR' : 'SEK';
 
-    await client.connect();
+    return {
+      date: getValue('Transaction Date') || new Date().toISOString(),
+      description: invoiceId,
+      category: getValue('Transaction Type') || 'Not categorized',
+      amount,
+      currency,
+      status: 'UNMATCHED',
+      linkedInvoiceId: invoiceId,
+      attachments,
+      from,
+    };
+  }
 
-    const inbox = await client.getMailboxLock('INBOX');
+  // Read email transactions
+  async readEmailTransactions(): Promise<TransactionRow[]> {
     try {
-      for await (const msg of client.fetch('1:*', { envelope: true })) {
-        // console.log(`[${email}] → ${msg.envelope.subject}`);
+      const connection = await this.imapClient({
+        host: process.env.MAIL_HOST || 'imap.gmail.com',
+        port: parseInt(process.env.MAIL_PORT || '993'),
+        username: process.env.MAIL_USER!,
+        password: process.env.MAIL_PASS!,
+      });
+
+      await connection.openBox('INBOX');
+
+      const searchCriterias = [
+        ['SUBJECT', 'invoice'],
+        ['SUBJECT', 'transaction'],
+        ['BODY', 'Transaction ID'],
+      ];
+
+      const allTransactions: TransactionRow[] = [];
+
+      for (const criteria of searchCriterias) {
+        const messages = await connection.search([criteria], {
+          bodies: '',
+          markSeen: false,
+        });
+
+        for (const message of messages) {
+          const parsed = await simpleParser(message.parts[0].body);
+          const body = parsed.text || parsed.html || '';
+
+          const attachments: string[] =
+            parsed.attachments?.map((att) => att.filename).filter((f): f is string => !!f) ||
+            [];
+
+          const transaction = this.extractInvoiceData(
+            body,
+            parsed.from?.text || 'Unknown',
+            attachments,
+          );
+          if (transaction) allTransactions.push(transaction);
+        }
       }
-    } finally {
-      inbox.release();
-      await client.logout();
+
+      connection.end();
+      return allTransactions;
+    // amazonq-ignore-next-line
+    } catch (err: any) {
+      console.error('Failed to read email transactions:', err.message);
+      throw new Error(err.message);
     }
+  }
+
+  // Match Tink + email transactions
+  matchTransactions(
+    tinkRows: TransactionRow[],
+    emailRows: TransactionRow[],
+  ): TransactionRow[] {
+    for (const t of tinkRows) {
+      for (const e of emailRows) {
+        if (
+          t.currency === e.currency &&
+          Math.abs(t.amount - e.amount) < 1 &&
+          Math.abs(new Date(t.date).getTime() - new Date(e.date).getTime()) <=
+            2 * 24 * 60 * 60 * 1000
+        ) {
+          t.status = 'MATCHED';
+          t.linkedInvoiceId = e.linkedInvoiceId;
+          e.status = 'MATCHED';
+        }
+      }
+    }
+    return [...tinkRows, ...emailRows].sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+    );
   }
 }

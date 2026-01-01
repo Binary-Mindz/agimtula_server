@@ -1,0 +1,21 @@
+model Transaction {
+    id          String            @id @default(cuid())
+    date        DateTime
+    description String
+    amount      Decimal           @db.Decimal(10, 2)
+    currency    String            @default("EUR")
+    status      TransactionStatus @default(UNMATCHED)
+    source      String // "Bank" or "Email"
+    attachments String[] // Cloudinary URLs
+    accountId   String?
+    createdAt   DateTime          @default(now())
+
+    // Prevent duplicate transactions
+    @@unique([date, description, amount])
+    @@map("transactions")
+}
+
+enum TransactionStatus {
+    MATCHED
+    UNMATCHED
+}

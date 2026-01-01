@@ -27,8 +27,8 @@ export * from "./enums"
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Mileages
- * const mileages = await prisma.mileage.findMany()
+ * // Fetch zero or more Banks
+ * const banks = await prisma.bank.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -38,10 +38,30 @@ export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts exten
 export { Prisma }
 
 /**
+ * Model Bank
+ * 
+ */
+export type Bank = Prisma.BankModel
+/**
  * Model Mileage
  * 
  */
 export type Mileage = Prisma.MileageModel
+/**
+ * Model Transaction
+ * 
+ */
+export type Transaction = Prisma.TransactionModel
+/**
+ * Model AccountantRequest
+ * 
+ */
+export type AccountantRequest = Prisma.AccountantRequestModel
+/**
+ * Model EmailTemplate
+ * 
+ */
+export type EmailTemplate = Prisma.EmailTemplateModel
 /**
  * Model imapConfiguration
  * 

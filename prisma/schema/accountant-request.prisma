@@ -1,0 +1,15 @@
+model AccountantRequest{
+    id String @unique @default(uuid())
+    userId String
+    purpose String
+    description String?
+    status Status @default(PENDING)
+    requestedAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+enum Status {
+    PENDING
+    APPROVED
+    REJECTED
+}

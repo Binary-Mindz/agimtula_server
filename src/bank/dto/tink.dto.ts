@@ -5,28 +5,99 @@ export class ConnectBankDto {
   @ApiProperty({
     description: 'Market/Country code',
     example: 'SE',
-    enum: ['AT', 'BE', 'DK', 'EE', 'FI', 'FR', 'DE', 'IE', 'IT', 'LV', 'LT', 'NL', 'NO', 'PL', 'PT', 'ES', 'SE', 'GB'],
+    enum: [
+      'AT',
+      'BE',
+      'DK',
+      'EE',
+      'FI',
+      'FR',
+      'DE',
+      'IE',
+      'IT',
+      'LV',
+      'LT',
+      'NL',
+      'NO',
+      'PL',
+      'PT',
+      'ES',
+      'SE',
+      'GB',
+    ],
     default: 'SE',
   })
   @IsOptional()
-  @IsEnum(['AT', 'BE', 'DK', 'EE', 'FI', 'FR', 'DE', 'IE', 'IT', 'LV', 'LT', 'NL', 'NO', 'PL', 'PT', 'ES', 'SE', 'GB'])
+  @IsEnum([
+    'AT',
+    'BE',
+    'DK',
+    'EE',
+    'FI',
+    'FR',
+    'DE',
+    'IE',
+    'IT',
+    'LV',
+    'LT',
+    'NL',
+    'NO',
+    'PL',
+    'PT',
+    'ES',
+    'SE',
+    'GB',
+  ])
   market?: string;
 
   @ApiProperty({
     description: 'Language/Locale code',
     example: 'en_US',
-    enum: ['da_DK', 'de_DE', 'et_EE', 'en_US', 'es_ES', 'fi_FI', 'fr_FR', 'it_IT', 'lt_LT', 'lv_LV', 'nl_NL', 'no_NO', 'pt_PT', 'pl_PL', 'sv_SE'],
+    enum: [
+      'da_DK',
+      'de_DE',
+      'et_EE',
+      'en_US',
+      'es_ES',
+      'fi_FI',
+      'fr_FR',
+      'it_IT',
+      'lt_LT',
+      'lv_LV',
+      'nl_NL',
+      'no_NO',
+      'pt_PT',
+      'pl_PL',
+      'sv_SE',
+    ],
     default: 'en_US',
   })
   @IsOptional()
-  @IsEnum(['da_DK', 'de_DE', 'et_EE', 'en_US', 'es_ES', 'fi_FI', 'fr_FR', 'it_IT', 'lt_LT', 'lv_LV', 'nl_NL', 'no_NO', 'pt_PT', 'pl_PL', 'sv_SE'])
+  @IsEnum([
+    'da_DK',
+    'de_DE',
+    'et_EE',
+    'en_US',
+    'es_ES',
+    'fi_FI',
+    'fr_FR',
+    'it_IT',
+    'lt_LT',
+    'lv_LV',
+    'nl_NL',
+    'no_NO',
+    'pt_PT',
+    'pl_PL',
+    'sv_SE',
+  ])
   locale?: string;
 }
 
 export class ConnectBankResponseDto {
   @ApiProperty({
     description: 'Tink authorization URL to redirect user',
-    example: 'https://link.tink.com/1.0/transactions/connect-accounts?client_id=xxx&redirect_uri=http://localhost:3001/tink/callback&market=SE&locale=en_US',
+    example:
+      'https://link.tink.com/1.0/transactions/connect-accounts?client_id=xxx&redirect_uri=http://localhost:3001/callback&market=SE&locale=en_US',
   })
   authorizationUrl: string;
 
@@ -38,7 +109,7 @@ export class ConnectBankResponseDto {
 
   @ApiProperty({
     description: 'Redirect URI where user will be sent after authorization',
-    example: 'http://localhost:3001/tink/callback',
+    example: 'http://localhost:3001/callback',
   })
   redirectUri: string;
 }
@@ -196,5 +267,5 @@ export class TransactionResponseDto {
     type: 'object',
     additionalProperties: true,
   })
-  raw: any;
+  raw?: any;
 }

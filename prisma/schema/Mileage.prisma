@@ -1,0 +1,20 @@
+model Mileage {
+  id            String   @id @default(uuid())
+  milage_id     Int      @unique() @default(autoincrement())
+  date          DateTime
+  startLocation String
+  endLocation   String
+  distance      Float
+  tripType      String
+  amount        Float
+  vehicle       String?
+  purpose       String
+  notes         String?
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("mileage")
+}

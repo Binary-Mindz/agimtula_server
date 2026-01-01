@@ -1,0 +1,50 @@
+model Profile {
+  id                String  @id @default(uuid())
+  firstName         String
+  lastName          String
+  profilePicture    String?
+  profilePictureKey String?
+  phone             String?
+  userId            String  @unique
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("profile")
+}
+
+model ForgetPass {
+  id         String   @id @default(ulid())
+  email      String   @unique
+  code       Int
+  isVerified Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  @@map("forgetPass")
+}
+
+model TwoFA {
+  id        String       @id @default(uuid())
+  email     String
+  code      Int
+  purpose   TwoFAPurpose
+  attempts  Int          @default(0)
+  createdAt DateTime     @default(now())
+
+  @@unique([email, purpose])
+  @@map("twoFA")
+}
+
+model Language {
+  id        String  @id @default(uuid())
+  language  String
+  isDefault Boolean @default(false)
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+
+  @@map("language")
+}
+
+enum TwoFAPurpose {
+  LOGIN
+  ENABLE_2FA
+  DISABLE_2FA
+}

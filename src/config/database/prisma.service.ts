@@ -8,21 +8,31 @@ import { ConfigService } from '@nestjs/config';
 import { PrismaPg } from '@prisma/adapter-pg';
 import 'dotenv/config';
 import { ENVEnum } from 'src/common/enum/env.enum';
-// import { PrismaClient } from '';
-import { PrismaClient } from '../../../prisma/generated/client';
+import { PrismaClient } from '../../../prisma/generated/prisma/client';
+// import { PrismaClient } from '@prisma/client';
 
 @Injectable()
-export class PrismaService implements OnModuleInit, OnModuleDestroy {
+export class PrismaService
+  extends PrismaClient
+  implements OnModuleInit, OnModuleDestroy
+{
   private readonly logger = new Logger(PrismaService.name);
   private readonly prisma: PrismaClient;
   private readonly connectionString: string;
 
   constructor(private readonly configService: ConfigService) {
-    this.connectionString = this.configService.getOrThrow<string>(
+    const connectionString = configService.getOrThrow<string>(
       ENVEnum.DATABASE_URL,
     );
 
-    const adapter = new PrismaPg({ connectionString: this.connectionString });
+    const adapter = new PrismaPg({ connectionString });
+
+    super({
+      adapter,
+      log: [{ emit: 'event', level: 'error' }],
+    });
+
+    this.connectionString = connectionString;
 
     this.prisma = new PrismaClient({
       adapter,

@@ -60,6 +60,7 @@ export const ModelName = {
   userSubscriptionPlan: 'userSubscriptionPlan',
   userSubscriptionPlanHistory: 'userSubscriptionPlanHistory',
   subscriptionPlanPaymentStatus: 'subscriptionPlanPaymentStatus',
+  Loggers: 'Loggers',
   Module: 'Module',
   UserModuleAccess: 'UserModuleAccess',
   Profile: 'Profile',
@@ -249,6 +250,16 @@ export const SubscriptionPlanPaymentStatusScalarFieldEnum = {
 } as const
 
 export type SubscriptionPlanPaymentStatusScalarFieldEnum = (typeof SubscriptionPlanPaymentStatusScalarFieldEnum)[keyof typeof SubscriptionPlanPaymentStatusScalarFieldEnum]
+
+
+export const LoggersScalarFieldEnum = {
+  id: 'id',
+  level: 'level',
+  logpriority: 'logpriority',
+  timestamp: 'timestamp'
+} as const
+
+export type LoggersScalarFieldEnum = (typeof LoggersScalarFieldEnum)[keyof typeof LoggersScalarFieldEnum]
 
 
 export const ModuleScalarFieldEnum = {

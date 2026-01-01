@@ -1,34 +1,71 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
+import { QueryLoggerDto } from './dto/logquery.dto';
+import { cResponseData } from 'src/common/cResponse';
 
 @Injectable()
 export class LoggerService {
   constructor(private readonly prisma: PrismaService) { }
-  async create(createLoggerDto: any) {
-    try {
 
-      const response = await this.prisma.client.loggers.create({
-        data: createLoggerDto,
+
+  async findAll(queryDto: QueryLoggerDto) {
+    try {
+      const { level, logpriority: priority, page = 1, limit = 10 } = queryDto;
+
+      // Build where clause
+      const where: any = {};
+
+      if (level) {
+        where.level = level;
+      }
+
+      if (priority) {
+        where.logpriority = priority;
+      }
+
+      // Calculate pagination
+      const skip = (page - 1) * limit;
+      const take = limit;
+
+      // Get total count
+      const total = await this.prisma.loggers.count({ where });
+
+      // Get paginated data
+      const data = await this.prisma.loggers.findMany({
+        where,
+        skip,
+        take,
+        orderBy: {
+          timestamp: 'desc',
+        },
       });
-      return response;
+
+      // Calculate meta information
+      const totalPages = Math.ceil(total / limit);
+      const hasNextPage = page < totalPages;
+      const hasPreviousPage = page > 1;
+      const res = {
+        data,
+        meta: {
+          total,
+          page,
+          limit,
+          totalPages,
+          hasNextPage,
+          hasPreviousPage,
+        },
+      };
+      return cResponseData(res);
     } catch (error) {
-      const errMsg = 'Error creating logger: ' + error.message;
-      console.log(errMsg);
-      throw new InternalServerErrorException('Something went wrong while creating logger. ');
+      console.error('Error fetching logs:', error.message);
+      throw new InternalServerErrorException('Failed to fetch logs');
     }
   }
 
-  async findAll() {
-    return `This action returns all logger`;
-  }
-
-  async findOne(id: number) {
-    return `This action returns a #${id} logger`;
-  }
 
 
 
-  async remove(id: number) {
-    return `This action removes a #${id} logger`;
-  }
+
+
+
 }

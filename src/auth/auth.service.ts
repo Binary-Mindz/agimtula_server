@@ -3,6 +3,7 @@ import {
   ConflictException,
   ForbiddenException,
   Injectable,
+  Logger,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -20,6 +21,7 @@ import { UpdateProfileDto } from './dto/update-profile.dto';
 import { VerifyTwoFADto } from './dto/two-fa.dto';
 import { cResponseData } from 'src/common/cResponse';
 import { RedisServiceService } from 'src/config/redis-service/redis-service.service';
+import { logpriority, LogType } from 'prisma/generated/prisma/enums';
 
 interface Login2FAPayload {
   userId: string;
@@ -30,12 +32,15 @@ interface Login2FAPayload {
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
   constructor(
     private prisma: PrismaService,
     private jwt: JwtService,
     private mail: SmtpMailService,
     private redis: RedisServiceService,
-  ) {}
+
+  ) { }
+
 
   private async setRedisValue<T>(key: string, value: T, ttl: number) {
     await this.redis.set(key, JSON.stringify(value), 'EX', ttl);
@@ -96,7 +101,14 @@ export class AuthService {
           email: true,
         },
       });
-
+      await this.prisma.loggers.create({
+        data: {
+          level: LogType.INFO,
+          logpriority: logpriority.LOW,
+          information: `New user registered with email: ${createAuthDto.email}`,
+        },
+      });
+      this.logger.log(`New user registered with email: ${createAuthDto.email}`);
       return cResponseData({
         message: 'User created successfully',
         data: {
@@ -107,7 +119,9 @@ export class AuthService {
         },
       });
     } catch (error) {
+      console.log(error);
       return cResponseData({
+
         message: error.message || 'Failed to create user',
       });
     }

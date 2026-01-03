@@ -45,7 +45,6 @@ export class BankStatementController {
 
     try {
       const result = await this.bankStatementService.processFile(file, fileExtension);
-
       return {
         success: true,
         message: 'File processed successfully',

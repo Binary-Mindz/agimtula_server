@@ -12,7 +12,6 @@ export class LoggerService {
     try {
       const { level, logpriority: priority, page = 1, limit = 10 } = queryDto;
 
-      // Build where clause
       const where: any = {};
 
       if (level) {
@@ -61,11 +60,4 @@ export class LoggerService {
       throw new InternalServerErrorException('Failed to fetch logs all data');
     }
   }
-
-
-
-
-
-
-
 }

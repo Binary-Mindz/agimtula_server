@@ -18,6 +18,7 @@ import { ImapApisModule } from './imap-apis/imap-apis.module';
 import { BankTransactionModule } from './user-dashboard/bank-transaction/transaction.module';
 import { BankDataModule } from './admin-dashboard/bank-data/bank-data.module';
 import { QuotationsModule } from './quotations/quotations.module';
+import { LoggerModule } from './logger/logger.module';
 
 
 @Module({
@@ -38,6 +39,7 @@ import { QuotationsModule } from './quotations/quotations.module';
     BankTransactionModule,
     BankDataModule,
     QuotationsModule,
+    LoggerModule,
     // PaymentsModule
   ],
   controllers: [AppController],
@@ -49,4 +51,4 @@ import { QuotationsModule } from './quotations/quotations.module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }

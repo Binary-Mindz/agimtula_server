@@ -16,12 +16,12 @@ import {
 } from './dto/tink.dto';
 
 @ApiTags('Tink Bank Integration')
-@Controller()
+@Controller('tink')
 export class TinkController {
   constructor(
     private tinkService: TinkService,
     private transactionService: TransactionService,
-  ) {}
+  ) { }
 
   @Post('connect-bank')
   @Public()
@@ -258,22 +258,4 @@ export class TinkController {
 
 
 
-// {
-//   "date": "2025-07-23",
-//   "description": "Coop",
-//   "category": "Coop",
-//   "amount": -600.00,
-//   "currency": "SEK"
-// },
 
-
-//  {
-//       "invoiceId": "SAL-992134",
-//       "accountNumber": "**** **** **** 4821",
-//       "transactionDate": "01 December 2025",
-//       "transactionType": "Credit (Salary)",
-//       "amount": "EUR 2,500.00",
-//       "status": "Successful",
-//       "from": "\"Md Ridoy Babu\" <ridoy.babu.781@gmail.com>",
-//       "attachments": []
-//     },

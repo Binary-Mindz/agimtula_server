@@ -426,7 +426,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "mileage" | "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "module" | "userModuleAccess" | "profile" | "forgetPass" | "twoFA" | "language" | "quotation" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "user" | "email"
+    modelProps: "bank" | "mileage" | "transaction" | "accountantRequest" | "emailTemplate" | "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "module" | "userModuleAccess" | "profile" | "forgetPass" | "twoFA" | "language" | "quotation" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "user" | "email"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2616,6 +2616,9 @@ export const SubscriptionPlanPaymentStatusScalarFieldEnum = {
   subscriptionPlanHistoryId: 'subscriptionPlanHistoryId',
   totalAmount: 'totalAmount',
   paymentStatus: 'paymentStatus',
+  stripeSessionId: 'stripeSessionId',
+  stripeSubscriptionId: 'stripeSubscriptionId',
+  stripeCustomerId: 'stripeCustomerId',
   createdAt: 'createdAt'
 } as const
 
@@ -2833,6 +2836,7 @@ export const PackagePricingScalarFieldEnum = {
   setupFee: 'setupFee',
   freeTrialDays: 'freeTrialDays',
   billingPeriod: 'billingPeriod',
+  stripePriceId: 'stripePriceId',
   SubscriptionPlanId: 'SubscriptionPlanId'
 } as const
 

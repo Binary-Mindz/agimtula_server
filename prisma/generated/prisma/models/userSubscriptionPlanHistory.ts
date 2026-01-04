@@ -247,7 +247,7 @@ export type UserSubscriptionPlanHistoryGroupByOutputType = {
   freeTrialDays: number | null
   billingPeriod: $Enums.BillingPeriod
   startedAt: Date
-  expiredAt: Date
+  expiredAt: Date | null
   createdAt: Date
   _count: UserSubscriptionPlanHistoryCountAggregateOutputType | null
   _avg: UserSubscriptionPlanHistoryAvgAggregateOutputType | null
@@ -286,7 +286,7 @@ export type userSubscriptionPlanHistoryWhereInput = {
   freeTrialDays?: Prisma.IntNullableFilter<"userSubscriptionPlanHistory"> | number | null
   billingPeriod?: Prisma.EnumBillingPeriodFilter<"userSubscriptionPlanHistory"> | $Enums.BillingPeriod
   startedAt?: Prisma.DateTimeFilter<"userSubscriptionPlanHistory"> | Date | string
-  expiredAt?: Prisma.DateTimeFilter<"userSubscriptionPlanHistory"> | Date | string
+  expiredAt?: Prisma.DateTimeNullableFilter<"userSubscriptionPlanHistory"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"userSubscriptionPlanHistory"> | Date | string
   subscriptionPlanPaymentStatus?: Prisma.XOR<Prisma.SubscriptionPlanPaymentStatusNullableScalarRelationFilter, Prisma.subscriptionPlanPaymentStatusWhereInput> | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -304,7 +304,7 @@ export type userSubscriptionPlanHistoryOrderByWithRelationInput = {
   freeTrialDays?: Prisma.SortOrderInput | Prisma.SortOrder
   billingPeriod?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
-  expiredAt?: Prisma.SortOrder
+  expiredAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
@@ -325,7 +325,7 @@ export type userSubscriptionPlanHistoryWhereUniqueInput = Prisma.AtLeast<{
   freeTrialDays?: Prisma.IntNullableFilter<"userSubscriptionPlanHistory"> | number | null
   billingPeriod?: Prisma.EnumBillingPeriodFilter<"userSubscriptionPlanHistory"> | $Enums.BillingPeriod
   startedAt?: Prisma.DateTimeFilter<"userSubscriptionPlanHistory"> | Date | string
-  expiredAt?: Prisma.DateTimeFilter<"userSubscriptionPlanHistory"> | Date | string
+  expiredAt?: Prisma.DateTimeNullableFilter<"userSubscriptionPlanHistory"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"userSubscriptionPlanHistory"> | Date | string
   subscriptionPlanPaymentStatus?: Prisma.XOR<Prisma.SubscriptionPlanPaymentStatusNullableScalarRelationFilter, Prisma.subscriptionPlanPaymentStatusWhereInput> | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -343,7 +343,7 @@ export type userSubscriptionPlanHistoryOrderByWithAggregationInput = {
   freeTrialDays?: Prisma.SortOrderInput | Prisma.SortOrder
   billingPeriod?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
-  expiredAt?: Prisma.SortOrder
+  expiredAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.userSubscriptionPlanHistoryCountOrderByAggregateInput
   _avg?: Prisma.userSubscriptionPlanHistoryAvgOrderByAggregateInput
@@ -367,7 +367,7 @@ export type userSubscriptionPlanHistoryScalarWhereWithAggregatesInput = {
   freeTrialDays?: Prisma.IntNullableWithAggregatesFilter<"userSubscriptionPlanHistory"> | number | null
   billingPeriod?: Prisma.EnumBillingPeriodWithAggregatesFilter<"userSubscriptionPlanHistory"> | $Enums.BillingPeriod
   startedAt?: Prisma.DateTimeWithAggregatesFilter<"userSubscriptionPlanHistory"> | Date | string
-  expiredAt?: Prisma.DateTimeWithAggregatesFilter<"userSubscriptionPlanHistory"> | Date | string
+  expiredAt?: Prisma.DateTimeNullableWithAggregatesFilter<"userSubscriptionPlanHistory"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"userSubscriptionPlanHistory"> | Date | string
 }
 
@@ -382,7 +382,7 @@ export type userSubscriptionPlanHistoryCreateInput = {
   freeTrialDays?: number | null
   billingPeriod: $Enums.BillingPeriod
   startedAt?: Date | string
-  expiredAt: Date | string
+  expiredAt?: Date | string | null
   createdAt?: Date | string
   subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusCreateNestedOneWithoutUserSubscriptionPlanHistoryInput
   user: Prisma.UserCreateNestedOneWithoutUserSubscriptionPlanHistoryInput
@@ -400,7 +400,7 @@ export type userSubscriptionPlanHistoryUncheckedCreateInput = {
   freeTrialDays?: number | null
   billingPeriod: $Enums.BillingPeriod
   startedAt?: Date | string
-  expiredAt: Date | string
+  expiredAt?: Date | string | null
   createdAt?: Date | string
   subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusUncheckedCreateNestedOneWithoutUserSubscriptionPlanHistoryInput
 }
@@ -416,7 +416,7 @@ export type userSubscriptionPlanHistoryUpdateInput = {
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   billingPeriod?: Prisma.EnumBillingPeriodFieldUpdateOperationsInput | $Enums.BillingPeriod
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusUpdateOneWithoutUserSubscriptionPlanHistoryNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutUserSubscriptionPlanHistoryNestedInput
@@ -434,7 +434,7 @@ export type userSubscriptionPlanHistoryUncheckedUpdateInput = {
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   billingPeriod?: Prisma.EnumBillingPeriodFieldUpdateOperationsInput | $Enums.BillingPeriod
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusUncheckedUpdateOneWithoutUserSubscriptionPlanHistoryNestedInput
 }
@@ -451,7 +451,7 @@ export type userSubscriptionPlanHistoryCreateManyInput = {
   freeTrialDays?: number | null
   billingPeriod: $Enums.BillingPeriod
   startedAt?: Date | string
-  expiredAt: Date | string
+  expiredAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -466,7 +466,7 @@ export type userSubscriptionPlanHistoryUpdateManyMutationInput = {
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   billingPeriod?: Prisma.EnumBillingPeriodFieldUpdateOperationsInput | $Enums.BillingPeriod
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -482,7 +482,7 @@ export type userSubscriptionPlanHistoryUncheckedUpdateManyInput = {
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   billingPeriod?: Prisma.EnumBillingPeriodFieldUpdateOperationsInput | $Enums.BillingPeriod
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -641,7 +641,7 @@ export type userSubscriptionPlanHistoryCreateWithoutSubscriptionPlanPaymentStatu
   freeTrialDays?: number | null
   billingPeriod: $Enums.BillingPeriod
   startedAt?: Date | string
-  expiredAt: Date | string
+  expiredAt?: Date | string | null
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutUserSubscriptionPlanHistoryInput
 }
@@ -658,7 +658,7 @@ export type userSubscriptionPlanHistoryUncheckedCreateWithoutSubscriptionPlanPay
   freeTrialDays?: number | null
   billingPeriod: $Enums.BillingPeriod
   startedAt?: Date | string
-  expiredAt: Date | string
+  expiredAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -689,7 +689,7 @@ export type userSubscriptionPlanHistoryUpdateWithoutSubscriptionPlanPaymentStatu
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   billingPeriod?: Prisma.EnumBillingPeriodFieldUpdateOperationsInput | $Enums.BillingPeriod
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutUserSubscriptionPlanHistoryNestedInput
 }
@@ -706,7 +706,7 @@ export type userSubscriptionPlanHistoryUncheckedUpdateWithoutSubscriptionPlanPay
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   billingPeriod?: Prisma.EnumBillingPeriodFieldUpdateOperationsInput | $Enums.BillingPeriod
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -721,7 +721,7 @@ export type userSubscriptionPlanHistoryCreateWithoutUserInput = {
   freeTrialDays?: number | null
   billingPeriod: $Enums.BillingPeriod
   startedAt?: Date | string
-  expiredAt: Date | string
+  expiredAt?: Date | string | null
   createdAt?: Date | string
   subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusCreateNestedOneWithoutUserSubscriptionPlanHistoryInput
 }
@@ -737,7 +737,7 @@ export type userSubscriptionPlanHistoryUncheckedCreateWithoutUserInput = {
   freeTrialDays?: number | null
   billingPeriod: $Enums.BillingPeriod
   startedAt?: Date | string
-  expiredAt: Date | string
+  expiredAt?: Date | string | null
   createdAt?: Date | string
   subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusUncheckedCreateNestedOneWithoutUserSubscriptionPlanHistoryInput
 }
@@ -783,7 +783,7 @@ export type userSubscriptionPlanHistoryScalarWhereInput = {
   freeTrialDays?: Prisma.IntNullableFilter<"userSubscriptionPlanHistory"> | number | null
   billingPeriod?: Prisma.EnumBillingPeriodFilter<"userSubscriptionPlanHistory"> | $Enums.BillingPeriod
   startedAt?: Prisma.DateTimeFilter<"userSubscriptionPlanHistory"> | Date | string
-  expiredAt?: Prisma.DateTimeFilter<"userSubscriptionPlanHistory"> | Date | string
+  expiredAt?: Prisma.DateTimeNullableFilter<"userSubscriptionPlanHistory"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"userSubscriptionPlanHistory"> | Date | string
 }
 
@@ -798,7 +798,7 @@ export type userSubscriptionPlanHistoryCreateManyUserInput = {
   freeTrialDays?: number | null
   billingPeriod: $Enums.BillingPeriod
   startedAt?: Date | string
-  expiredAt: Date | string
+  expiredAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -813,7 +813,7 @@ export type userSubscriptionPlanHistoryUpdateWithoutUserInput = {
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   billingPeriod?: Prisma.EnumBillingPeriodFieldUpdateOperationsInput | $Enums.BillingPeriod
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusUpdateOneWithoutUserSubscriptionPlanHistoryNestedInput
 }
@@ -829,7 +829,7 @@ export type userSubscriptionPlanHistoryUncheckedUpdateWithoutUserInput = {
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   billingPeriod?: Prisma.EnumBillingPeriodFieldUpdateOperationsInput | $Enums.BillingPeriod
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusUncheckedUpdateOneWithoutUserSubscriptionPlanHistoryNestedInput
 }
@@ -845,7 +845,7 @@ export type userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserInput = {
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   billingPeriod?: Prisma.EnumBillingPeriodFieldUpdateOperationsInput | $Enums.BillingPeriod
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -949,7 +949,7 @@ export type $userSubscriptionPlanHistoryPayload<ExtArgs extends runtime.Types.Ex
     freeTrialDays: number | null
     billingPeriod: $Enums.BillingPeriod
     startedAt: Date
-    expiredAt: Date
+    expiredAt: Date | null
     createdAt: Date
   }, ExtArgs["result"]["userSubscriptionPlanHistory"]>
   composites: {}

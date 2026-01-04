@@ -150,12 +150,11 @@ export class SubscriptionsService {
                 perMonthInvoiceCount: dto.perMonthInvoiceCount,
                 planFeatures: dto.planFeatures,
                 invoiceAutoSyncIntervalIds: dto.invoiceAutoSyncIntervalIds,
-
                 price: packageItem.price,
                 setupFee: packageItem.setupFee,
                 freeTrialDays: packageItem.freeTrialDays,
-
                 billingPeriod: packageItem.billingPeriod,
+                stripePriceId: `price_${Date.now()}_${packageItem.billingPeriod}`, // Placeholder Stripe price ID
               })),
             },
           },

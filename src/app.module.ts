@@ -20,6 +20,7 @@ import { BankDataModule } from './admin-dashboard/bank-data/bank-data.module';
 import { QuotationsModule } from './quotations/quotations.module';
 import { WebhookController } from './webhook/webhook.controller';
 import { PaymentsModule } from './admin-dashboard/payments/payments.module';
+import { LoggerModule } from './logger/logger.module';
 
 
 @Module({
@@ -41,6 +42,7 @@ import { PaymentsModule } from './admin-dashboard/payments/payments.module';
     BankDataModule,
     QuotationsModule,
     PaymentsModule,
+    LoggerModule,
     // PaymentsModule
   ],
   controllers: [AppController, WebhookController],
@@ -52,4 +54,4 @@ import { PaymentsModule } from './admin-dashboard/payments/payments.module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }

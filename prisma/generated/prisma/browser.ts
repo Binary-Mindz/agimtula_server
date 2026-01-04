@@ -63,6 +63,11 @@ export type userSubscriptionPlanHistory = Prisma.userSubscriptionPlanHistoryMode
  */
 export type subscriptionPlanPaymentStatus = Prisma.subscriptionPlanPaymentStatusModel
 /**
+ * Model Loggers
+ * 
+ */
+export type Loggers = Prisma.LoggersModel
+/**
  * Model Module
  * 
  */

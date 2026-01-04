@@ -1,10 +1,10 @@
-
 import { BadRequestException, Injectable } from '@nestjs/common';
 // import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { StripeService } from './stripe.service';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 import Stripe from 'stripe';
+import { cResponseData } from 'src/common/cResponse';
 
 @Injectable()
 export class PaymentService {
@@ -35,14 +35,16 @@ export class PaymentService {
 
       const pricing = plan.packagePricing[0];
       if (!pricing) {
-        throw new BadRequestException('Pricing not found for selected billing period');
+        throw new BadRequestException(
+          'Pricing not found for selected billing period',
+        );
       }
 
       // 🔑 Stripe Price ID must be stored in DB
       if (!pricing.stripePriceId) {
         throw new BadRequestException('Stripe price not configured');
       }
- 
+
       const payment = await this.prisma.userSubscriptionPlanHistory.create({
         data: {
           UserId: userId,
@@ -66,15 +68,13 @@ export class PaymentService {
         },
       });
 
-      // Create Stripe price if it doesn't exist
       let stripePrice: Stripe.Response<Stripe.Price>;
       try {
         stripePrice = await this.stripeService.getPrice(pricing.stripePriceId);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
-        // Price doesn't exist, create it
         stripePrice = await this.stripeService.createPrice({
-          amount: Math.round((pricing.price + pricing.setupFee) * 100), // Convert to cents
+          amount: Math.round((pricing.price + pricing.setupFee) * 100),
           currency: 'usd',
           recurring: {
             interval: billingPeriod === 'MONTHLY' ? 'month' : 'year',
@@ -83,8 +83,7 @@ export class PaymentService {
             name: plan.planName,
           },
         });
-        
-        // Update database with real Stripe price ID
+
         await this.prisma.packagePricing.update({
           where: { id: pricing.id },
           data: { stripePriceId: stripePrice.id },
@@ -111,28 +110,29 @@ export class PaymentService {
         },
       });
 
-      return {
+      return cResponseData({
         checkoutUrl: session.url,
-      };
+        data: session.url,
+      });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      console.error('Payment error:', error);
       throw new BadRequestException('Payment processing failed');
     }
   }
 
-  findAll() {
-    return `This action returns all payment`;
-  }
+  // findAll() {
+  //   return `This action returns all payment`;
+  // }
 
-  findOne(id: number) {
-    return `This action returns a #${id} payment`;
-  }
+  // findOne(id: number) {
+  //   return `This action returns a #${id} payment`;
+  // }
 
   // update(id: number, updatePaymentDto: UpdatePaymentDto) {
   //   return `This action updates a #${id} payment`;
   // }
 
-  remove(id: number) {
-    return `This action removes a #${id} payment`;
-  }
+  // remove(id: number) {
+  //   return `This action removes a #${id} payment`;
+  // }
 }

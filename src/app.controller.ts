@@ -34,7 +34,7 @@ export class AppController {
   }
 
   @Post('createUser')
-  async createUser() {
+   createUser() {
     return this.appService.createUser();
   }
 }

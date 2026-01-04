@@ -50,6 +50,7 @@ export type UserSubscriptionPlanMinAggregateOutputType = {
   price: number | null
   setupFee: number | null
   freeTrialDays: number | null
+  isActive: boolean | null
   startedAt: Date | null
   expiredAt: Date | null
   createdAt: Date | null
@@ -65,6 +66,7 @@ export type UserSubscriptionPlanMaxAggregateOutputType = {
   price: number | null
   setupFee: number | null
   freeTrialDays: number | null
+  isActive: boolean | null
   startedAt: Date | null
   expiredAt: Date | null
   createdAt: Date | null
@@ -81,6 +83,7 @@ export type UserSubscriptionPlanCountAggregateOutputType = {
   price: number
   setupFee: number
   freeTrialDays: number
+  isActive: number
   startedAt: number
   expiredAt: number
   createdAt: number
@@ -112,6 +115,7 @@ export type UserSubscriptionPlanMinAggregateInputType = {
   price?: true
   setupFee?: true
   freeTrialDays?: true
+  isActive?: true
   startedAt?: true
   expiredAt?: true
   createdAt?: true
@@ -127,6 +131,7 @@ export type UserSubscriptionPlanMaxAggregateInputType = {
   price?: true
   setupFee?: true
   freeTrialDays?: true
+  isActive?: true
   startedAt?: true
   expiredAt?: true
   createdAt?: true
@@ -143,6 +148,7 @@ export type UserSubscriptionPlanCountAggregateInputType = {
   price?: true
   setupFee?: true
   freeTrialDays?: true
+  isActive?: true
   startedAt?: true
   expiredAt?: true
   createdAt?: true
@@ -246,6 +252,7 @@ export type UserSubscriptionPlanGroupByOutputType = {
   price: number
   setupFee: number
   freeTrialDays: number | null
+  isActive: boolean
   startedAt: Date
   expiredAt: Date
   createdAt: Date
@@ -285,6 +292,7 @@ export type userSubscriptionPlanWhereInput = {
   price?: Prisma.FloatFilter<"userSubscriptionPlan"> | number
   setupFee?: Prisma.FloatFilter<"userSubscriptionPlan"> | number
   freeTrialDays?: Prisma.IntNullableFilter<"userSubscriptionPlan"> | number | null
+  isActive?: Prisma.BoolFilter<"userSubscriptionPlan"> | boolean
   startedAt?: Prisma.DateTimeFilter<"userSubscriptionPlan"> | Date | string
   expiredAt?: Prisma.DateTimeFilter<"userSubscriptionPlan"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"userSubscriptionPlan"> | Date | string
@@ -303,6 +311,7 @@ export type userSubscriptionPlanOrderByWithRelationInput = {
   price?: Prisma.SortOrder
   setupFee?: Prisma.SortOrder
   freeTrialDays?: Prisma.SortOrderInput | Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
   expiredAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -324,6 +333,7 @@ export type userSubscriptionPlanWhereUniqueInput = Prisma.AtLeast<{
   price?: Prisma.FloatFilter<"userSubscriptionPlan"> | number
   setupFee?: Prisma.FloatFilter<"userSubscriptionPlan"> | number
   freeTrialDays?: Prisma.IntNullableFilter<"userSubscriptionPlan"> | number | null
+  isActive?: Prisma.BoolFilter<"userSubscriptionPlan"> | boolean
   startedAt?: Prisma.DateTimeFilter<"userSubscriptionPlan"> | Date | string
   expiredAt?: Prisma.DateTimeFilter<"userSubscriptionPlan"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"userSubscriptionPlan"> | Date | string
@@ -342,6 +352,7 @@ export type userSubscriptionPlanOrderByWithAggregationInput = {
   price?: Prisma.SortOrder
   setupFee?: Prisma.SortOrder
   freeTrialDays?: Prisma.SortOrderInput | Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
   expiredAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -366,6 +377,7 @@ export type userSubscriptionPlanScalarWhereWithAggregatesInput = {
   price?: Prisma.FloatWithAggregatesFilter<"userSubscriptionPlan"> | number
   setupFee?: Prisma.FloatWithAggregatesFilter<"userSubscriptionPlan"> | number
   freeTrialDays?: Prisma.IntNullableWithAggregatesFilter<"userSubscriptionPlan"> | number | null
+  isActive?: Prisma.BoolWithAggregatesFilter<"userSubscriptionPlan"> | boolean
   startedAt?: Prisma.DateTimeWithAggregatesFilter<"userSubscriptionPlan"> | Date | string
   expiredAt?: Prisma.DateTimeWithAggregatesFilter<"userSubscriptionPlan"> | Date | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"userSubscriptionPlan"> | Date | string
@@ -380,6 +392,7 @@ export type userSubscriptionPlanCreateInput = {
   price: number
   setupFee?: number
   freeTrialDays?: number | null
+  isActive?: boolean
   startedAt?: Date | string
   expiredAt: Date | string
   createdAt?: Date | string
@@ -398,6 +411,7 @@ export type userSubscriptionPlanUncheckedCreateInput = {
   price: number
   setupFee?: number
   freeTrialDays?: number | null
+  isActive?: boolean
   startedAt?: Date | string
   expiredAt: Date | string
   createdAt?: Date | string
@@ -412,6 +426,7 @@ export type userSubscriptionPlanUpdateInput = {
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   setupFee?: Prisma.FloatFieldUpdateOperationsInput | number
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -430,6 +445,7 @@ export type userSubscriptionPlanUncheckedUpdateInput = {
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   setupFee?: Prisma.FloatFieldUpdateOperationsInput | number
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -446,6 +462,7 @@ export type userSubscriptionPlanCreateManyInput = {
   price: number
   setupFee?: number
   freeTrialDays?: number | null
+  isActive?: boolean
   startedAt?: Date | string
   expiredAt: Date | string
   createdAt?: Date | string
@@ -460,6 +477,7 @@ export type userSubscriptionPlanUpdateManyMutationInput = {
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   setupFee?: Prisma.FloatFieldUpdateOperationsInput | number
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -476,6 +494,7 @@ export type userSubscriptionPlanUncheckedUpdateManyInput = {
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   setupFee?: Prisma.FloatFieldUpdateOperationsInput | number
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -492,6 +511,7 @@ export type userSubscriptionPlanCountOrderByAggregateInput = {
   price?: Prisma.SortOrder
   setupFee?: Prisma.SortOrder
   freeTrialDays?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
   expiredAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -514,6 +534,7 @@ export type userSubscriptionPlanMaxOrderByAggregateInput = {
   price?: Prisma.SortOrder
   setupFee?: Prisma.SortOrder
   freeTrialDays?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
   expiredAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -529,6 +550,7 @@ export type userSubscriptionPlanMinOrderByAggregateInput = {
   price?: Prisma.SortOrder
   setupFee?: Prisma.SortOrder
   freeTrialDays?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
   expiredAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -636,6 +658,7 @@ export type userSubscriptionPlanCreateWithoutSubscriptionPlanPaymentStatusInput 
   price: number
   setupFee?: number
   freeTrialDays?: number | null
+  isActive?: boolean
   startedAt?: Date | string
   expiredAt: Date | string
   createdAt?: Date | string
@@ -652,6 +675,7 @@ export type userSubscriptionPlanUncheckedCreateWithoutSubscriptionPlanPaymentSta
   price: number
   setupFee?: number
   freeTrialDays?: number | null
+  isActive?: boolean
   startedAt?: Date | string
   expiredAt: Date | string
   createdAt?: Date | string
@@ -682,6 +706,7 @@ export type userSubscriptionPlanUpdateWithoutSubscriptionPlanPaymentStatusInput 
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   setupFee?: Prisma.FloatFieldUpdateOperationsInput | number
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -698,6 +723,7 @@ export type userSubscriptionPlanUncheckedUpdateWithoutSubscriptionPlanPaymentSta
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   setupFee?: Prisma.FloatFieldUpdateOperationsInput | number
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -712,6 +738,7 @@ export type userSubscriptionPlanCreateWithoutUserInput = {
   price: number
   setupFee?: number
   freeTrialDays?: number | null
+  isActive?: boolean
   startedAt?: Date | string
   expiredAt: Date | string
   createdAt?: Date | string
@@ -728,6 +755,7 @@ export type userSubscriptionPlanUncheckedCreateWithoutUserInput = {
   price: number
   setupFee?: number
   freeTrialDays?: number | null
+  isActive?: boolean
   startedAt?: Date | string
   expiredAt: Date | string
   createdAt?: Date | string
@@ -758,6 +786,7 @@ export type userSubscriptionPlanUpdateWithoutUserInput = {
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   setupFee?: Prisma.FloatFieldUpdateOperationsInput | number
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -774,6 +803,7 @@ export type userSubscriptionPlanUncheckedUpdateWithoutUserInput = {
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   setupFee?: Prisma.FloatFieldUpdateOperationsInput | number
   freeTrialDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -792,6 +822,7 @@ export type userSubscriptionPlanSelect<ExtArgs extends runtime.Types.Extensions.
   price?: boolean
   setupFee?: boolean
   freeTrialDays?: boolean
+  isActive?: boolean
   startedAt?: boolean
   expiredAt?: boolean
   createdAt?: boolean
@@ -810,6 +841,7 @@ export type userSubscriptionPlanSelectCreateManyAndReturn<ExtArgs extends runtim
   price?: boolean
   setupFee?: boolean
   freeTrialDays?: boolean
+  isActive?: boolean
   startedAt?: boolean
   expiredAt?: boolean
   createdAt?: boolean
@@ -828,6 +860,7 @@ export type userSubscriptionPlanSelectUpdateManyAndReturn<ExtArgs extends runtim
   price?: boolean
   setupFee?: boolean
   freeTrialDays?: boolean
+  isActive?: boolean
   startedAt?: boolean
   expiredAt?: boolean
   createdAt?: boolean
@@ -846,12 +879,13 @@ export type userSubscriptionPlanSelectScalar = {
   price?: boolean
   setupFee?: boolean
   freeTrialDays?: boolean
+  isActive?: boolean
   startedAt?: boolean
   expiredAt?: boolean
   createdAt?: boolean
 }
 
-export type userSubscriptionPlanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "planName" | "UserId" | "subscriptionPlanPaymentStatusId" | "isLimitedInvoicePerMonth" | "perMonthInvoiceCount" | "realtimeImapChecking" | "price" | "setupFee" | "freeTrialDays" | "startedAt" | "expiredAt" | "createdAt", ExtArgs["result"]["userSubscriptionPlan"]>
+export type userSubscriptionPlanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "planName" | "UserId" | "subscriptionPlanPaymentStatusId" | "isLimitedInvoicePerMonth" | "perMonthInvoiceCount" | "realtimeImapChecking" | "price" | "setupFee" | "freeTrialDays" | "isActive" | "startedAt" | "expiredAt" | "createdAt", ExtArgs["result"]["userSubscriptionPlan"]>
 export type userSubscriptionPlanInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   subscriptionPlanPaymentStatus?: boolean | Prisma.subscriptionPlanPaymentStatusDefaultArgs<ExtArgs>
@@ -882,6 +916,7 @@ export type $userSubscriptionPlanPayload<ExtArgs extends runtime.Types.Extension
     price: number
     setupFee: number
     freeTrialDays: number | null
+    isActive: boolean
     startedAt: Date
     expiredAt: Date
     createdAt: Date
@@ -1320,6 +1355,7 @@ export interface userSubscriptionPlanFieldRefs {
   readonly price: Prisma.FieldRef<"userSubscriptionPlan", 'Float'>
   readonly setupFee: Prisma.FieldRef<"userSubscriptionPlan", 'Float'>
   readonly freeTrialDays: Prisma.FieldRef<"userSubscriptionPlan", 'Int'>
+  readonly isActive: Prisma.FieldRef<"userSubscriptionPlan", 'Boolean'>
   readonly startedAt: Prisma.FieldRef<"userSubscriptionPlan", 'DateTime'>
   readonly expiredAt: Prisma.FieldRef<"userSubscriptionPlan", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"userSubscriptionPlan", 'DateTime'>

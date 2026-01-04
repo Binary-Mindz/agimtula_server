@@ -212,6 +212,7 @@ export const UserSubscriptionPlanScalarFieldEnum = {
   price: 'price',
   setupFee: 'setupFee',
   freeTrialDays: 'freeTrialDays',
+  isActive: 'isActive',
   startedAt: 'startedAt',
   expiredAt: 'expiredAt',
   createdAt: 'createdAt'

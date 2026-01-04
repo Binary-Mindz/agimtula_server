@@ -29,6 +29,7 @@ model userSubscriptionPlan {
   price                           Float
   setupFee                        Float                         @default(0.00)
   freeTrialDays                   Int?
+  isActive                        Boolean                       @default(true)
   startedAt                       DateTime                      @default(now())
   expiredAt                       DateTime
   createdAt                       DateTime                      @default(now())

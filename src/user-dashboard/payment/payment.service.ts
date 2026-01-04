@@ -1,107 +1,123 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+
+import { BadRequestException, Injectable } from '@nestjs/common';
 // import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
-import { cResponseData } from 'src/common/cResponse';
+import { StripeService } from './stripe.service';
+import { jwtPayload } from 'src/auth/types/jwt-payload';
+import Stripe from 'stripe';
 
 @Injectable()
 export class PaymentService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private stripeService: StripeService,
+  ) {}
 
   async buyPlan(
     userId: string,
     subscriptionPlanId: string,
-    billingPeriod: 'MONTHLY' | 'YEARLY' = 'MONTHLY',
+    billingPeriod: 'MONTHLY' | 'YEARLY',
+    user: jwtPayload,
   ) {
-    const getSubscriptionPlanData =
-      await this.prisma.subscriptionPlan.findUnique({
+    try {
+      const plan = await this.prisma.subscriptionPlan.findUnique({
         where: { id: subscriptionPlanId },
         include: {
           packagePricing: {
-            where: {
-              billingPeriod: billingPeriod,
-            },
+            where: { billingPeriod },
           },
         },
       });
 
-    if (!getSubscriptionPlanData) {
-      throw new NotFoundException('Subscription plan not found');
-    }
+      if (!plan || !plan.isActive) {
+        throw new BadRequestException('Invalid subscription plan');
+      }
 
-    if (!getSubscriptionPlanData.isActive) {
-      throw new BadRequestException('Subscription plan is inactive');
-    }
+      const pricing = plan.packagePricing[0];
+      if (!pricing) {
+        throw new BadRequestException('Pricing not found for selected billing period');
+      }
 
-    const pricing = getSubscriptionPlanData.packagePricing[0];
-
-    const now = new Date();
-    const expirationDate =
-      billingPeriod === 'YEARLY'
-        ? new Date(now.getFullYear() + 1, now.getMonth(), now.getDate())
-        : new Date(now.getFullYear(), now.getMonth() + 1, now.getDate());
-
-    const randomPid = `pi_${Math.random().toString(36).substring(2, 15)}`;
-
-    const createPayment = await this.prisma.userSubscriptionPlanHistory.create({
-      data: {
-        UserId: userId,
-        planName: getSubscriptionPlanData.planName,
-        isLimitedInvoicePerMonth: pricing.isLimitedInvoicePerMonth ?? false,
-        perMonthInvoiceCount: pricing.perMonthInvoiceCount ?? 0,
-        realtimeImapChecking: pricing.invoiceAutoSyncIntervalIds,
-        price: pricing.price,
-        setupFee: pricing.setupFee,
-        freeTrialDays: pricing.freeTrialDays,
-        billingPeriod,
-        expiredAt: expirationDate,
-        subscriptionPlanPaymentStatus: {
-          create: {
-            pi_id: randomPid,
-            totalAmount: pricing.price + pricing.setupFee,
-            paymentStatus: 'PAID',
-          },
-        },
-      },
-      include: {
-        subscriptionPlanPaymentStatus: true,
-      },
-    });
-
-    if (createPayment.subscriptionPlanPaymentStatus?.paymentStatus === 'PAID') {
-      await this.prisma.userSubscriptionPlan.create({
+      // 🔑 Stripe Price ID must be stored in DB
+      if (!pricing.stripePriceId) {
+        throw new BadRequestException('Stripe price not configured');
+      }
+ 
+      const payment = await this.prisma.userSubscriptionPlanHistory.create({
         data: {
           UserId: userId,
-          planName: getSubscriptionPlanData.planName,
+          planName: plan.planName,
           isLimitedInvoicePerMonth: pricing.isLimitedInvoicePerMonth,
           perMonthInvoiceCount: pricing.perMonthInvoiceCount,
+          realtimeImapChecking: pricing.invoiceAutoSyncIntervalIds,
           price: pricing.price,
           setupFee: pricing.setupFee,
           freeTrialDays: pricing.freeTrialDays,
-          realtimeImapChecking: pricing.invoiceAutoSyncIntervalIds,
-          expiredAt: expirationDate,
-          subscriptionPlanPaymentStatusId:
-            createPayment.subscriptionPlanPaymentStatus.id,
+          billingPeriod,
+          subscriptionPlanPaymentStatus: {
+            create: {
+              paymentStatus: 'PENDING',
+              totalAmount: pricing.price + pricing.setupFee,
+            },
+          },
+        },
+        include: {
+          subscriptionPlanPaymentStatus: true,
         },
       });
+
+      // Create Stripe price if it doesn't exist
+      let stripePrice: Stripe.Response<Stripe.Price>;
+      try {
+        stripePrice = await this.stripeService.getPrice(pricing.stripePriceId);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (error) {
+        // Price doesn't exist, create it
+        stripePrice = await this.stripeService.createPrice({
+          amount: Math.round((pricing.price + pricing.setupFee) * 100), // Convert to cents
+          currency: 'usd',
+          recurring: {
+            interval: billingPeriod === 'MONTHLY' ? 'month' : 'year',
+          },
+          product_data: {
+            name: plan.planName,
+          },
+        });
+        
+        // Update database with real Stripe price ID
+        await this.prisma.packagePricing.update({
+          where: { id: pricing.id },
+          data: { stripePriceId: stripePrice.id },
+        });
+      }
+
+      const session = await this.stripeService.createSubscriptionCheckout(
+        stripePrice.id,
+        user.email,
+        {
+          userId,
+          planId: plan.id,
+          historyId: payment.id,
+          billingPeriod,
+        },
+      );
 
       await this.prisma.subscriptionPlanPaymentStatus.update({
         where: {
-          id: createPayment.subscriptionPlanPaymentStatus.id,
+          id: payment.subscriptionPlanPaymentStatus?.id,
         },
         data: {
-          subscriptionPlanHistoryId: createPayment.id,
+          stripeSessionId: session.id,
         },
       });
-    }
 
-    return cResponseData({
-      message: 'Subscription plan purchased successfully',
-      data: createPayment,
-    });
+      return {
+        checkoutUrl: session.url,
+      };
+    } catch (error) {
+      console.error('Payment error:', error);
+      throw new BadRequestException('Payment processing failed');
+    }
   }
 
   findAll() {

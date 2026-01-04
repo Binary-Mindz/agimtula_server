@@ -10,17 +10,19 @@ model SubscriptionPlan {
 }
 
 model PackagePricing {
-  id                         String           @id @unique @default(uuid())
-  isLimitedInvoicePerMonth   Boolean          @default(false)
-  perMonthInvoiceCount       Int              @default(15)
+  id                         String        @id @unique @default(uuid())
+  isLimitedInvoicePerMonth   Boolean       @default(false)
+  perMonthInvoiceCount       Int           @default(15)
   invoiceAutoSyncIntervalIds String[]
   planFeatures               String[]
-  price                      Float            @default(0.00)
-  setupFee                   Float            @default(0.00)
+  price                      Float         @default(0.00)
+  setupFee                   Float         @default(0.00)
   freeTrialDays              Int?
-  billingPeriod              BillingPeriod    @default(MONTHLY)
-  SubscriptionPlanId         String
-  subscriptionPlan           SubscriptionPlan @relation(fields: [SubscriptionPlanId], references: [id], onDelete: Cascade)
+  billingPeriod              BillingPeriod @default(MONTHLY)
+  stripePriceId              String        @unique
+
+  SubscriptionPlanId String
+  subscriptionPlan   SubscriptionPlan @relation(fields: [SubscriptionPlanId], references: [id], onDelete: Cascade)
 }
 
 model invoiceAutoSyncInterval {

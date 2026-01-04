@@ -245,6 +245,9 @@ export const SubscriptionPlanPaymentStatusScalarFieldEnum = {
   subscriptionPlanHistoryId: 'subscriptionPlanHistoryId',
   totalAmount: 'totalAmount',
   paymentStatus: 'paymentStatus',
+  stripeSessionId: 'stripeSessionId',
+  stripeSubscriptionId: 'stripeSubscriptionId',
+  stripeCustomerId: 'stripeCustomerId',
   createdAt: 'createdAt'
 } as const
 
@@ -462,6 +465,7 @@ export const PackagePricingScalarFieldEnum = {
   setupFee: 'setupFee',
   freeTrialDays: 'freeTrialDays',
   billingPeriod: 'billingPeriod',
+  stripePriceId: 'stripePriceId',
   SubscriptionPlanId: 'SubscriptionPlanId'
 } as const
 

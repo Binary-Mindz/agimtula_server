@@ -48,7 +48,7 @@ model userSubscriptionPlanHistory {
   freeTrialDays                 Int?
   billingPeriod                 BillingPeriod
   startedAt                     DateTime                       @default(now())
-  expiredAt                     DateTime
+  expiredAt                     DateTime?
   createdAt                     DateTime                       @default(now())
   subscriptionPlanPaymentStatus subscriptionPlanPaymentStatus?
   user                          User                           @relation(fields: [UserId], references: [id])
@@ -56,10 +56,13 @@ model userSubscriptionPlanHistory {
 
 model subscriptionPlanPaymentStatus {
   id                          String                      @id @unique @default(uuid())
-  pi_id                       String                      @unique
+  pi_id                       String?
   subscriptionPlanHistoryId   String                      @unique
   totalAmount                 Float
   paymentStatus               PaymentStatus
+  stripeSessionId             String?
+  stripeSubscriptionId        String?
+  stripeCustomerId            String?
   createdAt                   DateTime                    @default(now())
   userSubscriptionPlanHistory userSubscriptionPlanHistory @relation(fields: [subscriptionPlanHistoryId], references: [id])
   userSubscriptionPlan        userSubscriptionPlan?       @relation("PaymentStatusToSubscriptionPlan")

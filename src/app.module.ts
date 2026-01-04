@@ -18,6 +18,7 @@ import { ImapApisModule } from './imap-apis/imap-apis.module';
 import { BankTransactionModule } from './user-dashboard/bank-transaction/transaction.module';
 import { BankDataModule } from './admin-dashboard/bank-data/bank-data.module';
 import { QuotationsModule } from './quotations/quotations.module';
+import { WebhookController } from './webhook/webhook.controller';
 
 
 @Module({
@@ -40,7 +41,7 @@ import { QuotationsModule } from './quotations/quotations.module';
     QuotationsModule,
     // PaymentsModule
   ],
-  controllers: [AppController],
+  controllers: [AppController, WebhookController],
   providers: [
     AppService,
     {

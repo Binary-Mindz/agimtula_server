@@ -44,7 +44,7 @@ export class UserPaymentController {
     @User() user: jwtPayload,
     @Body('billingPeriod') billingPeriod: 'MONTHLY' | 'YEARLY',
   ) {
-    return this.paymentService.buyPlan(user.sub, id, billingPeriod);
+    return this.paymentService.buyPlan(user.sub, id, billingPeriod, user);
   }
 
   @Get()

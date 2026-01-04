@@ -60,6 +60,7 @@
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "simple-parse": "^1.2.0",
+    "stripe": "^20.1.0",
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {

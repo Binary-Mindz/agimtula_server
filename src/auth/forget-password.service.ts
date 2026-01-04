@@ -108,41 +108,36 @@ export class ForgetPasswordService {
   }
 
   async verifyForgetPassCode(data: ValidateForgetPass) {
-    try {
-      const val = await this.redis.get(`${this.FORG_PREFIX}_${data.email}`);
+    const val = await this.redis.get(`${this.FORG_PREFIX}_${data.email}`);
 
-      const user = await this.prisma.user.findFirst({
-        where: {
-          email: {
-            email: data.email,
-          },
+    const user = await this.prisma.user.findFirst({
+      where: {
+        email: {
+          email: data.email,
         },
-      });
+      },
+    });
 
-      if (!user) {
-        throw new UnauthorizedException('User not found');
-      }
-
-      if (!val || val !== data.verificationCode.toString()) {
-        throw new ForbiddenException('Code invalid or expired');
-      }
-
-      await this.redis.del(`${this.FORG_PREFIX}_${data.email}`);
-
-      const newCrypto = this.generateCrypto();
-
-      await this.storeRedis(newCrypto, user.id, 'CRYPTO');
-
-      return cResponseData({
-        message: 'Code is verified, now you can change your password',
-        data: {
-          crypto: newCrypto,
-        },
-      });
-    } catch (error) {
-      console.error('Error in verifyForgetPassCode:', error);
-      throw error;
+    if (!user) {
+      throw new UnauthorizedException('User not found');
     }
+
+    if (!val || val !== data.verificationCode.toString()) {
+      throw new ForbiddenException('Code invalid or expired');
+    }
+
+    await this.redis.del(`${this.FORG_PREFIX}_${data.email}`);
+
+    const newCrypto = this.generateCrypto();
+
+    await this.storeRedis(newCrypto, user.id, 'CRYPTO');
+
+    return cResponseData({
+      message: 'Code is verified, now you can change your password',
+      data: {
+        crypto: newCrypto,
+      },
+    });
   }
 
   async changePassword(data: ResetPass, cryptoVal: string) {

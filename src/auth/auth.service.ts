@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   BadRequestException,
   ConflictException,
@@ -97,19 +98,18 @@ export class AuthService {
         },
       });
 
-      return cResponseData({
+      return {
         message: 'User created successfully',
-        data: {
-          id: user.id,
-          firstName: user.profile?.firstName,
-          lastName: user.profile?.lastName,
-          email: user.email?.email,
-        },
-      });
+        id: user.id,
+        firstName: user.profile?.firstName,
+        lastName: user.profile?.lastName,
+        email: user.email?.email,
+      };
     } catch (error) {
-      return cResponseData({
-        message: error.message || 'Failed to create user',
-      });
+      if (error instanceof ConflictException) {
+        throw error;
+      }
+      throw new BadRequestException('Failed to create user');
     }
   }
 
@@ -165,13 +165,11 @@ export class AuthService {
       `,
         );
 
-        return cResponseData({
+        return {
           message: 'Verify your 2FA code to complete login',
-          data: {
-            twoFactorEnabled: true,
-            email: user.email.email,
-          },
-        });
+          twoFactorEnabled: true,
+          email: user.email.email,
+        };
       }
 
       // NORMAL LOGIN
@@ -181,20 +179,19 @@ export class AuthService {
         role: user.role,
       });
 
-      return cResponseData({
+      return {
         message: 'Login successful',
-        data: {
-          id: user.id,
-          firstName: user.profile?.firstName,
-          lastName: user.profile?.lastName,
-          email: user.email.email,
-          accessToken,
-        },
-      });
+        id: user.id,
+        firstName: user.profile?.firstName,
+        lastName: user.profile?.lastName,
+        email: user.email.email,
+        accessToken,
+      };
     } catch (error) {
-      return cResponseData({
-        message: error.message || 'Login failed',
-      });
+      if (error instanceof UnauthorizedException || error instanceof ForbiddenException) {
+        throw error;
+      }
+      throw new BadRequestException('Login failed');
     }
   }
   async verifyLogin2FA(dto: VerifyTwoFADto) {
@@ -236,20 +233,19 @@ export class AuthService {
         role: user.role,
       });
 
-      return cResponseData({
+      return {
         message: 'Login successful',
-        data: {
-          id: user.id,
-          firstName: user.profile?.firstName,
-          lastName: user.profile?.lastName,
-          email: user.email.email,
-          accessToken,
-        },
-      });
+        id: user.id,
+        firstName: user.profile?.firstName,
+        lastName: user.profile?.lastName,
+        email: user.email.email,
+        accessToken,
+      };
     } catch (error) {
-      return cResponseData({
-        message: error.message || '2FA verification failed',
-      });
+      if (error instanceof ForbiddenException || error instanceof UnauthorizedException) {
+        throw error;
+      }
+      throw new BadRequestException('2FA verification failed');
     }
   }
 
@@ -282,11 +278,12 @@ export class AuthService {
         },
       });
 
-      return cResponseData({ message: 'Password updated successfully' });
+      return { message: 'Password updated successfully' };
     } catch (error) {
-      return cResponseData({
-        message: error.message || 'Failed to update password',
-      });
+      if (error instanceof UnauthorizedException || error instanceof ForbiddenException) {
+        throw error;
+      }
+      throw new BadRequestException('Failed to update password');
     }
   }
 
@@ -296,13 +293,11 @@ export class AuthService {
         where: { userId },
       });
 
-      return cResponseData({
+      return {
         message: 'Account deleted successfully',
-      });
+      };
     } catch (error) {
-      return cResponseData({
-        message: error.message || 'Failed to delete account',
-      });
+      throw new BadRequestException('Failed to delete account');
     }
   }
 
@@ -345,14 +340,15 @@ export class AuthService {
         throw new BadRequestException('User Updation Failed');
       }
 
-      return cResponseData({
+      return {
         message: 'Profile picture updated successfully',
-        data: { profilePicture },
-      });
+        profilePicture,
+      };
     } catch (error) {
-      return cResponseData({
-        message: error.message || 'Failed to update profile picture',
-      });
+      if (error instanceof NotFoundException || error instanceof BadRequestException) {
+        throw error;
+      }
+      throw new BadRequestException('Failed to update profile picture');
     }
   }
 
@@ -378,13 +374,11 @@ export class AuthService {
         },
       });
 
-      return cResponseData({
+      return {
         message: 'Profile picture removed successfully',
-      });
+      };
     } catch (error) {
-      return cResponseData({
-        message: error.message || 'Failed to remove profile picture',
-      });
+      throw new BadRequestException('Failed to remove profile picture');
     }
   }
 
@@ -407,13 +401,14 @@ export class AuthService {
         throw new BadRequestException('User Updation Failed');
       }
 
-      return cResponseData({
+      return {
         message: 'Profile updated successfully',
-      });
+      };
     } catch (error) {
-      return cResponseData({
-        message: error.message || 'Failed to update profile',
-      });
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      throw new BadRequestException('Failed to update profile');
     }
   }
 
@@ -437,13 +432,12 @@ export class AuthService {
         throw new NotFoundException('User not found');
       }
 
-      return cResponseData({
-        data: user,
-      });
+      return user;
     } catch (error) {
-      return cResponseData({
-        message: error.message || 'Failed to get profile',
-      });
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new BadRequestException('Failed to get profile');
     }
   }
 

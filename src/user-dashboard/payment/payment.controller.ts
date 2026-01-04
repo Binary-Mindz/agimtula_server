@@ -13,7 +13,7 @@ import { PaymentService } from './payment.service';
 import { User } from 'src/auth/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 import { Roles } from 'src/auth/decorators/roles.decorator';
-import { ApiBody } from '@nestjs/swagger';
+import { ApiBody, ApiResponse } from '@nestjs/swagger';
 import { urlPrefix } from '../url-prefix';
 
 @Controller(`${urlPrefix}/payment`)
@@ -21,7 +21,7 @@ export class UserPaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 
   @Post('buy-plan/:id')
-  @Roles('USER', 'ACCOUNTANT', 'ADMIN')
+  @Roles('USER')
   @ApiBody({
     schema: {
       type: 'object',
@@ -37,6 +37,8 @@ export class UserPaymentController {
       },
     },
   })
+  @ApiResponse({ status: 201, description: 'Plan purchased successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid plan or billing period' })
   buyPlan(
     @Param('id') id: string,
     @User() user: jwtPayload,
@@ -46,11 +48,14 @@ export class UserPaymentController {
   }
 
   @Get()
+  @ApiResponse({ status: 200, description: 'Payments retrieved successfully' })
   findAll() {
     return this.paymentService.findAll();
   }
 
   @Get(':id')
+  @ApiResponse({ status: 200, description: 'Payment retrieved successfully' })
+  @ApiResponse({ status: 404, description: 'Payment not found' })
   findOne(@Param('id') id: string) {
     return this.paymentService.findOne(+id);
   }
@@ -61,6 +66,8 @@ export class UserPaymentController {
   // }
 
   @Delete(':id')
+  @ApiResponse({ status: 204, description: 'Payment deleted successfully' })
+  @ApiResponse({ status: 404, description: 'Payment not found' })
   remove(@Param('id') id: string) {
     return this.paymentService.remove(+id);
   }

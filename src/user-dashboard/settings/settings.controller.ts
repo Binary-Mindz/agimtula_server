@@ -14,7 +14,7 @@ import {
 import { SettingsService } from './settings.service';
 import { BusinessInfoDto, UpdateLogoDto } from './dto/business-info.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiResponse } from '@nestjs/swagger';
 import { CreatePaymentMethodDto } from './dto/create-payment-method.dto';
 import { InvoiceLayoutDto } from './dto/invoice-layout.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
@@ -39,6 +39,7 @@ export class UserSettingsController {
   // business infos
   @Get('business-info')
   @Roles('USER', 'ADMIN')
+  @ApiResponse({ status: 200, description: 'Business info retrieved successfully' })
   getBusinessInfo(@User() user: jwtPayload) {
     return this.settingsService.getBusinessInfo(user.sub);
   }
@@ -46,6 +47,8 @@ export class UserSettingsController {
   @Patch('update-business-info')
   @Roles('USER', 'ADMIN')
   @UsePipes(new ValidationPipe({ transform: true }))
+  @ApiResponse({ status: 200, description: 'Business info updated successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid business info data' })
   async updateBusinessInfo(
     @Body() dto: BusinessInfoDto,
     @User() user: jwtPayload,
@@ -59,6 +62,8 @@ export class UserSettingsController {
   @UseInterceptors(FileInterceptor('logo'))
   @ApiConsumes('multipart/form-data')
   @ApiBody({ type: UpdateLogoDto })
+  @ApiResponse({ status: 200, description: 'Business logo updated successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid logo file' })
   updateBusinessLogo(
     @User() user: jwtPayload,
     @UploadedFile() logo: Express.Multer.File,
@@ -68,6 +73,7 @@ export class UserSettingsController {
 
   @Patch('remove-business-logo')
   @Roles('USER', 'ADMIN')
+  @ApiResponse({ status: 200, description: 'Business logo removed successfully' })
   removeBusinessLogo(@User() user: jwtPayload) {
     return this.settingsService.removeBusinessLogo(user.sub);
   }
@@ -76,6 +82,8 @@ export class UserSettingsController {
   @Post('create-payment-method')
   @Roles('USER', 'ADMIN')
   @UsePipes(new ValidationPipe({ transform: true }))
+  @ApiResponse({ status: 201, description: 'Payment method created successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid payment method data' })
   createPaymentMethod(
     @Body() dto: CreatePaymentMethodDto,
     @User() user: jwtPayload,
@@ -91,6 +99,8 @@ export class UserSettingsController {
   @Patch('update-payment-method/:id')
   @Roles('USER', 'ADMIN')
   @UsePipes(new ValidationPipe({ transform: true }))
+  @ApiResponse({ status: 200, description: 'Payment method updated successfully' })
+  @ApiResponse({ status: 404, description: 'Payment method not found' })
   updatePaymentMethod(
     @Param('id') id: string,
     @Body() dto: UpdatePaymentMethodDto,
@@ -100,6 +110,7 @@ export class UserSettingsController {
 
   @Get('payment-methods')
   @Roles('USER', 'ADMIN')
+  @ApiResponse({ status: 200, description: 'Payment methods retrieved successfully' })
   getPaymentMethods(@User() user: jwtPayload) {
     return this.paymentMethodService.getPaymentMethods(user.sub);
   }
@@ -118,6 +129,8 @@ export class UserSettingsController {
     },
   })
   @UsePipes(new ValidationPipe({ transform: true }))
+  @ApiResponse({ status: 200, description: 'Payment method set as default successfully' })
+  @ApiResponse({ status: 404, description: 'Payment method not found' })
   makePaymentDefault(
     @Param('id') id: string,
     @User() user: jwtPayload,
@@ -136,6 +149,8 @@ export class UserSettingsController {
   @Delete('delete-payment-method')
   @Roles('USER', 'ADMIN')
   @UsePipes(new ValidationPipe({ transform: true }))
+  @ApiResponse({ status: 204, description: 'Payment method deleted successfully' })
+  @ApiResponse({ status: 404, description: 'Payment method not found' })
   deletePaymentMethods(
     @User() user: jwtPayload,
     @Param('paymentMethodId') dto: { paymentMethodId: string },
@@ -149,6 +164,7 @@ export class UserSettingsController {
   //invoice layout
   @Get('invoice-layout')
   @Roles('USER', 'ADMIN')
+  @ApiResponse({ status: 200, description: 'Invoice layout retrieved successfully' })
   getInvoiceLayout(@User() user: jwtPayload) {
     return this.invoiceLayoutService.findByUser(user.sub);
   }
@@ -156,6 +172,8 @@ export class UserSettingsController {
   @Patch('update-invoice-layout')
   @Roles('USER', 'ADMIN')
   @UsePipes(new ValidationPipe({ transform: true }))
+  @ApiResponse({ status: 200, description: 'Invoice layout updated successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid layout data' })
   invoiceLayout(@Body() dto: InvoiceLayoutDto, @User() user: jwtPayload) {
     return this.invoiceLayoutService.updateLayout(user.sub, dto);
   }
@@ -163,6 +181,7 @@ export class UserSettingsController {
   // notification settings
   @Get('notification-settings')
   @Roles('USER', 'ADMIN')
+  @ApiResponse({ status: 200, description: 'Notification settings retrieved successfully' })
   getNotificationSettings(@User() user: jwtPayload) {
     return this.notificationService.getPreferences(user.sub);
   }
@@ -170,6 +189,8 @@ export class UserSettingsController {
   @Patch('update-notification-settings')
   @Roles('USER', 'ADMIN')
   @UsePipes(new ValidationPipe({ transform: true }))
+  @ApiResponse({ status: 200, description: 'Notification settings updated successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid notification settings' })
   updateNotificationSettings(
     @User() user: jwtPayload,
     @Body() dto: UpdateNotificationSettingsDto,

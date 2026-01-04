@@ -29,7 +29,7 @@ import { jwtPayload } from './types/jwt-payload';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { Roles } from './decorators/roles.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes, ApiParam } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiParam, ApiResponse } from '@nestjs/swagger';
 import {
   UpdateProfileDto,
   UpdateProfilePicDto,
@@ -46,6 +46,8 @@ export class AuthController {
   ) {}
 
   @HttpCode(201)
+  @ApiResponse({ status: 201, description: 'User registered successfully' })
+  @ApiResponse({ status: 400, description: 'Validation failed or email exists' })
   @Public()
   @Post('registration')
   create(@Body(new ValidationPipe()) createAuthDto: CreateAuthDto) {
@@ -53,13 +55,18 @@ export class AuthController {
   }
 
   @HttpCode(200)
+  @ApiResponse({ status: 200, description: 'Login successful' })
+  @ApiResponse({ status: 401, description: 'Invalid credentials' })
   @Post('login')
   @Public()
   @UsePipes(new ValidationPipe())
   login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }
+  
   @HttpCode(200)
+  @ApiResponse({ status: 200, description: '2FA verification successful' })
+  @ApiResponse({ status: 400, description: 'Invalid 2FA code' })
   @Post('verifyLogin')
   @Public()
   @UsePipes(new ValidationPipe())
@@ -67,6 +74,9 @@ export class AuthController {
     return this.authService.verifyLogin2FA(verify);
   }
 
+  @HttpCode(200)
+  @ApiResponse({ status: 200, description: 'Password updated successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid old password' })
   @Patch('update-password')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
   @UsePipes(new ValidationPipe())
@@ -78,12 +88,18 @@ export class AuthController {
     );
   }
 
+  @HttpCode(204)
+  @ApiResponse({ status: 204, description: 'Account deleted successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   @Delete('delete-account')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
   deleteAccount(@User() user: jwtPayload) {
     return this.authService.deleteAccount(user.sub);
   }
 
+  @HttpCode(200)
+  @ApiResponse({ status: 200, description: 'Profile picture updated successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid file format or too large' })
   @Patch('update-profile-pic')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
   @UsePipes(new ValidationPipe())
@@ -97,12 +113,18 @@ export class AuthController {
     return this.authService.updateProfilepic(profilePic, user.sub);
   }
 
+  @HttpCode(200)
+  @ApiResponse({ status: 200, description: 'Profile picture removed successfully' })
+  @ApiResponse({ status: 404, description: 'No profile picture found' })
   @Patch('remove-profile-pic')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
   removeProfilePic(@User() user: jwtPayload) {
     return this.authService.removeProfilePic(user.sub);
   }
 
+  @HttpCode(200)
+  @ApiResponse({ status: 200, description: 'Profile updated successfully' })
+  @ApiResponse({ status: 400, description: 'Validation failed' })
   @Patch('update-profile')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
   @UsePipes(new ValidationPipe())
@@ -110,6 +132,9 @@ export class AuthController {
     return this.authService.updateProfile(user.sub, data);
   }
 
+  @HttpCode(200)
+  @ApiResponse({ status: 200, description: 'Profile retrieved successfully' })
+  @ApiResponse({ status: 404, description: 'Profile not found' })
   @Get('profile')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
   getProfile(@User() user: jwtPayload) {
@@ -122,6 +147,8 @@ export class AuthController {
   // }
 
   @HttpCode(200)
+  @ApiResponse({ status: 200, description: 'Forget password code sent' })
+  @ApiResponse({ status: 404, description: 'Email not found' })
   @Post('send-forget-password-code')
   @Public()
   forgetPassword(@Body(new ValidationPipe()) dto: ForgetPassDto) {
@@ -129,6 +156,8 @@ export class AuthController {
   }
 
   @HttpCode(200)
+  @ApiResponse({ status: 200, description: 'Code verified successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid or expired code' })
   @Post('verify-forget-password-code')
   @Public()
   verifyForgetPassword(@Body(new ValidationPipe()) data: ValidateForgetPass) {
@@ -136,6 +165,8 @@ export class AuthController {
   }
 
   @HttpCode(200)
+  @ApiResponse({ status: 200, description: 'Password changed successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid or expired token' })
   @Post('change-password/:crypto')
   @Public()
   @ApiParam({
@@ -152,24 +183,36 @@ export class AuthController {
 
   // 2fa features
 
+  @HttpCode(200)
+  @ApiResponse({ status: 200, description: '2FA code sent successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid request data' })
   @Post('2fa/enable')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
   enable2FA(@User() user: jwtPayload, @Body() dto: EnableTwoFADto) {
     return this.twoFAService.sendTwoFACode(user.sub, dto);
   }
 
+  @HttpCode(200)
+  @ApiResponse({ status: 200, description: '2FA enabled successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid 2FA code' })
   @Post('2fa/verify')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
   verify2FA(@User() user: jwtPayload, @Body() dto: VerifyTwoFADto) {
     return this.twoFAService.verifyAndEnableTwoFA(user.sub, dto);
   }
 
+  @HttpCode(200)
+  @ApiResponse({ status: 200, description: '2FA disable code sent successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid request data' })
   @Post('2fa/disable')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
   disable2FA(@User() user: jwtPayload, @Body() dto: EnableTwoFADto) {
     return this.twoFAService.sendDisableTwoFACode(user.sub, dto);
   }
 
+  @HttpCode(200)
+  @ApiResponse({ status: 200, description: '2FA disabled successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid 2FA code' })
   @Post('2fa/disable-verify')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
   verifyDisable2FA(@User() user: jwtPayload, @Body() dto: VerifyTwoFADto) {

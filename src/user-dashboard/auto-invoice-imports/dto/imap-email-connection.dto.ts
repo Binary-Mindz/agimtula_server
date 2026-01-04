@@ -109,6 +109,8 @@ export class ImapTest {
     description: 'I-map server name of the user',
     example: 'imap.gmail.com',
   })
+  @IsNotEmpty({ message: 'Host should not be empty' })
+  @IsString({ message: 'Invalid host format' })
   host: string;
 
   @ApiProperty({
@@ -117,6 +119,8 @@ export class ImapTest {
     description: 'I-map port of the user',
     example: 993,
   })
+  @IsNotEmpty({ message: 'Port should not be empty' })
+  @IsNumber({}, { message: 'Invalid port format' })
   port: number;
 
   @ApiProperty({
@@ -125,6 +129,9 @@ export class ImapTest {
     description: 'I-map user name of the user',
     example: 'uforcode123@gmail.com',
   })
+  @IsNotEmpty({ message: 'Username should not be empty' })
+  @IsString({ message: 'Invalid username format' })
+  @IsEmail({}, { message: 'Invalid username email format' })
   username: string;
 
   @ApiProperty({
@@ -133,5 +140,7 @@ export class ImapTest {
     description: 'I-map app password of the user',
     example: 'eoxt djqk wqtf banr',
   })
+  @IsNotEmpty({ message: 'Password should not be empty' })
+  @IsString({ message: 'Invalid password format' })
   password: string;
 }

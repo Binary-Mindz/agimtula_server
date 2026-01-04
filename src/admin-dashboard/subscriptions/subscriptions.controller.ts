@@ -13,7 +13,6 @@ import { CreateSubscriptionPlanDto } from './dto/create-subscription.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { InvoiceAutoSyncDto } from './dto/invoiceAutoSyncDto';
 import { InvoiceAutoSyncIntervalService } from './invoiceAutoSyncInterval.service';
-import { Public } from 'src/auth/decorators/public.decorator';
 import { urlPrefix } from '../url-prefix';
 
 @Controller(`${urlPrefix}/subscriptions`)
@@ -23,8 +22,8 @@ export class AdminSubscriptionsController {
     private readonly invoiceAutoSyncIntervalService: InvoiceAutoSyncIntervalService,
   ) {}
 
-  @Public()
   @Get()
+  @Roles('ADMIN')
   subscriptionsDashboard() {
     return this.subscriptionsService.subscriptionsDashboardGraph();
   }
@@ -37,13 +36,13 @@ export class AdminSubscriptionsController {
   }
 
   @Get('plans')
-  @Roles('ADMIN', 'USER', 'ACCOUNTANT')
+  @Roles('ADMIN', 'USER')
   getSubscriptionPlans() {
     return this.subscriptionsService.getSubscriptionPlans();
   }
 
   @Get('plans/:id')
-  @Roles('ADMIN', 'USER', 'ACCOUNTANT')
+  @Roles('ADMIN', 'USER')
   getSubscriptionPlanById(@Param('id') id: string) {
     return this.subscriptionsService.getSubscriptionPlan(id);
   }

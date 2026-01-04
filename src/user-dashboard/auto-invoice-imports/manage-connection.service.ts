@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { ImapEmailConnectionDto } from './dto/imap-email-connection.dto';
 import { cResponseData } from 'src/common/cResponse';
@@ -64,13 +64,14 @@ export class ManageConnectionService {
         },
       });
 
-    if (!imapConfiguration)
+    if (!imapConfiguration) {
       return cResponseData({
-        message: 'You have no Imap Configuration',
+        message: 'No IMAP configuration found',
         data: {
           syncFrequency: await this.getInvoiceTimeSyncData(userId),
         },
       });
+    }
 
     const { realtimeImapCheckingId, ...plan } = imapConfiguration;
     const syncFrequency = await this.getInvoiceTimeSyncData(
@@ -79,8 +80,7 @@ export class ManageConnectionService {
     );
 
     return cResponseData({
-      message:
-        'Connection successful! Your email is now connected and syncing.',
+      message: 'IMAP configuration retrieved successfully',
       data: { ...plan, syncFrequency },
     });
   }
@@ -100,22 +100,12 @@ export class ManageConnectionService {
     });
 
     if (!subscription) {
-      throw new HttpException(
-        cResponseData({
-          message: 'You have no subscription plan',
-        }),
-        400,
-      );
+      throw new BadRequestException('Active subscription required');
     }
 
     const isExpired = subscription.expiredAt < new Date(Date.now());
     if (isExpired) {
-      throw new HttpException(
-        cResponseData({
-          message: 'Your subscription plan is expired',
-        }),
-        400,
-      );
+      throw new BadRequestException('Subscription expired');
     }
 
     const imapConnectService = {};
@@ -165,15 +155,13 @@ export class ManageConnectionService {
         },
       });
       return cResponseData({
-        message:
-          'Connection successful! Your email is now connected and syncing.',
+        message: 'IMAP configuration updated successfully',
         data: cUp,
       });
     }
 
     return cResponseData({
-      message:
-        'Connection successful! Your email is now connected and syncing.',
+      message: 'IMAP configuration saved successfully',
       data: c,
     });
   }
@@ -191,7 +179,7 @@ export class ManageConnectionService {
       },
     });
     return cResponseData({
-      message: 'Imap Disconnected',
+      message: 'IMAP disconnected successfully',
       data: disconnect,
     });
   }

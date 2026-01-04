@@ -19,6 +19,7 @@ import { BankTransactionModule } from './user-dashboard/bank-transaction/transac
 import { BankDataModule } from './admin-dashboard/bank-data/bank-data.module';
 import { QuotationsModule } from './quotations/quotations.module';
 import { WebhookController } from './webhook/webhook.controller';
+import { PaymentsModule } from './admin-dashboard/payments/payments.module';
 
 
 @Module({
@@ -39,6 +40,7 @@ import { WebhookController } from './webhook/webhook.controller';
     BankTransactionModule,
     BankDataModule,
     QuotationsModule,
+    PaymentsModule,
     // PaymentsModule
   ],
   controllers: [AppController, WebhookController],

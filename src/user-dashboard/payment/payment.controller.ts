@@ -1,11 +1,11 @@
 import {
   Controller,
-  Get,
+  // Get,
   Post,
   Body,
   // Patch,
   Param,
-  Delete,
+  // Delete,
 } from '@nestjs/common';
 import { PaymentService } from './payment.service';
 // import { CreatePaymentDto } from './dto/create-payment.dto';
@@ -47,28 +47,28 @@ export class UserPaymentController {
     return this.paymentService.buyPlan(user.sub, id, billingPeriod, user);
   }
 
-  @Get()
-  @ApiResponse({ status: 200, description: 'Payments retrieved successfully' })
-  findAll() {
-    return this.paymentService.findAll();
-  }
+  // @Get()
+  // @ApiResponse({ status: 200, description: 'Payments retrieved successfully' })
+  // findAll() {
+  //   return this.paymentService.findAll();
+  // }
 
-  @Get(':id')
-  @ApiResponse({ status: 200, description: 'Payment retrieved successfully' })
-  @ApiResponse({ status: 404, description: 'Payment not found' })
-  findOne(@Param('id') id: string) {
-    return this.paymentService.findOne(+id);
-  }
+  // @Get(':id')
+  // @ApiResponse({ status: 200, description: 'Payment retrieved successfully' })
+  // @ApiResponse({ status: 404, description: 'Payment not found' })
+  // findOne(@Param('id') id: string) {
+  //   return this.paymentService.findOne(+id);
+  // }
 
   // @Patch(':id')
   // update(@Param('id') id: string, @Body() updatePaymentDto: UpdatePaymentDto) {
   //   return this.paymentService.update(+id, updatePaymentDto);
   // }
 
-  @Delete(':id')
-  @ApiResponse({ status: 204, description: 'Payment deleted successfully' })
-  @ApiResponse({ status: 404, description: 'Payment not found' })
-  remove(@Param('id') id: string) {
-    return this.paymentService.remove(+id);
-  }
+  // @Delete(':id')
+  // @ApiResponse({ status: 204, description: 'Payment deleted successfully' })
+  // @ApiResponse({ status: 404, description: 'Payment not found' })
+  // remove(@Param('id') id: string) {
+  //   return this.paymentService.remove(+id);
+  // }
 }

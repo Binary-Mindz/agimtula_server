@@ -33,58 +33,65 @@ export class WebhookController {
     console.log('Webhook event received:', event.type);
 
     if (event.type === 'checkout.session.completed') {
-      const session = event.data.object as Stripe.Checkout.Session;
-      console.log('Session completed:', session.id);
+      try {
+        const session = event.data.object as Stripe.Checkout.Session;
+        console.log('Session completed:', session.id);
 
-      const historyId = session.metadata?.historyId;
-      if (!historyId) {
-        console.error('No historyId in metadata');
-        return res.json({ received: true, error: 'No historyId' });
+        const historyId = session.metadata?.historyId;
+        if (!historyId) {
+          console.error('No historyId in metadata');
+          return res.json({ received: true, error: 'No historyId' });
+        }
+
+        await this.prisma.subscriptionPlanPaymentStatus.updateMany({
+          where: { stripeSessionId: session.id },
+          data: {
+            paymentStatus: 'PAID',
+            stripeSubscriptionId: session.subscription as string,
+            stripeCustomerId: session.customer as string,
+          },
+        });
+
+        const history =
+          await this.prisma.userSubscriptionPlanHistory.findUnique({
+            where: { id: historyId },
+            include: {
+              subscriptionPlanPaymentStatus: true,
+            },
+          });
+
+        if (!history || !history.subscriptionPlanPaymentStatus?.id) {
+          console.error('History or payment status not found');
+          return res.json({ received: true, error: 'History not found' });
+        }
+
+        // Calculate expiration date
+        const expirationDate = new Date();
+        if (history.billingPeriod === 'MONTHLY') {
+          expirationDate.setMonth(expirationDate.getMonth() + 1);
+        } else {
+          expirationDate.setFullYear(expirationDate.getFullYear() + 1);
+        }
+
+        await this.prisma.userSubscriptionPlan.create({
+          data: {
+            UserId: history.UserId,
+            planName: history.planName,
+            price: history.price,
+            setupFee: history.setupFee,
+            isLimitedInvoicePerMonth: history.isLimitedInvoicePerMonth,
+            perMonthInvoiceCount: history.perMonthInvoiceCount,
+            expiredAt: expirationDate,
+            isActive: true,
+            subscriptionPlanPaymentStatusId:
+              history.subscriptionPlanPaymentStatus.id,
+          },
+        });
+
+        console.log('Subscription created for user:', history.UserId);
+      } catch (error) {
+        console.log(error);
       }
-
-      await this.prisma.subscriptionPlanPaymentStatus.updateMany({
-        where: { stripeSessionId: session.id },
-        data: {
-          paymentStatus: 'PAID',
-          stripeSubscriptionId: session.subscription as string,
-          stripeCustomerId: session.customer as string,
-        },
-      });
-
-      const history = await this.prisma.userSubscriptionPlanHistory.findUnique({
-        where: { id: historyId },
-        include: {
-          subscriptionPlanPaymentStatus: true,
-        },
-      });
-
-      if (!history || !history.subscriptionPlanPaymentStatus?.id) {
-        console.error('History or payment status not found');
-        return res.json({ received: true, error: 'History not found' });
-      }
-
-      // Calculate expiration date
-      const expirationDate = new Date();
-      if (history.billingPeriod === 'MONTHLY') {
-        expirationDate.setMonth(expirationDate.getMonth() + 1);
-      } else {
-        expirationDate.setFullYear(expirationDate.getFullYear() + 1);
-      }
-
-      await this.prisma.userSubscriptionPlan.create({
-        data: {
-          UserId: history.UserId,
-          planName: history.planName,
-          price: history.price,
-          setupFee: history.setupFee,
-          isLimitedInvoicePerMonth: history.isLimitedInvoicePerMonth,
-          perMonthInvoiceCount: history.perMonthInvoiceCount,
-          expiredAt: expirationDate,
-          subscriptionPlanPaymentStatusId: history.subscriptionPlanPaymentStatus.id,
-        },
-      });
-
-      console.log('Subscription created for user:', history.UserId);
     }
 
     res.json({ received: true });

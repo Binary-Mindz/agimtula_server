@@ -14,7 +14,7 @@ export class AppService {
     return users;
   }
 
-  async createUser() {
+  createUser() {
     return '';
   }
 }

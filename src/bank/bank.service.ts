@@ -144,6 +144,7 @@ export class BankService {
       const state = crypto.randomBytes(16).toString('hex');
       const consentUrl = `https://link.tink.com/1.0/account-check/?client_id=${encodeURIComponent(
         this.clientId,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       )}&redirect_uri=${encodeURIComponent(`${this.redirectUri}?code=${encodeURIComponent(grantCode)}`)}&code=${encodeURIComponent(grantCode)}&market=NL&locale=nl_NL&state=${encodeURIComponent(
         state,
       )}`;
@@ -187,6 +188,7 @@ export class BankService {
       });
       console.log(res);
       // res.data likely contains an array or object with accounts; inspect in dev
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       return cResponseData(res.data);
     } catch (err: any) {
       this.logger.error(

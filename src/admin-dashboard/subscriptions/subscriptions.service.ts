@@ -128,12 +128,13 @@ export class SubscriptionsService {
       }));
 
       return cResponseData({
-        message: 'Subscription plan purchased successfully',
+        message: 'Subscription plan dashboard data fetched successfully',
         data: { graphCal, totalRevenueGraph, subscriptionPlans },
       });
     } catch (error) {
       return cResponseData({
         message: 'Failed to get subscription dashboard data',
+        error: 'Failed to get subscription dashboard data',
       });
     }
   }
@@ -172,6 +173,7 @@ export class SubscriptionsService {
     } catch (error) {
       return cResponseData({
         message: 'Failed to create subscription plan',
+        error: 'Failed to create subscription plan',
       });
     }
   }
@@ -237,6 +239,7 @@ export class SubscriptionsService {
     } catch (error) {
       return cResponseData({
         message: 'Failed to get subscription plans',
+        error: 'Failed to get subscription plans',
       });
     }
   }
@@ -280,6 +283,7 @@ export class SubscriptionsService {
     } catch (error) {
       return cResponseData({
         message: 'Failed to get subscription plan',
+        error: 'Failed to get subscription plan',
       });
     }
   }
@@ -299,6 +303,7 @@ export class SubscriptionsService {
     } catch (error) {
       return cResponseData({
         message: 'Failed to delete subscription plan',
+        error: 'Failed to delete subscription plan',
       });
     }
   }

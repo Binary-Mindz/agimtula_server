@@ -7,66 +7,74 @@ export class ReportsService {
   constructor(private prisma: PrismaService) {}
 
   async getReportData(userId: string) {
-    const sixMonthsAgo = new Date(
-      new Date().getFullYear(),
-      new Date().getMonth() - 5,
-      1,
-    );
-
-    const [totalReceipt, totalMileage, receipt, mileage] = await Promise.all([
-      this.prisma.receipt.aggregate({
-        where: { userId },
-        _sum: { amount: true },
-      }),
-      this.prisma.mileage.aggregate({
-        where: { userId },
-        _sum: { amount: true },
-      }),
-      this.prisma.receipt.findMany({
-        where: { userId, date: { gte: sixMonthsAgo } },
-        select: { amount: true, date: true },
-      }),
-      this.prisma.mileage.findMany({
-        where: {
-          userId,
-          date: { gte: sixMonthsAgo },
-        },
-        select: { amount: true, date: true },
-      }),
-    ]);
-
-    console.log(receipt, mileage);
-
-    const all = [...receipt, ...mileage];
-
-    const monthlySummary: { month: string; total: number }[] = [];
-
-    for (const item of all) {
-      const year = item.date.getFullYear();
-      const month = item.date.getMonth() + 1;
-      const monthYear = `${year}-${month}`;
-
-      const existingEntry = monthlySummary.find(
-        (entry) => entry.month === monthYear,
+    try {
+      const sixMonthsAgo = new Date(
+        new Date().getFullYear(),
+        new Date().getMonth() - 5,
+        1,
       );
 
-      if (existingEntry) {
-        existingEntry.total += item.amount;
-      } else {
-        monthlySummary.push({
-          month: monthYear,
-          total: item.amount,
-        });
-      }
-    }
+      const [totalReceipt, totalMileage, receipt, mileage] = await Promise.all([
+        this.prisma.receipt.aggregate({
+          where: { userId },
+          _sum: { amount: true },
+        }),
+        this.prisma.mileage.aggregate({
+          where: { userId },
+          _sum: { amount: true },
+        }),
+        this.prisma.receipt.findMany({
+          where: { userId, date: { gte: sixMonthsAgo } },
+          select: { amount: true, date: true },
+        }),
+        this.prisma.mileage.findMany({
+          where: {
+            userId,
+            date: { gte: sixMonthsAgo },
+          },
+          select: { amount: true, date: true },
+        }),
+      ]);
 
-    return cResponseData({
-      message: 'Retrived reports data',
-      data: {
-        totalReceipt: totalReceipt._sum.amount || 0,
-        totalMileage: totalMileage._sum.amount || 0,
-        monthlySummary,
-      },
-    });
+      console.log(receipt, mileage);
+
+      const all = [...receipt, ...mileage];
+
+      const monthlySummary: { month: string; total: number }[] = [];
+
+      for (const item of all) {
+        const year = item.date.getFullYear();
+        const month = item.date.getMonth() + 1;
+        const monthYear = `${year}-${month}`;
+
+        const existingEntry = monthlySummary.find(
+          (entry) => entry.month === monthYear,
+        );
+
+        if (existingEntry) {
+          existingEntry.total += item.amount;
+        } else {
+          monthlySummary.push({
+            month: monthYear,
+            total: item.amount,
+          });
+        }
+      }
+
+      return cResponseData({
+        message: 'Retrived reports data',
+        data: {
+          totalReceipt: totalReceipt._sum.amount || 0,
+          totalMileage: totalMileage._sum.amount || 0,
+          monthlySummary,
+        },
+      });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      return cResponseData({
+        message: 'Failed to retrive reports data',
+        error: 'Failed to retrive reports data',
+      });
+    }
   }
 }

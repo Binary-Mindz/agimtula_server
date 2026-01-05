@@ -114,9 +114,12 @@ export class PaymentService {
         checkoutUrl: session.url,
         data: session.url,
       });
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      throw new BadRequestException('Payment processing failed');
+      return cResponseData({
+        message: 'Failed to create checkout session',
+        error: 'Failed to create checkout session',
+      });
     }
   }
 

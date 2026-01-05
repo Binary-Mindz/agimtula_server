@@ -32,7 +32,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
   constructor(
     private schedulerRegistry: SchedulerRegistry,
     private prisma: PrismaService, // Your DB service
-  ) { }
+  ) {}
 
   private async imapClient({ host, port, username, password }: ImapClient) {
     return await imaps.connect({
@@ -118,7 +118,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
       const connection = await this.imapClient(clint);
       await connection.openBox('INBOX');
       connection.end();
-      
+
       response
         .send(
           cResponseData({
@@ -202,8 +202,9 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
           const body = parsed.text || parsed.html || '';
 
           const attachments: string[] =
-            parsed.attachments?.map((att) => att.filename).filter((f): f is string => !!f) ||
-            [];
+            parsed.attachments
+              ?.map((att) => att.filename)
+              .filter((f): f is string => !!f) || [];
 
           const transaction = this.extractInvoiceData(
             body,
@@ -216,7 +217,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
 
       connection.end();
       return allTransactions;
-    // amazonq-ignore-next-line
+      // amazonq-ignore-next-line
     } catch (err: any) {
       console.error('Failed to read email transactions:', err.message);
       throw new Error(err.message);

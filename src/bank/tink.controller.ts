@@ -106,7 +106,7 @@ export class TinkController {
       const accessToken = tokenData.access_token;
 
       const transactions = await this.tinkService.getTransactions(accessToken);
-
+      console.table(transactions)
       // Store in database
       await this.transactionService.storeTransactions(transactions);
 

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-redundant-type-constituents */
+
 import { Controller, Get, Query, Post, Body, HttpStatus } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { TinkService } from './tink.service';
@@ -100,13 +101,12 @@ export class TinkController {
     }
 
     try {
-      // 1️⃣ Exchange code for access token
+
       const tokenData = await this.tinkService.exchangeToken(code);
       const accessToken = tokenData.access_token;
 
-      // 2️⃣ Fetch transactions
       const transactions = await this.tinkService.getTransactions(accessToken);
-
+      console.table(transactions)
       // Store in database
       await this.transactionService.storeTransactions(transactions);
 
@@ -118,7 +118,7 @@ export class TinkController {
 
       transactions.forEach((trx, idx) => {
         console.log(`[${idx + 1}] ${trx.description}`);
-        console.log(`    ${trx.amount} ${trx.currency} - ${trx.date}\n`);
+        console.log(`${trx.amount} ${trx.currency} - ${trx.date}\n`);
       });
 
       console.log('==============================\n');
@@ -252,6 +252,7 @@ export class TinkController {
       };
     }
   }
+
 }
 
 

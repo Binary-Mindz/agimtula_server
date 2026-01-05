@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateQuotationDto } from './dto/create-quotation.dto';
 import { UpdateQuotationDto } from './dto/update-quotation.dto';
@@ -7,11 +8,8 @@ import { QueryQuotationDto } from './dto/QueryQuotationDto';
 
 @Injectable()
 export class QuotationsService {
-  constructor(
-    private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
   async create(createQuotationDto: CreateQuotationDto, userId: string) {
-
-
     try {
       const quotation = await this.prisma.quotation.create({
         data: {
@@ -26,13 +24,11 @@ export class QuotationsService {
       });
       return cResponseData({ data: quotation });
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Unknown error';
-      return new Error(`Failed to create quotation: ${message}`);
+      return new Error(`Failed to create quotation`);
     }
   }
 
   async findAll(query: QueryQuotationDto) {
-
     try {
       const data = await this.prisma.quotation.findMany({
         where: {
@@ -62,15 +58,12 @@ export class QuotationsService {
 
       return cResponseData({ data });
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Unknown error';
-      console.log(message);
-      throw new Error(`Failed to fetch quotations: ${message}`);
+      throw new Error(`Failed to fetch quotations`);
     }
   }
 
   async findOne(id: number) {
     try {
-
       const data = await this.prisma.quotation.findUnique({
         where: { id },
       });
@@ -79,9 +72,7 @@ export class QuotationsService {
       }
       return cResponseData({ data });
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Unknown error';
-      console.log(message);
-      throw new Error(`Failed to fetch quotation: ${message}`);
+      throw new Error(`Failed to fetch quotation`);
     }
   }
 
@@ -101,7 +92,9 @@ export class QuotationsService {
           clientName: updateQuotationDto.clientName,
           clientEmail: updateQuotationDto.clientEmail,
           clientPhone: updateQuotationDto.clientPhone,
-          ...(updateQuotationDto.date && { date: new Date(updateQuotationDto.date) }),
+          ...(updateQuotationDto.date && {
+            date: new Date(updateQuotationDto.date),
+          }),
           amount: updateQuotationDto.amount,
           status: updateQuotationDto.status,
         },
@@ -109,14 +102,9 @@ export class QuotationsService {
 
       return cResponseData({ data: updatedQuotation });
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Unknown error';
-      console.log(message);
-      throw new Error(`Failed to update quotation: ${message}`);
+      throw new Error(`Failed to update quotation`);
     }
   }
-
-
-
 
   async remove(id: number) {
     try {
@@ -132,9 +120,7 @@ export class QuotationsService {
       });
       return cResponseData({ data: quotationExists });
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Unknown error';
-      console.log(message);
-      throw new Error(`${message}`);
+      throw new Error(`Quotation deletion failed`);
     }
   }
 }

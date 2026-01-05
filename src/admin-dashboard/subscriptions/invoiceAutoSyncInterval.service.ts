@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { InvoiceAutoSyncDto } from './dto/invoiceAutoSyncDto';
@@ -49,7 +50,9 @@ export class InvoiceAutoSyncIntervalService {
         invoiceAutoSyncInterval,
       });
     } catch (error) {
-      return cResponseData({ message: error.message as string, error: error });
+      return cResponseData({
+        message: 'Invoice auto sync deletion failed' as string,
+      });
     }
   }
 }

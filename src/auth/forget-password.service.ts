@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   ForbiddenException,
   Injectable,
@@ -102,7 +103,7 @@ export class ForgetPasswordService {
       });
     } catch (error) {
       return cResponseData({
-        message: error.message || 'Failed to send forget password code',
+        message:'Failed to send forget password code',
       });
     }
   }
@@ -178,7 +179,7 @@ export class ForgetPasswordService {
       });
     } catch (error) {
       return cResponseData({
-        message: error.message || 'Failed to change password',
+        message:  'Failed to change password',
       });
     }
   }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { CreateSubscriptionPlanDto } from './dto/create-subscription.dto';
 import { Injectable } from '@nestjs/common';
@@ -132,7 +133,7 @@ export class SubscriptionsService {
       });
     } catch (error) {
       return cResponseData({
-        message: error.message || 'Failed to get subscription dashboard data',
+        message: 'Failed to get subscription dashboard data',
       });
     }
   }
@@ -170,7 +171,7 @@ export class SubscriptionsService {
       });
     } catch (error) {
       return cResponseData({
-        message: error.message || 'Failed to create subscription plan',
+        message: 'Failed to create subscription plan',
       });
     }
   }
@@ -235,7 +236,7 @@ export class SubscriptionsService {
       });
     } catch (error) {
       return cResponseData({
-        message: error.message || 'Failed to get subscription plans',
+        message: 'Failed to get subscription plans',
       });
     }
   }
@@ -278,7 +279,7 @@ export class SubscriptionsService {
       });
     } catch (error) {
       return cResponseData({
-        message: error.message || 'Failed to get subscription plan',
+        message: 'Failed to get subscription plan',
       });
     }
   }
@@ -297,7 +298,7 @@ export class SubscriptionsService {
       });
     } catch (error) {
       return cResponseData({
-        message: error.message || 'Failed to delete subscription plan',
+        message: 'Failed to delete subscription plan',
       });
     }
   }

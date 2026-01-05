@@ -53,7 +53,7 @@ export class AccountantRequestsService {
       });
     } catch (error) {
       console.error('Database error:', error);
-      throw new Error(`Failed to approve accountant request: ${error.message}`);
+      throw new Error(`Failed to approve accountant request`);
     }
   }
 
@@ -74,7 +74,7 @@ export class AccountantRequestsService {
       });
     } catch (error) {
       console.error('Database error:', error);
-      throw new Error(`Failed to reject accountant request: ${error.message}`);
+      throw new Error(`Failed to reject accountant request`);
     }
   }
 }

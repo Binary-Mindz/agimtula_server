@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { SmtpMailService } from 'src/config/smtp-mail/smtp-mail.service';
@@ -93,7 +94,7 @@ export class TwoFAService {
       });
     } catch (error) {
       return cResponseData({
-        message: error.message || 'Failed to send 2FA code',
+        message: 'Failed to send 2FA code',
       });
     }
   }
@@ -133,7 +134,7 @@ export class TwoFAService {
       });
     } catch (error) {
       return cResponseData({
-        message: error.message || 'Failed to enable 2FA',
+        message: 'Failed to enable 2FA',
       });
     }
   }
@@ -176,7 +177,7 @@ export class TwoFAService {
       });
     } catch (error) {
       return cResponseData({
-        message: error.message || 'Failed to send disable 2FA code',
+        message:'Failed to send disable 2FA code',
       });
     }
   }
@@ -205,7 +206,7 @@ export class TwoFAService {
       });
     } catch (error) {
       return cResponseData({
-        message: error.message || 'Failed to disable 2FA',
+        message: 'Failed to disable 2FA',
       });
     }
   }

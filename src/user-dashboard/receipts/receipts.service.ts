@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
 import { UploadReceiptDto } from './dto/upload-receipt.dto';
 import uploadToCloudinary from 'src/config/cloudinary/cloudinary';
@@ -26,7 +27,10 @@ export class ReceiptsService {
         data: rec,
       });
     } catch (error) {
-      return cResponseData({ message: error.message as string, error: error });
+      return cResponseData({
+        message: 'Receipt category creation failed',
+        error: 'Receipt category creation failed',
+      });
     }
   }
 
@@ -39,7 +43,10 @@ export class ReceiptsService {
         data: categories,
       });
     } catch (error) {
-      return cResponseData({ message: error.message as string, error: error });
+      return cResponseData({
+        message: 'Receipt categories retrieve failed',
+        error: 'Receipt categories retrieve failed',
+      });
     }
   }
 
@@ -53,7 +60,10 @@ export class ReceiptsService {
         data: category,
       });
     } catch (error) {
-      return cResponseData({ message: error.message as string, error: error });
+      return cResponseData({
+        message: 'Receipt categories delete failed',
+        error: 'Receipt categories delete failed',
+      });
     }
   }
 
@@ -92,7 +102,10 @@ export class ReceiptsService {
         data: rec,
       });
     } catch (error) {
-      return cResponseData({ message: error.message as string, error: error });
+      return cResponseData({
+        message: "Receipt categories update failed",
+        error: "Receipt categories update failed",
+      });
     }
   }
 
@@ -139,7 +152,10 @@ export class ReceiptsService {
         data: receipts,
       });
     } catch (error) {
-      return cResponseData({ message: error.message as string, error: error });
+      return cResponseData({
+        message: 'Receipt retrive failed',
+        error: 'Receipt retrive failed',
+      });
     }
   }
 
@@ -158,7 +174,10 @@ export class ReceiptsService {
       });
       return cResponseData({ message: 'Receipt updated successfully' });
     } catch (error) {
-      return cResponseData({ message: error.message as string, error: error });
+      return cResponseData({
+        message: 'Receipt update failed',
+        error: 'Receipt update failed',
+      });
     }
   }
 
@@ -169,7 +188,10 @@ export class ReceiptsService {
       });
       return cResponseData({ message: 'Receipt deleted successfully' });
     } catch (error) {
-      return cResponseData({ message: error.message as string, error: error });
+      return cResponseData({
+        message: 'Receipt delete failed',
+        error: 'Receipt delete failed',
+      });
     }
   }
 }

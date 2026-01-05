@@ -8,7 +8,7 @@ export default function uploadToCloudinary(
       { resource_type: 'auto' },
       (error, result) => {
         if (error) {
-          return reject(new Error(error.message || 'Cloudinary upload failed'));
+          return reject(new Error('Cloudinary upload failed'));
         }
         resolve(result);
       },

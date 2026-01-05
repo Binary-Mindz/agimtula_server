@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // import { Injectable } from '@nestjs/common';
 
 // @Injectable()
@@ -30,7 +31,7 @@
 //   }
 // }
 
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import axios from 'axios';
 import * as crypto from 'crypto';
 import { cResponseData } from 'src/common/cResponse';
@@ -151,10 +152,11 @@ export class BankService {
       return { userId, consentUrl, state, grantData };
     } catch (error: any) {
       this.logger.error(
-        '❌ Error creating Tink user or consent session:',
-        error.response?.data || error.message,
+        '❌ Error creating Tink user or consent session'
       );
-      throw error;
+      throw new BadRequestException(
+        'Error creating Tink user or consent session',
+      );
     }
   }
 

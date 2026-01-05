@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { HttpException, Injectable } from '@nestjs/common';
 import { CreateEmailTemplateDto } from './dto/create-email-template.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
@@ -43,7 +44,7 @@ export class SystemSettingsService {
       throw new HttpException(
         cResponseData({
           message: 'Failed to create email template',
-          error: error.message,
+
         }),
         400,
       );
@@ -66,7 +67,7 @@ export class SystemSettingsService {
     } catch (error) {
       return cResponseData({
         message: 'Failed to retrieve email templates',
-        error: error.message,
+
       });
     }
   }
@@ -92,7 +93,7 @@ export class SystemSettingsService {
       throw new HttpException(
         cResponseData({
           message: 'Failed to update email template',
-          error: error.message,
+
         }),
         400,
       );
@@ -112,7 +113,7 @@ export class SystemSettingsService {
       throw new HttpException(
         cResponseData({
           message: 'Failed to remove email template',
-          error: error.message,
+
         }),
         400,
       );
@@ -147,7 +148,7 @@ export class SystemSettingsService {
     } catch (error) {
       return cResponseData({
         message: 'Failed to send test email',
-        error: error.message,
+
       });
     }
   }

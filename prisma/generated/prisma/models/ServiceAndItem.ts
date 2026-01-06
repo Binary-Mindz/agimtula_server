@@ -199,7 +199,7 @@ export type ServiceAndItemGroupByOutputType = {
   qty: number
   rate: number
   totalAmount: number
-  invoiceId: string | null
+  invoiceId: string
   _count: ServiceAndItemCountAggregateOutputType | null
   _avg: ServiceAndItemAvgAggregateOutputType | null
   _sum: ServiceAndItemSumAggregateOutputType | null
@@ -231,8 +231,8 @@ export type ServiceAndItemWhereInput = {
   qty?: Prisma.IntFilter<"ServiceAndItem"> | number
   rate?: Prisma.FloatFilter<"ServiceAndItem"> | number
   totalAmount?: Prisma.FloatFilter<"ServiceAndItem"> | number
-  invoiceId?: Prisma.StringNullableFilter<"ServiceAndItem"> | string | null
-  invoice?: Prisma.XOR<Prisma.InvoiceNullableScalarRelationFilter, Prisma.InvoiceWhereInput> | null
+  invoiceId?: Prisma.StringFilter<"ServiceAndItem"> | string
+  invoice?: Prisma.XOR<Prisma.InvoiceScalarRelationFilter, Prisma.InvoiceWhereInput>
 }
 
 export type ServiceAndItemOrderByWithRelationInput = {
@@ -241,7 +241,7 @@ export type ServiceAndItemOrderByWithRelationInput = {
   qty?: Prisma.SortOrder
   rate?: Prisma.SortOrder
   totalAmount?: Prisma.SortOrder
-  invoiceId?: Prisma.SortOrderInput | Prisma.SortOrder
+  invoiceId?: Prisma.SortOrder
   invoice?: Prisma.InvoiceOrderByWithRelationInput
 }
 
@@ -254,8 +254,8 @@ export type ServiceAndItemWhereUniqueInput = Prisma.AtLeast<{
   qty?: Prisma.IntFilter<"ServiceAndItem"> | number
   rate?: Prisma.FloatFilter<"ServiceAndItem"> | number
   totalAmount?: Prisma.FloatFilter<"ServiceAndItem"> | number
-  invoiceId?: Prisma.StringNullableFilter<"ServiceAndItem"> | string | null
-  invoice?: Prisma.XOR<Prisma.InvoiceNullableScalarRelationFilter, Prisma.InvoiceWhereInput> | null
+  invoiceId?: Prisma.StringFilter<"ServiceAndItem"> | string
+  invoice?: Prisma.XOR<Prisma.InvoiceScalarRelationFilter, Prisma.InvoiceWhereInput>
 }, "id" | "id">
 
 export type ServiceAndItemOrderByWithAggregationInput = {
@@ -264,7 +264,7 @@ export type ServiceAndItemOrderByWithAggregationInput = {
   qty?: Prisma.SortOrder
   rate?: Prisma.SortOrder
   totalAmount?: Prisma.SortOrder
-  invoiceId?: Prisma.SortOrderInput | Prisma.SortOrder
+  invoiceId?: Prisma.SortOrder
   _count?: Prisma.ServiceAndItemCountOrderByAggregateInput
   _avg?: Prisma.ServiceAndItemAvgOrderByAggregateInput
   _max?: Prisma.ServiceAndItemMaxOrderByAggregateInput
@@ -281,7 +281,7 @@ export type ServiceAndItemScalarWhereWithAggregatesInput = {
   qty?: Prisma.IntWithAggregatesFilter<"ServiceAndItem"> | number
   rate?: Prisma.FloatWithAggregatesFilter<"ServiceAndItem"> | number
   totalAmount?: Prisma.FloatWithAggregatesFilter<"ServiceAndItem"> | number
-  invoiceId?: Prisma.StringNullableWithAggregatesFilter<"ServiceAndItem"> | string | null
+  invoiceId?: Prisma.StringWithAggregatesFilter<"ServiceAndItem"> | string
 }
 
 export type ServiceAndItemCreateInput = {
@@ -290,7 +290,7 @@ export type ServiceAndItemCreateInput = {
   qty?: number
   rate: number
   totalAmount: number
-  invoice?: Prisma.InvoiceCreateNestedOneWithoutServiceAndItemsInput
+  invoice: Prisma.InvoiceCreateNestedOneWithoutServiceAndItemsInput
 }
 
 export type ServiceAndItemUncheckedCreateInput = {
@@ -299,7 +299,7 @@ export type ServiceAndItemUncheckedCreateInput = {
   qty?: number
   rate: number
   totalAmount: number
-  invoiceId?: string | null
+  invoiceId: string
 }
 
 export type ServiceAndItemUpdateInput = {
@@ -308,7 +308,7 @@ export type ServiceAndItemUpdateInput = {
   qty?: Prisma.IntFieldUpdateOperationsInput | number
   rate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  invoice?: Prisma.InvoiceUpdateOneWithoutServiceAndItemsNestedInput
+  invoice?: Prisma.InvoiceUpdateOneRequiredWithoutServiceAndItemsNestedInput
 }
 
 export type ServiceAndItemUncheckedUpdateInput = {
@@ -317,7 +317,7 @@ export type ServiceAndItemUncheckedUpdateInput = {
   qty?: Prisma.IntFieldUpdateOperationsInput | number
   rate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  invoiceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  invoiceId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ServiceAndItemCreateManyInput = {
@@ -326,7 +326,7 @@ export type ServiceAndItemCreateManyInput = {
   qty?: number
   rate: number
   totalAmount: number
-  invoiceId?: string | null
+  invoiceId: string
 }
 
 export type ServiceAndItemUpdateManyMutationInput = {
@@ -343,7 +343,7 @@ export type ServiceAndItemUncheckedUpdateManyInput = {
   qty?: Prisma.IntFieldUpdateOperationsInput | number
   rate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  invoiceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  invoiceId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ServiceAndItemListRelationFilter = {
@@ -488,7 +488,7 @@ export type ServiceAndItemScalarWhereInput = {
   qty?: Prisma.IntFilter<"ServiceAndItem"> | number
   rate?: Prisma.FloatFilter<"ServiceAndItem"> | number
   totalAmount?: Prisma.FloatFilter<"ServiceAndItem"> | number
-  invoiceId?: Prisma.StringNullableFilter<"ServiceAndItem"> | string | null
+  invoiceId?: Prisma.StringFilter<"ServiceAndItem"> | string
 }
 
 export type ServiceAndItemCreateManyInvoiceInput = {
@@ -532,7 +532,7 @@ export type ServiceAndItemSelect<ExtArgs extends runtime.Types.Extensions.Intern
   rate?: boolean
   totalAmount?: boolean
   invoiceId?: boolean
-  invoice?: boolean | Prisma.ServiceAndItem$invoiceArgs<ExtArgs>
+  invoice?: boolean | Prisma.InvoiceDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["serviceAndItem"]>
 
 export type ServiceAndItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -542,7 +542,7 @@ export type ServiceAndItemSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   rate?: boolean
   totalAmount?: boolean
   invoiceId?: boolean
-  invoice?: boolean | Prisma.ServiceAndItem$invoiceArgs<ExtArgs>
+  invoice?: boolean | Prisma.InvoiceDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["serviceAndItem"]>
 
 export type ServiceAndItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -552,7 +552,7 @@ export type ServiceAndItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   rate?: boolean
   totalAmount?: boolean
   invoiceId?: boolean
-  invoice?: boolean | Prisma.ServiceAndItem$invoiceArgs<ExtArgs>
+  invoice?: boolean | Prisma.InvoiceDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["serviceAndItem"]>
 
 export type ServiceAndItemSelectScalar = {
@@ -566,19 +566,19 @@ export type ServiceAndItemSelectScalar = {
 
 export type ServiceAndItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "description" | "qty" | "rate" | "totalAmount" | "invoiceId", ExtArgs["result"]["serviceAndItem"]>
 export type ServiceAndItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  invoice?: boolean | Prisma.ServiceAndItem$invoiceArgs<ExtArgs>
+  invoice?: boolean | Prisma.InvoiceDefaultArgs<ExtArgs>
 }
 export type ServiceAndItemIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  invoice?: boolean | Prisma.ServiceAndItem$invoiceArgs<ExtArgs>
+  invoice?: boolean | Prisma.InvoiceDefaultArgs<ExtArgs>
 }
 export type ServiceAndItemIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  invoice?: boolean | Prisma.ServiceAndItem$invoiceArgs<ExtArgs>
+  invoice?: boolean | Prisma.InvoiceDefaultArgs<ExtArgs>
 }
 
 export type $ServiceAndItemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ServiceAndItem"
   objects: {
-    invoice: Prisma.$InvoicePayload<ExtArgs> | null
+    invoice: Prisma.$InvoicePayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -586,7 +586,7 @@ export type $ServiceAndItemPayload<ExtArgs extends runtime.Types.Extensions.Inte
     qty: number
     rate: number
     totalAmount: number
-    invoiceId: string | null
+    invoiceId: string
   }, ExtArgs["result"]["serviceAndItem"]>
   composites: {}
 }
@@ -981,7 +981,7 @@ readonly fields: ServiceAndItemFieldRefs;
  */
 export interface Prisma__ServiceAndItemClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  invoice<T extends Prisma.ServiceAndItem$invoiceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ServiceAndItem$invoiceArgs<ExtArgs>>): Prisma.Prisma__InvoiceClient<runtime.Types.Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  invoice<T extends Prisma.InvoiceDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InvoiceDefaultArgs<ExtArgs>>): Prisma.Prisma__InvoiceClient<runtime.Types.Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1410,25 +1410,6 @@ export type ServiceAndItemDeleteManyArgs<ExtArgs extends runtime.Types.Extension
    * Limit how many ServiceAndItems to delete.
    */
   limit?: number
-}
-
-/**
- * ServiceAndItem.invoice
- */
-export type ServiceAndItem$invoiceArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Invoice
-   */
-  select?: Prisma.InvoiceSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Invoice
-   */
-  omit?: Prisma.InvoiceOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.InvoiceInclude<ExtArgs> | null
-  where?: Prisma.InvoiceWhereInput
 }
 
 /**

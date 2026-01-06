@@ -61,6 +61,7 @@ export const ModelName = {
   userSubscriptionPlanHistory: 'userSubscriptionPlanHistory',
   subscriptionPlanPaymentStatus: 'subscriptionPlanPaymentStatus',
   Invoice: 'Invoice',
+  BusinessData: 'BusinessData',
   ServiceAndItem: 'ServiceAndItem',
   Module: 'Module',
   UserModuleAccess: 'UserModuleAccess',
@@ -264,7 +265,7 @@ export const InvoiceScalarFieldEnum = {
   dueDate: 'dueDate',
   type: 'type',
   companyName: 'companyName',
-  companyAddress: 'companyAddress',
+  email: 'email',
   AddressAndContactInfo: 'AddressAndContactInfo',
   projectInformation: 'projectInformation',
   projectDescription: 'projectDescription',
@@ -272,10 +273,21 @@ export const InvoiceScalarFieldEnum = {
   subTotal: 'subTotal',
   totalAmount: 'totalAmount',
   mobilePaymentLink: 'mobilePaymentLink',
-  additionalNote: 'additionalNote'
+  additionalNote: 'additionalNote',
+  createdAt: 'createdAt'
 } as const
 
 export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
+
+
+export const BusinessDataScalarFieldEnum = {
+  id: 'id',
+  businessIdLabel: 'businessIdLabel',
+  businessIdValue: 'businessIdValue',
+  invoiceId: 'invoiceId'
+} as const
+
+export type BusinessDataScalarFieldEnum = (typeof BusinessDataScalarFieldEnum)[keyof typeof BusinessDataScalarFieldEnum]
 
 
 export const ServiceAndItemScalarFieldEnum = {

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
 import {
   BadRequestException,
   Injectable,
@@ -153,5 +152,48 @@ export class ManageClients {
         error: 'User data fetching failed or not found',
       });
     }
+  }
+
+  async removeFromMe(userId: string, accId: string) {
+  try {
+    // Find the user and ensure this user is linked to the current accountant
+    const user = await this.prisma.user.findFirst({
+      where: {
+        id: userId,
+        haveAccountant: true,
+        accountantId: accId,
+      },
+    });
+
+    if (!user) {
+      return cResponseData({
+        message: 'User not found or not associated with this accountant',
+        error: 'User not found or not associated with this accountant',
+        success: false,
+      });
+    }
+
+    // Update the user to remove accountant link
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        haveAccountant: false,
+        accountantId: null,
+      },
+    });
+
+    return cResponseData({
+      message: 'User has been successfully removed from your clients.',
+      data: { id: userId },
+      success: true,
+    });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return cResponseData({
+      message: 'Failed to remove user from your clients',
+      error: 'Failed to remove user from your clients',
+      success: false,
+    });
+  }
   }
 }

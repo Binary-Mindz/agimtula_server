@@ -276,6 +276,7 @@ export const InvoiceScalarFieldEnum = {
   totalAmount: 'totalAmount',
   mobilePaymentLink: 'mobilePaymentLink',
   additionalNote: 'additionalNote',
+  isDrafted: 'isDrafted',
   createdAt: 'createdAt'
 } as const
 

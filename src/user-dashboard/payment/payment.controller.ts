@@ -47,6 +47,33 @@ export class UserPaymentController {
     return this.paymentService.buyPlan(user.sub, id, billingPeriod, user);
   }
 
+  @Post('upgrade-plan/:id')
+  @Roles('USER')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      example: {
+        billingPeriod: 'MONTHLY',
+      },
+      properties: {
+        billingPeriod: {
+          type: 'string',
+          enum: ['MONTHLY', 'YEARLY'],
+          default: 'MONTHLY',
+        },
+      },
+    },
+  })
+  @ApiResponse({ status: 200, description: 'Plan upgraded successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid plan or billing period' })
+  upgradePlan(
+    @Param('id') id: string,
+    @User() user: jwtPayload,
+    @Body('billingPeriod') billingPeriod: 'MONTHLY' | 'YEARLY',
+  ) {
+    return this.paymentService.upgradePlan(user.sub, id, billingPeriod, user);
+  }
+
   // @Get()
   // @ApiResponse({ status: 200, description: 'Payments retrieved successfully' })
   // findAll() {

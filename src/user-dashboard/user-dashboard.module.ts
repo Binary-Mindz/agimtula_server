@@ -4,8 +4,9 @@ import { ReceiptsModule } from './receipts/receipts.module';
 import { PaymentModule } from './payment/payment.module';
 import { ReportsModule } from './reports/reports.module';
 import { RequesteAccountantModule } from './request-accountant/request-accountant.module';
+import { InvoicesModule } from './invoices/invoices.module';
 
 @Module({
-  imports: [AutoInvoiceImportsModule, ReceiptsModule, PaymentModule, ReportsModule, RequesteAccountantModule],
+  imports: [AutoInvoiceImportsModule, ReceiptsModule, PaymentModule, ReportsModule, RequesteAccountantModule, InvoicesModule],
 })
 export class UserDashboardModule {}

@@ -60,7 +60,7 @@ export class TransactionService {
     try {
       const userExit = await this.prisma.user.findFirst({
         where: {
-          id: "userId"
+          id: userId
         }
       })
       if (!userExit) {

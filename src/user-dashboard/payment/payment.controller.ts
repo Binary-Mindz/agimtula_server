@@ -37,7 +37,7 @@ export class UserPaymentController {
       },
     },
   })
-  @ApiResponse({ status: 201, description: 'Plan purchased successfully' })
+  @ApiResponse({ status: 200, description: 'Plan purchased successfully' })
   @ApiResponse({ status: 400, description: 'Invalid plan or billing period' })
   buyPlan(
     @Param('id') id: string,

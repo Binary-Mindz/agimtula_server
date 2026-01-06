@@ -3,9 +3,7 @@ import { PrismaClient, UserRole } from './generated/prisma/client';
 import * as bcrypt from 'bcrypt';
 import 'dotenv/config';
 
-/* ----------------------------------
-   Prisma Client Factory
------------------------------------ */
+
 function createPrismaClient(): PrismaClient {
   const connectionString = process.env.DATABASE_URL;
 
@@ -23,9 +21,7 @@ function createPrismaClient(): PrismaClient {
 
 const prisma = createPrismaClient();
 
-/* ----------------------------------
-   Seed Super Admin
------------------------------------ */
+
 async function seedSuperAdmin() {
   const {
     SUPER_ADMIN_FIRSTNAME,
@@ -116,16 +112,12 @@ async function seedPermissions() {
       create: mod,
       update: mod,
     });
-
-
   }
 
   console.log('✅ Modules & Permissions seeded successfully');
 }
 
-/* ----------------------------------
-   Main Runner
------------------------------------ */
+
 async function main() {
   console.log('🚀 Seeding started...');
 

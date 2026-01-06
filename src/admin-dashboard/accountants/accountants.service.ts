@@ -12,7 +12,7 @@ export class AccountantsService {
   constructor(
     private Prisma: PrismaService,
     private readonly mail: SmtpMailService,
-  ) {}
+  ) { }
 
   async create(createAccountantDto: CreateAccountantDto) {
     const isUser = await this.Prisma.user.findFirst({
@@ -67,8 +67,8 @@ export class AccountantsService {
     });
   }
 
-  findAll() {
-    const accountants = this.Prisma.user.findMany({
+  async findAll() {
+    const accountants = await this.Prisma.user.findMany({
       where: {
         role: 'ACCOUNTANT',
       },

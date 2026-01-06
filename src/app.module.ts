@@ -22,7 +22,7 @@ import { WebhookController } from './webhook/webhook.controller';
 import { PaymentsModule } from './admin-dashboard/payments/payments.module';
 import { LoggerModule } from './logger/logger.module';
 import { AccountantDashboardModule } from './accountant-dashboard/accountant-dashboard.module';
-
+import { AccountantSettingsModule } from './accountants/accountant-settings/accountant-settings.module';
 
 @Module({
   imports: [
@@ -45,6 +45,7 @@ import { AccountantDashboardModule } from './accountant-dashboard/accountant-das
     LoggerModule,
     AccountantDashboardModule,
     // PaymentsModule
+    AccountantSettingsModule,
   ],
   controllers: [AppController, WebhookController],
   providers: [
@@ -55,4 +56,4 @@ import { AccountantDashboardModule } from './accountant-dashboard/accountant-das
     },
   ],
 })
-export class AppModule { }
+export class AppModule {}

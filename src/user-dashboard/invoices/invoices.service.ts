@@ -7,7 +7,7 @@ import { cResponseData } from 'src/common/cResponse';
 
 @Injectable()
 export class InvoicesService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(createInvoiceDto: CreateInvoiceDto) {
     try {

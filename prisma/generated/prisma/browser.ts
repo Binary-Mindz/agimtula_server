@@ -68,6 +68,11 @@ export type subscriptionPlanPaymentStatus = Prisma.subscriptionPlanPaymentStatus
  */
 export type Invoice = Prisma.InvoiceModel
 /**
+ * Model BusinessData
+ * 
+ */
+export type BusinessData = Prisma.BusinessDataModel
+/**
  * Model ServiceAndItem
  * 
  */

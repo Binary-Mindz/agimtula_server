@@ -394,6 +394,7 @@ export const ModelName = {
   userSubscriptionPlanHistory: 'userSubscriptionPlanHistory',
   subscriptionPlanPaymentStatus: 'subscriptionPlanPaymentStatus',
   Invoice: 'Invoice',
+  BusinessData: 'BusinessData',
   ServiceAndItem: 'ServiceAndItem',
   Loggers: 'Loggers',
   Module: 'Module',
@@ -429,7 +430,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "bank" | "mileage" | "transaction" | "accountantRequest" | "emailTemplate" | "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "invoice" | "serviceAndItem" | "loggers" | "module" | "userModuleAccess" | "profile" | "forgetPass" | "twoFA" | "language" | "quotation" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "user" | "email"
+    modelProps: "bank" | "mileage" | "transaction" | "accountantRequest" | "emailTemplate" | "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "invoice" | "businessData" | "serviceAndItem" | "loggers" | "module" | "userModuleAccess" | "profile" | "forgetPass" | "twoFA" | "language" | "quotation" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "user" | "email"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1170,6 +1171,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.InvoiceCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.InvoiceCountAggregateOutputType> | number
+        }
+      }
+    }
+    BusinessData: {
+      payload: Prisma.$BusinessDataPayload<ExtArgs>
+      fields: Prisma.BusinessDataFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BusinessDataFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessDataPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BusinessDataFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessDataPayload>
+        }
+        findFirst: {
+          args: Prisma.BusinessDataFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessDataPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BusinessDataFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessDataPayload>
+        }
+        findMany: {
+          args: Prisma.BusinessDataFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessDataPayload>[]
+        }
+        create: {
+          args: Prisma.BusinessDataCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessDataPayload>
+        }
+        createMany: {
+          args: Prisma.BusinessDataCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BusinessDataCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessDataPayload>[]
+        }
+        delete: {
+          args: Prisma.BusinessDataDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessDataPayload>
+        }
+        update: {
+          args: Prisma.BusinessDataUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessDataPayload>
+        }
+        deleteMany: {
+          args: Prisma.BusinessDataDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BusinessDataUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BusinessDataUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessDataPayload>[]
+        }
+        upsert: {
+          args: Prisma.BusinessDataUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessDataPayload>
+        }
+        aggregate: {
+          args: Prisma.BusinessDataAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBusinessData>
+        }
+        groupBy: {
+          args: Prisma.BusinessDataGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BusinessDataGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BusinessDataCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BusinessDataCountAggregateOutputType> | number
         }
       }
     }
@@ -2859,7 +2934,7 @@ export const InvoiceScalarFieldEnum = {
   dueDate: 'dueDate',
   type: 'type',
   companyName: 'companyName',
-  companyAddress: 'companyAddress',
+  email: 'email',
   AddressAndContactInfo: 'AddressAndContactInfo',
   projectInformation: 'projectInformation',
   projectDescription: 'projectDescription',
@@ -2867,10 +2942,21 @@ export const InvoiceScalarFieldEnum = {
   subTotal: 'subTotal',
   totalAmount: 'totalAmount',
   mobilePaymentLink: 'mobilePaymentLink',
-  additionalNote: 'additionalNote'
+  additionalNote: 'additionalNote',
+  createdAt: 'createdAt'
 } as const
 
 export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
+
+
+export const BusinessDataScalarFieldEnum = {
+  id: 'id',
+  businessIdLabel: 'businessIdLabel',
+  businessIdValue: 'businessIdValue',
+  invoiceId: 'invoiceId'
+} as const
+
+export type BusinessDataScalarFieldEnum = (typeof BusinessDataScalarFieldEnum)[keyof typeof BusinessDataScalarFieldEnum]
 
 
 export const ServiceAndItemScalarFieldEnum = {
@@ -3500,6 +3586,7 @@ export type GlobalOmitConfig = {
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryOmit
   subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusOmit
   invoice?: Prisma.InvoiceOmit
+  businessData?: Prisma.BusinessDataOmit
   serviceAndItem?: Prisma.ServiceAndItemOmit
   loggers?: Prisma.LoggersOmit
   module?: Prisma.ModuleOmit

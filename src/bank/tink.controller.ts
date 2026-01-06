@@ -108,7 +108,7 @@ export class TinkController {
 
       const tokenData = await this.tinkService.exchangeToken(code);
       const accessToken = tokenData.access_token;
-      return accessToken
+      return accessToken;
 
     } catch (err: unknown) {
       console.error('Tink callback error:', err);

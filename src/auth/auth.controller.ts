@@ -8,10 +8,11 @@ import {
   // Delete,
   UsePipes,
   UseInterceptors,
-  UploadedFile,
   Get,
   Delete,
   Param,
+  UploadedFiles,
+  BadRequestException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
@@ -28,14 +29,16 @@ import { User } from './decorators/user.decorator';
 import { jwtPayload } from './types/jwt-payload';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { Roles } from './decorators/roles.decorator';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { ApiBody, ApiConsumes, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   UpdateProfileDto,
   UpdateProfilePicDto,
 } from './dto/update-profile.dto';
 import { EnableTwoFADto, VerifyTwoFADto } from './dto/two-fa.dto';
 import { TwoFAService } from './2fa.service';
+import { UploadImageDto } from './dto/upload-image.dto';
+import { storageConfig } from 'src/common/fileUpload/storage.configure';
 
 @Controller('auth')
 export class AuthController {
@@ -43,15 +46,15 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly forgetPasswordService: ForgetPasswordService,
     private readonly twoFAService: TwoFAService,
-  ) {}
+  ) { }
 
   @HttpCode(201)
   @ApiResponse({ status: 201, description: 'User registered successfully' })
   @ApiResponse({ status: 400, description: 'Validation failed or email exists' })
   @Public()
   @Post('registration')
-  create(@Body(new ValidationPipe()) createAuthDto: CreateAuthDto) {
-    return this.authService.create(createAuthDto);
+  async create(@Body(new ValidationPipe()) createAuthDto: CreateAuthDto) {
+    return await this.authService.create(createAuthDto);
   }
 
   @HttpCode(200)
@@ -60,18 +63,18 @@ export class AuthController {
   @Post('login')
   @Public()
   @UsePipes(new ValidationPipe())
-  login(@Body() loginDto: LoginDto) {
-    return this.authService.login(loginDto);
+  async login(@Body() loginDto: LoginDto) {
+    return await this.authService.login(loginDto);
   }
-  
+
   @HttpCode(200)
   @ApiResponse({ status: 200, description: '2FA verification successful' })
   @ApiResponse({ status: 400, description: 'Invalid 2FA code' })
   @Post('verifyLogin')
   @Public()
   @UsePipes(new ValidationPipe())
-  verifyLogin(@Body() verify: VerifyTwoFADto) {
-    return this.authService.verifyLogin2FA(verify);
+  async verifyLogin(@Body() verify: VerifyTwoFADto) {
+    return await this.authService.verifyLogin2FA(verify);
   }
 
   @HttpCode(200)
@@ -80,8 +83,8 @@ export class AuthController {
   @Patch('update-password')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
   @UsePipes(new ValidationPipe())
-  updatePassword(@Body() data: UpdatePasswordDto, @User() user: jwtPayload) {
-    return this.authService.updatePassword(
+  async updatePassword(@Body() data: UpdatePasswordDto, @User() user: jwtPayload) {
+    return await this.authService.updatePassword(
       user.sub,
       data.oldPassword,
       data.newPassword,
@@ -93,8 +96,8 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @Delete('delete-account')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
-  deleteAccount(@User() user: jwtPayload) {
-    return this.authService.deleteAccount(user.sub);
+  async deleteAccount(@User() user: jwtPayload) {
+    return await this.authService.deleteAccount(user.sub);
   }
 
   @HttpCode(200)
@@ -102,15 +105,15 @@ export class AuthController {
   @ApiResponse({ status: 400, description: 'Invalid file format or too large' })
   @Patch('update-profile-pic')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
-  @UsePipes(new ValidationPipe())
-  @UseInterceptors(FileInterceptor('profilePic'))
-  @ApiConsumes('multipart/form-data')
   @ApiBody({ type: UpdateProfilePicDto })
-  updateProfilePic(
-    @UploadedFile() profilePic: Express.Multer.File,
+  async updateProfilePic(
     @User() user: jwtPayload,
+    @Body() data: UpdateProfilePicDto,
   ) {
-    return this.authService.updateProfilepic(profilePic, user.sub);
+    if (!data.profilePic) {
+      throw new BadRequestException('Profile picture URL is required');
+    }
+    return await this.authService.updateProfilepic(user.sub, data.profilePic);
   }
 
   @HttpCode(200)
@@ -118,8 +121,8 @@ export class AuthController {
   @ApiResponse({ status: 404, description: 'No profile picture found' })
   @Patch('remove-profile-pic')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
-  removeProfilePic(@User() user: jwtPayload) {
-    return this.authService.removeProfilePic(user.sub);
+  async removeProfilePic(@User() user: jwtPayload) {
+    return await this.authService.removeProfilePic(user.sub);
   }
 
   @HttpCode(200)
@@ -128,8 +131,8 @@ export class AuthController {
   @Patch('update-profile')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
   @UsePipes(new ValidationPipe())
-  updateProfile(@Body() data: UpdateProfileDto, @User() user: jwtPayload) {
-    return this.authService.updateProfile(user.sub, data);
+  async updateProfile(@Body() data: UpdateProfileDto, @User() user: jwtPayload) {
+    return await this.authService.updateProfile(user.sub, data);
   }
 
   @HttpCode(200)
@@ -137,8 +140,8 @@ export class AuthController {
   @ApiResponse({ status: 404, description: 'Profile not found' })
   @Get('profile')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
-  getProfile(@User() user: jwtPayload) {
-    return this.authService.getProfile(user.sub);
+  async getProfile(@User() user: jwtPayload) {
+    return await this.authService.getProfile(user.sub);
   }
   // @Delete('delete')
   // @Roles('USER', 'ADMIN', 'ACCOUNTANT')
@@ -151,8 +154,8 @@ export class AuthController {
   @ApiResponse({ status: 404, description: 'Email not found' })
   @Post('send-forget-password-code')
   @Public()
-  forgetPassword(@Body(new ValidationPipe()) dto: ForgetPassDto) {
-    return this.forgetPasswordService.sendForgetPassCode(dto);
+  async forgetPassword(@Body(new ValidationPipe()) dto: ForgetPassDto) {
+    return await this.forgetPasswordService.sendForgetPassCode(dto);
   }
 
   @HttpCode(200)
@@ -160,8 +163,8 @@ export class AuthController {
   @ApiResponse({ status: 400, description: 'Invalid or expired code' })
   @Post('verify-forget-password-code')
   @Public()
-  verifyForgetPassword(@Body(new ValidationPipe()) data: ValidateForgetPass) {
-    return this.forgetPasswordService.verifyForgetPassCode(data);
+  async verifyForgetPassword(@Body(new ValidationPipe()) data: ValidateForgetPass) {
+    return await this.forgetPasswordService.verifyForgetPassCode(data);
   }
 
   @HttpCode(200)
@@ -174,11 +177,11 @@ export class AuthController {
     description: 'Crypto value sent to the user',
     example: 'a5d7fa9c87f385f0934fbed3b8cc7c81681360c7dbfe1925bdaa8d0a1d32bf14',
   })
-  changePassword(
+  async changePassword(
     @Body(new ValidationPipe()) data: ResetPass,
     @Param('crypto') crypto: string,
   ) {
-    return this.forgetPasswordService.changePassword(data, crypto);
+    return await this.forgetPasswordService.changePassword(data, crypto);
   }
 
   // 2fa features
@@ -188,8 +191,8 @@ export class AuthController {
   @ApiResponse({ status: 400, description: 'Invalid request data' })
   @Post('2fa/enable')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
-  enable2FA(@User() user: jwtPayload, @Body() dto: EnableTwoFADto) {
-    return this.twoFAService.sendTwoFACode(user.sub, dto);
+  async enable2FA(@User() user: jwtPayload, @Body() dto: EnableTwoFADto) {
+    return await this.twoFAService.sendTwoFACode(user.sub, dto);
   }
 
   @HttpCode(200)
@@ -197,8 +200,8 @@ export class AuthController {
   @ApiResponse({ status: 400, description: 'Invalid 2FA code' })
   @Post('2fa/verify')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
-  verify2FA(@User() user: jwtPayload, @Body() dto: VerifyTwoFADto) {
-    return this.twoFAService.verifyAndEnableTwoFA(user.sub, dto);
+  async verify2FA(@User() user: jwtPayload, @Body() dto: VerifyTwoFADto) {
+    return await this.twoFAService.verifyAndEnableTwoFA(user.sub, dto);
   }
 
   @HttpCode(200)
@@ -206,8 +209,8 @@ export class AuthController {
   @ApiResponse({ status: 400, description: 'Invalid request data' })
   @Post('2fa/disable')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
-  disable2FA(@User() user: jwtPayload, @Body() dto: EnableTwoFADto) {
-    return this.twoFAService.sendDisableTwoFACode(user.sub, dto);
+  async disable2FA(@User() user: jwtPayload, @Body() dto: EnableTwoFADto) {
+    return await this.twoFAService.sendDisableTwoFACode(user.sub, dto);
   }
 
   @HttpCode(200)
@@ -215,7 +218,35 @@ export class AuthController {
   @ApiResponse({ status: 400, description: 'Invalid 2FA code' })
   @Post('2fa/disable-verify')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
-  verifyDisable2FA(@User() user: jwtPayload, @Body() dto: VerifyTwoFADto) {
-    return this.twoFAService.verifyAndDisableTwoFA(user.sub, dto);
+  async verifyDisable2FA(@User() user: jwtPayload, @Body() dto: VerifyTwoFADto) {
+    return await this.twoFAService.verifyAndDisableTwoFA(user.sub, dto);
+  }
+
+
+  // image upload for profile picture
+  @ApiTags('File Upload')
+  @Post('upload')
+  @Public()
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ type: UploadImageDto })
+  @UseInterceptors(
+    FilesInterceptor('images', 10, {
+      storage: storageConfig('./uploads'),
+    }),
+  )
+  uploadMultipleFiles(
+    @UploadedFiles() files: Express.Multer.File[],
+  ) {
+    if (!files || files.length === 0) {
+      throw new BadRequestException('No files uploaded');
+    }
+    if (!process.env.BASE_URL) {
+      throw new BadRequestException('Base URL not configured');
+    }
+    const fileUrls = files.map((file) =>
+      `${process.env.BASE_URL}/uploads/${file.filename}`
+    );
+
+    return fileUrls
   }
 }

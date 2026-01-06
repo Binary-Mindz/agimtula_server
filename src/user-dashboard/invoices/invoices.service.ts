@@ -12,7 +12,7 @@ export class InvoicesService {
   constructor(
     private prisma: PrismaService,
     private mail: SmtpMailService,
-  ) {}
+  ) { }
 
   async create(createInvoiceDto: CreateInvoiceDto) {
     try {

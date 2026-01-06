@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Decimal } from '@prisma/client/runtime/client';
+import { NotFoundError } from 'rxjs';
 import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
 
@@ -19,7 +20,6 @@ export class TransactionService {
   constructor(private prisma: PrismaService) { }
 
   async storeTransactions(transactions: TransactionRow[]) {
-
 
     for (const trx of transactions) {
 
@@ -54,6 +54,27 @@ export class TransactionService {
     return await this.prisma.transaction.findMany({
       orderBy: { date: 'desc' },
     });
+  }
+  async getAllUserTransactions(userId: string) {
+
+    try {
+      const userExit = await this.prisma.user.findFirst({
+        where: {
+          id: "userId"
+        }
+      })
+      if (!userExit) {
+        throw new NotFoundError('User not found');
+      }
+      const data = await this.prisma.transaction.findMany({
+        where: { userId: userId },
+        orderBy: { date: 'desc' },
+      });
+      return cResponseData({ data, message: `Transactions for user ${userId} retrieved successfully` });
+    } catch (error) {
+      console.error(error);
+      throw new BadRequestException('Failed to retrieve transactions for user');
+    }
   }
 
   async getTransactionsBySource(source: string) {

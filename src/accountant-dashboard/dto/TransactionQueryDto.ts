@@ -20,7 +20,7 @@ export class TransactionQueryDto {
   limit?: number;
 
 
-  @ApiPropertyOptional({ required: false, description: 'Search term to filter transactions', example: 'invoice' })
+  @ApiPropertyOptional({ required: false, description: 'Search term to filter transactions (description, currency)', example: 'sek' })
   @IsOptional()
   @IsString()
   search?: string;

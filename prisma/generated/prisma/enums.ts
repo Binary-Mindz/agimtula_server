@@ -35,6 +35,14 @@ export const PaymentStatus = {
 export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
 
 
+export const InvoiceClientType = {
+  CLIENT: 'CLIENT',
+  BUSINESS: 'BUSINESS'
+} as const
+
+export type InvoiceClientType = (typeof InvoiceClientType)[keyof typeof InvoiceClientType]
+
+
 export const TwoFAPurpose = {
   LOGIN: 'LOGIN',
   ENABLE_2FA: 'ENABLE_2FA',

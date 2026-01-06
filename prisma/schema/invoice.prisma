@@ -1,25 +1,34 @@
-model Invoice{
-    id String @id @unique() @default(uuid())
-    invoiceNo String
-    issueDate DateTime
-    dueDate DateTime?
-    type InvoiceClientType
-    companyName String   // client or companyName
-    companyAddress String?
+model Invoice {
+    id                    String            @id @unique() @default(uuid())
+    invoiceNo             String
+    issueDate             DateTime
+    dueDate               DateTime?
+    type                  InvoiceClientType
+    companyName           String // client or companyName
+    companyAddress        String?
     AddressAndContactInfo String?
-    projectInformation String?
-    projectDescription String?
+    projectInformation    String?
+    projectDescription    String?
 
-    serviceAndItem ServiceAndItem[]
+    serviceAndItems ServiceAndItem[]
+    tax             Float
+    subTotal        Float
+    totalAmount     Float
+
+    mobilePaymentLink String?
+
+    additionalNote String?
 }
 
-
 model ServiceAndItem {
-    id String @id @unique() @default(uuid())
-    description String 
-    qty Int @default(1)
-    rate Float 
+    id          String @id @unique() @default(uuid())
+    description String
+    qty         Int    @default(1)
+    rate        Float
     totalAmount Float
+
+    invoice   Invoice? @relation(fields: [invoiceId], references: [id])
+    invoiceId String?
 }
 
 enum InvoiceClientType {

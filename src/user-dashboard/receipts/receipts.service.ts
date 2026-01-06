@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { UploadReceiptDto } from './dto/upload-receipt.dto';
-import uploadToCloudinary from 'src/config/cloudinary/cloudinary';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { cResponseData } from 'src/common/cResponse';
 import { UpdateReceiptDto } from './dto/update-receipt-dto';
@@ -73,7 +72,6 @@ export class ReceiptsService {
     file: string,
   ) {
     try {
-
       const userExits = await this.prisma.user.findUnique({
         where: { id: userId },
       });

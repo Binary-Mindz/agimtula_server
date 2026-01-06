@@ -5,6 +5,7 @@ import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { cResponseData } from 'src/common/cResponse';
 import { SmtpMailService } from 'src/config/smtp-mail/smtp-mail.service';
+import { invoiceEmailTemplate } from './invoice-email.template';
 
 @Injectable()
 export class InvoicesService {
@@ -73,10 +74,9 @@ export class InvoicesService {
 
       await this.mail.sendMail(
         createInvoiceDto.email,
-        'Invoice sent to business email',
-        `${JSON.stringify(newInvoice)}`,
+        `Invoice #${newInvoice.invoiceNo}`,
+        invoiceEmailTemplate(newInvoice),
       );
-
       return cResponseData({
         message: 'Invoice created successfully',
         data: newInvoice,

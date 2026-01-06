@@ -45,7 +45,7 @@ export type InvoiceMinAggregateOutputType = {
   dueDate: Date | null
   type: $Enums.InvoiceClientType | null
   companyName: string | null
-  companyAddress: string | null
+  email: string | null
   AddressAndContactInfo: string | null
   projectInformation: string | null
   projectDescription: string | null
@@ -54,6 +54,7 @@ export type InvoiceMinAggregateOutputType = {
   totalAmount: number | null
   mobilePaymentLink: string | null
   additionalNote: string | null
+  createdAt: Date | null
 }
 
 export type InvoiceMaxAggregateOutputType = {
@@ -63,7 +64,7 @@ export type InvoiceMaxAggregateOutputType = {
   dueDate: Date | null
   type: $Enums.InvoiceClientType | null
   companyName: string | null
-  companyAddress: string | null
+  email: string | null
   AddressAndContactInfo: string | null
   projectInformation: string | null
   projectDescription: string | null
@@ -72,6 +73,7 @@ export type InvoiceMaxAggregateOutputType = {
   totalAmount: number | null
   mobilePaymentLink: string | null
   additionalNote: string | null
+  createdAt: Date | null
 }
 
 export type InvoiceCountAggregateOutputType = {
@@ -81,7 +83,7 @@ export type InvoiceCountAggregateOutputType = {
   dueDate: number
   type: number
   companyName: number
-  companyAddress: number
+  email: number
   AddressAndContactInfo: number
   projectInformation: number
   projectDescription: number
@@ -90,6 +92,7 @@ export type InvoiceCountAggregateOutputType = {
   totalAmount: number
   mobilePaymentLink: number
   additionalNote: number
+  createdAt: number
   _all: number
 }
 
@@ -113,7 +116,7 @@ export type InvoiceMinAggregateInputType = {
   dueDate?: true
   type?: true
   companyName?: true
-  companyAddress?: true
+  email?: true
   AddressAndContactInfo?: true
   projectInformation?: true
   projectDescription?: true
@@ -122,6 +125,7 @@ export type InvoiceMinAggregateInputType = {
   totalAmount?: true
   mobilePaymentLink?: true
   additionalNote?: true
+  createdAt?: true
 }
 
 export type InvoiceMaxAggregateInputType = {
@@ -131,7 +135,7 @@ export type InvoiceMaxAggregateInputType = {
   dueDate?: true
   type?: true
   companyName?: true
-  companyAddress?: true
+  email?: true
   AddressAndContactInfo?: true
   projectInformation?: true
   projectDescription?: true
@@ -140,6 +144,7 @@ export type InvoiceMaxAggregateInputType = {
   totalAmount?: true
   mobilePaymentLink?: true
   additionalNote?: true
+  createdAt?: true
 }
 
 export type InvoiceCountAggregateInputType = {
@@ -149,7 +154,7 @@ export type InvoiceCountAggregateInputType = {
   dueDate?: true
   type?: true
   companyName?: true
-  companyAddress?: true
+  email?: true
   AddressAndContactInfo?: true
   projectInformation?: true
   projectDescription?: true
@@ -158,6 +163,7 @@ export type InvoiceCountAggregateInputType = {
   totalAmount?: true
   mobilePaymentLink?: true
   additionalNote?: true
+  createdAt?: true
   _all?: true
 }
 
@@ -254,7 +260,7 @@ export type InvoiceGroupByOutputType = {
   dueDate: Date | null
   type: $Enums.InvoiceClientType
   companyName: string
-  companyAddress: string | null
+  email: string
   AddressAndContactInfo: string | null
   projectInformation: string | null
   projectDescription: string | null
@@ -263,6 +269,7 @@ export type InvoiceGroupByOutputType = {
   totalAmount: number
   mobilePaymentLink: string | null
   additionalNote: string | null
+  createdAt: Date
   _count: InvoiceCountAggregateOutputType | null
   _avg: InvoiceAvgAggregateOutputType | null
   _sum: InvoiceSumAggregateOutputType | null
@@ -295,7 +302,7 @@ export type InvoiceWhereInput = {
   dueDate?: Prisma.DateTimeNullableFilter<"Invoice"> | Date | string | null
   type?: Prisma.EnumInvoiceClientTypeFilter<"Invoice"> | $Enums.InvoiceClientType
   companyName?: Prisma.StringFilter<"Invoice"> | string
-  companyAddress?: Prisma.StringNullableFilter<"Invoice"> | string | null
+  email?: Prisma.StringFilter<"Invoice"> | string
   AddressAndContactInfo?: Prisma.StringNullableFilter<"Invoice"> | string | null
   projectInformation?: Prisma.StringNullableFilter<"Invoice"> | string | null
   projectDescription?: Prisma.StringNullableFilter<"Invoice"> | string | null
@@ -304,7 +311,9 @@ export type InvoiceWhereInput = {
   totalAmount?: Prisma.FloatFilter<"Invoice"> | number
   mobilePaymentLink?: Prisma.StringNullableFilter<"Invoice"> | string | null
   additionalNote?: Prisma.StringNullableFilter<"Invoice"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Invoice"> | Date | string
   serviceAndItems?: Prisma.ServiceAndItemListRelationFilter
+  businessDatas?: Prisma.BusinessDataListRelationFilter
 }
 
 export type InvoiceOrderByWithRelationInput = {
@@ -314,7 +323,7 @@ export type InvoiceOrderByWithRelationInput = {
   dueDate?: Prisma.SortOrderInput | Prisma.SortOrder
   type?: Prisma.SortOrder
   companyName?: Prisma.SortOrder
-  companyAddress?: Prisma.SortOrderInput | Prisma.SortOrder
+  email?: Prisma.SortOrder
   AddressAndContactInfo?: Prisma.SortOrderInput | Prisma.SortOrder
   projectInformation?: Prisma.SortOrderInput | Prisma.SortOrder
   projectDescription?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -323,7 +332,9 @@ export type InvoiceOrderByWithRelationInput = {
   totalAmount?: Prisma.SortOrder
   mobilePaymentLink?: Prisma.SortOrderInput | Prisma.SortOrder
   additionalNote?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   serviceAndItems?: Prisma.ServiceAndItemOrderByRelationAggregateInput
+  businessDatas?: Prisma.BusinessDataOrderByRelationAggregateInput
 }
 
 export type InvoiceWhereUniqueInput = Prisma.AtLeast<{
@@ -336,7 +347,7 @@ export type InvoiceWhereUniqueInput = Prisma.AtLeast<{
   dueDate?: Prisma.DateTimeNullableFilter<"Invoice"> | Date | string | null
   type?: Prisma.EnumInvoiceClientTypeFilter<"Invoice"> | $Enums.InvoiceClientType
   companyName?: Prisma.StringFilter<"Invoice"> | string
-  companyAddress?: Prisma.StringNullableFilter<"Invoice"> | string | null
+  email?: Prisma.StringFilter<"Invoice"> | string
   AddressAndContactInfo?: Prisma.StringNullableFilter<"Invoice"> | string | null
   projectInformation?: Prisma.StringNullableFilter<"Invoice"> | string | null
   projectDescription?: Prisma.StringNullableFilter<"Invoice"> | string | null
@@ -345,7 +356,9 @@ export type InvoiceWhereUniqueInput = Prisma.AtLeast<{
   totalAmount?: Prisma.FloatFilter<"Invoice"> | number
   mobilePaymentLink?: Prisma.StringNullableFilter<"Invoice"> | string | null
   additionalNote?: Prisma.StringNullableFilter<"Invoice"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Invoice"> | Date | string
   serviceAndItems?: Prisma.ServiceAndItemListRelationFilter
+  businessDatas?: Prisma.BusinessDataListRelationFilter
 }, "id" | "id">
 
 export type InvoiceOrderByWithAggregationInput = {
@@ -355,7 +368,7 @@ export type InvoiceOrderByWithAggregationInput = {
   dueDate?: Prisma.SortOrderInput | Prisma.SortOrder
   type?: Prisma.SortOrder
   companyName?: Prisma.SortOrder
-  companyAddress?: Prisma.SortOrderInput | Prisma.SortOrder
+  email?: Prisma.SortOrder
   AddressAndContactInfo?: Prisma.SortOrderInput | Prisma.SortOrder
   projectInformation?: Prisma.SortOrderInput | Prisma.SortOrder
   projectDescription?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -364,6 +377,7 @@ export type InvoiceOrderByWithAggregationInput = {
   totalAmount?: Prisma.SortOrder
   mobilePaymentLink?: Prisma.SortOrderInput | Prisma.SortOrder
   additionalNote?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   _count?: Prisma.InvoiceCountOrderByAggregateInput
   _avg?: Prisma.InvoiceAvgOrderByAggregateInput
   _max?: Prisma.InvoiceMaxOrderByAggregateInput
@@ -381,7 +395,7 @@ export type InvoiceScalarWhereWithAggregatesInput = {
   dueDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Invoice"> | Date | string | null
   type?: Prisma.EnumInvoiceClientTypeWithAggregatesFilter<"Invoice"> | $Enums.InvoiceClientType
   companyName?: Prisma.StringWithAggregatesFilter<"Invoice"> | string
-  companyAddress?: Prisma.StringNullableWithAggregatesFilter<"Invoice"> | string | null
+  email?: Prisma.StringWithAggregatesFilter<"Invoice"> | string
   AddressAndContactInfo?: Prisma.StringNullableWithAggregatesFilter<"Invoice"> | string | null
   projectInformation?: Prisma.StringNullableWithAggregatesFilter<"Invoice"> | string | null
   projectDescription?: Prisma.StringNullableWithAggregatesFilter<"Invoice"> | string | null
@@ -390,6 +404,7 @@ export type InvoiceScalarWhereWithAggregatesInput = {
   totalAmount?: Prisma.FloatWithAggregatesFilter<"Invoice"> | number
   mobilePaymentLink?: Prisma.StringNullableWithAggregatesFilter<"Invoice"> | string | null
   additionalNote?: Prisma.StringNullableWithAggregatesFilter<"Invoice"> | string | null
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Invoice"> | Date | string
 }
 
 export type InvoiceCreateInput = {
@@ -399,7 +414,7 @@ export type InvoiceCreateInput = {
   dueDate?: Date | string | null
   type: $Enums.InvoiceClientType
   companyName: string
-  companyAddress?: string | null
+  email: string
   AddressAndContactInfo?: string | null
   projectInformation?: string | null
   projectDescription?: string | null
@@ -408,7 +423,9 @@ export type InvoiceCreateInput = {
   totalAmount: number
   mobilePaymentLink?: string | null
   additionalNote?: string | null
+  createdAt?: Date | string
   serviceAndItems?: Prisma.ServiceAndItemCreateNestedManyWithoutInvoiceInput
+  businessDatas?: Prisma.BusinessDataCreateNestedManyWithoutInvoiceInput
 }
 
 export type InvoiceUncheckedCreateInput = {
@@ -418,7 +435,7 @@ export type InvoiceUncheckedCreateInput = {
   dueDate?: Date | string | null
   type: $Enums.InvoiceClientType
   companyName: string
-  companyAddress?: string | null
+  email: string
   AddressAndContactInfo?: string | null
   projectInformation?: string | null
   projectDescription?: string | null
@@ -427,7 +444,9 @@ export type InvoiceUncheckedCreateInput = {
   totalAmount: number
   mobilePaymentLink?: string | null
   additionalNote?: string | null
+  createdAt?: Date | string
   serviceAndItems?: Prisma.ServiceAndItemUncheckedCreateNestedManyWithoutInvoiceInput
+  businessDatas?: Prisma.BusinessDataUncheckedCreateNestedManyWithoutInvoiceInput
 }
 
 export type InvoiceUpdateInput = {
@@ -437,7 +456,7 @@ export type InvoiceUpdateInput = {
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   type?: Prisma.EnumInvoiceClientTypeFieldUpdateOperationsInput | $Enums.InvoiceClientType
   companyName?: Prisma.StringFieldUpdateOperationsInput | string
-  companyAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
   AddressAndContactInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectInformation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -446,7 +465,9 @@ export type InvoiceUpdateInput = {
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   mobilePaymentLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   serviceAndItems?: Prisma.ServiceAndItemUpdateManyWithoutInvoiceNestedInput
+  businessDatas?: Prisma.BusinessDataUpdateManyWithoutInvoiceNestedInput
 }
 
 export type InvoiceUncheckedUpdateInput = {
@@ -456,7 +477,7 @@ export type InvoiceUncheckedUpdateInput = {
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   type?: Prisma.EnumInvoiceClientTypeFieldUpdateOperationsInput | $Enums.InvoiceClientType
   companyName?: Prisma.StringFieldUpdateOperationsInput | string
-  companyAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
   AddressAndContactInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectInformation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -465,7 +486,9 @@ export type InvoiceUncheckedUpdateInput = {
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   mobilePaymentLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   serviceAndItems?: Prisma.ServiceAndItemUncheckedUpdateManyWithoutInvoiceNestedInput
+  businessDatas?: Prisma.BusinessDataUncheckedUpdateManyWithoutInvoiceNestedInput
 }
 
 export type InvoiceCreateManyInput = {
@@ -475,7 +498,7 @@ export type InvoiceCreateManyInput = {
   dueDate?: Date | string | null
   type: $Enums.InvoiceClientType
   companyName: string
-  companyAddress?: string | null
+  email: string
   AddressAndContactInfo?: string | null
   projectInformation?: string | null
   projectDescription?: string | null
@@ -484,6 +507,7 @@ export type InvoiceCreateManyInput = {
   totalAmount: number
   mobilePaymentLink?: string | null
   additionalNote?: string | null
+  createdAt?: Date | string
 }
 
 export type InvoiceUpdateManyMutationInput = {
@@ -493,7 +517,7 @@ export type InvoiceUpdateManyMutationInput = {
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   type?: Prisma.EnumInvoiceClientTypeFieldUpdateOperationsInput | $Enums.InvoiceClientType
   companyName?: Prisma.StringFieldUpdateOperationsInput | string
-  companyAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
   AddressAndContactInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectInformation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -502,6 +526,7 @@ export type InvoiceUpdateManyMutationInput = {
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   mobilePaymentLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type InvoiceUncheckedUpdateManyInput = {
@@ -511,7 +536,7 @@ export type InvoiceUncheckedUpdateManyInput = {
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   type?: Prisma.EnumInvoiceClientTypeFieldUpdateOperationsInput | $Enums.InvoiceClientType
   companyName?: Prisma.StringFieldUpdateOperationsInput | string
-  companyAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
   AddressAndContactInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectInformation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -520,6 +545,7 @@ export type InvoiceUncheckedUpdateManyInput = {
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   mobilePaymentLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type InvoiceCountOrderByAggregateInput = {
@@ -529,7 +555,7 @@ export type InvoiceCountOrderByAggregateInput = {
   dueDate?: Prisma.SortOrder
   type?: Prisma.SortOrder
   companyName?: Prisma.SortOrder
-  companyAddress?: Prisma.SortOrder
+  email?: Prisma.SortOrder
   AddressAndContactInfo?: Prisma.SortOrder
   projectInformation?: Prisma.SortOrder
   projectDescription?: Prisma.SortOrder
@@ -538,6 +564,7 @@ export type InvoiceCountOrderByAggregateInput = {
   totalAmount?: Prisma.SortOrder
   mobilePaymentLink?: Prisma.SortOrder
   additionalNote?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
 }
 
 export type InvoiceAvgOrderByAggregateInput = {
@@ -553,7 +580,7 @@ export type InvoiceMaxOrderByAggregateInput = {
   dueDate?: Prisma.SortOrder
   type?: Prisma.SortOrder
   companyName?: Prisma.SortOrder
-  companyAddress?: Prisma.SortOrder
+  email?: Prisma.SortOrder
   AddressAndContactInfo?: Prisma.SortOrder
   projectInformation?: Prisma.SortOrder
   projectDescription?: Prisma.SortOrder
@@ -562,6 +589,7 @@ export type InvoiceMaxOrderByAggregateInput = {
   totalAmount?: Prisma.SortOrder
   mobilePaymentLink?: Prisma.SortOrder
   additionalNote?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
 }
 
 export type InvoiceMinOrderByAggregateInput = {
@@ -571,7 +599,7 @@ export type InvoiceMinOrderByAggregateInput = {
   dueDate?: Prisma.SortOrder
   type?: Prisma.SortOrder
   companyName?: Prisma.SortOrder
-  companyAddress?: Prisma.SortOrder
+  email?: Prisma.SortOrder
   AddressAndContactInfo?: Prisma.SortOrder
   projectInformation?: Prisma.SortOrder
   projectDescription?: Prisma.SortOrder
@@ -580,6 +608,7 @@ export type InvoiceMinOrderByAggregateInput = {
   totalAmount?: Prisma.SortOrder
   mobilePaymentLink?: Prisma.SortOrder
   additionalNote?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
 }
 
 export type InvoiceSumOrderByAggregateInput = {
@@ -588,13 +617,27 @@ export type InvoiceSumOrderByAggregateInput = {
   totalAmount?: Prisma.SortOrder
 }
 
-export type InvoiceNullableScalarRelationFilter = {
-  is?: Prisma.InvoiceWhereInput | null
-  isNot?: Prisma.InvoiceWhereInput | null
+export type InvoiceScalarRelationFilter = {
+  is?: Prisma.InvoiceWhereInput
+  isNot?: Prisma.InvoiceWhereInput
 }
 
 export type EnumInvoiceClientTypeFieldUpdateOperationsInput = {
   set?: $Enums.InvoiceClientType
+}
+
+export type InvoiceCreateNestedOneWithoutBusinessDatasInput = {
+  create?: Prisma.XOR<Prisma.InvoiceCreateWithoutBusinessDatasInput, Prisma.InvoiceUncheckedCreateWithoutBusinessDatasInput>
+  connectOrCreate?: Prisma.InvoiceCreateOrConnectWithoutBusinessDatasInput
+  connect?: Prisma.InvoiceWhereUniqueInput
+}
+
+export type InvoiceUpdateOneRequiredWithoutBusinessDatasNestedInput = {
+  create?: Prisma.XOR<Prisma.InvoiceCreateWithoutBusinessDatasInput, Prisma.InvoiceUncheckedCreateWithoutBusinessDatasInput>
+  connectOrCreate?: Prisma.InvoiceCreateOrConnectWithoutBusinessDatasInput
+  upsert?: Prisma.InvoiceUpsertWithoutBusinessDatasInput
+  connect?: Prisma.InvoiceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.InvoiceUpdateToOneWithWhereWithoutBusinessDatasInput, Prisma.InvoiceUpdateWithoutBusinessDatasInput>, Prisma.InvoiceUncheckedUpdateWithoutBusinessDatasInput>
 }
 
 export type InvoiceCreateNestedOneWithoutServiceAndItemsInput = {
@@ -603,14 +646,108 @@ export type InvoiceCreateNestedOneWithoutServiceAndItemsInput = {
   connect?: Prisma.InvoiceWhereUniqueInput
 }
 
-export type InvoiceUpdateOneWithoutServiceAndItemsNestedInput = {
+export type InvoiceUpdateOneRequiredWithoutServiceAndItemsNestedInput = {
   create?: Prisma.XOR<Prisma.InvoiceCreateWithoutServiceAndItemsInput, Prisma.InvoiceUncheckedCreateWithoutServiceAndItemsInput>
   connectOrCreate?: Prisma.InvoiceCreateOrConnectWithoutServiceAndItemsInput
   upsert?: Prisma.InvoiceUpsertWithoutServiceAndItemsInput
-  disconnect?: Prisma.InvoiceWhereInput | boolean
-  delete?: Prisma.InvoiceWhereInput | boolean
   connect?: Prisma.InvoiceWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.InvoiceUpdateToOneWithWhereWithoutServiceAndItemsInput, Prisma.InvoiceUpdateWithoutServiceAndItemsInput>, Prisma.InvoiceUncheckedUpdateWithoutServiceAndItemsInput>
+}
+
+export type InvoiceCreateWithoutBusinessDatasInput = {
+  id?: string
+  invoiceNo: string
+  issueDate: Date | string
+  dueDate?: Date | string | null
+  type: $Enums.InvoiceClientType
+  companyName: string
+  email: string
+  AddressAndContactInfo?: string | null
+  projectInformation?: string | null
+  projectDescription?: string | null
+  tax: number
+  subTotal: number
+  totalAmount: number
+  mobilePaymentLink?: string | null
+  additionalNote?: string | null
+  createdAt?: Date | string
+  serviceAndItems?: Prisma.ServiceAndItemCreateNestedManyWithoutInvoiceInput
+}
+
+export type InvoiceUncheckedCreateWithoutBusinessDatasInput = {
+  id?: string
+  invoiceNo: string
+  issueDate: Date | string
+  dueDate?: Date | string | null
+  type: $Enums.InvoiceClientType
+  companyName: string
+  email: string
+  AddressAndContactInfo?: string | null
+  projectInformation?: string | null
+  projectDescription?: string | null
+  tax: number
+  subTotal: number
+  totalAmount: number
+  mobilePaymentLink?: string | null
+  additionalNote?: string | null
+  createdAt?: Date | string
+  serviceAndItems?: Prisma.ServiceAndItemUncheckedCreateNestedManyWithoutInvoiceInput
+}
+
+export type InvoiceCreateOrConnectWithoutBusinessDatasInput = {
+  where: Prisma.InvoiceWhereUniqueInput
+  create: Prisma.XOR<Prisma.InvoiceCreateWithoutBusinessDatasInput, Prisma.InvoiceUncheckedCreateWithoutBusinessDatasInput>
+}
+
+export type InvoiceUpsertWithoutBusinessDatasInput = {
+  update: Prisma.XOR<Prisma.InvoiceUpdateWithoutBusinessDatasInput, Prisma.InvoiceUncheckedUpdateWithoutBusinessDatasInput>
+  create: Prisma.XOR<Prisma.InvoiceCreateWithoutBusinessDatasInput, Prisma.InvoiceUncheckedCreateWithoutBusinessDatasInput>
+  where?: Prisma.InvoiceWhereInput
+}
+
+export type InvoiceUpdateToOneWithWhereWithoutBusinessDatasInput = {
+  where?: Prisma.InvoiceWhereInput
+  data: Prisma.XOR<Prisma.InvoiceUpdateWithoutBusinessDatasInput, Prisma.InvoiceUncheckedUpdateWithoutBusinessDatasInput>
+}
+
+export type InvoiceUpdateWithoutBusinessDatasInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  invoiceNo?: Prisma.StringFieldUpdateOperationsInput | string
+  issueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  type?: Prisma.EnumInvoiceClientTypeFieldUpdateOperationsInput | $Enums.InvoiceClientType
+  companyName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  AddressAndContactInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  projectInformation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  projectDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tax?: Prisma.FloatFieldUpdateOperationsInput | number
+  subTotal?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  mobilePaymentLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  additionalNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceAndItems?: Prisma.ServiceAndItemUpdateManyWithoutInvoiceNestedInput
+}
+
+export type InvoiceUncheckedUpdateWithoutBusinessDatasInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  invoiceNo?: Prisma.StringFieldUpdateOperationsInput | string
+  issueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  type?: Prisma.EnumInvoiceClientTypeFieldUpdateOperationsInput | $Enums.InvoiceClientType
+  companyName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  AddressAndContactInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  projectInformation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  projectDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tax?: Prisma.FloatFieldUpdateOperationsInput | number
+  subTotal?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  mobilePaymentLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  additionalNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceAndItems?: Prisma.ServiceAndItemUncheckedUpdateManyWithoutInvoiceNestedInput
 }
 
 export type InvoiceCreateWithoutServiceAndItemsInput = {
@@ -620,7 +757,7 @@ export type InvoiceCreateWithoutServiceAndItemsInput = {
   dueDate?: Date | string | null
   type: $Enums.InvoiceClientType
   companyName: string
-  companyAddress?: string | null
+  email: string
   AddressAndContactInfo?: string | null
   projectInformation?: string | null
   projectDescription?: string | null
@@ -629,6 +766,8 @@ export type InvoiceCreateWithoutServiceAndItemsInput = {
   totalAmount: number
   mobilePaymentLink?: string | null
   additionalNote?: string | null
+  createdAt?: Date | string
+  businessDatas?: Prisma.BusinessDataCreateNestedManyWithoutInvoiceInput
 }
 
 export type InvoiceUncheckedCreateWithoutServiceAndItemsInput = {
@@ -638,7 +777,7 @@ export type InvoiceUncheckedCreateWithoutServiceAndItemsInput = {
   dueDate?: Date | string | null
   type: $Enums.InvoiceClientType
   companyName: string
-  companyAddress?: string | null
+  email: string
   AddressAndContactInfo?: string | null
   projectInformation?: string | null
   projectDescription?: string | null
@@ -647,6 +786,8 @@ export type InvoiceUncheckedCreateWithoutServiceAndItemsInput = {
   totalAmount: number
   mobilePaymentLink?: string | null
   additionalNote?: string | null
+  createdAt?: Date | string
+  businessDatas?: Prisma.BusinessDataUncheckedCreateNestedManyWithoutInvoiceInput
 }
 
 export type InvoiceCreateOrConnectWithoutServiceAndItemsInput = {
@@ -672,7 +813,7 @@ export type InvoiceUpdateWithoutServiceAndItemsInput = {
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   type?: Prisma.EnumInvoiceClientTypeFieldUpdateOperationsInput | $Enums.InvoiceClientType
   companyName?: Prisma.StringFieldUpdateOperationsInput | string
-  companyAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
   AddressAndContactInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectInformation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -681,6 +822,8 @@ export type InvoiceUpdateWithoutServiceAndItemsInput = {
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   mobilePaymentLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessDatas?: Prisma.BusinessDataUpdateManyWithoutInvoiceNestedInput
 }
 
 export type InvoiceUncheckedUpdateWithoutServiceAndItemsInput = {
@@ -690,7 +833,7 @@ export type InvoiceUncheckedUpdateWithoutServiceAndItemsInput = {
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   type?: Prisma.EnumInvoiceClientTypeFieldUpdateOperationsInput | $Enums.InvoiceClientType
   companyName?: Prisma.StringFieldUpdateOperationsInput | string
-  companyAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
   AddressAndContactInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectInformation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   projectDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -699,6 +842,8 @@ export type InvoiceUncheckedUpdateWithoutServiceAndItemsInput = {
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   mobilePaymentLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessDatas?: Prisma.BusinessDataUncheckedUpdateManyWithoutInvoiceNestedInput
 }
 
 
@@ -708,10 +853,12 @@ export type InvoiceUncheckedUpdateWithoutServiceAndItemsInput = {
 
 export type InvoiceCountOutputType = {
   serviceAndItems: number
+  businessDatas: number
 }
 
 export type InvoiceCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   serviceAndItems?: boolean | InvoiceCountOutputTypeCountServiceAndItemsArgs
+  businessDatas?: boolean | InvoiceCountOutputTypeCountBusinessDatasArgs
 }
 
 /**
@@ -731,6 +878,13 @@ export type InvoiceCountOutputTypeCountServiceAndItemsArgs<ExtArgs extends runti
   where?: Prisma.ServiceAndItemWhereInput
 }
 
+/**
+ * InvoiceCountOutputType without action
+ */
+export type InvoiceCountOutputTypeCountBusinessDatasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BusinessDataWhereInput
+}
+
 
 export type InvoiceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -739,7 +893,7 @@ export type InvoiceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   dueDate?: boolean
   type?: boolean
   companyName?: boolean
-  companyAddress?: boolean
+  email?: boolean
   AddressAndContactInfo?: boolean
   projectInformation?: boolean
   projectDescription?: boolean
@@ -748,7 +902,9 @@ export type InvoiceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   totalAmount?: boolean
   mobilePaymentLink?: boolean
   additionalNote?: boolean
+  createdAt?: boolean
   serviceAndItems?: boolean | Prisma.Invoice$serviceAndItemsArgs<ExtArgs>
+  businessDatas?: boolean | Prisma.Invoice$businessDatasArgs<ExtArgs>
   _count?: boolean | Prisma.InvoiceCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["invoice"]>
 
@@ -759,7 +915,7 @@ export type InvoiceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   dueDate?: boolean
   type?: boolean
   companyName?: boolean
-  companyAddress?: boolean
+  email?: boolean
   AddressAndContactInfo?: boolean
   projectInformation?: boolean
   projectDescription?: boolean
@@ -768,6 +924,7 @@ export type InvoiceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   totalAmount?: boolean
   mobilePaymentLink?: boolean
   additionalNote?: boolean
+  createdAt?: boolean
 }, ExtArgs["result"]["invoice"]>
 
 export type InvoiceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -777,7 +934,7 @@ export type InvoiceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   dueDate?: boolean
   type?: boolean
   companyName?: boolean
-  companyAddress?: boolean
+  email?: boolean
   AddressAndContactInfo?: boolean
   projectInformation?: boolean
   projectDescription?: boolean
@@ -786,6 +943,7 @@ export type InvoiceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   totalAmount?: boolean
   mobilePaymentLink?: boolean
   additionalNote?: boolean
+  createdAt?: boolean
 }, ExtArgs["result"]["invoice"]>
 
 export type InvoiceSelectScalar = {
@@ -795,7 +953,7 @@ export type InvoiceSelectScalar = {
   dueDate?: boolean
   type?: boolean
   companyName?: boolean
-  companyAddress?: boolean
+  email?: boolean
   AddressAndContactInfo?: boolean
   projectInformation?: boolean
   projectDescription?: boolean
@@ -804,11 +962,13 @@ export type InvoiceSelectScalar = {
   totalAmount?: boolean
   mobilePaymentLink?: boolean
   additionalNote?: boolean
+  createdAt?: boolean
 }
 
-export type InvoiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "invoiceNo" | "issueDate" | "dueDate" | "type" | "companyName" | "companyAddress" | "AddressAndContactInfo" | "projectInformation" | "projectDescription" | "tax" | "subTotal" | "totalAmount" | "mobilePaymentLink" | "additionalNote", ExtArgs["result"]["invoice"]>
+export type InvoiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "invoiceNo" | "issueDate" | "dueDate" | "type" | "companyName" | "email" | "AddressAndContactInfo" | "projectInformation" | "projectDescription" | "tax" | "subTotal" | "totalAmount" | "mobilePaymentLink" | "additionalNote" | "createdAt", ExtArgs["result"]["invoice"]>
 export type InvoiceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   serviceAndItems?: boolean | Prisma.Invoice$serviceAndItemsArgs<ExtArgs>
+  businessDatas?: boolean | Prisma.Invoice$businessDatasArgs<ExtArgs>
   _count?: boolean | Prisma.InvoiceCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type InvoiceIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -818,6 +978,7 @@ export type $InvoicePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   name: "Invoice"
   objects: {
     serviceAndItems: Prisma.$ServiceAndItemPayload<ExtArgs>[]
+    businessDatas: Prisma.$BusinessDataPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -826,7 +987,7 @@ export type $InvoicePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     dueDate: Date | null
     type: $Enums.InvoiceClientType
     companyName: string
-    companyAddress: string | null
+    email: string
     AddressAndContactInfo: string | null
     projectInformation: string | null
     projectDescription: string | null
@@ -835,6 +996,7 @@ export type $InvoicePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     totalAmount: number
     mobilePaymentLink: string | null
     additionalNote: string | null
+    createdAt: Date
   }, ExtArgs["result"]["invoice"]>
   composites: {}
 }
@@ -1230,6 +1392,7 @@ readonly fields: InvoiceFieldRefs;
 export interface Prisma__InvoiceClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   serviceAndItems<T extends Prisma.Invoice$serviceAndItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Invoice$serviceAndItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ServiceAndItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  businessDatas<T extends Prisma.Invoice$businessDatasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Invoice$businessDatasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BusinessDataPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1265,7 +1428,7 @@ export interface InvoiceFieldRefs {
   readonly dueDate: Prisma.FieldRef<"Invoice", 'DateTime'>
   readonly type: Prisma.FieldRef<"Invoice", 'InvoiceClientType'>
   readonly companyName: Prisma.FieldRef<"Invoice", 'String'>
-  readonly companyAddress: Prisma.FieldRef<"Invoice", 'String'>
+  readonly email: Prisma.FieldRef<"Invoice", 'String'>
   readonly AddressAndContactInfo: Prisma.FieldRef<"Invoice", 'String'>
   readonly projectInformation: Prisma.FieldRef<"Invoice", 'String'>
   readonly projectDescription: Prisma.FieldRef<"Invoice", 'String'>
@@ -1274,6 +1437,7 @@ export interface InvoiceFieldRefs {
   readonly totalAmount: Prisma.FieldRef<"Invoice", 'Float'>
   readonly mobilePaymentLink: Prisma.FieldRef<"Invoice", 'String'>
   readonly additionalNote: Prisma.FieldRef<"Invoice", 'String'>
+  readonly createdAt: Prisma.FieldRef<"Invoice", 'DateTime'>
 }
     
 
@@ -1683,6 +1847,30 @@ export type Invoice$serviceAndItemsArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.ServiceAndItemScalarFieldEnum | Prisma.ServiceAndItemScalarFieldEnum[]
+}
+
+/**
+ * Invoice.businessDatas
+ */
+export type Invoice$businessDatasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BusinessData
+   */
+  select?: Prisma.BusinessDataSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BusinessData
+   */
+  omit?: Prisma.BusinessDataOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BusinessDataInclude<ExtArgs> | null
+  where?: Prisma.BusinessDataWhereInput
+  orderBy?: Prisma.BusinessDataOrderByWithRelationInput | Prisma.BusinessDataOrderByWithRelationInput[]
+  cursor?: Prisma.BusinessDataWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BusinessDataScalarFieldEnum | Prisma.BusinessDataScalarFieldEnum[]
 }
 
 /**

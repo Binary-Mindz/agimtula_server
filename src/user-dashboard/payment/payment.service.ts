@@ -1,11 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import { BadRequestException, Injectable } from '@nestjs/common';
-// import { UpdatePaymentDto } from './dto/update-payment.dto';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { StripeService } from './stripe.service';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 import Stripe from 'stripe';
 import { cResponseData } from 'src/common/cResponse';
+import {
+  NotFoundAppException,
+  ValidationException,
+  PaymentException,
+  ConflictAppException,
+} from 'src/common/app-exceptions';
 
 @Injectable()
 export class PaymentService {
@@ -31,19 +36,33 @@ export class PaymentService {
       });
 
       if (!plan || !plan.isActive) {
-        throw new BadRequestException('Invalid subscription plan');
+        throw new NotFoundAppException(
+          'Subscription plan not found or inactive',
+        );
       }
 
       const pricing = plan.packagePricing[0];
       if (!pricing) {
-        throw new BadRequestException(
-          'Pricing not found for selected billing period',
+        throw new ValidationException(
+          'Pricing not available for selected billing period',
         );
       }
 
-      // 🔑 Stripe Price ID must be stored in DB
       if (!pricing.stripePriceId) {
-        throw new BadRequestException('Stripe price not configured');
+        throw new ValidationException('Payment configuration incomplete');
+      }
+
+      const runningPlan = await this.prisma.userSubscriptionPlan.findFirst({
+        where: {
+          UserId: userId,
+          expiredAt: { gt: new Date() },
+        },
+      });
+
+      if (runningPlan) {
+        throw new ConflictAppException(
+          'You already have an active subscription',
+        );
       }
 
       const payment = await this.prisma.userSubscriptionPlanHistory.create({
@@ -115,12 +134,15 @@ export class PaymentService {
         checkoutUrl: session.url,
         data: session.url,
       });
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to create checkout session',
-        error: 'Failed to create checkout session',
-      });
+      if (
+        error instanceof NotFoundAppException ||
+        error instanceof ValidationException ||
+        error instanceof ConflictAppException
+      ) {
+        throw error;
+      }
+      throw new PaymentException('Payment processing failed');
     }
   }
 
@@ -141,19 +163,20 @@ export class PaymentService {
       });
 
       if (!plan || !plan.isActive) {
-        throw new BadRequestException('Invalid subscription plan');
+        throw new NotFoundAppException(
+          'Subscription plan not found or inactive',
+        );
       }
 
       const pricing = plan.packagePricing[0];
       if (!pricing) {
-        throw new BadRequestException(
-          'Pricing not found for selected billing period',
+        throw new ValidationException(
+          'Pricing not available for selected billing period',
         );
       }
 
-      // 🔑 Stripe Price ID must be stored in DB
       if (!pricing.stripePriceId) {
-        throw new BadRequestException('Stripe price not configured');
+        throw new ValidationException('Payment configuration incomplete');
       }
 
       // Find existing purchase/history record
@@ -171,7 +194,9 @@ export class PaymentService {
         });
 
       if (!existingHistory) {
-        throw new BadRequestException('No existing purchase found to upgrade');
+        throw new NotFoundAppException(
+          'No existing subscription found to upgrade',
+        );
       }
 
       // Update existing history record
@@ -256,10 +281,13 @@ export class PaymentService {
       });
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to upgrade plan',
-        error: 'Failed to upgrade plan',
-      });
+      if (
+        error instanceof NotFoundAppException ||
+        error instanceof ValidationException
+      ) {
+        throw error;
+      }
+      throw new PaymentException('Plan upgrade failed');
     }
   }
 

@@ -5,8 +5,6 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { User } from 'src/auth/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 import { TransactionQueryDto } from './dto/TransactionQueryDto';
-import { ApiQuery } from '@nestjs/swagger';
-import { TransactionStatus } from 'prisma/generated/prisma/enums';
 
 @Controller('accountant-dashboard')
 export class AccountantDashboardController {
@@ -22,7 +20,6 @@ export class AccountantDashboardController {
     @User() user: jwtPayload,
     @Query() query: TransactionQueryDto
   ) {
-
     return await this.accountantDashboardService.findAll(
       userId,
       user.sub,

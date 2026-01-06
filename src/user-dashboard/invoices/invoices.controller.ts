@@ -6,11 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { InvoicesService } from './invoices.service';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
+import { ApiQuery } from '@nestjs/swagger';
 
 @Controller('invoices')
 export class InvoicesController {
@@ -24,8 +26,13 @@ export class InvoicesController {
 
   @Roles('USER')
   @Get()
-  findAll() {
-    return this.invoicesService.findAll();
+  @ApiQuery({
+    name: 'search',
+    type: String,
+    required: false,
+  })
+  findAll(@Query('search') search: string) {
+    return this.invoicesService.findAll(search);
   }
 
   @Roles('USER')

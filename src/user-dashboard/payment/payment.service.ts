@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { BadRequestException, Injectable } from '@nestjs/common';
 // import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { PrismaService } from 'src/config/database/prisma.service';

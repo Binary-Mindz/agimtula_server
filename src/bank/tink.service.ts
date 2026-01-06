@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-import { Injectable } from '@nestjs/common';
+
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
 
 export interface TransactionRow {
@@ -13,7 +13,7 @@ export interface TransactionRow {
   linkedInvoiceId?: string;
   attachments?: string[];
   from?: string;
-  accountId?: string; // Only accountId from transaction
+  accountId?: string;
 }
 
 interface TokenData {
@@ -68,7 +68,7 @@ interface Account {
 export class TinkService {
   private apiUrl = 'https://api.tink.com';
 
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async getBankName(bankId: string, accessToken: string): Promise<string> {
     try {
@@ -77,7 +77,7 @@ export class TinkService {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      
+
       if (res.ok) {
         const bankData = await res.json();
         return bankData.displayName || 'Tink Bank';
@@ -88,9 +88,7 @@ export class TinkService {
     return 'Tink Bank';
   }
 
-  /**
-   * Get or create bank account
-   */
+
   async getOrCreateBank(
     account: Account,
   ): Promise<string> {
@@ -123,9 +121,7 @@ export class TinkService {
     return newBank.id;
   }
 
-  /**
-   * Match account ID with account number
-   */
+
   async matchAccountIdWithNumber(accountId: string, accountNumber: string): Promise<void> {
     await this.prisma.bank.updateMany({
       where: {
@@ -138,9 +134,7 @@ export class TinkService {
     });
   }
 
-  /**
-   * Update bank last sync time
-   */
+
   async updateBankLastSync(bankId: string): Promise<void> {
     await this.prisma.bank.update({
       where: { id: bankId },
@@ -148,47 +142,42 @@ export class TinkService {
     });
   }
 
-  /**
-   * Save transactions to database without duplicates
-   */
-  async saveTransactions(
-    transactions: TransactionRow[],
-  ): Promise<number> {
-    let savedCount = 0;
+  // async saveTransactions(
+  //   transactions: TransactionRow[],
+  // ): Promise<number> {
+  //   let savedCount = 0;
 
-    for (const transaction of transactions) {
-      try {
-        await this.prisma.transaction.create({
-          data: {
-            date: new Date(transaction.date),
-            description: transaction.description,
-            amount: transaction.amount,
-            currency: transaction.currency,
-            status: transaction.status,
-            source: 'Bank',
-            attachments: transaction.attachments || [],
-            accountId: transaction.accountId, // Store accountId from transaction
-          },
-        });
-        savedCount++;
-      } catch (error) {
-        // Skip duplicate transactions (unique constraint violation)
-        if (error.code === 'P2002') {
-          console.log(
-            `Skipping duplicate transaction: ${transaction.description}`,
-          );
-          continue;
-        }
-        throw error;
-      }
-    }
+  //   for (const transaction of transactions) {
+  //     try {
+  //       await this.prisma.transaction.create({
+  //         data: {
+  //           date: new Date(transaction.date),
+  //           description: transaction.description,
+  //           amount: transaction.amount,
+  //           currency: transaction.currency,
+  //           status: transaction.status,
+  //           source: 'Bank',
+  //           attachments: transaction.attachments || [],
+  //           accountId: transaction.accountId, // Store accountId from transaction
+  //         },
+  //       });
+  //       savedCount++;
+  //     } catch (error) {
+  //       // Skip duplicate transactions (unique constraint violation)
+  //       if (error.code === 'P2002') {
+  //         console.log(
+  //           `Skipping duplicate transaction: ${transaction.description}`,
+  //         );
+  //         continue;
+  //       }
+  //       throw error;
+  //     }
+  //   }
 
-    return savedCount;
-  }
+  //   return savedCount;
+  // }
 
-  /**
-   * Exchange authorization code for access token
-   */
+
   async exchangeToken(code: string): Promise<TokenData> {
     const clientId =
       process.env.TINK_CLIENT_ID || 'b84ee12c366a4eaf97b1c376dd25934d';
@@ -232,9 +221,6 @@ export class TinkService {
     return (await res.json()) as TokenData;
   }
 
-  /**
-   * Fetch transactions using access token and return as TransactionRow[]
-   */
   async getTransactions(
     accessToken: string,
   ): Promise<TransactionRow[]> {
@@ -254,9 +240,6 @@ export class TinkService {
 
     const data = (await res.json()) as TransactionData;
 
-    // console.log(JSON.stringify(data));
-
-    // Convert to TransactionRow format
     return (
       data.transactions?.map((trx: Transaction) => {
         const { amount, currency } = this.parseTransactionAmount(trx);
@@ -268,15 +251,13 @@ export class TinkService {
           currency,
           status: 'UNMATCHED' as const,
           from: 'Tink Bank',
-          accountId: trx.accountId, // Store accountId directly from transaction
+          accountId: trx.accountId,
         };
       }) || []
     );
   }
 
-  /**
-   * Fetch transactions with account info using access token
-   */
+
   async getTransactionsWithAccountInfo(
     accessToken: string,
   ): Promise<{ transactions: TransactionRow[]; accounts: any[] }> {
@@ -287,9 +268,7 @@ export class TinkService {
     return { transactions, accounts: accountsData?.accounts || [] };
   }
 
-  /**
-   * Parse transaction amount
-   */
+
   parseTransactionAmount(transaction: Transaction): {
     amount: number;
     currency: string;
@@ -302,9 +281,7 @@ export class TinkService {
     };
   }
 
-  /**
-   * Format transactions for display
-   */
+
   formatTransactions(transactions: Transaction[]) {
     return transactions.map((trx) => {
       const { amount, currency } = this.parseTransactionAmount(trx);
@@ -331,7 +308,7 @@ export class TinkService {
       }
 
       const data = await res.json();
-      console.log('Connected accounts:', data.accounts);
+      console.log('data from fetchConnectedAccounts', data);
 
       return {
         accounts: data.accounts.map((account: any) => ({
@@ -351,4 +328,50 @@ export class TinkService {
       console.error('Error fetching accounts:', err.message);
     }
   }
+
+  async storeMyTransaction(userId: string, transactions: TransactionRow[], accessToken: string) {
+    try {
+      const userExit = await this.prisma.user.findFirst({
+        where: {
+          id: userId
+        }
+      })
+      if (!userExit) {
+        throw new BadRequestException('User not found');
+      }
+      await this.prisma.user.update({
+        where: {
+          id: userId
+        },
+        data: {
+          tinkAccessToken: accessToken
+        }
+      })
+      await this.prisma.transaction.createMany({
+        data: transactions.map(transaction => ({
+          date: new Date(transaction.date),
+          description: transaction.description,
+          amount: transaction.amount,
+          currency: transaction.currency,
+          status: transaction.status,
+          source: 'Tink Bank',
+          attachments: transaction.attachments || [],
+          accountId: transaction.accountId,
+          userId
+        })),
+        skipDuplicates: true,
+      });
+      return cResponseData({
+        message: 'Tink Bank Transactions stored successfully'
+      });
+    } catch (error) {
+      console.error('Error storing transactions:', error);
+      throw new BadRequestException('Failed to store transactions');
+    }
+  }
 }
+
+
+
+
+

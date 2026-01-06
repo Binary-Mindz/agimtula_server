@@ -60,8 +60,7 @@ export const ModelName = {
   userSubscriptionPlan: 'userSubscriptionPlan',
   userSubscriptionPlanHistory: 'userSubscriptionPlanHistory',
   subscriptionPlanPaymentStatus: 'subscriptionPlanPaymentStatus',
-  Invoice: 'Invoice',
-  ServiceAndItem: 'ServiceAndItem',
+  Loggers: 'Loggers',
   Module: 'Module',
   UserModuleAccess: 'UserModuleAccess',
   Profile: 'Profile',
@@ -149,7 +148,8 @@ export const TransactionScalarFieldEnum = {
   source: 'source',
   attachments: 'attachments',
   accountId: 'accountId',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  userId: 'userId'
 } as const
 
 export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
@@ -257,37 +257,15 @@ export const SubscriptionPlanPaymentStatusScalarFieldEnum = {
 export type SubscriptionPlanPaymentStatusScalarFieldEnum = (typeof SubscriptionPlanPaymentStatusScalarFieldEnum)[keyof typeof SubscriptionPlanPaymentStatusScalarFieldEnum]
 
 
-export const InvoiceScalarFieldEnum = {
+export const LoggersScalarFieldEnum = {
   id: 'id',
-  invoiceNo: 'invoiceNo',
-  issueDate: 'issueDate',
-  dueDate: 'dueDate',
-  type: 'type',
-  companyName: 'companyName',
-  companyAddress: 'companyAddress',
-  AddressAndContactInfo: 'AddressAndContactInfo',
-  projectInformation: 'projectInformation',
-  projectDescription: 'projectDescription',
-  tax: 'tax',
-  subTotal: 'subTotal',
-  totalAmount: 'totalAmount',
-  mobilePaymentLink: 'mobilePaymentLink',
-  additionalNote: 'additionalNote'
+  level: 'level',
+  logpriority: 'logpriority',
+  information: 'information',
+  timestamp: 'timestamp'
 } as const
 
-export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
-
-
-export const ServiceAndItemScalarFieldEnum = {
-  id: 'id',
-  description: 'description',
-  qty: 'qty',
-  rate: 'rate',
-  totalAmount: 'totalAmount',
-  invoiceId: 'invoiceId'
-} as const
-
-export type ServiceAndItemScalarFieldEnum = (typeof ServiceAndItemScalarFieldEnum)[keyof typeof ServiceAndItemScalarFieldEnum]
+export type LoggersScalarFieldEnum = (typeof LoggersScalarFieldEnum)[keyof typeof LoggersScalarFieldEnum]
 
 
 export const ModuleScalarFieldEnum = {
@@ -527,7 +505,8 @@ export const UserScalarFieldEnum = {
   created_at: 'created_at',
   updated_at: 'updated_at',
   haveAccountant: 'haveAccountant',
-  accountantId: 'accountantId'
+  accountantId: 'accountantId',
+  tinkAccessToken: 'tinkAccessToken'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]

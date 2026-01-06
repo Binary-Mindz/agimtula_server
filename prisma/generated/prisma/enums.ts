@@ -35,12 +35,23 @@ export const PaymentStatus = {
 export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
 
 
-export const InvoiceClientType = {
-  CLIENT: 'CLIENT',
-  BUSINESS: 'BUSINESS'
+export const LogType = {
+  ERROR: 'ERROR',
+  SUCCESS: 'SUCCESS',
+  WARNING: 'WARNING',
+  INFO: 'INFO'
 } as const
 
-export type InvoiceClientType = (typeof InvoiceClientType)[keyof typeof InvoiceClientType]
+export type LogType = (typeof LogType)[keyof typeof LogType]
+
+
+export const logpriority = {
+  HIGH: 'HIGH',
+  MEDIUM: 'MEDIUM',
+  LOW: 'LOW'
+} as const
+
+export type logpriority = (typeof logpriority)[keyof typeof logpriority]
 
 
 export const TwoFAPurpose = {

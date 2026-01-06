@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { DatabaseModule } from './config/database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { AdminDashboardModule } from './admin-dashboard/admin-dashboard.module';
-import { AccountantDashboardModule } from './accountant-dashboard/accountant-dashboard.module';
+
 import { UserDashboardModule } from './user-dashboard/user-dashboard.module';
 import { SmtpMailModule } from './config/smtp-mail/smtp-mail.module';
 import { ConfigModule } from '@nestjs/config';
@@ -20,6 +20,8 @@ import { BankDataModule } from './admin-dashboard/bank-data/bank-data.module';
 import { QuotationsModule } from './quotations/quotations.module';
 import { WebhookController } from './webhook/webhook.controller';
 import { PaymentsModule } from './admin-dashboard/payments/payments.module';
+import { LoggerModule } from './logger/logger.module';
+import { AccountantDashboardModule } from './accountant-dashboard/accountant-dashboard.module';
 
 
 @Module({
@@ -30,7 +32,6 @@ import { PaymentsModule } from './admin-dashboard/payments/payments.module';
     DatabaseModule,
     AuthModule,
     AdminDashboardModule,
-    AccountantDashboardModule,
     UserDashboardModule,
     SmtpMailModule,
     MileageModule,
@@ -41,6 +42,8 @@ import { PaymentsModule } from './admin-dashboard/payments/payments.module';
     BankDataModule,
     QuotationsModule,
     PaymentsModule,
+    LoggerModule,
+    AccountantDashboardModule,
     // PaymentsModule
   ],
   controllers: [AppController, WebhookController],
@@ -52,4 +55,4 @@ import { PaymentsModule } from './admin-dashboard/payments/payments.module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }

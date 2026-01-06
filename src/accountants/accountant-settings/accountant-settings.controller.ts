@@ -31,4 +31,11 @@ export class AccountantSettingsController {
   async getClients(@User() acc: jwtPayload) {
     return await this.manageClients.usersWithMe(acc.sub);
   }
+
+  @Post('manage-clients/remove-client/:userId')
+  @Roles('ACCOUNTANT')
+  @ApiParam({ name: 'userId', type: 'string' })
+  async removeFromMe(@User() acc: jwtPayload, @Param('userId') userId: string) {
+    return await this.manageClients.removeFromMe(userId, acc.sub);
+  }
 }

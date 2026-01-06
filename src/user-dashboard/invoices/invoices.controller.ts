@@ -20,8 +20,14 @@ export class InvoicesController {
 
   @Post()
   @Roles('USER')
-  create(@Body() createInvoiceDto: CreateInvoiceDto) {
-    return this.invoicesService.create(createInvoiceDto);
+  async create(@Body() createInvoiceDto: CreateInvoiceDto) {
+    return await this.invoicesService.create(createInvoiceDto);
+  }
+
+  @Post('save-to-draft')
+  @Roles('USER')
+  async saveToDraft(@Body() dto: CreateInvoiceDto) {
+    return await this.invoicesService.saveToDraft(dto);
   }
 
   @Roles('USER')
@@ -31,8 +37,8 @@ export class InvoicesController {
     type: String,
     required: false,
   })
-  findAll(@Query('search') search: string) {
-    return this.invoicesService.findAll(search);
+  async findAll(@Query('search') search: string) {
+    return await this.invoicesService.findAll(search);
   }
 
   @Roles('USER')

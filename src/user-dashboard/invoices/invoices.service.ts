@@ -90,6 +90,78 @@ export class InvoicesService {
     }
   }
 
+
+  async saveToDraft(dto: CreateInvoiceDto) {
+    try {
+      const {
+        serviceAndItems,
+        businessDatas,
+        addressAndContactInfo,
+        issueDate,
+        dueDate,
+        ...invoiceData
+      } = dto;
+
+      const invoice = await this.prisma.invoice.findFirst({
+        where: {
+          invoiceNo: {
+            equals: dto.invoiceNo,
+            mode: 'insensitive',
+          },
+        },
+      });
+
+      if (invoice) {
+        return cResponseData({
+          message: 'Invoice already exists',
+          success: false,
+          error: 'Invoice already exists',
+        });
+      }
+
+      // Convert date strings to Date objects
+      const issueDateObj = new Date(issueDate);
+      const dueDateObj = dueDate ? new Date(dueDate) : null;
+
+      const newInvoice = await this.prisma.invoice.create({
+        data: {
+          ...invoiceData,
+          issueDate: issueDateObj,
+          dueDate: dueDateObj,
+          AddressAndContactInfo: addressAndContactInfo,
+          serviceAndItems: {
+            create: serviceAndItems.map((item) => ({
+              description: item.description,
+              qty: item.qty,
+              rate: item.rate,
+              totalAmount: item.totalAmount,
+            })),
+          },
+          businessDatas: {
+            create: businessDatas?.map((data) => ({
+              businessIdLabel: data.businessIdLabel,
+              businessIdValue: data.businessIdValue,
+            })),
+          },
+          isDrafted: true,
+        },
+        include: {
+          serviceAndItems: true,
+        },
+      });
+
+      return cResponseData({
+        message: 'Invoice saved to draft successfully',
+        data: newInvoice,
+      });
+    } catch (error) {
+      return cResponseData({
+        message: 'Failed to save invoice to draft',
+        error: 'Failed to save invoice to draft',
+        success: false,
+      });
+    }
+  }
   async findAll(search: string) {
     const query = {};
 

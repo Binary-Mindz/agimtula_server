@@ -20,6 +20,8 @@ model Invoice {
     additionalNote String?
     businessDatas  BusinessData[]
 
+    isDrafted Boolean @default(false)
+
     createdAt DateTime @default(now())
 }
 

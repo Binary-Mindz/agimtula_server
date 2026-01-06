@@ -109,6 +109,7 @@ export class AuthService {
         firstName: user.profile?.firstName,
         lastName: user.profile?.lastName,
         email: user.email?.email,
+
       };
     } catch (error) {
       console.log(error);

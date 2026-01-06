@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-redundant-type-constituents */
 
-import { Controller, Get, Query, Post, Body, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Query, Post, Body, HttpStatus, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { TinkService } from './tink.service';
 import { TransactionService } from 'src/user-dashboard/bank-transaction/transaction.service';
@@ -15,6 +15,11 @@ import {
   TokenResponseDto,
   TransactionResponseDto,
 } from './dto/tink.dto';
+import { User } from 'src/auth/decorators/user.decorator';
+import { jwtPayload } from 'src/auth/types/jwt-payload';
+import { AuthGuard } from 'src/auth/guard/auth.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+
 
 @ApiTags('Tink Bank Integration')
 @Controller('tink')
@@ -36,7 +41,7 @@ export class TinkController {
     description: 'Authorization URL generated successfully',
     type: ConnectBankResponseDto,
   })
-  connectBank(@Body() dto: ConnectBankDto): ConnectBankResponseDto {
+  connectBank(@Body() dto: ConnectBankDto, @User() user: jwtPayload,): ConnectBankResponseDto {
     const market = dto.market || 'NL';
     const locale = dto.locale || 'en_US';
 
@@ -46,7 +51,7 @@ export class TinkController {
       process.env.TINK_REDIRECT_URI || 'http://localhost:3000/callback';
 
     const authorizationUrl = `https://link.tink.com/1.0/transactions/connect-accounts?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&market=${market}&locale=${locale}`;
-
+    console.log({ user });
     return {
       authorizationUrl,
       message: 'Open this URL in your browser to connect your bank account',
@@ -90,8 +95,7 @@ export class TinkController {
   })
   async callback(
     @Query('code') code: string,
-    @Query('credentialsId') credentialsId: string,
-  ): Promise<TinkCallbackResponseDto | TinkErrorResponseDto> {
+  ) {
     console.log(code);
     if (!code) {
       return {
@@ -104,40 +108,8 @@ export class TinkController {
 
       const tokenData = await this.tinkService.exchangeToken(code);
       const accessToken = tokenData.access_token;
+      return accessToken
 
-      const transactions = await this.tinkService.getTransactions(accessToken);
-      console.table(transactions)
-      // Store in database
-      await this.transactionService.storeTransactions(transactions);
-
-      // 3️⃣ Log to server console
-      console.log('===== TINK TRANSACTIONS =====');
-      console.log('CredentialsId:', credentialsId);
-      console.log('Access Token:', accessToken);
-      console.log(`Found ${transactions.length} transactions\n`);
-
-      transactions.forEach((trx, idx) => {
-        console.log(`[${idx + 1}] ${trx.description}`);
-        console.log(`${trx.amount} ${trx.currency} - ${trx.date}\n`);
-      });
-
-      console.log('==============================\n');
-
-      // 4️⃣ Return success response with transaction data
-      const formattedTransactions = transactions.map((trx) => ({
-        description: trx.description,
-        amount: trx.amount.toFixed(2),
-        currency: trx.currency,
-        date: trx.date,
-      }));
-
-      return {
-        success: true,
-        message: 'Transactions fetched successfully',
-        credentialsId,
-        transactionCount: transactions.length,
-        transactions: formattedTransactions,
-      };
     } catch (err: unknown) {
       console.error('Tink callback error:', err);
       return {
@@ -177,8 +149,9 @@ export class TinkController {
     }
   }
 
-  @Post('get-transactions')
-  @Public()
+  @Post('stored-my-transactions')
+  @UseGuards(AuthGuard)
+  @Roles('USER')
   @ApiOperation({
     summary: 'Fetch transactions using access token',
     description:
@@ -196,25 +169,17 @@ export class TinkController {
   })
   async getTransactions(
     @Body() dto: GetTransactionsDto,
-  ): Promise<TransactionResponseDto[] | TinkErrorResponseDto> {
+    @User() user: jwtPayload,
+  ) {
     try {
       const transactions = await this.tinkService.getTransactions(
         dto.accessToken,
       );
 
       // Store in database
-      await this.transactionService.storeTransactions(transactions);
-
-      // Convert to expected format
-      const formattedTransactions = transactions.map((trx) => ({
-        description: trx.description,
-        amount: trx.amount.toFixed(2),
-        currency: trx.currency,
-        date: trx.date,
-        bankId: trx.accountId,
-      }));
-
-      return formattedTransactions;
+      // const transaction = await this.transactionService.storeTransactions(transactions);
+      const savedData = await this.tinkService.storeMyTransaction(user.sub, transactions, dto.accessToken);
+      return savedData;
     } catch (err: unknown) {
       return {
         error: 'Failed to fetch transactions',
@@ -240,6 +205,7 @@ export class TinkController {
   })
   async getConnectedAccounts(
     @Query('accessToken') accessToken: string,
+
   ): Promise<any | TinkErrorResponseDto> {
     try {
       const accounts =

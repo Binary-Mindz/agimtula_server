@@ -6,7 +6,7 @@ import { PrismaService } from 'src/config/database/prisma.service';
 
 @Injectable()
 export class SubscriptionsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async subscriptionsDashboardGraph() {
     try {
@@ -306,5 +306,5 @@ export class SubscriptionsService {
     return { id, dto };
   }
 
-  getSubscriptionData() {}
+  getSubscriptionData() { }
 }

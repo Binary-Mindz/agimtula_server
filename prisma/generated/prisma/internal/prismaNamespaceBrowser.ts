@@ -148,7 +148,8 @@ export const TransactionScalarFieldEnum = {
   source: 'source',
   attachments: 'attachments',
   accountId: 'accountId',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  userId: 'userId'
 } as const
 
 export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
@@ -504,7 +505,8 @@ export const UserScalarFieldEnum = {
   created_at: 'created_at',
   updated_at: 'updated_at',
   haveAccountant: 'haveAccountant',
-  accountantId: 'accountantId'
+  accountantId: 'accountantId',
+  tinkAccessToken: 'tinkAccessToken'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]

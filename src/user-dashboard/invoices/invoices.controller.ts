@@ -10,9 +10,8 @@ import {
 } from '@nestjs/common';
 import { InvoicesService } from './invoices.service';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
-import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
-import { ApiQuery } from '@nestjs/swagger';
+import { ApiParam, ApiQuery } from '@nestjs/swagger';
 
 @Controller('invoices')
 export class InvoicesController {
@@ -42,20 +41,41 @@ export class InvoicesController {
   }
 
   @Roles('USER')
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.invoicesService.findOne(+id);
+  @Get('drafts')
+  async getDrafts() {
+    return await this.invoicesService.getDrafts();
   }
 
   @Roles('USER')
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateInvoiceDto: UpdateInvoiceDto) {
-    return this.invoicesService.update(+id, updateInvoiceDto);
+  @Delete('drafts/:id')
+  @ApiParam({
+    name: 'id',
+    type: String,
+    required: true,
+  })
+  async deleteFromDraft(@Param('id') id: string) {
+    return await this.invoicesService.deleteFromDraft(id);
+  }
+
+  @Roles('USER')
+  @Patch('draft-to-invoice/:id')
+  @ApiParam({
+    name: 'id',
+    type: String,
+    required: true,
+  })
+  async draftToInvoice(@Param('id') id: string) {
+    return await this.invoicesService.draftToInvoice(id);
   }
 
   @Roles('USER')
   @Delete(':id')
+  @ApiParam({
+    name: 'id',
+    type: String,
+    required: true,
+  })
   remove(@Param('id') id: string) {
-    return this.invoicesService.remove(+id);
+    return this.invoicesService.remove(id);
   }
 }

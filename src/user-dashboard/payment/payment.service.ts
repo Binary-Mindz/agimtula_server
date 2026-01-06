@@ -279,7 +279,6 @@ export class PaymentService {
         checkoutUrl: session.url,
         data: session.url,
       });
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       if (
         error instanceof NotFoundAppException ||

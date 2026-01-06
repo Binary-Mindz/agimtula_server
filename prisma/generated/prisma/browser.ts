@@ -78,6 +78,11 @@ export type BusinessData = Prisma.BusinessDataModel
  */
 export type ServiceAndItem = Prisma.ServiceAndItemModel
 /**
+ * Model Loggers
+ * 
+ */
+export type Loggers = Prisma.LoggersModel
+/**
  * Model Module
  * 
  */

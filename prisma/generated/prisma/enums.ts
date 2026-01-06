@@ -43,6 +43,25 @@ export const InvoiceClientType = {
 export type InvoiceClientType = (typeof InvoiceClientType)[keyof typeof InvoiceClientType]
 
 
+export const LogType = {
+  ERROR: 'ERROR',
+  SUCCESS: 'SUCCESS',
+  WARNING: 'WARNING',
+  INFO: 'INFO'
+} as const
+
+export type LogType = (typeof LogType)[keyof typeof LogType]
+
+
+export const logpriority = {
+  HIGH: 'HIGH',
+  MEDIUM: 'MEDIUM',
+  LOW: 'LOW'
+} as const
+
+export type logpriority = (typeof logpriority)[keyof typeof logpriority]
+
+
 export const TwoFAPurpose = {
   LOGIN: 'LOGIN',
   ENABLE_2FA: 'ENABLE_2FA',

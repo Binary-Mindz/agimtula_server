@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Decimal } from '@prisma/client/runtime/client';
+import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
 
 interface TransactionRow {
@@ -17,14 +16,12 @@ interface TransactionRow {
 
 @Injectable()
 export class TransactionService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
-  async storeTransactions(transactions: TransactionRow[]): Promise<number> {
-    let storedCount = 0;
-    // amazonq-ignore-next-line
+  async storeTransactions(transactions: TransactionRow[]) {
 
     for (const trx of transactions) {
-      // Check for duplicates based on date, amount, description, and source
+
       const existing = await this.prisma.transaction.findFirst({
         where: {
           date: new Date(trx.date),
@@ -47,17 +44,36 @@ export class TransactionService {
             accountId: trx.accountId,
           },
         });
-        storedCount++;
       }
     }
-
-    return storedCount;
+    return cResponseData({ message: 'Transactions stored successfully' });
   }
 
   async getAllTransactions() {
     return await this.prisma.transaction.findMany({
       orderBy: { date: 'desc' },
     });
+  }
+  async getAllUserTransactions(userId: string) {
+
+    try {
+      const userExit = await this.prisma.user.findFirst({
+        where: {
+          id: userId
+        }
+      })
+      if (!userExit) {
+        throw new NotFoundException('User not found');
+      }
+      const data = await this.prisma.transaction.findMany({
+        where: { userId: userId },
+        orderBy: { date: 'desc' },
+      });
+      return cResponseData({ data, message: `Transactions for user ${userId} retrieved successfully` });
+    } catch (error) {
+      console.error(error);
+      throw new BadRequestException('Failed to retrieve transactions for user');
+    }
   }
 
   async getTransactionsBySource(source: string) {
@@ -88,7 +104,7 @@ export class TransactionService {
           Math.abs(
             new Date(trx1.date).getTime() - new Date(trx2.date).getTime(),
           ) <=
-            60 * 60 * 1000
+          60 * 60 * 1000
         ) {
           await this.prisma.transaction.updateMany({
             where: { id: { in: [trx1.id, trx2.id] } },

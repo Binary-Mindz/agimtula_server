@@ -368,6 +368,40 @@ export type EnumInvoiceClientTypeWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumInvoiceClientTypeFilter<$PrismaModel>
 }
 
+export type EnumLogTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.LogType | Prisma.EnumLogTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.LogType[] | Prisma.ListEnumLogTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.LogType[] | Prisma.ListEnumLogTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumLogTypeFilter<$PrismaModel> | $Enums.LogType
+}
+
+export type EnumlogpriorityFilter<$PrismaModel = never> = {
+  equals?: $Enums.logpriority | Prisma.EnumlogpriorityFieldRefInput<$PrismaModel>
+  in?: $Enums.logpriority[] | Prisma.ListEnumlogpriorityFieldRefInput<$PrismaModel>
+  notIn?: $Enums.logpriority[] | Prisma.ListEnumlogpriorityFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumlogpriorityFilter<$PrismaModel> | $Enums.logpriority
+}
+
+export type EnumLogTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.LogType | Prisma.EnumLogTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.LogType[] | Prisma.ListEnumLogTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.LogType[] | Prisma.ListEnumLogTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumLogTypeWithAggregatesFilter<$PrismaModel> | $Enums.LogType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumLogTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumLogTypeFilter<$PrismaModel>
+}
+
+export type EnumlogpriorityWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.logpriority | Prisma.EnumlogpriorityFieldRefInput<$PrismaModel>
+  in?: $Enums.logpriority[] | Prisma.ListEnumlogpriorityFieldRefInput<$PrismaModel>
+  notIn?: $Enums.logpriority[] | Prisma.ListEnumlogpriorityFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumlogpriorityWithAggregatesFilter<$PrismaModel> | $Enums.logpriority
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumlogpriorityFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumlogpriorityFilter<$PrismaModel>
+}
+
 export type EnumTwoFAPurposeFilter<$PrismaModel = never> = {
   equals?: $Enums.TwoFAPurpose | Prisma.EnumTwoFAPurposeFieldRefInput<$PrismaModel>
   in?: $Enums.TwoFAPurpose[] | Prisma.ListEnumTwoFAPurposeFieldRefInput<$PrismaModel>
@@ -800,6 +834,40 @@ export type NestedEnumInvoiceClientTypeWithAggregatesFilter<$PrismaModel = never
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumInvoiceClientTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumInvoiceClientTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumLogTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.LogType | Prisma.EnumLogTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.LogType[] | Prisma.ListEnumLogTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.LogType[] | Prisma.ListEnumLogTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumLogTypeFilter<$PrismaModel> | $Enums.LogType
+}
+
+export type NestedEnumlogpriorityFilter<$PrismaModel = never> = {
+  equals?: $Enums.logpriority | Prisma.EnumlogpriorityFieldRefInput<$PrismaModel>
+  in?: $Enums.logpriority[] | Prisma.ListEnumlogpriorityFieldRefInput<$PrismaModel>
+  notIn?: $Enums.logpriority[] | Prisma.ListEnumlogpriorityFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumlogpriorityFilter<$PrismaModel> | $Enums.logpriority
+}
+
+export type NestedEnumLogTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.LogType | Prisma.EnumLogTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.LogType[] | Prisma.ListEnumLogTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.LogType[] | Prisma.ListEnumLogTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumLogTypeWithAggregatesFilter<$PrismaModel> | $Enums.LogType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumLogTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumLogTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumlogpriorityWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.logpriority | Prisma.EnumlogpriorityFieldRefInput<$PrismaModel>
+  in?: $Enums.logpriority[] | Prisma.ListEnumlogpriorityFieldRefInput<$PrismaModel>
+  notIn?: $Enums.logpriority[] | Prisma.ListEnumlogpriorityFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumlogpriorityWithAggregatesFilter<$PrismaModel> | $Enums.logpriority
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumlogpriorityFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumlogpriorityFilter<$PrismaModel>
 }
 
 export type NestedEnumTwoFAPurposeFilter<$PrismaModel = never> = {

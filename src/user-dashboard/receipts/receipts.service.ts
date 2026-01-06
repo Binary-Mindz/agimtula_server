@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UploadReceiptDto } from './dto/upload-receipt.dto';
-import uploadToCloudinary from 'src/config/cloudinary/cloudinary';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { cResponseData } from 'src/common/cResponse';
 import { UpdateReceiptDto } from './dto/update-receipt-dto';
 
 @Injectable()
 export class ReceiptsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   // Receipt Category
 
@@ -70,19 +69,29 @@ export class ReceiptsService {
   async uploadReceipt(
     userId: string,
     dto: UploadReceiptDto,
-    file: Express.Multer.File,
+    file: string,
   ) {
     try {
+      const userExits = await this.prisma.user.findUnique({
+        where: { id: userId },
+      });
+
+      if (!userExits) {
+        throw new NotFoundException('User not found');
+      }
+
+      const categoryExits = await this.prisma.receiptCategory.findUnique({
+        where: { id: dto.category },
+      });
+
+      if (!categoryExits) {
+        throw new NotFoundException('Category not found');
+      }
+
+
       const { vendor, amount, date, category, notes } = dto;
 
-      let fileName: string | undefined;
-      let fileKey: string | undefined;
 
-      if (file) {
-        const fileData = await uploadToCloudinary(file);
-        fileName = fileData.secure_url;
-        fileKey = fileData.public_id;
-      }
 
       const rec = await this.prisma.receipt.create({
         data: {
@@ -90,8 +99,7 @@ export class ReceiptsService {
           amount,
           date,
           categoryId: category,
-          receiptFileUrl: fileName,
-          receiptFileKey: fileKey,
+          receiptFileUrl: file,
           userId,
           notes: notes,
         },
@@ -102,9 +110,10 @@ export class ReceiptsService {
         data: rec,
       });
     } catch (error) {
+      console.error(error);
       return cResponseData({
-        message: "Receipt categories update failed",
-        error: "Receipt categories update failed",
+        message: "Receipt categories uploaded failed",
+        error: "Receipt categories uploaded failed",
       });
     }
   }

@@ -11,12 +11,12 @@ import { Type } from 'class-transformer';
 
 export class UploadReceiptDto {
   @ApiProperty({
-    type: 'string',
-    format: 'binary',
-    description: 'Receipt image or PDF (JPG, PNG, PDF)',
+    description: 'Path or URL to the uploaded receipt file',
+    example: 'uploads/receipts/receipt12345.jpg',
   })
+  @IsNotEmpty({ message: 'Receipt file is required' })
   @IsOptional()
-  receiptFile?: Express.Multer.File;
+  receiptFile?: string;
 
   @ApiProperty({
     description: 'Vendor or merchant name (auto-filled by OCR, but editable)',

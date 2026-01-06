@@ -42,11 +42,13 @@ export class UpdateProfileDto {
 }
 
 export class UpdateProfilePicDto {
-  @ApiPropertyOptional({
-    type: 'string',
-    format: 'binary',
-    description:
-      'Company logo (PNG, JPG, JPEG, max 2MB, recommended 400x400px)',
+  @ApiProperty({
+    required: true,
+    type: String,
+    description: 'URL of the new profile picture',
+    example: 'https://example.com/profile-pic.jpg',
   })
-  profilePic?: Express.Multer.File;
+  @IsNotEmpty({ message: 'Profile picture URL should not be empty' })
+  @IsString({ message: 'Profile picture URL must be a string' })
+  profilePic: string;
 }

@@ -12,6 +12,8 @@ import {
   Get,
   Delete,
   Param,
+  UploadedFiles,
+  BadRequestException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
@@ -28,14 +30,16 @@ import { User } from './decorators/user.decorator';
 import { jwtPayload } from './types/jwt-payload';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { Roles } from './decorators/roles.decorator';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { ApiBody, ApiConsumes, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   UpdateProfileDto,
   UpdateProfilePicDto,
 } from './dto/update-profile.dto';
 import { EnableTwoFADto, VerifyTwoFADto } from './dto/two-fa.dto';
 import { TwoFAService } from './2fa.service';
+import { UploadImageDto } from './dto/upload-image.dto';
+import { storageConfig } from 'src/common/fileUpload/storage.configure';
 
 @Controller('auth')
 export class AuthController {
@@ -43,7 +47,7 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly forgetPasswordService: ForgetPasswordService,
     private readonly twoFAService: TwoFAService,
-  ) {}
+  ) { }
 
   @HttpCode(201)
   @ApiResponse({ status: 201, description: 'User registered successfully' })
@@ -63,7 +67,7 @@ export class AuthController {
   login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }
-  
+
   @HttpCode(200)
   @ApiResponse({ status: 200, description: '2FA verification successful' })
   @ApiResponse({ status: 400, description: 'Invalid 2FA code' })
@@ -102,15 +106,15 @@ export class AuthController {
   @ApiResponse({ status: 400, description: 'Invalid file format or too large' })
   @Patch('update-profile-pic')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
-  @UsePipes(new ValidationPipe())
-  @UseInterceptors(FileInterceptor('profilePic'))
-  @ApiConsumes('multipart/form-data')
   @ApiBody({ type: UpdateProfilePicDto })
-  updateProfilePic(
-    @UploadedFile() profilePic: Express.Multer.File,
+  async updateProfilePic(
     @User() user: jwtPayload,
+    @Body() data: UpdateProfilePicDto,
   ) {
-    return this.authService.updateProfilepic(profilePic, user.sub);
+    if (!data.profilePic) {
+      throw new BadRequestException('Profile picture URL is required');
+    }
+    return await this.authService.updateProfilepic(user.sub, data.profilePic);
   }
 
   @HttpCode(200)
@@ -118,8 +122,8 @@ export class AuthController {
   @ApiResponse({ status: 404, description: 'No profile picture found' })
   @Patch('remove-profile-pic')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
-  removeProfilePic(@User() user: jwtPayload) {
-    return this.authService.removeProfilePic(user.sub);
+  async removeProfilePic(@User() user: jwtPayload) {
+    return await this.authService.removeProfilePic(user.sub);
   }
 
   @HttpCode(200)
@@ -128,8 +132,8 @@ export class AuthController {
   @Patch('update-profile')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
   @UsePipes(new ValidationPipe())
-  updateProfile(@Body() data: UpdateProfileDto, @User() user: jwtPayload) {
-    return this.authService.updateProfile(user.sub, data);
+  async updateProfile(@Body() data: UpdateProfileDto, @User() user: jwtPayload) {
+    return await this.authService.updateProfile(user.sub, data);
   }
 
   @HttpCode(200)
@@ -217,5 +221,33 @@ export class AuthController {
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
   verifyDisable2FA(@User() user: jwtPayload, @Body() dto: VerifyTwoFADto) {
     return this.twoFAService.verifyAndDisableTwoFA(user.sub, dto);
+  }
+
+
+  // image upload for profile picture
+  @ApiTags('File Upload')
+  @Post('upload')
+  @Public()
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ type: UploadImageDto })
+  @UseInterceptors(
+    FilesInterceptor('images', 10, {
+      storage: storageConfig('./uploads'),
+    }),
+  )
+  uploadMultipleFiles(
+    @UploadedFiles() files: Express.Multer.File[],
+  ) {
+    if (!files || files.length === 0) {
+      throw new BadRequestException('No files uploaded');
+    }
+    if (!process.env.BASE_URL) {
+      throw new BadRequestException('Base URL not configured');
+    }
+    const fileUrls = files.map((file) =>
+      `${process.env.BASE_URL}/uploads/${file.filename}`
+    );
+
+    return fileUrls
   }
 }

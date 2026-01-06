@@ -308,36 +308,23 @@ export class AuthService {
     }
   }
 
-  async updateProfilepic(file: Express.Multer.File, userId: string) {
+  async updateProfilepic(userId: string, profilePic: string) {
     try {
-      if (!file) {
-        throw new NotFoundException('File not found');
-      }
-
       const userProfile = await this.prisma.user.findFirst({
         where: { id: userId },
         select: { profile: true },
       });
-
       if (!userProfile) {
         throw new NotFoundException('User not found');
       }
 
-      if (userProfile.profile?.profilePictureKey) {
-        await deleteFromCloudinary(userProfile.profile?.profilePictureKey);
-      }
-
-      const uploadResult = await uploadToCloudinary(file);
-      const profilePicture = uploadResult.secure_url;
-      const profilePictureKey = uploadResult.public_id;
-
+      console.log(profilePic);
       const user = await this.prisma.user.update({
         where: { id: userId },
         data: {
           profile: {
             update: {
-              profilePicture,
-              profilePictureKey,
+              profilePicture: profilePic,
             },
           },
         },
@@ -349,7 +336,7 @@ export class AuthService {
 
       return {
         message: 'Profile picture updated successfully',
-        profilePicture,
+        user,
       };
     } catch (error) {
       if (error instanceof NotFoundException || error instanceof BadRequestException) {

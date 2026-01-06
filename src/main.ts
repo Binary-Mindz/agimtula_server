@@ -5,10 +5,22 @@ import { HttpExceptionFilter } from './core/error/CustomExceptionFilter';
 import { PrismaExceptionFilter } from './core/error/prisma-exception.filter';
 import { PrismaValidationExceptionFilter } from './core/error/prisma-validation.filter';
 import { ValidationPipe } from '@nestjs/common';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import * as bodyParser from 'body-parser';
+import * as express from 'express';
+import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  // Serve static files from uploads directory
+
+  // Static folders
+  const publicDir = join(process.cwd(), "public");
+  const uploadDir = join(process.cwd(), "uploads");
+
+  app.use("/", express.static(publicDir));
+  app.use("/uploads", express.static(uploadDir));
 
   // Raw body parser for Stripe webhook BEFORE JSON parser
   app.use('/stripe/webhook', bodyParser.raw({ type: 'application/json' }));

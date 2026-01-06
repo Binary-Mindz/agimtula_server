@@ -32,7 +32,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
   constructor(
     private schedulerRegistry: SchedulerRegistry,
     private prisma: PrismaService, // Your DB service
-  ) {}
+  ) { }
 
   private async imapClient({ host, port, username, password }: ImapClient) {
     return await imaps.connect({
@@ -235,7 +235,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
           t.currency === e.currency &&
           Math.abs(t.amount - e.amount) < 1 &&
           Math.abs(new Date(t.date).getTime() - new Date(e.date).getTime()) <=
-            2 * 24 * 60 * 60 * 1000
+          2 * 24 * 60 * 60 * 1000
         ) {
           t.status = 'MATCHED';
           t.linkedInvoiceId = e.linkedInvoiceId;

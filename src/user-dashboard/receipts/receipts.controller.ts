@@ -7,15 +7,12 @@ import {
   Patch,
   Post,
   Query,
-  UploadedFile,
-  UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { ReceiptsService } from './receipts.service';
 import { UploadReceiptDto } from './dto/upload-receipt.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { User } from 'src/auth/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
@@ -24,7 +21,7 @@ import { urlPrefix } from '../url-prefix';
 
 @Controller(`${urlPrefix}/receipts`)
 export class UserReceiptsController {
-  constructor(private readonly receiptsService: ReceiptsService) {}
+  constructor(private readonly receiptsService: ReceiptsService) { }
 
   // Receipt Category
 
@@ -61,18 +58,20 @@ export class UserReceiptsController {
 
   @Post('upload-receipt')
   @Roles('USER')
-  @UsePipes(new ValidationPipe({ transform: true }))
-  @UseInterceptors(FileInterceptor('receiptFile'))
-  @ApiConsumes('multipart/form-data')
   @ApiBody({ type: UploadReceiptDto })
   @ApiResponse({ status: 201, description: 'Receipt uploaded successfully' })
   @ApiResponse({ status: 400, description: 'Invalid receipt data or file' })
   async uploadReceipt(
-    @UploadedFile() receiptFile: Express.Multer.File,
     @Body() dto: UploadReceiptDto,
     @User() user: jwtPayload,
   ) {
-    return await this.receiptsService.uploadReceipt(user.sub, dto, receiptFile);
+    if (!dto.receiptFile) {
+      return {
+        message: 'Receipt file is required',
+        error: 'Receipt file is required',
+      };
+    }
+    return await this.receiptsService.uploadReceipt(user.sub, dto, dto.receiptFile);
   }
 
   @Get('data')

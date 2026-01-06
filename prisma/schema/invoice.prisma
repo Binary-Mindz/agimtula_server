@@ -1,10 +1,10 @@
 model Invoice {
     id                    String            @id @unique() @default(uuid())
-    invoiceNo             String
+    invoiceNo             String            @unique()
     issueDate             DateTime
     dueDate               DateTime?
     type                  InvoiceClientType
-    companyName           String
+    companyName           String // client or companyName
     email                 String
     AddressAndContactInfo String?
     projectInformation    String?

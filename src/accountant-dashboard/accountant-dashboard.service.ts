@@ -8,35 +8,35 @@ import { TransactionStatus } from 'prisma/generated/prisma/enums';
 export class AccountantDashboardService {
   constructor(private readonly prisma: PrismaService) { }
 
-  // ==========================
-  // Find All Transactions (Dashboard)
-  // ==========================
+
   async findAll(
     userId: string,
     accountantId: string,
     query: TransactionQueryDto
   ) {
-    console.log({ userId });
 
     try {
-      // =========================
-      // 1️⃣ Validate accountant
-      // =========================
-      const userExist = await this.prisma.user.findFirst({
+      const ACCOUNTANT = await this.prisma.user.findFirst({
         where: { id: accountantId }
       });
-
-      if (!userExist) {
+      console.log(accountantId);
+      if (!ACCOUNTANT) {
         throw new NotFoundException('User not found');
       }
 
-      if (accountantId === userExist.accountantId) {
+      const userExist = await this.prisma.user.findFirst({
+        where: { id: userId }
+      });
+      console.log({ userExist });
+
+      if (!userExist) {
+        throw new NotFoundException('Client not found');
+      }
+      if (accountantId !== userExist.accountantId) {
         throw new NotFoundException('Client id mismatch');
       }
 
-      // =========================
-      // 2️⃣ Pagination + query defaults
-      // =========================
+
       const page = query.page ?? 1;
       const limit = query.limit ?? 10;
       const skip = (page - 1) * limit;
@@ -66,7 +66,6 @@ export class AccountantDashboardService {
         skip,
         take: limit
       });
-
       // Total count for pagination
       const totalCount = await this.prisma.transaction.count({
         where: {
@@ -81,9 +80,7 @@ export class AccountantDashboardService {
         }
       });
 
-      // =========================
-      // 4️⃣ This month transactions
-      // =========================
+
       const now = new Date();
       const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
       const endOfMonth = new Date(
@@ -101,18 +98,14 @@ export class AccountantDashboardService {
         return trxDate >= startOfMonth && trxDate <= endOfMonth;
       });
 
-      // =========================
-      // 5️⃣ Total by currency
-      // =========================
+
       const totalByCurrency = thisMonthTransactions.reduce((acc, trx) => {
         const amount = Number(trx.amount);
         acc[trx.currency] = (acc[trx.currency] || 0) + amount;
         return acc;
       }, {} as Record<string, number>);
 
-      // =========================
-      // 6️⃣ Summary counts
-      // =========================
+
       const summary = {
         totalTransactions: thisMonthTransactions.length,
         matched: 0,
@@ -125,15 +118,13 @@ export class AccountantDashboardService {
         if (trx.status === 'UNMATCHED') summary.unmatched++;
       }
 
-      // =========================
-      // 7️⃣ Final response
-      // =========================
+
       return cResponseData({
         message: 'Transactions retrieved successfully',
         data: {
           totalByCurrency,
           summary,
-          transactions: thisMonthTransactions,
+          transactions: transaction,
           pagination: {
             page,
             limit,

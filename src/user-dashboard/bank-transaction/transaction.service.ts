@@ -1,6 +1,5 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Decimal } from '@prisma/client/runtime/client';
-import { NotFoundError } from 'rxjs';
 import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
 
@@ -64,7 +63,7 @@ export class TransactionService {
         }
       })
       if (!userExit) {
-        throw new NotFoundError('User not found');
+        throw new NotFoundException('User not found');
       }
       const data = await this.prisma.transaction.findMany({
         where: { userId: userId },

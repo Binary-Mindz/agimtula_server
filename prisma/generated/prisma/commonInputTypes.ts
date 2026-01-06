@@ -351,6 +351,23 @@ export type EnumPaymentStatusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumPaymentStatusFilter<$PrismaModel>
 }
 
+export type EnumInvoiceClientTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.InvoiceClientType | Prisma.EnumInvoiceClientTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.InvoiceClientType[] | Prisma.ListEnumInvoiceClientTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.InvoiceClientType[] | Prisma.ListEnumInvoiceClientTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumInvoiceClientTypeFilter<$PrismaModel> | $Enums.InvoiceClientType
+}
+
+export type EnumInvoiceClientTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.InvoiceClientType | Prisma.EnumInvoiceClientTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.InvoiceClientType[] | Prisma.ListEnumInvoiceClientTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.InvoiceClientType[] | Prisma.ListEnumInvoiceClientTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumInvoiceClientTypeWithAggregatesFilter<$PrismaModel> | $Enums.InvoiceClientType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumInvoiceClientTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumInvoiceClientTypeFilter<$PrismaModel>
+}
+
 export type EnumTwoFAPurposeFilter<$PrismaModel = never> = {
   equals?: $Enums.TwoFAPurpose | Prisma.EnumTwoFAPurposeFieldRefInput<$PrismaModel>
   in?: $Enums.TwoFAPurpose[] | Prisma.ListEnumTwoFAPurposeFieldRefInput<$PrismaModel>
@@ -766,6 +783,23 @@ export type NestedEnumPaymentStatusWithAggregatesFilter<$PrismaModel = never> = 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumPaymentStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumPaymentStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumInvoiceClientTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.InvoiceClientType | Prisma.EnumInvoiceClientTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.InvoiceClientType[] | Prisma.ListEnumInvoiceClientTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.InvoiceClientType[] | Prisma.ListEnumInvoiceClientTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumInvoiceClientTypeFilter<$PrismaModel> | $Enums.InvoiceClientType
+}
+
+export type NestedEnumInvoiceClientTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.InvoiceClientType | Prisma.EnumInvoiceClientTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.InvoiceClientType[] | Prisma.ListEnumInvoiceClientTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.InvoiceClientType[] | Prisma.ListEnumInvoiceClientTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumInvoiceClientTypeWithAggregatesFilter<$PrismaModel> | $Enums.InvoiceClientType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumInvoiceClientTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumInvoiceClientTypeFilter<$PrismaModel>
 }
 
 export type NestedEnumTwoFAPurposeFilter<$PrismaModel = never> = {

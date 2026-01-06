@@ -3,7 +3,6 @@
 import { Controller, Get, Query, Post, Body, HttpStatus, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { TinkService } from './tink.service';
-import { TransactionService } from 'src/user-dashboard/bank-transaction/transaction.service';
 import { Public } from 'src/auth/decorators/public.decorator';
 import {
   ConnectBankDto,
@@ -26,7 +25,6 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 export class TinkController {
   constructor(
     private tinkService: TinkService,
-    private transactionService: TransactionService,
   ) { }
 
   @Post('connect-bank')

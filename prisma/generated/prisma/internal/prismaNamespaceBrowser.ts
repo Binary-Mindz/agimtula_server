@@ -60,6 +60,8 @@ export const ModelName = {
   userSubscriptionPlan: 'userSubscriptionPlan',
   userSubscriptionPlanHistory: 'userSubscriptionPlanHistory',
   subscriptionPlanPaymentStatus: 'subscriptionPlanPaymentStatus',
+  Invoice: 'Invoice',
+  ServiceAndItem: 'ServiceAndItem',
   Loggers: 'Loggers',
   Module: 'Module',
   UserModuleAccess: 'UserModuleAccess',
@@ -255,6 +257,39 @@ export const SubscriptionPlanPaymentStatusScalarFieldEnum = {
 } as const
 
 export type SubscriptionPlanPaymentStatusScalarFieldEnum = (typeof SubscriptionPlanPaymentStatusScalarFieldEnum)[keyof typeof SubscriptionPlanPaymentStatusScalarFieldEnum]
+
+
+export const InvoiceScalarFieldEnum = {
+  id: 'id',
+  invoiceNo: 'invoiceNo',
+  issueDate: 'issueDate',
+  dueDate: 'dueDate',
+  type: 'type',
+  companyName: 'companyName',
+  companyAddress: 'companyAddress',
+  AddressAndContactInfo: 'AddressAndContactInfo',
+  projectInformation: 'projectInformation',
+  projectDescription: 'projectDescription',
+  tax: 'tax',
+  subTotal: 'subTotal',
+  totalAmount: 'totalAmount',
+  mobilePaymentLink: 'mobilePaymentLink',
+  additionalNote: 'additionalNote'
+} as const
+
+export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
+
+
+export const ServiceAndItemScalarFieldEnum = {
+  id: 'id',
+  description: 'description',
+  qty: 'qty',
+  rate: 'rate',
+  totalAmount: 'totalAmount',
+  invoiceId: 'invoiceId'
+} as const
+
+export type ServiceAndItemScalarFieldEnum = (typeof ServiceAndItemScalarFieldEnum)[keyof typeof ServiceAndItemScalarFieldEnum]
 
 
 export const LoggersScalarFieldEnum = {

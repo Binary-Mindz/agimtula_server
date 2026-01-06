@@ -83,6 +83,16 @@ export type userSubscriptionPlanHistory = Prisma.userSubscriptionPlanHistoryMode
  */
 export type subscriptionPlanPaymentStatus = Prisma.subscriptionPlanPaymentStatusModel
 /**
+ * Model Invoice
+ * 
+ */
+export type Invoice = Prisma.InvoiceModel
+/**
+ * Model ServiceAndItem
+ * 
+ */
+export type ServiceAndItem = Prisma.ServiceAndItemModel
+/**
  * Model Loggers
  * 
  */

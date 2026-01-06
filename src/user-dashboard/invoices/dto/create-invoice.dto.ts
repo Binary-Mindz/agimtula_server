@@ -3,6 +3,7 @@ import { Type } from 'class-transformer';
 import {
   IsArray,
   IsDateString,
+  IsEmail,
   IsEnum,
   IsInt,
   IsNotEmpty,
@@ -51,10 +52,28 @@ export class ServiceAndItemDto {
   totalAmount: number;
 }
 
+export class BusinessDataDto {
+  @ApiProperty({
+    description: 'Business field label',
+    example: 'VAT Number',
+  })
+  @IsString()
+  @IsNotEmpty()
+  businessIdLabel: string;
+
+  @ApiProperty({
+    description: 'Business field value',
+    example: '123456789',
+  })
+  @IsString()
+  @IsNotEmpty()
+  businessIdValue: string;
+}
+
 export class CreateInvoiceDto {
   @ApiProperty({
-    description: 'The client name',
-    example: 'John Doe',
+    description: 'Invoice No',
+    example: '012345ABCD',
   })
   @IsString()
   @IsNotEmpty()
@@ -94,13 +113,13 @@ export class CreateInvoiceDto {
   companyName: string;
 
   @ApiProperty({
-    description: 'The company address',
-    example: '123 Main St, Anytown, USA',
+    description: 'The company email address',
+    example: 'example@gm.com',
     required: false,
   })
-  @IsString()
+  @IsEmail()
   @IsOptional()
-  companyAddress?: string;
+  email: string;
 
   @ApiProperty({
     description: 'The address and contact info',
@@ -110,6 +129,23 @@ export class CreateInvoiceDto {
   @IsString()
   @IsOptional()
   addressAndContactInfo?: string;
+
+  @ApiProperty({
+    description: 'The business data fields',
+    type: [BusinessDataDto],
+    example: [
+      {
+        businessIdLabel: 'VAT Number',
+        businessIdValue: '123456789',
+      },
+    ],
+    required: false,
+  })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => BusinessDataDto)
+  @IsOptional()
+  businessDatas?: BusinessDataDto[];
 
   @ApiProperty({
     description: 'The project information',
@@ -189,3 +225,13 @@ export class CreateInvoiceDto {
   @IsOptional()
   additionalNote?: string;
 }
+
+// added this field
+// model BusinessData {
+//     id              String @id @unique @default(uuid())
+//     businessIdLabel String
+//     businessIdValue String
+
+//     invoiceId String
+//     invoice   Invoice @relation(fields: [invoiceId], references: [id])
+// }

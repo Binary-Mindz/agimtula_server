@@ -1,11 +1,11 @@
 model Invoice {
     id                    String            @id @unique() @default(uuid())
-    invoiceNo             String
+    invoiceNo             String            @unique()
     issueDate             DateTime
     dueDate               DateTime?
     type                  InvoiceClientType
     companyName           String // client or companyName
-    companyAddress        String?
+    email                 String
     AddressAndContactInfo String?
     projectInformation    String?
     projectDescription    String?
@@ -18,6 +18,18 @@ model Invoice {
     mobilePaymentLink String?
 
     additionalNote String?
+    businessDatas  BusinessData[]
+
+    createdAt DateTime @default(now())
+}
+
+model BusinessData {
+    id              String @id @unique @default(uuid())
+    businessIdLabel String
+    businessIdValue String
+
+    invoiceId String
+    invoice   Invoice @relation(fields: [invoiceId], references: [id])
 }
 
 model ServiceAndItem {
@@ -27,8 +39,8 @@ model ServiceAndItem {
     rate        Float
     totalAmount Float
 
-    invoice   Invoice? @relation(fields: [invoiceId], references: [id])
-    invoiceId String?
+    invoice   Invoice @relation(fields: [invoiceId], references: [id])
+    invoiceId String
 }
 
 enum InvoiceClientType {

@@ -4,15 +4,20 @@ import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { cResponseData } from 'src/common/cResponse';
+import { SmtpMailService } from 'src/config/smtp-mail/smtp-mail.service';
 
 @Injectable()
 export class InvoicesService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private mail: SmtpMailService,
+  ) {}
 
   async create(createInvoiceDto: CreateInvoiceDto) {
     try {
       const {
         serviceAndItems,
+        businessDatas,
         addressAndContactInfo,
         issueDate,
         dueDate,
@@ -54,11 +59,24 @@ export class InvoicesService {
               totalAmount: item.totalAmount,
             })),
           },
+          businessDatas: {
+            create: businessDatas?.map((data) => ({
+              businessIdLabel: data.businessIdLabel,
+              businessIdValue: data.businessIdValue,
+            })),
+          },
         },
         include: {
           serviceAndItems: true,
         },
       });
+
+      await this.mail.sendMail(
+        createInvoiceDto.email,
+        'Invoice sent to business email',
+        `${JSON.stringify(newInvoice)}`,
+      );
+
       return cResponseData({
         message: 'Invoice created successfully',
         data: newInvoice,

@@ -1,0 +1,20 @@
+model Loggers {
+  id          Int         @id @default(autoincrement())
+  level       LogType
+  logpriority logpriority
+  information String
+  timestamp   DateTime    @default(now())
+}
+
+enum LogType {
+  ERROR
+  SUCCESS
+  WARNING
+  INFO
+}
+
+enum logpriority {
+  HIGH
+  MEDIUM
+  LOW
+}

@@ -4,7 +4,7 @@ import { Public } from 'src/auth/decorators/public.decorator';
 
 @Controller('admin/bank-data')
 export class BankDataController {
-  constructor(private readonly bankDataService: BankDataService) {}
+  constructor(private readonly bankDataService: BankDataService) { }
 
   @Get()
   @Public()

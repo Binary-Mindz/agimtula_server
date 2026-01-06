@@ -295,6 +295,16 @@ export interface PrismaClient<
   get serviceAndItem(): Prisma.ServiceAndItemDelegate<ExtArgs, { omit: OmitOpts }>;
 
   /**
+   * `prisma.loggers`: Exposes CRUD operations for the **Loggers** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Loggers
+    * const loggers = await prisma.loggers.findMany()
+    * ```
+    */
+  get loggers(): Prisma.LoggersDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
    * `prisma.module`: Exposes CRUD operations for the **Module** model.
     * Example usage:
     * ```ts

@@ -18,16 +18,31 @@ export class InvoicesService {
         dueDate,
         ...invoiceData
       } = createInvoiceDto;
+
+      // if(createInvoiceDto.invoiceNo) {
+      //   const invoice = await this.prisma.invoice.findUnique({
+      //     where: {
+      //       invoiceNo: createInvoiceDto.invoiceNo,
+      //     },
+      //   });
+      // }
+
+      // if(invoice) {
+      //   return cResponseData({
+      //     message: 'Invoice already exists',
+      //     data: invoice,
+      //   });
+      // }
+
+      // Convert date strings to Date objects
+      const issueDateObj = new Date(issueDate);
+      const dueDateObj = dueDate ? new Date(dueDate) : null;
+
       const invoice = await this.prisma.invoice.create({
         data: {
           ...invoiceData,
-          issueDate:
-            issueDate instanceof Date ? issueDate : new Date(issueDate),
-          dueDate: dueDate
-            ? dueDate instanceof Date
-              ? dueDate
-              : new Date(dueDate)
-            : null,
+          issueDate: issueDateObj,
+          dueDate: dueDateObj,
           AddressAndContactInfo: addressAndContactInfo,
           serviceAndItems: {
             create: serviceAndItems.map((item) => ({
@@ -55,9 +70,7 @@ export class InvoicesService {
     }
   }
 
-  findAll() {
-    return `This action returns all invoices`;
-  }
+  findAll() {}
 
   findOne(id: number) {
     return `This action returns a #${id} invoice`;

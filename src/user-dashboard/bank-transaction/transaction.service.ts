@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { Injectable } from '@nestjs/common';
 import { Decimal } from '@prisma/client/runtime/client';
+import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
 
 interface TransactionRow {
@@ -17,14 +16,13 @@ interface TransactionRow {
 
 @Injectable()
 export class TransactionService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
-  async storeTransactions(transactions: TransactionRow[]): Promise<number> {
-    let storedCount = 0;
-    // amazonq-ignore-next-line
+  async storeTransactions(transactions: TransactionRow[]) {
+
 
     for (const trx of transactions) {
-      // Check for duplicates based on date, amount, description, and source
+
       const existing = await this.prisma.transaction.findFirst({
         where: {
           date: new Date(trx.date),
@@ -47,11 +45,9 @@ export class TransactionService {
             accountId: trx.accountId,
           },
         });
-        storedCount++;
       }
     }
-
-    return storedCount;
+    return cResponseData({ message: 'Transactions stored successfully' });
   }
 
   async getAllTransactions() {
@@ -88,7 +84,7 @@ export class TransactionService {
           Math.abs(
             new Date(trx1.date).getTime() - new Date(trx2.date).getTime(),
           ) <=
-            60 * 60 * 1000
+          60 * 60 * 1000
         ) {
           await this.prisma.transaction.updateMany({
             where: { id: { in: [trx1.id, trx2.id] } },

@@ -112,16 +112,12 @@ async function seedPermissions() {
       create: mod,
       update: mod,
     });
-
-
   }
 
   console.log('✅ Modules & Permissions seeded successfully');
 }
 
-/* ----------------------------------
-   Main Runner
------------------------------------ */
+
 async function main() {
   console.log('🚀 Seeding started...');
 

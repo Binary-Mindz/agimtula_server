@@ -5,10 +5,11 @@ model Transaction {
     amount      Decimal           @db.Decimal(10, 2)
     currency    String            @default("EUR")
     status      TransactionStatus @default(UNMATCHED)
-    source      String // "Bank" or "Email"
-    attachments String[] // Cloudinary URLs
+    source      String
+    attachments String[]
     accountId   String?
     createdAt   DateTime          @default(now())
+    userId      String            @default("")
 
     // Prevent duplicate transactions
     @@unique([date, description, amount])

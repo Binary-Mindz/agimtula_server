@@ -1,34 +1,30 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { AccountantDashboardService } from './accountant-dashboard.service';
-import { CreateAccountantDashboardDto } from './dto/create-accountant-dashboard.dto';
-import { UpdateAccountantDashboardDto } from './dto/update-accountant-dashboard.dto';
+import { AuthGuard } from 'src/auth/guard/auth.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { User } from 'src/auth/decorators/user.decorator';
+import { jwtPayload } from 'src/auth/types/jwt-payload';
+import { TransactionQueryDto } from './dto/TransactionQueryDto';
 
 @Controller('accountant-dashboard')
 export class AccountantDashboardController {
-  constructor(private readonly accountantDashboardService: AccountantDashboardService) {}
+  constructor(
+    private readonly accountantDashboardService: AccountantDashboardService
+  ) { }
 
-  @Post()
-  create(@Body() createAccountantDashboardDto: CreateAccountantDashboardDto) {
-    return this.accountantDashboardService.create(createAccountantDashboardDto);
-  }
+  @Get(':userId')
+  @UseGuards(AuthGuard)
+  @Roles('ACCOUNTANT')
+  async findAll(
+    @Param('userId') userId: string,
+    @User() user: jwtPayload,
+    @Query() query: TransactionQueryDto
+  ) {
 
-  @Get()
-  findAll() {
-    return this.accountantDashboardService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.accountantDashboardService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAccountantDashboardDto: UpdateAccountantDashboardDto) {
-    return this.accountantDashboardService.update(+id, updateAccountantDashboardDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.accountantDashboardService.remove(+id);
+    return await this.accountantDashboardService.findAll(
+      userId,
+      user.sub,
+      query
+    );
   }
 }

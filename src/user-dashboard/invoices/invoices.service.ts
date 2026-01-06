@@ -19,26 +19,28 @@ export class InvoicesService {
         ...invoiceData
       } = createInvoiceDto;
 
-      // if(createInvoiceDto.invoiceNo) {
-      //   const invoice = await this.prisma.invoice.findUnique({
-      //     where: {
-      //       invoiceNo: createInvoiceDto.invoiceNo,
-      //     },
-      //   });
-      // }
+      const invoice = await this.prisma.invoice.findFirst({
+        where: {
+          invoiceNo: {
+            equals: createInvoiceDto.invoiceNo,
+            mode: 'insensitive',
+          },
+        },
+      });
 
-      // if(invoice) {
-      //   return cResponseData({
-      //     message: 'Invoice already exists',
-      //     data: invoice,
-      //   });
-      // }
+      if (invoice) {
+        return cResponseData({
+          message: 'Invoice already exists',
+          success: false,
+          error: 'Invoice already exists',
+        });
+      }
 
       // Convert date strings to Date objects
       const issueDateObj = new Date(issueDate);
       const dueDateObj = dueDate ? new Date(dueDate) : null;
 
-      const invoice = await this.prisma.invoice.create({
+      const newInvoice = await this.prisma.invoice.create({
         data: {
           ...invoiceData,
           issueDate: issueDateObj,
@@ -59,18 +61,51 @@ export class InvoicesService {
       });
       return cResponseData({
         message: 'Invoice created successfully',
-        data: invoice,
+        data: newInvoice,
       });
     } catch (error) {
       return cResponseData({
         message: 'Failed to create invoice',
-        error: error.message || 'Failed to create invoice',
+        error: 'Failed to create invoice',
         success: false,
       });
     }
   }
 
-  findAll() {}
+  async findAll(search: string) {
+    const query = {};
+
+    if (search) {
+      query['OR'] = [
+        {
+          invoiceNo: {
+            contains: search,
+            mode: 'insensitive',
+          },
+        },
+        {
+          companyName: {
+            contains: search,
+            mode: 'insensitive',
+          },
+        },
+      ];
+    }
+
+    try {
+      const invoices = await this.prisma.invoice.findMany({ where: query });
+      return cResponseData({
+        message: 'Invoices fetched successfully',
+        data: invoices,
+      });
+    } catch (error) {
+      return cResponseData({
+        message: 'Failed to fetch invoices',
+        error: 'Failed to fetch invoices',
+        success: false,
+      });
+    }
+  }
 
   findOne(id: number) {
     return `This action returns a #${id} invoice`;

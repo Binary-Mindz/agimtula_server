@@ -309,6 +309,8 @@ export const InvoiceScalarFieldEnum = {
   stripePaymentIntentId: 'stripePaymentIntentId',
   additionalNote: 'additionalNote',
   invoiceSource: 'invoiceSource',
+  haveAttachment: 'haveAttachment',
+  attachmentUrl: 'attachmentUrl',
   isDrafted: 'isDrafted',
   createdAt: 'createdAt'
 } as const

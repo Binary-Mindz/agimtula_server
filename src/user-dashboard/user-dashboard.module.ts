@@ -9,4 +9,4 @@ import { InvoicesModule } from './invoices/invoices.module';
 @Module({
   imports: [AutoInvoiceImportsModule, ReceiptsModule, PaymentModule, ReportsModule, RequesteAccountantModule, InvoicesModule],
 })
-export class UserDashboardModule {}
+export class UserDashboardModule { }

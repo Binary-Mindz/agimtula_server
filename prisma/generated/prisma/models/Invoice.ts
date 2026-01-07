@@ -235,11 +235,11 @@ export type InvoiceAggregateArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 export type GetInvoiceAggregateType<T extends InvoiceAggregateArgs> = {
-  [P in keyof T & keyof AggregateInvoice]: P extends '_count' | 'count'
-  ? T[P] extends true
-  ? number
-  : Prisma.GetScalarType<T[P], AggregateInvoice[P]>
-  : Prisma.GetScalarType<T[P], AggregateInvoice[P]>
+      [P in keyof T & keyof AggregateInvoice]: P extends '_count' | 'count'
+    ? T[P] extends true
+      ? number
+      : Prisma.GetScalarType<T[P], AggregateInvoice[P]>
+    : Prisma.GetScalarType<T[P], AggregateInvoice[P]>
 }
 
 
@@ -287,15 +287,15 @@ export type InvoiceGroupByOutputType = {
 type GetInvoiceGroupByPayload<T extends InvoiceGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<InvoiceGroupByOutputType, T['by']> &
-    {
-      [P in ((keyof T) & (keyof InvoiceGroupByOutputType))]: P extends '_count'
-      ? T[P] extends boolean
-      ? number
-      : Prisma.GetScalarType<T[P], InvoiceGroupByOutputType[P]>
-      : Prisma.GetScalarType<T[P], InvoiceGroupByOutputType[P]>
-    }
+      {
+        [P in ((keyof T) & (keyof InvoiceGroupByOutputType))]: P extends '_count'
+          ? T[P] extends boolean
+            ? number
+            : Prisma.GetScalarType<T[P], InvoiceGroupByOutputType[P]>
+          : Prisma.GetScalarType<T[P], InvoiceGroupByOutputType[P]>
+      }
+    >
   >
->
 
 
 
@@ -1304,10 +1304,10 @@ export interface InvoiceDelegate<ExtArgs extends runtime.Types.Extensions.Intern
     args?: Prisma.Subset<T, InvoiceCountArgs>,
   ): Prisma.PrismaPromise<
     T extends runtime.Types.Utils.Record<'select', any>
-    ? T['select'] extends true
-    ? number
-    : Prisma.GetScalarType<T['select'], InvoiceCountAggregateOutputType>
-    : number
+      ? T['select'] extends true
+        ? number
+        : Prisma.GetScalarType<T['select'], InvoiceCountAggregateOutputType>
+      : number
   >
 
   /**
@@ -1361,8 +1361,8 @@ export interface InvoiceDelegate<ExtArgs extends runtime.Types.Extensions.Intern
       Prisma.Extends<'take', Prisma.Keys<T>>
     >,
     OrderByArg extends Prisma.True extends HasSelectOrTake
-    ? { orderBy: InvoiceGroupByArgs['orderBy'] }
-    : { orderBy?: InvoiceGroupByArgs['orderBy'] },
+      ? { orderBy: InvoiceGroupByArgs['orderBy'] }
+      : { orderBy?: InvoiceGroupByArgs['orderBy'] },
     OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>,
     ByFields extends Prisma.MaybeTupleToUnion<T['by']>,
     ByValid extends Prisma.Has<ByFields, OrderFields>,
@@ -1373,49 +1373,49 @@ export interface InvoiceDelegate<ExtArgs extends runtime.Types.Extensions.Intern
     ? `Error: "by" must not be empty.`
     : HavingValid extends Prisma.False
     ? {
-      [P in HavingFields]: P extends ByFields
-      ? never
-      : P extends string
-      ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-      : [
-        Error,
-        'Field ',
-        P,
-        ` in "having" needs to be provided in "by"`,
-      ]
-    }[HavingFields]
+        [P in HavingFields]: P extends ByFields
+          ? never
+          : P extends string
+          ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+          : [
+              Error,
+              'Field ',
+              P,
+              ` in "having" needs to be provided in "by"`,
+            ]
+      }[HavingFields]
     : 'take' extends Prisma.Keys<T>
     ? 'orderBy' extends Prisma.Keys<T>
-    ? ByValid extends Prisma.True
-    ? {}
-    : {
-      [P in OrderFields]: P extends ByFields
-      ? never
-      : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-    }[OrderFields]
-    : 'Error: If you provide "take", you also need to provide "orderBy"'
+      ? ByValid extends Prisma.True
+        ? {}
+        : {
+            [P in OrderFields]: P extends ByFields
+              ? never
+              : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+          }[OrderFields]
+      : 'Error: If you provide "take", you also need to provide "orderBy"'
     : 'skip' extends Prisma.Keys<T>
     ? 'orderBy' extends Prisma.Keys<T>
-    ? ByValid extends Prisma.True
-    ? {}
-    : {
-      [P in OrderFields]: P extends ByFields
-      ? never
-      : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-    }[OrderFields]
-    : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      ? ByValid extends Prisma.True
+        ? {}
+        : {
+            [P in OrderFields]: P extends ByFields
+              ? never
+              : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+          }[OrderFields]
+      : 'Error: If you provide "skip", you also need to provide "orderBy"'
     : ByValid extends Prisma.True
     ? {}
     : {
-      [P in OrderFields]: P extends ByFields
-      ? never
-      : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-    }[OrderFields]
+        [P in OrderFields]: P extends ByFields
+          ? never
+          : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
   >(args: Prisma.SubsetIntersection<T, InvoiceGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetInvoiceGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Invoice model
-   */
-  readonly fields: InvoiceFieldRefs;
+/**
+ * Fields of the Invoice model
+ */
+readonly fields: InvoiceFieldRefs;
 }
 
 /**
@@ -1475,7 +1475,7 @@ export interface InvoiceFieldRefs {
   readonly isDrafted: Prisma.FieldRef<"Invoice", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Invoice", 'DateTime'>
 }
-
+    
 
 // Custom InputTypes
 /**

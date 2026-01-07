@@ -56,6 +56,7 @@ export const ModelName = {
   Transaction: 'Transaction',
   AccountantRequest: 'AccountantRequest',
   EmailTemplate: 'EmailTemplate',
+  FinancialDocument: 'FinancialDocument',
   imapConfiguration: 'imapConfiguration',
   userSubscriptionPlan: 'userSubscriptionPlan',
   userSubscriptionPlanHistory: 'userSubscriptionPlanHistory',
@@ -185,6 +186,32 @@ export const EmailTemplateScalarFieldEnum = {
 } as const
 
 export type EmailTemplateScalarFieldEnum = (typeof EmailTemplateScalarFieldEnum)[keyof typeof EmailTemplateScalarFieldEnum]
+
+
+export const FinancialDocumentScalarFieldEnum = {
+  id: 'id',
+  documentType: 'documentType',
+  documentNumber: 'documentNumber',
+  documentDate: 'documentDate',
+  supplierName: 'supplierName',
+  supplierVatNumber: 'supplierVatNumber',
+  supplierCountry: 'supplierCountry',
+  items: 'items',
+  subtotalExVat: 'subtotalExVat',
+  totalVat: 'totalVat',
+  grandTotalInclVat: 'grandTotalInclVat',
+  paymentMethod: 'paymentMethod',
+  isPaid: 'isPaid',
+  currency: 'currency',
+  category: 'category',
+  note: 'note',
+  isTestData: 'isTestData',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+} as const
+
+export type FinancialDocumentScalarFieldEnum = (typeof FinancialDocumentScalarFieldEnum)[keyof typeof FinancialDocumentScalarFieldEnum]
 
 
 export const ImapConfigurationScalarFieldEnum = {
@@ -577,6 +604,13 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const JsonNullValueInput = {
+  JsonNull: 'JsonNull'
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -591,4 +625,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: 'DbNull',
+  JsonNull: 'JsonNull',
+  AnyNull: 'AnyNull'
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

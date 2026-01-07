@@ -1,0 +1,37 @@
+model FinancialDocument {
+  id             String   @id @unique @default(uuid())
+  documentType   String
+  documentNumber String   @unique
+  documentDate   DateTime
+
+  // Supplier information
+  supplierName      String
+  supplierVatNumber String?
+  supplierCountry   String?
+
+  // Items stored as JSON
+  items Json
+
+  // Totals
+  subtotalExVat     Decimal @db.Decimal(12, 2)
+  totalVat          Decimal @db.Decimal(12, 2)
+  grandTotalInclVat Decimal @db.Decimal(12, 2)
+
+  // Payment
+  paymentMethod String
+  isPaid        Boolean @default(false)
+
+  // Metadata
+  currency   String  @default("EUR")
+  category   String?
+  note       String?
+  isTestData Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String   @default("")
+
+  @@index([documentType])
+  @@index([documentDate])
+  @@map("financial_documents")
+}

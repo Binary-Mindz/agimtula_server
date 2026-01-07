@@ -389,6 +389,7 @@ export const ModelName = {
   Transaction: 'Transaction',
   AccountantRequest: 'AccountantRequest',
   EmailTemplate: 'EmailTemplate',
+  FinancialDocument: 'FinancialDocument',
   imapConfiguration: 'imapConfiguration',
   userSubscriptionPlan: 'userSubscriptionPlan',
   userSubscriptionPlanHistory: 'userSubscriptionPlanHistory',
@@ -430,7 +431,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "bank" | "mileage" | "transaction" | "accountantRequest" | "emailTemplate" | "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "invoice" | "businessData" | "serviceAndItem" | "loggers" | "module" | "userModuleAccess" | "profile" | "forgetPass" | "twoFA" | "language" | "quotation" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "user" | "email"
+    modelProps: "bank" | "mileage" | "transaction" | "accountantRequest" | "emailTemplate" | "financialDocument" | "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "invoice" | "businessData" | "serviceAndItem" | "loggers" | "module" | "userModuleAccess" | "profile" | "forgetPass" | "twoFA" | "language" | "quotation" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "user" | "email"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -801,6 +802,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.EmailTemplateCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.EmailTemplateCountAggregateOutputType> | number
+        }
+      }
+    }
+    FinancialDocument: {
+      payload: Prisma.$FinancialDocumentPayload<ExtArgs>
+      fields: Prisma.FinancialDocumentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FinancialDocumentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FinancialDocumentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FinancialDocumentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FinancialDocumentPayload>
+        }
+        findFirst: {
+          args: Prisma.FinancialDocumentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FinancialDocumentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FinancialDocumentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FinancialDocumentPayload>
+        }
+        findMany: {
+          args: Prisma.FinancialDocumentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FinancialDocumentPayload>[]
+        }
+        create: {
+          args: Prisma.FinancialDocumentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FinancialDocumentPayload>
+        }
+        createMany: {
+          args: Prisma.FinancialDocumentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.FinancialDocumentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FinancialDocumentPayload>[]
+        }
+        delete: {
+          args: Prisma.FinancialDocumentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FinancialDocumentPayload>
+        }
+        update: {
+          args: Prisma.FinancialDocumentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FinancialDocumentPayload>
+        }
+        deleteMany: {
+          args: Prisma.FinancialDocumentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FinancialDocumentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.FinancialDocumentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FinancialDocumentPayload>[]
+        }
+        upsert: {
+          args: Prisma.FinancialDocumentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FinancialDocumentPayload>
+        }
+        aggregate: {
+          args: Prisma.FinancialDocumentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFinancialDocument>
+        }
+        groupBy: {
+          args: Prisma.FinancialDocumentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FinancialDocumentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FinancialDocumentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FinancialDocumentCountAggregateOutputType> | number
         }
       }
     }
@@ -2854,6 +2929,32 @@ export const EmailTemplateScalarFieldEnum = {
 export type EmailTemplateScalarFieldEnum = (typeof EmailTemplateScalarFieldEnum)[keyof typeof EmailTemplateScalarFieldEnum]
 
 
+export const FinancialDocumentScalarFieldEnum = {
+  id: 'id',
+  documentType: 'documentType',
+  documentNumber: 'documentNumber',
+  documentDate: 'documentDate',
+  supplierName: 'supplierName',
+  supplierVatNumber: 'supplierVatNumber',
+  supplierCountry: 'supplierCountry',
+  items: 'items',
+  subtotalExVat: 'subtotalExVat',
+  totalVat: 'totalVat',
+  grandTotalInclVat: 'grandTotalInclVat',
+  paymentMethod: 'paymentMethod',
+  isPaid: 'isPaid',
+  currency: 'currency',
+  category: 'category',
+  note: 'note',
+  isTestData: 'isTestData',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+} as const
+
+export type FinancialDocumentScalarFieldEnum = (typeof FinancialDocumentScalarFieldEnum)[keyof typeof FinancialDocumentScalarFieldEnum]
+
+
 export const ImapConfigurationScalarFieldEnum = {
   id: 'id',
   host: 'host',
@@ -3244,6 +3345,13 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -3258,6 +3366,15 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 
@@ -3368,6 +3485,20 @@ export type ListEnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Prism
  * Reference to a field of type 'Boolean'
  */
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -3582,6 +3713,7 @@ export type GlobalOmitConfig = {
   transaction?: Prisma.TransactionOmit
   accountantRequest?: Prisma.AccountantRequestOmit
   emailTemplate?: Prisma.EmailTemplateOmit
+  financialDocument?: Prisma.FinancialDocumentOmit
   imapConfiguration?: Prisma.imapConfigurationOmit
   userSubscriptionPlan?: Prisma.userSubscriptionPlanOmit
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryOmit

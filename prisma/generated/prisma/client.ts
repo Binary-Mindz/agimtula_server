@@ -63,6 +63,11 @@ export type AccountantRequest = Prisma.AccountantRequestModel
  */
 export type EmailTemplate = Prisma.EmailTemplateModel
 /**
+ * Model FinancialDocument
+ * 
+ */
+export type FinancialDocument = Prisma.FinancialDocumentModel
+/**
  * Model imapConfiguration
  * 
  */

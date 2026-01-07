@@ -33,7 +33,7 @@ export class InvoicesService {
         ...invoiceData
       } = createInvoiceDto;
 
-      const isPaid: boolean = !isPaymentLinkIncluded;
+      let isPaid: boolean = !isPaymentLinkIncluded;
 
       const invoice = await this.prisma.invoice.findFirst({
         where: {
@@ -55,6 +55,17 @@ export class InvoicesService {
       // Convert date strings to Date objects
       const issueDateObj = new Date(issueDate);
       const dueDateObj = dueDate ? new Date(dueDate) : null;
+
+      // Logic for isPaid based on due date and payment link
+      if (dueDateObj) {
+        if (dueDateObj < new Date()) {
+          // Past due date - always false
+          isPaid = false;
+        } else {
+          // Future due date - true if no payment link, false if payment link included
+          isPaid = !isPaymentLinkIncluded;
+        }
+      }
 
       const newInvoice = await this.prisma.invoice.create({
         data: {
@@ -86,7 +97,7 @@ export class InvoicesService {
       });
 
       let session: any;
-      if (isPaymentLinkIncluded) {
+      if (isPaymentLinkIncluded && dueDateObj && dueDateObj > new Date()) {
         session = await this.stripe.checkout.sessions.create({
           customer_email: createInvoiceDto.email,
           line_items: [

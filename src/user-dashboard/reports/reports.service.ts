@@ -14,7 +14,63 @@ export class ReportsService {
         1,
       );
 
-      const [totalReceipt, totalMileage, receipt, mileage] = await Promise.all([
+      const [
+        invoices,
+        totalIncome,
+        totalPaid,
+        totalPending,
+        totalReceipt,
+        totalMileage,
+        receipt,
+        mileage,
+      ] = await Promise.all([
+        this.prisma.invoice.findMany({
+          where: {
+            userId,
+            invoiceSource: 'MANUAL',
+            dueDate: {
+              lt: new Date(),
+            },
+            createdAt: { gte: sixMonthsAgo },
+          },
+          select: { totalAmount: true, createdAt: true },
+        }),
+
+        this.prisma.invoice.aggregate({
+          where: {
+            userId,
+            invoiceSource: 'MANUAL',
+            dueDate: {
+              lt: new Date(),
+            },
+          },
+          _sum: { totalAmount: true },
+        }),
+
+        this.prisma.invoice.aggregate({
+          where: {
+            userId,
+            invoiceSource: 'MANUAL',
+            isPaid: true,
+            dueDate: {
+              lt: new Date(),
+            },
+          },
+          _sum: { totalAmount: true },
+        }),
+
+        this.prisma.invoice.aggregate({
+          where: {
+            userId,
+            invoiceSource: 'MANUAL',
+            isPaid: false,
+            dueDate: {
+              lt: new Date(),
+            },
+          },
+          _sum: { totalAmount: true },
+        }),
+
         this.prisma.receipt.aggregate({
           where: { userId },
           _sum: { amount: true },
@@ -36,25 +92,44 @@ export class ReportsService {
         }),
       ]);
 
-      console.log(receipt, mileage);
+      const incomeMonthlySummury: { month: string; total: number }[] = [];
 
-      const all = [...receipt, ...mileage];
+      invoices.forEach((invoice) => {
+        const year = invoice.createdAt.getFullYear();
+        const month = invoice.createdAt.getMonth() + 1;
+        const monthYear = `${year}-${month}`;
 
-      const monthlySummary: { month: string; total: number }[] = [];
+        const existingEntry = incomeMonthlySummury.find(
+          (entry) => entry.month === monthYear,
+        );
 
-      for (const item of all) {
+        if (existingEntry) {
+          existingEntry.total += invoice.totalAmount;
+        } else {
+          incomeMonthlySummury.push({
+            month: monthYear,
+            total: invoice.totalAmount,
+          });
+        }
+      });
+
+      const expenseAll = [...receipt, ...mileage];
+
+      const expressMonthlySummary: { month: string; total: number }[] = [];
+
+      for (const item of expenseAll) {
         const year = item.date.getFullYear();
         const month = item.date.getMonth() + 1;
         const monthYear = `${year}-${month}`;
 
-        const existingEntry = monthlySummary.find(
+        const existingEntry = expressMonthlySummary.find(
           (entry) => entry.month === monthYear,
         );
 
         if (existingEntry) {
           existingEntry.total += item.amount;
         } else {
-          monthlySummary.push({
+          expressMonthlySummary.push({
             month: monthYear,
             total: item.amount,
           });
@@ -64,12 +139,21 @@ export class ReportsService {
       return cResponseData({
         message: 'Retrived reports data',
         data: {
+          totalIncome: totalIncome._sum.totalAmount || 0,
+          totalPaid: totalPaid._sum.totalAmount || 0,
+          totalPending: totalPending._sum.totalAmount || 0,
+
+          totalExpense:
+            (totalReceipt._sum.amount || 0) + (totalMileage._sum.amount || 0) ||
+            0,
           totalReceipt: totalReceipt._sum.amount || 0,
           totalMileage: totalMileage._sum.amount || 0,
-          monthlySummary,
+
+          incomeMonthlySummury,
+          expressMonthlySummary,
         },
       });
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       return cResponseData({
         message: 'Failed to retrive reports data',

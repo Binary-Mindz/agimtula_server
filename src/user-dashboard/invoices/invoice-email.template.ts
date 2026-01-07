@@ -67,8 +67,8 @@ export function invoiceEmailTemplate(invoice: any) {
               <td align="right">${invoice.subTotal}</td>
             </tr>
             <tr>
-              <td>Tax (%)</td>
-              <td align="right">${invoice.tax}</td>
+              <td>Vat (%)</td>
+              <td align="right">${invoice.vat}</td>
             </tr>
             <tr>
               <td><strong>Total</strong></td>

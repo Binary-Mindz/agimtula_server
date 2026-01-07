@@ -409,6 +409,13 @@ export type EnumInvoiceClientTypeFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumInvoiceClientTypeFilter<$PrismaModel> | $Enums.InvoiceClientType
 }
 
+export type EnumInvoiceSourceFilter<$PrismaModel = never> = {
+  equals?: $Enums.InvoiceSource | Prisma.EnumInvoiceSourceFieldRefInput<$PrismaModel>
+  in?: $Enums.InvoiceSource[] | Prisma.ListEnumInvoiceSourceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.InvoiceSource[] | Prisma.ListEnumInvoiceSourceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumInvoiceSourceFilter<$PrismaModel> | $Enums.InvoiceSource
+}
+
 export type EnumInvoiceClientTypeWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.InvoiceClientType | Prisma.EnumInvoiceClientTypeFieldRefInput<$PrismaModel>
   in?: $Enums.InvoiceClientType[] | Prisma.ListEnumInvoiceClientTypeFieldRefInput<$PrismaModel>
@@ -417,6 +424,16 @@ export type EnumInvoiceClientTypeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumInvoiceClientTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumInvoiceClientTypeFilter<$PrismaModel>
+}
+
+export type EnumInvoiceSourceWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.InvoiceSource | Prisma.EnumInvoiceSourceFieldRefInput<$PrismaModel>
+  in?: $Enums.InvoiceSource[] | Prisma.ListEnumInvoiceSourceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.InvoiceSource[] | Prisma.ListEnumInvoiceSourceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumInvoiceSourceWithAggregatesFilter<$PrismaModel> | $Enums.InvoiceSource
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumInvoiceSourceFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumInvoiceSourceFilter<$PrismaModel>
 }
 
 export type EnumLogTypeFilter<$PrismaModel = never> = {
@@ -901,6 +918,13 @@ export type NestedEnumInvoiceClientTypeFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumInvoiceClientTypeFilter<$PrismaModel> | $Enums.InvoiceClientType
 }
 
+export type NestedEnumInvoiceSourceFilter<$PrismaModel = never> = {
+  equals?: $Enums.InvoiceSource | Prisma.EnumInvoiceSourceFieldRefInput<$PrismaModel>
+  in?: $Enums.InvoiceSource[] | Prisma.ListEnumInvoiceSourceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.InvoiceSource[] | Prisma.ListEnumInvoiceSourceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumInvoiceSourceFilter<$PrismaModel> | $Enums.InvoiceSource
+}
+
 export type NestedEnumInvoiceClientTypeWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.InvoiceClientType | Prisma.EnumInvoiceClientTypeFieldRefInput<$PrismaModel>
   in?: $Enums.InvoiceClientType[] | Prisma.ListEnumInvoiceClientTypeFieldRefInput<$PrismaModel>
@@ -909,6 +933,16 @@ export type NestedEnumInvoiceClientTypeWithAggregatesFilter<$PrismaModel = never
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumInvoiceClientTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumInvoiceClientTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumInvoiceSourceWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.InvoiceSource | Prisma.EnumInvoiceSourceFieldRefInput<$PrismaModel>
+  in?: $Enums.InvoiceSource[] | Prisma.ListEnumInvoiceSourceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.InvoiceSource[] | Prisma.ListEnumInvoiceSourceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumInvoiceSourceWithAggregatesFilter<$PrismaModel> | $Enums.InvoiceSource
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumInvoiceSourceFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumInvoiceSourceFilter<$PrismaModel>
 }
 
 export type NestedEnumLogTypeFilter<$PrismaModel = never> = {

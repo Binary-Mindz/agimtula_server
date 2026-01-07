@@ -29,12 +29,14 @@ export type AggregateFinancialDocument = {
 export type FinancialDocumentAvgAggregateOutputType = {
   subtotalExVat: runtime.Decimal | null
   totalVat: runtime.Decimal | null
+  vatPercentage: runtime.Decimal | null
   grandTotalInclVat: runtime.Decimal | null
 }
 
 export type FinancialDocumentSumAggregateOutputType = {
   subtotalExVat: runtime.Decimal | null
   totalVat: runtime.Decimal | null
+  vatPercentage: runtime.Decimal | null
   grandTotalInclVat: runtime.Decimal | null
 }
 
@@ -48,6 +50,7 @@ export type FinancialDocumentMinAggregateOutputType = {
   supplierCountry: string | null
   subtotalExVat: runtime.Decimal | null
   totalVat: runtime.Decimal | null
+  vatPercentage: runtime.Decimal | null
   grandTotalInclVat: runtime.Decimal | null
   paymentMethod: string | null
   isPaid: boolean | null
@@ -70,6 +73,7 @@ export type FinancialDocumentMaxAggregateOutputType = {
   supplierCountry: string | null
   subtotalExVat: runtime.Decimal | null
   totalVat: runtime.Decimal | null
+  vatPercentage: runtime.Decimal | null
   grandTotalInclVat: runtime.Decimal | null
   paymentMethod: string | null
   isPaid: boolean | null
@@ -93,6 +97,7 @@ export type FinancialDocumentCountAggregateOutputType = {
   items: number
   subtotalExVat: number
   totalVat: number
+  vatPercentage: number
   grandTotalInclVat: number
   paymentMethod: number
   isPaid: number
@@ -110,12 +115,14 @@ export type FinancialDocumentCountAggregateOutputType = {
 export type FinancialDocumentAvgAggregateInputType = {
   subtotalExVat?: true
   totalVat?: true
+  vatPercentage?: true
   grandTotalInclVat?: true
 }
 
 export type FinancialDocumentSumAggregateInputType = {
   subtotalExVat?: true
   totalVat?: true
+  vatPercentage?: true
   grandTotalInclVat?: true
 }
 
@@ -129,6 +136,7 @@ export type FinancialDocumentMinAggregateInputType = {
   supplierCountry?: true
   subtotalExVat?: true
   totalVat?: true
+  vatPercentage?: true
   grandTotalInclVat?: true
   paymentMethod?: true
   isPaid?: true
@@ -151,6 +159,7 @@ export type FinancialDocumentMaxAggregateInputType = {
   supplierCountry?: true
   subtotalExVat?: true
   totalVat?: true
+  vatPercentage?: true
   grandTotalInclVat?: true
   paymentMethod?: true
   isPaid?: true
@@ -174,6 +183,7 @@ export type FinancialDocumentCountAggregateInputType = {
   items?: true
   subtotalExVat?: true
   totalVat?: true
+  vatPercentage?: true
   grandTotalInclVat?: true
   paymentMethod?: true
   isPaid?: true
@@ -284,6 +294,7 @@ export type FinancialDocumentGroupByOutputType = {
   items: runtime.JsonValue
   subtotalExVat: runtime.Decimal
   totalVat: runtime.Decimal
+  vatPercentage: runtime.Decimal
   grandTotalInclVat: runtime.Decimal
   paymentMethod: string
   isPaid: boolean
@@ -330,6 +341,7 @@ export type FinancialDocumentWhereInput = {
   items?: Prisma.JsonFilter<"FinancialDocument">
   subtotalExVat?: Prisma.DecimalFilter<"FinancialDocument"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalVat?: Prisma.DecimalFilter<"FinancialDocument"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  vatPercentage?: Prisma.DecimalFilter<"FinancialDocument"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   grandTotalInclVat?: Prisma.DecimalFilter<"FinancialDocument"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   paymentMethod?: Prisma.StringFilter<"FinancialDocument"> | string
   isPaid?: Prisma.BoolFilter<"FinancialDocument"> | boolean
@@ -353,6 +365,7 @@ export type FinancialDocumentOrderByWithRelationInput = {
   items?: Prisma.SortOrder
   subtotalExVat?: Prisma.SortOrder
   totalVat?: Prisma.SortOrder
+  vatPercentage?: Prisma.SortOrder
   grandTotalInclVat?: Prisma.SortOrder
   paymentMethod?: Prisma.SortOrder
   isPaid?: Prisma.SortOrder
@@ -379,6 +392,7 @@ export type FinancialDocumentWhereUniqueInput = Prisma.AtLeast<{
   items?: Prisma.JsonFilter<"FinancialDocument">
   subtotalExVat?: Prisma.DecimalFilter<"FinancialDocument"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalVat?: Prisma.DecimalFilter<"FinancialDocument"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  vatPercentage?: Prisma.DecimalFilter<"FinancialDocument"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   grandTotalInclVat?: Prisma.DecimalFilter<"FinancialDocument"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   paymentMethod?: Prisma.StringFilter<"FinancialDocument"> | string
   isPaid?: Prisma.BoolFilter<"FinancialDocument"> | boolean
@@ -402,6 +416,7 @@ export type FinancialDocumentOrderByWithAggregationInput = {
   items?: Prisma.SortOrder
   subtotalExVat?: Prisma.SortOrder
   totalVat?: Prisma.SortOrder
+  vatPercentage?: Prisma.SortOrder
   grandTotalInclVat?: Prisma.SortOrder
   paymentMethod?: Prisma.SortOrder
   isPaid?: Prisma.SortOrder
@@ -433,6 +448,7 @@ export type FinancialDocumentScalarWhereWithAggregatesInput = {
   items?: Prisma.JsonWithAggregatesFilter<"FinancialDocument">
   subtotalExVat?: Prisma.DecimalWithAggregatesFilter<"FinancialDocument"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalVat?: Prisma.DecimalWithAggregatesFilter<"FinancialDocument"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  vatPercentage?: Prisma.DecimalWithAggregatesFilter<"FinancialDocument"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   grandTotalInclVat?: Prisma.DecimalWithAggregatesFilter<"FinancialDocument"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   paymentMethod?: Prisma.StringWithAggregatesFilter<"FinancialDocument"> | string
   isPaid?: Prisma.BoolWithAggregatesFilter<"FinancialDocument"> | boolean
@@ -456,6 +472,7 @@ export type FinancialDocumentCreateInput = {
   items: Prisma.JsonNullValueInput | runtime.InputJsonValue
   subtotalExVat: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalVat: runtime.Decimal | runtime.DecimalJsLike | number | string
+  vatPercentage: runtime.Decimal | runtime.DecimalJsLike | number | string
   grandTotalInclVat: runtime.Decimal | runtime.DecimalJsLike | number | string
   paymentMethod: string
   isPaid?: boolean
@@ -479,6 +496,7 @@ export type FinancialDocumentUncheckedCreateInput = {
   items: Prisma.JsonNullValueInput | runtime.InputJsonValue
   subtotalExVat: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalVat: runtime.Decimal | runtime.DecimalJsLike | number | string
+  vatPercentage: runtime.Decimal | runtime.DecimalJsLike | number | string
   grandTotalInclVat: runtime.Decimal | runtime.DecimalJsLike | number | string
   paymentMethod: string
   isPaid?: boolean
@@ -502,6 +520,7 @@ export type FinancialDocumentUpdateInput = {
   items?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   subtotalExVat?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalVat?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  vatPercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   grandTotalInclVat?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
   isPaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -525,6 +544,7 @@ export type FinancialDocumentUncheckedUpdateInput = {
   items?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   subtotalExVat?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalVat?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  vatPercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   grandTotalInclVat?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
   isPaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -548,6 +568,7 @@ export type FinancialDocumentCreateManyInput = {
   items: Prisma.JsonNullValueInput | runtime.InputJsonValue
   subtotalExVat: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalVat: runtime.Decimal | runtime.DecimalJsLike | number | string
+  vatPercentage: runtime.Decimal | runtime.DecimalJsLike | number | string
   grandTotalInclVat: runtime.Decimal | runtime.DecimalJsLike | number | string
   paymentMethod: string
   isPaid?: boolean
@@ -571,6 +592,7 @@ export type FinancialDocumentUpdateManyMutationInput = {
   items?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   subtotalExVat?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalVat?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  vatPercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   grandTotalInclVat?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
   isPaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -594,6 +616,7 @@ export type FinancialDocumentUncheckedUpdateManyInput = {
   items?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   subtotalExVat?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalVat?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  vatPercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   grandTotalInclVat?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
   isPaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -617,6 +640,7 @@ export type FinancialDocumentCountOrderByAggregateInput = {
   items?: Prisma.SortOrder
   subtotalExVat?: Prisma.SortOrder
   totalVat?: Prisma.SortOrder
+  vatPercentage?: Prisma.SortOrder
   grandTotalInclVat?: Prisma.SortOrder
   paymentMethod?: Prisma.SortOrder
   isPaid?: Prisma.SortOrder
@@ -632,6 +656,7 @@ export type FinancialDocumentCountOrderByAggregateInput = {
 export type FinancialDocumentAvgOrderByAggregateInput = {
   subtotalExVat?: Prisma.SortOrder
   totalVat?: Prisma.SortOrder
+  vatPercentage?: Prisma.SortOrder
   grandTotalInclVat?: Prisma.SortOrder
 }
 
@@ -645,6 +670,7 @@ export type FinancialDocumentMaxOrderByAggregateInput = {
   supplierCountry?: Prisma.SortOrder
   subtotalExVat?: Prisma.SortOrder
   totalVat?: Prisma.SortOrder
+  vatPercentage?: Prisma.SortOrder
   grandTotalInclVat?: Prisma.SortOrder
   paymentMethod?: Prisma.SortOrder
   isPaid?: Prisma.SortOrder
@@ -667,6 +693,7 @@ export type FinancialDocumentMinOrderByAggregateInput = {
   supplierCountry?: Prisma.SortOrder
   subtotalExVat?: Prisma.SortOrder
   totalVat?: Prisma.SortOrder
+  vatPercentage?: Prisma.SortOrder
   grandTotalInclVat?: Prisma.SortOrder
   paymentMethod?: Prisma.SortOrder
   isPaid?: Prisma.SortOrder
@@ -682,6 +709,7 @@ export type FinancialDocumentMinOrderByAggregateInput = {
 export type FinancialDocumentSumOrderByAggregateInput = {
   subtotalExVat?: Prisma.SortOrder
   totalVat?: Prisma.SortOrder
+  vatPercentage?: Prisma.SortOrder
   grandTotalInclVat?: Prisma.SortOrder
 }
 
@@ -698,6 +726,7 @@ export type FinancialDocumentSelect<ExtArgs extends runtime.Types.Extensions.Int
   items?: boolean
   subtotalExVat?: boolean
   totalVat?: boolean
+  vatPercentage?: boolean
   grandTotalInclVat?: boolean
   paymentMethod?: boolean
   isPaid?: boolean
@@ -721,6 +750,7 @@ export type FinancialDocumentSelectCreateManyAndReturn<ExtArgs extends runtime.T
   items?: boolean
   subtotalExVat?: boolean
   totalVat?: boolean
+  vatPercentage?: boolean
   grandTotalInclVat?: boolean
   paymentMethod?: boolean
   isPaid?: boolean
@@ -744,6 +774,7 @@ export type FinancialDocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.T
   items?: boolean
   subtotalExVat?: boolean
   totalVat?: boolean
+  vatPercentage?: boolean
   grandTotalInclVat?: boolean
   paymentMethod?: boolean
   isPaid?: boolean
@@ -767,6 +798,7 @@ export type FinancialDocumentSelectScalar = {
   items?: boolean
   subtotalExVat?: boolean
   totalVat?: boolean
+  vatPercentage?: boolean
   grandTotalInclVat?: boolean
   paymentMethod?: boolean
   isPaid?: boolean
@@ -779,7 +811,7 @@ export type FinancialDocumentSelectScalar = {
   userId?: boolean
 }
 
-export type FinancialDocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "documentType" | "documentNumber" | "documentDate" | "supplierName" | "supplierVatNumber" | "supplierCountry" | "items" | "subtotalExVat" | "totalVat" | "grandTotalInclVat" | "paymentMethod" | "isPaid" | "currency" | "category" | "note" | "isTestData" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["financialDocument"]>
+export type FinancialDocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "documentType" | "documentNumber" | "documentDate" | "supplierName" | "supplierVatNumber" | "supplierCountry" | "items" | "subtotalExVat" | "totalVat" | "vatPercentage" | "grandTotalInclVat" | "paymentMethod" | "isPaid" | "currency" | "category" | "note" | "isTestData" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["financialDocument"]>
 
 export type $FinancialDocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "FinancialDocument"
@@ -795,6 +827,7 @@ export type $FinancialDocumentPayload<ExtArgs extends runtime.Types.Extensions.I
     items: runtime.JsonValue
     subtotalExVat: runtime.Decimal
     totalVat: runtime.Decimal
+    vatPercentage: runtime.Decimal
     grandTotalInclVat: runtime.Decimal
     paymentMethod: string
     isPaid: boolean
@@ -1238,6 +1271,7 @@ export interface FinancialDocumentFieldRefs {
   readonly items: Prisma.FieldRef<"FinancialDocument", 'Json'>
   readonly subtotalExVat: Prisma.FieldRef<"FinancialDocument", 'Decimal'>
   readonly totalVat: Prisma.FieldRef<"FinancialDocument", 'Decimal'>
+  readonly vatPercentage: Prisma.FieldRef<"FinancialDocument", 'Decimal'>
   readonly grandTotalInclVat: Prisma.FieldRef<"FinancialDocument", 'Decimal'>
   readonly paymentMethod: Prisma.FieldRef<"FinancialDocument", 'String'>
   readonly isPaid: Prisma.FieldRef<"FinancialDocument", 'Boolean'>

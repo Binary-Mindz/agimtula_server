@@ -31,10 +31,10 @@ export class InvoiceLayoutService {
 
       const updateData: any = { ...dto };
       if (existing) {
-        if (dto.tax_breakdown !== undefined)
-          updateData.tax_breakdown = !existing.tax_breakdown;
-        if (dto.prices_include_tax !== undefined)
-          updateData.prices_include_tax = !existing.prices_include_tax;
+        if (dto.vat_breakdown !== undefined)
+          updateData.vat_breakdown = !existing.vat_breakdown;
+        if (dto.prices_include_vat !== undefined)
+          updateData.prices_include_vat = !existing.prices_include_vat;
         if (dto.show_company_logo !== undefined)
           updateData.show_company_logo = !existing.show_company_logo;
 

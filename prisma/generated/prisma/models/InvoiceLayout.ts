@@ -40,8 +40,8 @@ export type InvoiceLayoutMinAggregateOutputType = {
   quote_prefix: string | null
   year_format: string | null
   default_vat_rate: number | null
-  tax_breakdown: boolean | null
-  prices_include_tax: boolean | null
+  vat_breakdown: boolean | null
+  prices_include_vat: boolean | null
   template_title: string | null
   footer_text: string | null
   show_company_logo: boolean | null
@@ -56,8 +56,8 @@ export type InvoiceLayoutMaxAggregateOutputType = {
   quote_prefix: string | null
   year_format: string | null
   default_vat_rate: number | null
-  tax_breakdown: boolean | null
-  prices_include_tax: boolean | null
+  vat_breakdown: boolean | null
+  prices_include_vat: boolean | null
   template_title: string | null
   footer_text: string | null
   show_company_logo: boolean | null
@@ -72,8 +72,8 @@ export type InvoiceLayoutCountAggregateOutputType = {
   quote_prefix: number
   year_format: number
   default_vat_rate: number
-  tax_breakdown: number
-  prices_include_tax: number
+  vat_breakdown: number
+  prices_include_vat: number
   template_title: number
   footer_text: number
   show_company_logo: number
@@ -98,8 +98,8 @@ export type InvoiceLayoutMinAggregateInputType = {
   quote_prefix?: true
   year_format?: true
   default_vat_rate?: true
-  tax_breakdown?: true
-  prices_include_tax?: true
+  vat_breakdown?: true
+  prices_include_vat?: true
   template_title?: true
   footer_text?: true
   show_company_logo?: true
@@ -114,8 +114,8 @@ export type InvoiceLayoutMaxAggregateInputType = {
   quote_prefix?: true
   year_format?: true
   default_vat_rate?: true
-  tax_breakdown?: true
-  prices_include_tax?: true
+  vat_breakdown?: true
+  prices_include_vat?: true
   template_title?: true
   footer_text?: true
   show_company_logo?: true
@@ -130,8 +130,8 @@ export type InvoiceLayoutCountAggregateInputType = {
   quote_prefix?: true
   year_format?: true
   default_vat_rate?: true
-  tax_breakdown?: true
-  prices_include_tax?: true
+  vat_breakdown?: true
+  prices_include_vat?: true
   template_title?: true
   footer_text?: true
   show_company_logo?: true
@@ -233,8 +233,8 @@ export type InvoiceLayoutGroupByOutputType = {
   quote_prefix: string | null
   year_format: string | null
   default_vat_rate: number | null
-  tax_breakdown: boolean
-  prices_include_tax: boolean
+  vat_breakdown: boolean
+  prices_include_vat: boolean
   template_title: string | null
   footer_text: string | null
   show_company_logo: boolean
@@ -272,8 +272,8 @@ export type InvoiceLayoutWhereInput = {
   quote_prefix?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
   year_format?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
   default_vat_rate?: Prisma.FloatNullableFilter<"InvoiceLayout"> | number | null
-  tax_breakdown?: Prisma.BoolFilter<"InvoiceLayout"> | boolean
-  prices_include_tax?: Prisma.BoolFilter<"InvoiceLayout"> | boolean
+  vat_breakdown?: Prisma.BoolFilter<"InvoiceLayout"> | boolean
+  prices_include_vat?: Prisma.BoolFilter<"InvoiceLayout"> | boolean
   template_title?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
   footer_text?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
   show_company_logo?: Prisma.BoolFilter<"InvoiceLayout"> | boolean
@@ -289,8 +289,8 @@ export type InvoiceLayoutOrderByWithRelationInput = {
   quote_prefix?: Prisma.SortOrderInput | Prisma.SortOrder
   year_format?: Prisma.SortOrderInput | Prisma.SortOrder
   default_vat_rate?: Prisma.SortOrderInput | Prisma.SortOrder
-  tax_breakdown?: Prisma.SortOrder
-  prices_include_tax?: Prisma.SortOrder
+  vat_breakdown?: Prisma.SortOrder
+  prices_include_vat?: Prisma.SortOrder
   template_title?: Prisma.SortOrderInput | Prisma.SortOrder
   footer_text?: Prisma.SortOrderInput | Prisma.SortOrder
   show_company_logo?: Prisma.SortOrder
@@ -310,8 +310,8 @@ export type InvoiceLayoutWhereUniqueInput = Prisma.AtLeast<{
   quote_prefix?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
   year_format?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
   default_vat_rate?: Prisma.FloatNullableFilter<"InvoiceLayout"> | number | null
-  tax_breakdown?: Prisma.BoolFilter<"InvoiceLayout"> | boolean
-  prices_include_tax?: Prisma.BoolFilter<"InvoiceLayout"> | boolean
+  vat_breakdown?: Prisma.BoolFilter<"InvoiceLayout"> | boolean
+  prices_include_vat?: Prisma.BoolFilter<"InvoiceLayout"> | boolean
   template_title?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
   footer_text?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
   show_company_logo?: Prisma.BoolFilter<"InvoiceLayout"> | boolean
@@ -326,8 +326,8 @@ export type InvoiceLayoutOrderByWithAggregationInput = {
   quote_prefix?: Prisma.SortOrderInput | Prisma.SortOrder
   year_format?: Prisma.SortOrderInput | Prisma.SortOrder
   default_vat_rate?: Prisma.SortOrderInput | Prisma.SortOrder
-  tax_breakdown?: Prisma.SortOrder
-  prices_include_tax?: Prisma.SortOrder
+  vat_breakdown?: Prisma.SortOrder
+  prices_include_vat?: Prisma.SortOrder
   template_title?: Prisma.SortOrderInput | Prisma.SortOrder
   footer_text?: Prisma.SortOrderInput | Prisma.SortOrder
   show_company_logo?: Prisma.SortOrder
@@ -350,8 +350,8 @@ export type InvoiceLayoutScalarWhereWithAggregatesInput = {
   quote_prefix?: Prisma.StringNullableWithAggregatesFilter<"InvoiceLayout"> | string | null
   year_format?: Prisma.StringNullableWithAggregatesFilter<"InvoiceLayout"> | string | null
   default_vat_rate?: Prisma.FloatNullableWithAggregatesFilter<"InvoiceLayout"> | number | null
-  tax_breakdown?: Prisma.BoolWithAggregatesFilter<"InvoiceLayout"> | boolean
-  prices_include_tax?: Prisma.BoolWithAggregatesFilter<"InvoiceLayout"> | boolean
+  vat_breakdown?: Prisma.BoolWithAggregatesFilter<"InvoiceLayout"> | boolean
+  prices_include_vat?: Prisma.BoolWithAggregatesFilter<"InvoiceLayout"> | boolean
   template_title?: Prisma.StringNullableWithAggregatesFilter<"InvoiceLayout"> | string | null
   footer_text?: Prisma.StringNullableWithAggregatesFilter<"InvoiceLayout"> | string | null
   show_company_logo?: Prisma.BoolWithAggregatesFilter<"InvoiceLayout"> | boolean
@@ -366,8 +366,8 @@ export type InvoiceLayoutCreateInput = {
   quote_prefix?: string | null
   year_format?: string | null
   default_vat_rate?: number | null
-  tax_breakdown?: boolean
-  prices_include_tax?: boolean
+  vat_breakdown?: boolean
+  prices_include_vat?: boolean
   template_title?: string | null
   footer_text?: string | null
   show_company_logo?: boolean
@@ -382,8 +382,8 @@ export type InvoiceLayoutUncheckedCreateInput = {
   quote_prefix?: string | null
   year_format?: string | null
   default_vat_rate?: number | null
-  tax_breakdown?: boolean
-  prices_include_tax?: boolean
+  vat_breakdown?: boolean
+  prices_include_vat?: boolean
   template_title?: string | null
   footer_text?: string | null
   show_company_logo?: boolean
@@ -398,8 +398,8 @@ export type InvoiceLayoutUpdateInput = {
   quote_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   default_vat_rate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  tax_breakdown?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  prices_include_tax?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  vat_breakdown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  prices_include_vat?: Prisma.BoolFieldUpdateOperationsInput | boolean
   template_title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   footer_text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   show_company_logo?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -414,8 +414,8 @@ export type InvoiceLayoutUncheckedUpdateInput = {
   quote_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   default_vat_rate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  tax_breakdown?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  prices_include_tax?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  vat_breakdown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  prices_include_vat?: Prisma.BoolFieldUpdateOperationsInput | boolean
   template_title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   footer_text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   show_company_logo?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -430,8 +430,8 @@ export type InvoiceLayoutCreateManyInput = {
   quote_prefix?: string | null
   year_format?: string | null
   default_vat_rate?: number | null
-  tax_breakdown?: boolean
-  prices_include_tax?: boolean
+  vat_breakdown?: boolean
+  prices_include_vat?: boolean
   template_title?: string | null
   footer_text?: string | null
   show_company_logo?: boolean
@@ -446,8 +446,8 @@ export type InvoiceLayoutUpdateManyMutationInput = {
   quote_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   default_vat_rate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  tax_breakdown?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  prices_include_tax?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  vat_breakdown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  prices_include_vat?: Prisma.BoolFieldUpdateOperationsInput | boolean
   template_title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   footer_text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   show_company_logo?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -461,8 +461,8 @@ export type InvoiceLayoutUncheckedUpdateManyInput = {
   quote_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   default_vat_rate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  tax_breakdown?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  prices_include_tax?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  vat_breakdown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  prices_include_vat?: Prisma.BoolFieldUpdateOperationsInput | boolean
   template_title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   footer_text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   show_company_logo?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -477,8 +477,8 @@ export type InvoiceLayoutCountOrderByAggregateInput = {
   quote_prefix?: Prisma.SortOrder
   year_format?: Prisma.SortOrder
   default_vat_rate?: Prisma.SortOrder
-  tax_breakdown?: Prisma.SortOrder
-  prices_include_tax?: Prisma.SortOrder
+  vat_breakdown?: Prisma.SortOrder
+  prices_include_vat?: Prisma.SortOrder
   template_title?: Prisma.SortOrder
   footer_text?: Prisma.SortOrder
   show_company_logo?: Prisma.SortOrder
@@ -497,8 +497,8 @@ export type InvoiceLayoutMaxOrderByAggregateInput = {
   quote_prefix?: Prisma.SortOrder
   year_format?: Prisma.SortOrder
   default_vat_rate?: Prisma.SortOrder
-  tax_breakdown?: Prisma.SortOrder
-  prices_include_tax?: Prisma.SortOrder
+  vat_breakdown?: Prisma.SortOrder
+  prices_include_vat?: Prisma.SortOrder
   template_title?: Prisma.SortOrder
   footer_text?: Prisma.SortOrder
   show_company_logo?: Prisma.SortOrder
@@ -513,8 +513,8 @@ export type InvoiceLayoutMinOrderByAggregateInput = {
   quote_prefix?: Prisma.SortOrder
   year_format?: Prisma.SortOrder
   default_vat_rate?: Prisma.SortOrder
-  tax_breakdown?: Prisma.SortOrder
-  prices_include_tax?: Prisma.SortOrder
+  vat_breakdown?: Prisma.SortOrder
+  prices_include_vat?: Prisma.SortOrder
   template_title?: Prisma.SortOrder
   footer_text?: Prisma.SortOrder
   show_company_logo?: Prisma.SortOrder
@@ -578,8 +578,8 @@ export type InvoiceLayoutCreateWithoutUserInput = {
   quote_prefix?: string | null
   year_format?: string | null
   default_vat_rate?: number | null
-  tax_breakdown?: boolean
-  prices_include_tax?: boolean
+  vat_breakdown?: boolean
+  prices_include_vat?: boolean
   template_title?: string | null
   footer_text?: string | null
   show_company_logo?: boolean
@@ -593,8 +593,8 @@ export type InvoiceLayoutUncheckedCreateWithoutUserInput = {
   quote_prefix?: string | null
   year_format?: string | null
   default_vat_rate?: number | null
-  tax_breakdown?: boolean
-  prices_include_tax?: boolean
+  vat_breakdown?: boolean
+  prices_include_vat?: boolean
   template_title?: string | null
   footer_text?: string | null
   show_company_logo?: boolean
@@ -624,8 +624,8 @@ export type InvoiceLayoutUpdateWithoutUserInput = {
   quote_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   default_vat_rate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  tax_breakdown?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  prices_include_tax?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  vat_breakdown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  prices_include_vat?: Prisma.BoolFieldUpdateOperationsInput | boolean
   template_title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   footer_text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   show_company_logo?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -639,8 +639,8 @@ export type InvoiceLayoutUncheckedUpdateWithoutUserInput = {
   quote_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   default_vat_rate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  tax_breakdown?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  prices_include_tax?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  vat_breakdown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  prices_include_vat?: Prisma.BoolFieldUpdateOperationsInput | boolean
   template_title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   footer_text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   show_company_logo?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -656,8 +656,8 @@ export type InvoiceLayoutSelect<ExtArgs extends runtime.Types.Extensions.Interna
   quote_prefix?: boolean
   year_format?: boolean
   default_vat_rate?: boolean
-  tax_breakdown?: boolean
-  prices_include_tax?: boolean
+  vat_breakdown?: boolean
+  prices_include_vat?: boolean
   template_title?: boolean
   footer_text?: boolean
   show_company_logo?: boolean
@@ -673,8 +673,8 @@ export type InvoiceLayoutSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   quote_prefix?: boolean
   year_format?: boolean
   default_vat_rate?: boolean
-  tax_breakdown?: boolean
-  prices_include_tax?: boolean
+  vat_breakdown?: boolean
+  prices_include_vat?: boolean
   template_title?: boolean
   footer_text?: boolean
   show_company_logo?: boolean
@@ -690,8 +690,8 @@ export type InvoiceLayoutSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   quote_prefix?: boolean
   year_format?: boolean
   default_vat_rate?: boolean
-  tax_breakdown?: boolean
-  prices_include_tax?: boolean
+  vat_breakdown?: boolean
+  prices_include_vat?: boolean
   template_title?: boolean
   footer_text?: boolean
   show_company_logo?: boolean
@@ -707,8 +707,8 @@ export type InvoiceLayoutSelectScalar = {
   quote_prefix?: boolean
   year_format?: boolean
   default_vat_rate?: boolean
-  tax_breakdown?: boolean
-  prices_include_tax?: boolean
+  vat_breakdown?: boolean
+  prices_include_vat?: boolean
   template_title?: boolean
   footer_text?: boolean
   show_company_logo?: boolean
@@ -717,7 +717,7 @@ export type InvoiceLayoutSelectScalar = {
   userId?: boolean
 }
 
-export type InvoiceLayoutOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "invoice_prefix" | "quote_prefix" | "year_format" | "default_vat_rate" | "tax_breakdown" | "prices_include_tax" | "template_title" | "footer_text" | "show_company_logo" | "invoice_notes" | "terms_and_conditions" | "userId", ExtArgs["result"]["invoiceLayout"]>
+export type InvoiceLayoutOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "invoice_prefix" | "quote_prefix" | "year_format" | "default_vat_rate" | "vat_breakdown" | "prices_include_vat" | "template_title" | "footer_text" | "show_company_logo" | "invoice_notes" | "terms_and_conditions" | "userId", ExtArgs["result"]["invoiceLayout"]>
 export type InvoiceLayoutInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -739,8 +739,8 @@ export type $InvoiceLayoutPayload<ExtArgs extends runtime.Types.Extensions.Inter
     quote_prefix: string | null
     year_format: string | null
     default_vat_rate: number | null
-    tax_breakdown: boolean
-    prices_include_tax: boolean
+    vat_breakdown: boolean
+    prices_include_vat: boolean
     template_title: string | null
     footer_text: string | null
     show_company_logo: boolean
@@ -1176,8 +1176,8 @@ export interface InvoiceLayoutFieldRefs {
   readonly quote_prefix: Prisma.FieldRef<"InvoiceLayout", 'String'>
   readonly year_format: Prisma.FieldRef<"InvoiceLayout", 'String'>
   readonly default_vat_rate: Prisma.FieldRef<"InvoiceLayout", 'Float'>
-  readonly tax_breakdown: Prisma.FieldRef<"InvoiceLayout", 'Boolean'>
-  readonly prices_include_tax: Prisma.FieldRef<"InvoiceLayout", 'Boolean'>
+  readonly vat_breakdown: Prisma.FieldRef<"InvoiceLayout", 'Boolean'>
+  readonly prices_include_vat: Prisma.FieldRef<"InvoiceLayout", 'Boolean'>
   readonly template_title: Prisma.FieldRef<"InvoiceLayout", 'String'>
   readonly footer_text: Prisma.FieldRef<"InvoiceLayout", 'String'>
   readonly show_company_logo: Prisma.FieldRef<"InvoiceLayout", 'Boolean'>

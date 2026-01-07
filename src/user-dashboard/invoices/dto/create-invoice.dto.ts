@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   IsArray,
+  IsBoolean,
   IsDateString,
   IsEmail,
   IsEnum,
@@ -184,12 +185,12 @@ export class CreateInvoiceDto {
   serviceAndItems: ServiceAndItemDto[];
 
   @ApiProperty({
-    description: 'The tax',
+    description: 'The Vat',
     example: 10,
   })
   @IsNumber()
   @IsNotEmpty()
-  tax: number;
+  vat: number;
 
   @ApiProperty({
     description: 'The sub total',
@@ -208,15 +209,6 @@ export class CreateInvoiceDto {
   totalAmount: number;
 
   @ApiProperty({
-    description: 'The mobile payment link',
-    example: 'https://example.com/payment',
-    required: false,
-  })
-  @IsString()
-  @IsOptional()
-  mobilePaymentLink?: string;
-
-  @ApiProperty({
     description: 'The additional note',
     example: 'Additional note',
     required: false,
@@ -224,14 +216,12 @@ export class CreateInvoiceDto {
   @IsString()
   @IsOptional()
   additionalNote?: string;
+
+  @ApiProperty({
+    description: 'Is payment link included',
+    example: true,
+  })
+  @IsBoolean()
+  @IsOptional()
+  isPaymentLinkIncluded?: boolean;
 }
-
-// added this field
-// model BusinessData {
-//     id              String @id @unique @default(uuid())
-//     businessIdLabel String
-//     businessIdValue String
-
-//     invoiceId String
-//     invoice   Invoice @relation(fields: [invoiceId], references: [id])
-// }

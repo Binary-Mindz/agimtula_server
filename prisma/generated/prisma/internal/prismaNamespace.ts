@@ -2940,6 +2940,7 @@ export const FinancialDocumentScalarFieldEnum = {
   items: 'items',
   subtotalExVat: 'subtotalExVat',
   totalVat: 'totalVat',
+  vatPercentage: 'vatPercentage',
   grandTotalInclVat: 'grandTotalInclVat',
   paymentMethod: 'paymentMethod',
   isPaid: 'isPaid',
@@ -3031,6 +3032,7 @@ export type SubscriptionPlanPaymentStatusScalarFieldEnum = (typeof SubscriptionP
 export const InvoiceScalarFieldEnum = {
   id: 'id',
   invoiceNo: 'invoiceNo',
+  userId: 'userId',
   issueDate: 'issueDate',
   dueDate: 'dueDate',
   type: 'type',
@@ -3039,11 +3041,15 @@ export const InvoiceScalarFieldEnum = {
   AddressAndContactInfo: 'AddressAndContactInfo',
   projectInformation: 'projectInformation',
   projectDescription: 'projectDescription',
-  tax: 'tax',
+  vat: 'vat',
   subTotal: 'subTotal',
   totalAmount: 'totalAmount',
-  mobilePaymentLink: 'mobilePaymentLink',
+  isPaid: 'isPaid',
+  paidAt: 'paidAt',
+  stripeSessionId: 'stripeSessionId',
+  stripePaymentIntentId: 'stripePaymentIntentId',
   additionalNote: 'additionalNote',
+  invoiceSource: 'invoiceSource',
   isDrafted: 'isDrafted',
   createdAt: 'createdAt'
 } as const
@@ -3238,8 +3244,8 @@ export const InvoiceLayoutScalarFieldEnum = {
   quote_prefix: 'quote_prefix',
   year_format: 'year_format',
   default_vat_rate: 'default_vat_rate',
-  tax_breakdown: 'tax_breakdown',
-  prices_include_tax: 'prices_include_tax',
+  vat_breakdown: 'vat_breakdown',
+  prices_include_vat: 'prices_include_vat',
   template_title: 'template_title',
   footer_text: 'footer_text',
   show_company_logo: 'show_company_logo',
@@ -3541,6 +3547,20 @@ export type EnumInvoiceClientTypeFieldRefInput<$PrismaModel> = FieldRefInputType
  * Reference to a field of type 'InvoiceClientType[]'
  */
 export type ListEnumInvoiceClientTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InvoiceClientType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'InvoiceSource'
+ */
+export type EnumInvoiceSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InvoiceSource'>
+    
+
+
+/**
+ * Reference to a field of type 'InvoiceSource[]'
+ */
+export type ListEnumInvoiceSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InvoiceSource[]'>
     
 
 

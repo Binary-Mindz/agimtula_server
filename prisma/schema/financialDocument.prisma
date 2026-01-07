@@ -15,6 +15,7 @@ model FinancialDocument {
   // Totals
   subtotalExVat     Decimal @db.Decimal(12, 2)
   totalVat          Decimal @db.Decimal(12, 2)
+  vatPercentage     Decimal @db.Decimal(5, 2) // e.g., 21.00 for 21%
   grandTotalInclVat Decimal @db.Decimal(12, 2)
 
   // Payment

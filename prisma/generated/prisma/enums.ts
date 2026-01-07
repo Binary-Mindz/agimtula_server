@@ -43,6 +43,14 @@ export const InvoiceClientType = {
 export type InvoiceClientType = (typeof InvoiceClientType)[keyof typeof InvoiceClientType]
 
 
+export const InvoiceSource = {
+  MANUAL: 'MANUAL',
+  EMAIL: 'EMAIL'
+} as const
+
+export type InvoiceSource = (typeof InvoiceSource)[keyof typeof InvoiceSource]
+
+
 export const LogType = {
   ERROR: 'ERROR',
   SUCCESS: 'SUCCESS',

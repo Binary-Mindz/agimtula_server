@@ -29,7 +29,7 @@ export class InvoiceLayoutDto {
   @MaxLength(4)
   year_format?: string;
 
-  // Tax settings
+  // Vat settings
   @ApiPropertyOptional({ example: 15 })
   @IsOptional()
   @Type(() => Number)
@@ -40,15 +40,15 @@ export class InvoiceLayoutDto {
   @ApiPropertyOptional({ example: true })
   @IsOptional()
   @IsBoolean()
-  tax_breakdown?: boolean;
+  vat_breakdown?: boolean;
 
   @ApiPropertyOptional({ example: false })
   @IsOptional()
   @IsBoolean()
-  prices_include_tax?: boolean;
+  prices_include_vat?: boolean;
 
   // Invoice template
-  @ApiPropertyOptional({ example: 'Tax Invoice' })
+  @ApiPropertyOptional({ example: 'Vat Invoice' })
   @IsOptional()
   @IsString()
   template_title?: string;

@@ -12,6 +12,8 @@ import { InvoicesService } from './invoices.service';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { ApiParam, ApiQuery } from '@nestjs/swagger';
+import { User } from 'src/auth/decorators/user.decorator';
+import { jwtPayload } from 'src/auth/types/jwt-payload';
 
 @Controller('invoices')
 export class InvoicesController {
@@ -19,14 +21,17 @@ export class InvoicesController {
 
   @Post()
   @Roles('USER')
-  async create(@Body() createInvoiceDto: CreateInvoiceDto) {
-    return await this.invoicesService.create(createInvoiceDto);
+  async create(
+    @Body() createInvoiceDto: CreateInvoiceDto,
+    @User() user: jwtPayload,
+  ) {
+    return await this.invoicesService.create(createInvoiceDto, user.sub);
   }
 
   @Post('save-to-draft')
   @Roles('USER')
-  async saveToDraft(@Body() dto: CreateInvoiceDto) {
-    return await this.invoicesService.saveToDraft(dto);
+  async saveToDraft(@Body() dto: CreateInvoiceDto, @User() user: jwtPayload) {
+    return await this.invoicesService.saveToDraft(dto, user.sub);
   }
 
   @Roles('USER')

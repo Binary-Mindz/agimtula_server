@@ -31,16 +31,42 @@ export class WebhookController {
     }
 
     console.log('Webhook event received:', event.type);
-
     if (event.type === 'checkout.session.completed') {
       try {
         const session = event.data.object as Stripe.Checkout.Session;
         console.log('Session completed:', session.id);
 
+        /**
+         * ===============================
+         * 1️⃣ MANUAL INVOICE PAYMENT
+         * ===============================
+         */
+        if (session.metadata?.invoiceId) {
+          const invoiceId = session.metadata.invoiceId;
+
+          await this.prisma.invoice.update({
+            where: { id: invoiceId },
+            data: {
+              isPaid: true,
+              paidAt: new Date(),
+              stripeSessionId: session.id,
+              stripePaymentIntentId: session.payment_intent as string,
+            },
+          });
+
+          console.log('Invoice marked as PAID:', invoiceId);
+          return res.json({ received: true });
+        }
+
+        /**
+         * ===============================
+         * 2️⃣ SUBSCRIPTION PAYMENT (existing)
+         * ===============================
+         */
         const historyId = session.metadata?.historyId;
         if (!historyId) {
           console.error('No historyId in metadata');
-          return res.json({ received: true, error: 'No historyId' });
+          return res.json({ received: true });
         }
 
         await this.prisma.subscriptionPlanPaymentStatus.updateMany({
@@ -62,7 +88,7 @@ export class WebhookController {
 
         if (!history || !history.subscriptionPlanPaymentStatus?.id) {
           console.error('History or payment status not found');
-          return res.json({ received: true, error: 'History not found' });
+          return res.json({ received: true });
         }
 
         // Calculate expiration date
@@ -90,7 +116,7 @@ export class WebhookController {
 
         console.log('Subscription created for user:', history.UserId);
       } catch (error) {
-        console.log(error);
+        console.log('Webhook error:', error);
       }
     }
 

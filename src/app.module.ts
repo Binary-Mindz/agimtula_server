@@ -23,6 +23,8 @@ import { PaymentsModule } from './admin-dashboard/payments/payments.module';
 import { LoggerModule } from './logger/logger.module';
 import { AccountantDashboardModule } from './accountant-dashboard/accountant-dashboard.module';
 import { AccountantSettingsModule } from './accountants/accountant-settings/accountant-settings.module';
+import { PurchaseManagementModule } from './accountants/purchase-management/purchase-management.module';
+import { SalesInvoicesModule } from './accountants/sales-invoices/sales-invoices.module';
 
 @Module({
   imports: [
@@ -46,6 +48,8 @@ import { AccountantSettingsModule } from './accountants/accountant-settings/acco
     AccountantDashboardModule,
     // PaymentsModule
     AccountantSettingsModule,
+    PurchaseManagementModule,
+    SalesInvoicesModule,
   ],
   controllers: [AppController, WebhookController],
   providers: [

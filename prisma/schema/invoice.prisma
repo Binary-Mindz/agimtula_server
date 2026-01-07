@@ -1,6 +1,7 @@
 model Invoice {
     id                    String            @id @unique() @default(uuid())
     invoiceNo             String            @unique()
+    userId                String
     issueDate             DateTime
     dueDate               DateTime?
     type                  InvoiceClientType
@@ -11,14 +12,21 @@ model Invoice {
     projectDescription    String?
 
     serviceAndItems ServiceAndItem[]
-    tax             Float
+    vat             Float
     subTotal        Float
     totalAmount     Float
 
-    mobilePaymentLink String?
+    isPaid                Boolean   @default(false)
+    paidAt                DateTime?
+    stripeSessionId       String?
+    stripePaymentIntentId String?
 
     additionalNote String?
     businessDatas  BusinessData[]
+
+    invoiceSource  InvoiceSource @default(MANUAL)
+    haveAttachment Boolean       @default(false)
+    attachmentUrl  String?
 
     isDrafted Boolean @default(false)
 
@@ -48,4 +56,9 @@ model ServiceAndItem {
 enum InvoiceClientType {
     CLIENT
     BUSINESS
+}
+
+enum InvoiceSource {
+    MANUAL
+    EMAIL
 }

@@ -6,15 +6,22 @@ import { PrismaService } from 'src/config/database/prisma.service';
 import { cResponseData } from 'src/common/cResponse';
 import { SmtpMailService } from 'src/config/smtp-mail/smtp-mail.service';
 import { invoiceEmailTemplate } from './invoice-email.template';
+import Stripe from 'stripe';
 
 @Injectable()
 export class InvoicesService {
+  public stripe: Stripe;
+
   constructor(
     private prisma: PrismaService,
     private mail: SmtpMailService,
-  ) {}
+  ) {
+    this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+      apiVersion: '2025-12-15.clover',
+    });
+  }
 
-  async create(createInvoiceDto: CreateInvoiceDto) {
+  async create(createInvoiceDto: CreateInvoiceDto, userId: string) {
     try {
       const {
         serviceAndItems,
@@ -22,8 +29,11 @@ export class InvoicesService {
         addressAndContactInfo,
         issueDate,
         dueDate,
+        isPaymentLinkIncluded,
         ...invoiceData
       } = createInvoiceDto;
+
+      const isPaid: boolean = !isPaymentLinkIncluded;
 
       const invoice = await this.prisma.invoice.findFirst({
         where: {
@@ -48,6 +58,7 @@ export class InvoicesService {
 
       const newInvoice = await this.prisma.invoice.create({
         data: {
+          userId,
           ...invoiceData,
           issueDate: issueDateObj,
           dueDate: dueDateObj,
@@ -66,22 +77,63 @@ export class InvoicesService {
               businessIdValue: data.businessIdValue,
             })),
           },
+          invoiceSource: 'MANUAL',
+          isPaid,
         },
         include: {
           serviceAndItems: true,
         },
       });
 
+      let session: any;
+      if (isPaymentLinkIncluded) {
+        session = await this.stripe.checkout.sessions.create({
+          customer_email: createInvoiceDto.email,
+          line_items: [
+            {
+              price_data: {
+                currency: 'usd',
+                product_data: {
+                  name: newInvoice.companyName,
+                },
+                unit_amount: newInvoice.totalAmount * 100,
+              },
+              quantity: 1,
+            },
+          ],
+          mode: 'payment',
+          success_url: `${process.env.FRONTEND_URL}/invoice/${newInvoice.id}`,
+          cancel_url: `${process.env.FRONTEND_URL}/invoice/${newInvoice.id}`,
+          metadata: {
+            invoiceId: newInvoice.id,
+          },
+        });
+
+        await this.prisma.invoice.update({
+          where: { id: newInvoice.id },
+          data: {
+            stripeSessionId: session.id,
+            isPaid: false,
+          },
+        });
+      }
+
       await this.mail.sendMail(
         createInvoiceDto.email,
         `Invoice #${newInvoice.invoiceNo}`,
-        invoiceEmailTemplate(newInvoice),
+        invoiceEmailTemplate({
+          ...newInvoice,
+          mobilePaymentLink:
+            isPaymentLinkIncluded && session ? session.url : null,
+        }),
       );
+
       return cResponseData({
         message: 'Invoice created successfully',
         data: newInvoice,
       });
     } catch (error) {
+      console.error('Invoice creation error:', error);
       return cResponseData({
         message: 'Failed to create invoice',
         error: 'Failed to create invoice',
@@ -90,7 +142,7 @@ export class InvoicesService {
     }
   }
 
-  async saveToDraft(dto: CreateInvoiceDto) {
+  async saveToDraft(dto: CreateInvoiceDto, userId: string) {
     try {
       const {
         serviceAndItems,
@@ -98,6 +150,7 @@ export class InvoicesService {
         addressAndContactInfo,
         issueDate,
         dueDate,
+        isPaymentLinkIncluded,
         ...invoiceData
       } = dto;
 
@@ -124,6 +177,7 @@ export class InvoicesService {
 
       const newInvoice = await this.prisma.invoice.create({
         data: {
+          userId,
           ...invoiceData,
           issueDate: issueDateObj,
           dueDate: dueDateObj,
@@ -143,6 +197,7 @@ export class InvoicesService {
             })),
           },
           isDrafted: true,
+          invoiceSource: 'MANUAL',
         },
         include: {
           serviceAndItems: true,
@@ -277,7 +332,6 @@ export class InvoicesService {
       });
     }
   }
-
 
   remove(id: string) {
     try {

@@ -1,10 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   BadRequestException,
   ConflictException,
   ForbiddenException,
   Injectable,
-  Logger,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -19,7 +17,6 @@ import { UpdateProfileDto } from './dto/update-profile.dto';
 import { VerifyTwoFADto } from './dto/two-fa.dto';
 import { cResponseData } from 'src/common/cResponse';
 import { RedisServiceService } from 'src/config/redis-service/redis-service.service';
-import { logpriority, LogType } from 'prisma/generated/prisma/enums';
 
 interface Login2FAPayload {
   userId: string;
@@ -30,7 +27,6 @@ interface Login2FAPayload {
 
 @Injectable()
 export class AuthService {
-  private readonly logger = new Logger(AuthService.name);
   constructor(
     private prisma: PrismaService,
     private jwt: JwtService,
@@ -54,7 +50,7 @@ export class AuthService {
   }
 
   async generateAccessToken(jwtPayload: jwtPayload) {
-    return this.jwt.signAsync(
+    return await this.jwt.signAsync(
       { sub: jwtPayload.sub, email: jwtPayload.email, role: jwtPayload.role },
       {
         secret: process.env.JWT_SECRET as string,
@@ -109,7 +105,6 @@ export class AuthService {
 
       };
     } catch (error) {
-      console.log(error);
       return cResponseData({
 
         message: error.message || 'Failed to create user',
@@ -141,7 +136,6 @@ export class AuthService {
         throw new UnauthorizedException('User not valid');
       }
 
-      // 2FA LOGIN FLOW
       if (user.twoFactorEnabled) {
         const redisKey = `2fa:login:${user.email.email}`;
 
@@ -192,9 +186,7 @@ export class AuthService {
         accessToken,
       };
     } catch (error) {
-      if (error instanceof UnauthorizedException || error instanceof ForbiddenException) {
-        throw error;
-      }
+      console.error(error);
       throw new BadRequestException('Login failed');
     }
   }
@@ -246,9 +238,7 @@ export class AuthService {
         accessToken,
       };
     } catch (error) {
-      if (error instanceof ForbiddenException || error instanceof UnauthorizedException) {
-        throw error;
-      }
+      console.error(error);
       throw new BadRequestException('2FA verification failed');
     }
   }
@@ -284,9 +274,7 @@ export class AuthService {
 
       return { message: 'Password updated successfully' };
     } catch (error) {
-      if (error instanceof UnauthorizedException || error instanceof ForbiddenException) {
-        throw error;
-      }
+      console.error(error);
       throw new BadRequestException('Failed to update password');
     }
   }
@@ -301,6 +289,7 @@ export class AuthService {
         message: 'Account deleted successfully',
       };
     } catch (error) {
+      console.error(error);
       throw new BadRequestException('Failed to delete account');
     }
   }
@@ -314,8 +303,6 @@ export class AuthService {
       if (!userProfile) {
         throw new NotFoundException('User not found');
       }
-
-      console.log(profilePic);
       const user = await this.prisma.user.update({
         where: { id: userId },
         data: {
@@ -336,9 +323,7 @@ export class AuthService {
         user,
       };
     } catch (error) {
-      if (error instanceof NotFoundException || error instanceof BadRequestException) {
-        throw error;
-      }
+      console.error(error);
       throw new BadRequestException('Failed to update profile picture');
     }
   }
@@ -361,6 +346,7 @@ export class AuthService {
         message: 'Profile picture removed successfully',
       };
     } catch (error) {
+      console.error(error);
       throw new BadRequestException('Failed to remove profile picture');
     }
   }
@@ -388,9 +374,7 @@ export class AuthService {
         message: 'Profile updated successfully',
       };
     } catch (error) {
-      if (error instanceof BadRequestException) {
-        throw error;
-      }
+      console.error(error);
       throw new BadRequestException('Failed to update profile');
     }
   }
@@ -417,22 +401,8 @@ export class AuthService {
 
       return user;
     } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
+      console.error(error);
       throw new BadRequestException('Failed to get profile');
     }
-  }
-
-  findAll() {
-    return 'This section returns all auth related data';
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
   }
 }

@@ -5,6 +5,7 @@ import { AuthGuard } from 'src/auth/guard/auth.guard';
 import { User } from 'src/auth/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 import { Roles } from 'src/auth/decorators/roles.decorator';
+import { ApiOperation } from '@nestjs/swagger';
 
 
 
@@ -14,6 +15,7 @@ export class TransactionController {
 
   @Get('all')
   @Public()
+  @ApiOperation({ summary: 'Get all transactions ( PUBLIC )' })
   async getAllTransactions() {
     const transactions = await this.transactionService.getAllTransactions();
     return {
@@ -24,6 +26,7 @@ export class TransactionController {
   @Get('all-for-user')
   @UseGuards(AuthGuard)
   @Roles('USER')
+  @ApiOperation({ summary: 'Get all user transactions ( USER only )' })
   async getAllUserTransactions(
     @User() user: jwtPayload
   ) {
@@ -34,6 +37,7 @@ export class TransactionController {
   }
   @Get('by-source')
   @Public()
+  @ApiOperation({ summary: 'Get transactions by source ( PUBLIC )' })
   async getTransactionsBySource(@Query('source') source: string) {
     const transactions =
       await this.transactionService.getTransactionsBySource(source);

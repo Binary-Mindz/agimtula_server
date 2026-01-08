@@ -69,7 +69,6 @@ export class ReceiptsService {
   async uploadReceipt(
     userId: string,
     dto: UploadReceiptDto,
-    file: string,
   ) {
     try {
       const userExits = await this.prisma.user.findUnique({
@@ -88,10 +87,7 @@ export class ReceiptsService {
         throw new NotFoundException('Category not found');
       }
 
-
-      const { vendor, amount, date, category, notes } = dto;
-
-
+      const { vendor, amount, date, category, notes, receiptImage } = dto;
 
       const rec = await this.prisma.receipt.create({
         data: {
@@ -99,7 +95,7 @@ export class ReceiptsService {
           amount,
           date,
           categoryId: category,
-          receiptFileUrl: file,
+          receiptFileUrl: receiptImage,
           userId,
           notes: notes,
         },
@@ -112,8 +108,8 @@ export class ReceiptsService {
     } catch (error) {
       console.error(error);
       return cResponseData({
-        message: "Receipt categories uploaded failed",
-        error: "Receipt categories uploaded failed",
+        message: "Receipt upload failed",
+        error: "Receipt upload failed",
       });
     }
   }
@@ -145,6 +141,7 @@ export class ReceiptsService {
           amount: true,
           receipt_id: true,
           notes: true,
+          receiptFileUrl: true, // Include base64 image
           category: {
             select: {
               name: true,

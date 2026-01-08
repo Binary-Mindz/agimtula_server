@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AppService } from './app.service';
+import { ApiOperation } from '@nestjs/swagger';
 // import { Public } from './auth/decorators/public.decorator';
 // import { CreateImapApiDto } from './imap-apis/dto/create-imap-api.dto';
 
@@ -10,6 +11,7 @@ export class AppController {
   ) {}
 
   @Get()
+  @ApiOperation({ summary: 'Get hello message' })
   getHello(): string {
     return this.appService.getHello();
   }
@@ -29,11 +31,13 @@ export class AppController {
   // }
 
   @Get('users')
+  @ApiOperation({ summary: 'Get users' })
   async getUsers() {
     return this.appService.getUsers();
   }
 
   @Post('createUser')
+  @ApiOperation({ summary: 'Create user' })
    createUser() {
     return this.appService.createUser();
   }

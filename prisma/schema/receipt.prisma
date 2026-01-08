@@ -1,8 +1,7 @@
 model Receipt {
   id             String          @id @unique @default(uuid())
   receipt_id     Int  @unique()  @default(autoincrement())
-  receiptFileUrl String?
-  receiptFileKey String?
+  receiptFileUrl String?         // Now stores base64 image string
   vendor         String
   date           DateTime
   categoryId     String

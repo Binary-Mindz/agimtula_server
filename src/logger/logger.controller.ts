@@ -19,5 +19,4 @@ export class LoggerController {
   async findAll(@Query() queryDto: QueryLoggerDto) {
     return await this.loggerService.findAll(queryDto);
   }
-
 }

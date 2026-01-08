@@ -112,7 +112,6 @@ export class AuthService {
 
       };
     } catch (error) {
-      console.log(error);
       return cResponseData({
 
         message: error.message || 'Failed to create user',
@@ -433,17 +432,5 @@ export class AuthService {
       }
       throw new BadRequestException('Failed to get profile');
     }
-  }
-
-  findAll() {
-    return 'This section returns all auth related data';
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
   }
 }

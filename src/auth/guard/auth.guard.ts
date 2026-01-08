@@ -63,7 +63,7 @@ export class AuthGuard implements CanActivate {
     const userRole: string = request.user?.role;
 
     if (!requiredRoles.includes(userRole)) {
-      throw new ForbiddenException('Access denied');
+      throw new ForbiddenException('Insufficient permissions to access this resource ');
     }
 
     return true;

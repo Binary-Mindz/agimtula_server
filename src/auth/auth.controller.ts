@@ -12,8 +12,10 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateAuthDto } from './dto/create-auth.dto';
 import { LoginDto } from './dto/login.dto';
+import { SendRegistrationOtpDto } from './dto/send-registration-otp.dto';
+import { VerifyRegistrationOtpDto } from './dto/verify-registration-otp.dto';
+import { CompleteRegistrationDto } from './dto/complete-registration.dto';
 
 import { Public } from './decorators/public.decorator';
 import {
@@ -41,19 +43,45 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly forgetPasswordService: ForgetPasswordService,
     private readonly twoFAService: TwoFAService,
-  ) {}
+  ) { }
 
-  @HttpCode(201)
-  @ApiOperation({ summary: 'User registration ( PUBLIC )' })
-  @ApiResponse({ status: 201, description: 'User registered successfully' })
+  @HttpCode(200)
+  @ApiOperation({ summary: 'Send registration OTP ( PUBLIC )' })
+  @ApiResponse({ status: 200, description: 'OTP sent successfully' })
   @ApiResponse({
     status: 400,
     description: 'Validation failed or email exists',
   })
   @Public()
-  @Post('registration')
-  async create(@Body(new ValidationPipe()) createAuthDto: CreateAuthDto) {
-    return await this.authService.create(createAuthDto);
+  @Post('registration/send-otp')
+  async sendRegistrationOtp(@Body(new ValidationPipe()) dto: SendRegistrationOtpDto) {
+    return await this.authService.sendRegistrationOtp(dto);
+  }
+
+  @HttpCode(200)
+  @ApiOperation({ summary: 'Verify registration OTP ( PUBLIC )' })
+  @ApiResponse({ status: 200, description: 'OTP verified successfully' })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid or expired OTP',
+  })
+  @Public()
+  @Post('registration/verify-otp')
+  async verifyRegistrationOtp(@Body(new ValidationPipe()) dto: VerifyRegistrationOtpDto) {
+    return await this.authService.verifyRegistrationOtp(dto);
+  }
+
+  @HttpCode(201)
+  @ApiOperation({ summary: 'Complete user registration ( PUBLIC )' })
+  @ApiResponse({ status: 201, description: 'User registered successfully' })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid verification token or user exists',
+  })
+  @Public()
+  @Post('registration/complete')
+  async completeRegistration(@Body(new ValidationPipe()) dto: CompleteRegistrationDto) {
+    return await this.authService.completeRegistration(dto);
   }
 
   @HttpCode(200)

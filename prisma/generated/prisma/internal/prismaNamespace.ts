@@ -414,6 +414,7 @@ export const ModelName = {
   SubscriptionPlan: 'SubscriptionPlan',
   PackagePricing: 'PackagePricing',
   invoiceAutoSyncInterval: 'invoiceAutoSyncInterval',
+  SupportTicket: 'SupportTicket',
   User: 'User',
   Email: 'Email'
 } as const
@@ -431,7 +432,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "bank" | "mileage" | "transaction" | "accountantRequest" | "emailTemplate" | "financialDocument" | "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "invoice" | "businessData" | "serviceAndItem" | "loggers" | "module" | "userModuleAccess" | "profile" | "forgetPass" | "twoFA" | "language" | "quotation" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "user" | "email"
+    modelProps: "bank" | "mileage" | "transaction" | "accountantRequest" | "emailTemplate" | "financialDocument" | "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "invoice" | "businessData" | "serviceAndItem" | "loggers" | "module" | "userModuleAccess" | "profile" | "forgetPass" | "twoFA" | "language" | "quotation" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "supportTicket" | "user" | "email"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2655,6 +2656,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    SupportTicket: {
+      payload: Prisma.$SupportTicketPayload<ExtArgs>
+      fields: Prisma.SupportTicketFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SupportTicketFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SupportTicketPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SupportTicketFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SupportTicketPayload>
+        }
+        findFirst: {
+          args: Prisma.SupportTicketFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SupportTicketPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SupportTicketFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SupportTicketPayload>
+        }
+        findMany: {
+          args: Prisma.SupportTicketFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SupportTicketPayload>[]
+        }
+        create: {
+          args: Prisma.SupportTicketCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SupportTicketPayload>
+        }
+        createMany: {
+          args: Prisma.SupportTicketCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SupportTicketCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SupportTicketPayload>[]
+        }
+        delete: {
+          args: Prisma.SupportTicketDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SupportTicketPayload>
+        }
+        update: {
+          args: Prisma.SupportTicketUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SupportTicketPayload>
+        }
+        deleteMany: {
+          args: Prisma.SupportTicketDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SupportTicketUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SupportTicketUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SupportTicketPayload>[]
+        }
+        upsert: {
+          args: Prisma.SupportTicketUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SupportTicketPayload>
+        }
+        aggregate: {
+          args: Prisma.SupportTicketAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSupportTicket>
+        }
+        groupBy: {
+          args: Prisma.SupportTicketGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SupportTicketGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SupportTicketCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SupportTicketCountAggregateOutputType> | number
+        }
+      }
+    }
     User: {
       payload: Prisma.$UserPayload<ExtArgs>
       fields: Prisma.UserFieldRefs
@@ -3320,6 +3395,23 @@ export const InvoiceAutoSyncIntervalScalarFieldEnum = {
 export type InvoiceAutoSyncIntervalScalarFieldEnum = (typeof InvoiceAutoSyncIntervalScalarFieldEnum)[keyof typeof InvoiceAutoSyncIntervalScalarFieldEnum]
 
 
+export const SupportTicketScalarFieldEnum = {
+  id: 'id',
+  ticketNumber: 'ticketNumber',
+  ticketCode: 'ticketCode',
+  userId: 'userId',
+  subject: 'subject',
+  description: 'description',
+  status: 'status',
+  priority: 'priority',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  resolvedAt: 'resolvedAt'
+} as const
+
+export type SupportTicketScalarFieldEnum = (typeof SupportTicketScalarFieldEnum)[keyof typeof SupportTicketScalarFieldEnum]
+
+
 export const UserScalarFieldEnum = {
   id: 'id',
   password: 'password',
@@ -3623,6 +3715,34 @@ export type ListEnumdeliveryStatusFieldRefInput<$PrismaModel> = FieldRefInputTyp
 
 
 /**
+ * Reference to a field of type 'SupportTicketStatus'
+ */
+export type EnumSupportTicketStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SupportTicketStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'SupportTicketStatus[]'
+ */
+export type ListEnumSupportTicketStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SupportTicketStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'SupportTicketPriority'
+ */
+export type EnumSupportTicketPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SupportTicketPriority'>
+    
+
+
+/**
+ * Reference to a field of type 'SupportTicketPriority[]'
+ */
+export type ListEnumSupportTicketPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SupportTicketPriority[]'>
+    
+
+
+/**
  * Reference to a field of type 'UserRole'
  */
 export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole'>
@@ -3760,6 +3880,7 @@ export type GlobalOmitConfig = {
   subscriptionPlan?: Prisma.SubscriptionPlanOmit
   packagePricing?: Prisma.PackagePricingOmit
   invoiceAutoSyncInterval?: Prisma.invoiceAutoSyncIntervalOmit
+  supportTicket?: Prisma.SupportTicketOmit
   user?: Prisma.UserOmit
   email?: Prisma.EmailOmit
 }

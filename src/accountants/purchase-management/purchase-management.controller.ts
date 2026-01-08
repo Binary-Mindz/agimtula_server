@@ -11,7 +11,7 @@ export class PurchaseManagementController {
     private readonly purchaseManagementService: PurchaseManagementService,
   ) {}
 
-  @Get('data')
+  @Get('data/:userId')
   @Roles('ACCOUNTANT')
   @ApiParam({
     name: 'userId',
@@ -27,7 +27,7 @@ export class PurchaseManagementController {
     );
   }
 
-  @Get('history')
+  @Get('history/:userId')
   @Roles('ACCOUNTANT')
   @ApiParam({
     name: 'userId',
@@ -52,20 +52,20 @@ export class PurchaseManagementController {
     );
   }
 
-  @Get('detailed-report/:id')
+  @Get('detailed-report/:userId')
   @Roles('ACCOUNTANT')
   @ApiParam({
     name: 'userId',
     type: String,
   })
-  @ApiParam({
+  @ApiQuery({
     name: 'purchaseId',
     type: String,
   })
   async getPurchaseDetailedReport(
     @User() user: jwtPayload,
     @Param('userId') userId: string,
-    @Param('purchaseId') purchaseId: string,
+    @Query('purchaseId') purchaseId: string,
   ) {
     return await this.purchaseManagementService.getPurchaseDetailedReport(
       userId,

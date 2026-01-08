@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import {
   BadRequestException,
   ConflictException,
   ForbiddenException,
   Injectable,
-  Logger,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -13,16 +12,13 @@ import { PrismaService } from 'src/config/database/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
-
 import { SmtpMailService } from 'src/config/smtp-mail/smtp-mail.service';
 import { jwtPayload } from './types/jwt-payload';
-import uploadToCloudinary from 'src/config/cloudinary/cloudinary';
 import { deleteFromCloudinary } from 'src/config/cloudinary/deleteImage';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { VerifyTwoFADto } from './dto/two-fa.dto';
 import { cResponseData } from 'src/common/cResponse';
 import { RedisServiceService } from 'src/config/redis-service/redis-service.service';
-import { logpriority, LogType } from 'prisma/generated/prisma/enums';
 
 interface Login2FAPayload {
   userId: string;
@@ -33,7 +29,6 @@ interface Login2FAPayload {
 
 @Injectable()
 export class AuthService {
-  private readonly logger = new Logger(AuthService.name);
   constructor(
     private prisma: PrismaService,
     private jwt: JwtService,
@@ -303,6 +298,7 @@ export class AuthService {
         message: 'Account deleted successfully',
       };
     } catch (error) {
+      console.error(error);
       throw new BadRequestException('Failed to delete account');
     }
   }
@@ -336,9 +332,7 @@ export class AuthService {
         user,
       };
     } catch (error) {
-      if (error instanceof NotFoundException || error instanceof BadRequestException) {
-        throw error;
-      }
+      console.error(error);
       throw new BadRequestException('Failed to update profile picture');
     }
   }
@@ -369,6 +363,7 @@ export class AuthService {
         message: 'Profile picture removed successfully',
       };
     } catch (error) {
+      console.error(error);
       throw new BadRequestException('Failed to remove profile picture');
     }
   }
@@ -396,7 +391,7 @@ export class AuthService {
         message: 'Profile updated successfully',
       };
     } catch (error) {
-
+      console.error(error);
       throw new BadRequestException('Failed to update profile');
     }
   }
@@ -423,7 +418,7 @@ export class AuthService {
 
       return user;
     } catch (error) {
-
+      console.error(error);
       throw new BadRequestException('Failed to get profile');
     }
   }

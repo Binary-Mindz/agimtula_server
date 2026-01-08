@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { ValidateAccountantAccess } from '../validate-accountant-access';
@@ -55,11 +55,11 @@ export class VatOverviewService {
         },
       });
     } catch (error) {
-      console.error(error);
-      return cResponseData({
-        message: 'Failed to get vat overview summary',
-        success: false,
-      });
+      console.error('Get VAT summary error:', error);
+      throw new HttpException(
+        'Failed to fetch VAT summary',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -132,11 +132,11 @@ export class VatOverviewService {
         ],
       });
     } catch (error) {
-      console.error(error);
-      return cResponseData({
-        message: 'Failed to get vat overview data breakdown',
-        success: false,
-      });
+      console.error('Get VAT breakdown error:', error);
+      throw new HttpException(
+        'Failed to fetch VAT breakdown',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -156,11 +156,11 @@ export class VatOverviewService {
         },
       });
     } catch (error) {
-      console.error(error);
-      return cResponseData({
-        message: 'Failed to get vat overview data',
-        success: false,
-      });
+      console.error('Get all VAT data error:', error);
+      throw new HttpException(
+        'Failed to fetch VAT data',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

@@ -109,11 +109,11 @@ export class AuthService {
 
       };
     } catch (error) {
-      console.log(error);
-      return cResponseData({
-
-        message: error.message || 'Failed to create user',
-      });
+      if (error instanceof ConflictException) {
+        throw error;
+      }
+      console.error('Create user error:', error);
+      throw new BadRequestException('Failed to create user');
     }
   }
 

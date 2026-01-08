@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
 
 @Injectable()
 export class DashboardService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async getData() {
     try {
@@ -151,10 +151,11 @@ export class DashboardService {
         },
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to fetch dashboard data',
-        error: error,
-      });
+      console.error('Dashboard data error:', error);
+      throw new HttpException(
+        'Failed to fetch dashboard data',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

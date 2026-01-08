@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { LogTripDto } from './dto/log-trip.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { cResponseData } from 'src/common/cResponse';
@@ -12,7 +11,7 @@ export class MileageService {
     try {
       const trip = await this.prisma.mileage.create({
         data: {
-          name:dto.name,
+          name: dto.name,
           date: dto.date,
           startLocation: dto.startLocation,
           endLocation: dto.endLocation,
@@ -27,14 +26,16 @@ export class MileageService {
       });
 
       return cResponseData({
+        success: true,
         message: 'Trip logged successfully',
         data: trip,
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Trip log failed',
-        error: 'Trip log failed',
-      });
+      console.error('Log trip error:', error);
+      throw new HttpException(
+        'Failed to log trip',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -90,6 +91,7 @@ export class MileageService {
         ]);
 
       return cResponseData({
+        success: true,
         message: 'Mileage data retrieved successfully',
         data: {
           totalDistance: totalDistance._sum.distance || 0,
@@ -99,10 +101,11 @@ export class MileageService {
         },
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Mileage data retrive failed',
-        error: 'Mileage data retrive failed',
-      });
+      console.error('Get mileage track error:', error);
+      throw new HttpException(
+        'Failed to retrieve mileage data',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -122,31 +125,38 @@ export class MileageService {
           notes: dto.notes,
         },
       });
+
       return cResponseData({
+        success: true,
         message: 'Trip updated successfully',
         data: updatedTrip,
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Trip update failed',
-        error: 'Trip update failed',
-      });
+      console.error('Edit trip error:', error);
+      throw new HttpException(
+        'Failed to update trip',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async deleteLoggedTrip(userId: string, tripId: string) {
     try {
-      await this.prisma.mileage.delete({
+      const deletedTrip = await this.prisma.mileage.delete({
         where: { userId, id: tripId },
       });
-      return {
-        message: 'Trip deleted successfully',
-      };
-    } catch (error) {
+
       return cResponseData({
-        message: 'Trip delete failed',
-        error: 'Trip delete failed',
+        success: true,
+        message: 'Trip deleted successfully',
+        data: deletedTrip,
       });
+    } catch (error) {
+      console.error('Delete trip error:', error);
+      throw new HttpException(
+        'Failed to delete trip',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

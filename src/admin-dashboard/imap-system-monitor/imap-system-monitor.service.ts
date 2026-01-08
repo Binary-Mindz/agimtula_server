@@ -5,7 +5,7 @@ import { UpdateImapSystemMonitorDto } from './dto/update-imap-system-monitor.dto
 @Injectable()
 export class ImapSystemMonitorService {
   create(createImapSystemMonitorDto: CreateImapSystemMonitorDto) {
-    return 'This action adds a new imapSystemMonitor';
+    return createImapSystemMonitorDto;
   }
 
   findAll() {
@@ -17,7 +17,7 @@ export class ImapSystemMonitorService {
   }
 
   update(id: number, updateImapSystemMonitorDto: UpdateImapSystemMonitorDto) {
-    return `This action updates a #${id} imapSystemMonitor`;
+    return updateImapSystemMonitorDto;
   }
 
   remove(id: number) {

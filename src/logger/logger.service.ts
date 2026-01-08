@@ -1,12 +1,11 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { QueryLoggerDto } from './dto/logquery.dto';
 import { cResponseData } from 'src/common/cResponse';
 
 @Injectable()
 export class LoggerService {
-  constructor(private readonly prisma: PrismaService) { }
-
+  constructor(private readonly prisma: PrismaService) {}
 
   async findAll(queryDto: QueryLoggerDto) {
     try {
@@ -56,8 +55,11 @@ export class LoggerService {
       };
       return cResponseData(res);
     } catch (error) {
-      console.error(error.message);
-      throw new InternalServerErrorException('Failed to fetch logs all data');
+      console.error('Find all logs error:', error);
+      throw new HttpException(
+        'Failed to fetch logs data',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

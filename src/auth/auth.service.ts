@@ -1,4 +1,3 @@
-
 import {
   BadRequestException,
   ConflictException,
@@ -138,7 +137,6 @@ export class AuthService {
         throw new UnauthorizedException('User not valid');
       }
 
-      // 2FA LOGIN FLOW
       if (user.twoFactorEnabled) {
         const redisKey = `2fa:login:${user.email.email}`;
 

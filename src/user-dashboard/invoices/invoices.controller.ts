@@ -11,16 +11,17 @@ import {
 import { InvoicesService } from './invoices.service';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
-import { ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { User } from 'src/auth/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 
 @Controller('invoices')
 export class InvoicesController {
-  constructor(private readonly invoicesService: InvoicesService) {}
+  constructor(private readonly invoicesService: InvoicesService) { }
 
   @Post()
   @Roles('USER')
+  @ApiOperation({ summary: 'Create a new invoice Only (USER)' })
   async create(
     @Body() createInvoiceDto: CreateInvoiceDto,
     @User() user: jwtPayload,
@@ -30,17 +31,22 @@ export class InvoicesController {
 
   @Post('save-to-draft')
   @Roles('USER')
+  @ApiOperation({ summary: 'Save invoice to draft Only (USER)' })
   async saveToDraft(@Body() dto: CreateInvoiceDto, @User() user: jwtPayload) {
     return await this.invoicesService.saveToDraft(dto, user.sub);
   }
 
   @Roles('USER')
   @Get()
+  @ApiOperation({ summary: 'Get all invoices with optional search Only (USER)' })
   @ApiQuery({
     name: 'search',
     type: String,
     required: false,
   })
+
+
+
   async findAll(@Query('search') search: string) {
     return await this.invoicesService.findAll(search);
   }
@@ -80,7 +86,7 @@ export class InvoicesController {
     type: String,
     required: true,
   })
-  remove(@Param('id') id: string) {
-    return this.invoicesService.remove(id);
+  async remove(@Param('id') id: string) {
+    return await this.invoicesService.remove(id);
   }
 }

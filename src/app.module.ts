@@ -25,6 +25,8 @@ import { AccountantDashboardModule } from './accountant-dashboard/accountant-das
 import { AccountantSettingsModule } from './accountants/accountant-settings/accountant-settings.module';
 import { PurchaseManagementModule } from './accountants/purchase-management/purchase-management.module';
 import { SalesInvoicesModule } from './accountants/sales-invoices/sales-invoices.module';
+import { DashboardModule } from './user-dashboard/dashboard/dashboard.module';
+import { ReceiptExpenseModule } from './accountants/receipt-expense/receipt-expense.module';
 
 @Module({
   imports: [
@@ -50,6 +52,8 @@ import { SalesInvoicesModule } from './accountants/sales-invoices/sales-invoices
     AccountantSettingsModule,
     PurchaseManagementModule,
     SalesInvoicesModule,
+    DashboardModule,
+    ReceiptExpenseModule,
   ],
   controllers: [AppController, WebhookController],
   providers: [

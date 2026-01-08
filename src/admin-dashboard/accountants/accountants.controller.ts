@@ -3,14 +3,10 @@ import {
   Get,
   Post,
   Body,
-  Patch,
-  Param,
-  Delete,
   UseGuards,
 } from '@nestjs/common';
 import { AccountantsService } from './accountants.service';
 import { CreateAccountantDto } from './dto/create-accountant.dto';
-import { UpdateAccountantDto } from './dto/update-accountant.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { AuthGuard } from 'src/auth/guard/auth.guard';
 
@@ -27,25 +23,8 @@ export class AccountantsController {
 
   @Get()
   @Roles('ADMIN')
-  findAll() {
-    return this.accountantsService.findAll();
+  async findAll() {
+    return await this.accountantsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.accountantsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateAccountantDto: UpdateAccountantDto,
-  ) {
-    return this.accountantsService.update(+id, updateAccountantDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.accountantsService.remove(+id);
-  }
 }

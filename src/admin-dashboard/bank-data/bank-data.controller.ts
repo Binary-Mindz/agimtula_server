@@ -26,8 +26,8 @@ export class BankDataController {
 
   @Post('match-account')
   @Public()
-  matchAccountId(@Body() body: { accountId: string; accountNumber: string }) {
-    return this.bankDataService.matchAccountIdWithNumber(
+  async matchAccountId(@Body() body: { accountId: string; accountNumber: string }) {
+    return await this.bankDataService.matchAccountIdWithNumber(
       body.accountId,
       body.accountNumber,
     );

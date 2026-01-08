@@ -83,15 +83,9 @@ export class AccountantsService {
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} accountant`;
-  }
 
-  update(id: number, updateAccountantDto: UpdateAccountantDto) {
-    return `This action updates a #${id} accountant`;
-  }
 
-  remove(id: number) {
-    return `This action removes a #${id} accountant`;
-  }
+
+
+
 }

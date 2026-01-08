@@ -7,7 +7,6 @@ import { cResponseData } from 'src/common/cResponse';
 export class LoggerService {
   constructor(private readonly prisma: PrismaService) { }
 
-
   async findAll(queryDto: QueryLoggerDto) {
     try {
       const { level, logpriority: priority, page = 1, limit = 10 } = queryDto;

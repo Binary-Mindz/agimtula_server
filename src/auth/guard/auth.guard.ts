@@ -42,7 +42,7 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException('No token provided');
 
     const token: string = authHeader.split(' ')[1];
-    console.log(token);
+
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET!) as jwtPayload;
 

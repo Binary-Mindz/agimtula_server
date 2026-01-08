@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { InvoiceAutoSyncDto } from './dto/invoiceAutoSyncDto';
 import { UpdateAutoSyncDto } from './dto/update-auto-sync.dto';
@@ -10,32 +9,60 @@ export class InvoiceAutoSyncIntervalService {
   constructor(private prisma: PrismaService) {}
 
   async createInvoiceAutoSyncInterval(data: InvoiceAutoSyncDto) {
-    const invoiceAutoSyncInterval =
-      await this.prisma.invoiceAutoSyncInterval.create({
-        data,
-      });
+    try {
+      const invoiceAutoSyncInterval =
+        await this.prisma.invoiceAutoSyncInterval.create({
+          data,
+        });
 
-    return {
-      message: 'Invoice auto sync interval created successfully',
-      invoiceAutoSyncInterval,
-    };
+      return cResponseData({
+        message: 'Invoice auto sync interval created successfully',
+        data: invoiceAutoSyncInterval,
+      });
+    } catch (error) {
+      console.error('Create invoice auto sync interval error:', error);
+      throw new HttpException(
+        'Failed to create invoice auto sync interval',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   async getAllInvoiceAutoSyncIntervals() {
-    return await this.prisma.invoiceAutoSyncInterval.findMany();
+    try {
+      const intervals = await this.prisma.invoiceAutoSyncInterval.findMany();
+      return cResponseData({
+        data: intervals,
+        message: 'Invoice auto sync intervals retrieved successfully',
+      });
+    } catch (error) {
+      console.error('Get all invoice auto sync intervals error:', error);
+      throw new HttpException(
+        'Failed to retrieve invoice auto sync intervals',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   async updateInvoiceAutoSyncIntervals(id: string, dto: UpdateAutoSyncDto) {
-    const invoiceAutoSyncInterval =
-      await this.prisma.invoiceAutoSyncInterval.update({
-        where: { id },
-        data: dto,
-      });
+    try {
+      const invoiceAutoSyncInterval =
+        await this.prisma.invoiceAutoSyncInterval.update({
+          where: { id },
+          data: dto,
+        });
 
-    return {
-      message: 'Invoice auto sync interval updated successfully',
-      invoiceAutoSyncInterval,
-    };
+      return cResponseData({
+        message: 'Invoice auto sync interval updated successfully',
+        data: invoiceAutoSyncInterval,
+      });
+    } catch (error) {
+      console.error('Update invoice auto sync interval error:', error);
+      throw new HttpException(
+        'Failed to update invoice auto sync interval',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   async deleteAutoSyncIntervals(id: string) {
@@ -47,12 +74,14 @@ export class InvoiceAutoSyncIntervalService {
 
       return cResponseData({
         message: 'Invoice auto sync interval deleted successfully',
-        invoiceAutoSyncInterval,
+        data: invoiceAutoSyncInterval,
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Invoice auto sync deletion failed' as string,
-      });
+      console.error('Delete invoice auto sync interval error:', error);
+      throw new HttpException(
+        'Failed to delete invoice auto sync interval',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

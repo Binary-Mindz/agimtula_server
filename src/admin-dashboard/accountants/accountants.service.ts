@@ -1,7 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { CreateAccountantDto } from './dto/create-accountant.dto';
-import { UpdateAccountantDto } from './dto/update-accountant.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { cResponseData } from 'src/common/cResponse';
@@ -12,80 +15,94 @@ export class AccountantsService {
   constructor(
     private Prisma: PrismaService,
     private readonly mail: SmtpMailService,
-  ) { }
+  ) {}
 
   async create(createAccountantDto: CreateAccountantDto) {
-    const isUser = await this.Prisma.user.findFirst({
-      where: {
-        email: {
-          email: createAccountantDto.email,
-        },
-      },
-    });
-
-    if (isUser) {
-      throw new ForbiddenException('Account already exists with this email');
-    }
-
-    const pass = `Pass_${Math.floor(Math.random() * 100000)}`;
-
-    const hashedPass = await bcrypt.hash(pass, 10);
-
-    const accountant = await this.Prisma.user.create({
-      data: {
-        profile: {
-          create: {
-            firstName: createAccountantDto.firstName,
-            lastName: createAccountantDto.lastName,
-          },
-        },
-        email: {
-          create: {
+    try {
+      const isUser = await this.Prisma.user.findFirst({
+        where: {
+          email: {
             email: createAccountantDto.email,
           },
         },
-        password: hashedPass,
-        role: 'ACCOUNTANT',
-      },
-    });
+      });
 
-    await this.mail.sendMail(
-      createAccountantDto.email,
-      'Your Accountant account Password',
-      `
-      <h2>Your Accountant Account password is</h2>
-      <h3 style="color: green; background: #ccc; padding: 10px; border-radius: 5px; display: inline-block">${pass}</h3>
-      <p>Please change your password after login</p>
-      `,
-    );
+      if (isUser) {
+        throw new HttpException('Account already exists', HttpStatus.CONFLICT);
+      }
 
-    const { password, ...accountantData } = accountant;
+      const pass = `Pass_${Math.floor(Math.random() * 100000)}`;
+      const hashedPass = await bcrypt.hash(pass, 10);
 
-    return cResponseData({
-      data: accountantData,
-      message: 'Accountant created successfully',
-    });
+      const accountant = await this.Prisma.user.create({
+        data: {
+          profile: {
+            create: {
+              firstName: createAccountantDto.firstName,
+              lastName: createAccountantDto.lastName,
+            },
+          },
+          email: {
+            create: {
+              email: createAccountantDto.email,
+            },
+          },
+          password: hashedPass,
+          role: 'ACCOUNTANT',
+        },
+      });
+
+      await this.mail.sendMail(
+        createAccountantDto.email,
+        'Your Accountant account Password',
+        `
+        <h2>Your Accountant Account password is</h2>
+        <h3 style="color: green; background: #ccc; padding: 10px; border-radius: 5px; display: inline-block">${pass}</h3>
+        <p>Please change your password after login</p>
+        `,
+      );
+
+      const { password, ...accountantData } = accountant;
+      if (!password) {
+        throw new ForbiddenException('Password not found');
+      }
+      return cResponseData({
+        success: true,
+        message: 'Accountant created successfully',
+        data: accountantData,
+      });
+    } catch (error) {
+      console.error('Create accountant error:', error);
+      throw new HttpException(
+        'Failed to create accountant',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   async findAll() {
-    const accountants = await this.Prisma.user.findMany({
-      where: {
-        role: 'ACCOUNTANT',
-      },
-      include: {
-        profile: true,
-        email: true,
-      },
-    });
-    return cResponseData({
-      data: accountants,
-      message: 'Accountants fetched successfully',
-    });
+    try {
+      const accountants = await this.Prisma.user.findMany({
+        where: {
+          role: 'ACCOUNTANT',
+        },
+        include: {
+          profile: true,
+          email: true,
+        },
+      });
+
+      return cResponseData({
+        success: true,
+        message: 'Accountants retrieved successfully',
+        data: accountants,
+      });
+    } catch (error) {
+      console.error('Find all accountants error:', error);
+      throw new HttpException(
+        'Failed to retrieve accountants',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
-
-
-
-
-
-
 }

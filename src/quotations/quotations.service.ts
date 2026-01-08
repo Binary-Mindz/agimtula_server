@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateQuotationDto } from './dto/create-quotation.dto';
 import { UpdateQuotationDto } from './dto/update-quotation.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
@@ -9,6 +8,7 @@ import { QueryQuotationDto } from './dto/QueryQuotationDto';
 @Injectable()
 export class QuotationsService {
   constructor(private readonly prisma: PrismaService) {}
+
   async create(createQuotationDto: CreateQuotationDto, userId: string) {
     try {
       const quotation = await this.prisma.quotation.create({
@@ -22,9 +22,18 @@ export class QuotationsService {
           senderId: userId,
         },
       });
-      return cResponseData({ data: quotation });
+
+      return cResponseData({
+        success: true,
+        message: 'Quotation created successfully',
+        data: quotation,
+      });
     } catch (error) {
-      return new Error(`Failed to create quotation`);
+      console.error('Create quotation error:', error);
+      throw new HttpException(
+        'Failed to create quotation',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -38,15 +47,12 @@ export class QuotationsService {
               mode: 'insensitive',
             },
           }),
-
           ...(query.status && {
             status: query.status,
           }),
-
           ...(query.amount && {
             amount: Number(query.amount),
           }),
-
           ...(query.date && {
             date: new Date(query.date),
           }),
@@ -56,9 +62,17 @@ export class QuotationsService {
         },
       });
 
-      return cResponseData({ data });
+      return cResponseData({
+        success: true,
+        message: 'Quotations retrieved successfully',
+        data,
+      });
     } catch (error) {
-      throw new Error(`Failed to fetch quotations`);
+      console.error('Find all quotations error:', error);
+      throw new HttpException(
+        'Failed to retrieve quotations',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -67,12 +81,22 @@ export class QuotationsService {
       const data = await this.prisma.quotation.findUnique({
         where: { id },
       });
+
       if (!data) {
-        return cResponseData({ data: null });
+        throw new HttpException('Quotation not found', HttpStatus.NOT_FOUND);
       }
-      return cResponseData({ data });
+
+      return cResponseData({
+        success: true,
+        message: 'Quotation retrieved successfully',
+        data,
+      });
     } catch (error) {
-      throw new Error(`Failed to fetch quotation`);
+      console.error('Find one quotation error:', error);
+      throw new HttpException(
+        'Failed to retrieve quotation',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -83,7 +107,7 @@ export class QuotationsService {
       });
 
       if (!quotationExists) {
-        throw new NotFoundException('Quotation not found');
+        throw new HttpException('Quotation not found', HttpStatus.NOT_FOUND);
       }
 
       const updatedQuotation = await this.prisma.quotation.update({
@@ -100,9 +124,17 @@ export class QuotationsService {
         },
       });
 
-      return cResponseData({ data: updatedQuotation });
+      return cResponseData({
+        success: true,
+        message: 'Quotation updated successfully',
+        data: updatedQuotation,
+      });
     } catch (error) {
-      throw new Error(`Failed to update quotation`);
+      console.error('Update quotation error:', error);
+      throw new HttpException(
+        'Failed to update quotation',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -113,14 +145,24 @@ export class QuotationsService {
       });
 
       if (!quotationExists) {
-        throw new NotFoundException('Quotation not found');
+        throw new HttpException('Quotation not found', HttpStatus.NOT_FOUND);
       }
+
       await this.prisma.quotation.delete({
         where: { id },
       });
-      return cResponseData({ data: quotationExists });
+
+      return cResponseData({
+        success: true,
+        message: 'Quotation deleted successfully',
+        data: quotationExists,
+      });
     } catch (error) {
-      throw new Error(`Quotation deletion failed`);
+      console.error('Delete quotation error:', error);
+      throw new HttpException(
+        'Failed to delete quotation',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

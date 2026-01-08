@@ -3,7 +3,7 @@ import { ReceiptExpenseService } from './receipt-expense.service';
 import { User } from 'src/auth/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 import { Roles } from 'src/auth/decorators/roles.decorator';
-import { ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiQuery } from '@nestjs/swagger';
 
 @Controller('receipt-expense')
 export class ReceiptExpenseController {
@@ -11,6 +11,7 @@ export class ReceiptExpenseController {
 
   @Get(':userId/total')
   @Roles('ACCOUNTANT')
+  @ApiOperation({ summary: 'Get total expense ( ACCOUNTANT only )' })
   @ApiParam({ name: 'userId', type: String })
   async getTotalExpense(
     @User() user: jwtPayload,
@@ -21,6 +22,7 @@ export class ReceiptExpenseController {
 
   @Get(':userId/list')
   @Roles('ACCOUNTANT')
+  @ApiOperation({ summary: 'Get receipt and mileage list ( ACCOUNTANT only )' })
   @ApiParam({ name: 'userId', type: String })
   @ApiQuery({ name: 'page', required: false, type: Number })
   @ApiQuery({ name: 'limit', required: false, type: Number })

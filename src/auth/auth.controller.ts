@@ -5,13 +5,10 @@ import {
   ValidationPipe,
   HttpCode,
   Patch,
-  // Delete,
   UsePipes,
-  UseInterceptors,
   Get,
   Delete,
   Param,
-  UploadedFiles,
   BadRequestException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -29,16 +26,14 @@ import { User } from './decorators/user.decorator';
 import { jwtPayload } from './types/jwt-payload';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { Roles } from './decorators/roles.decorator';
-import { FilesInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import {
   UpdateProfileDto,
   UpdateProfilePicDto,
 } from './dto/update-profile.dto';
 import { EnableTwoFADto, VerifyTwoFADto } from './dto/two-fa.dto';
-import { TwoFAService } from './2fa.service';
 import { UploadImageDto } from './dto/upload-image.dto';
-import { storageConfig } from 'src/common/fileUpload/storage.configure';
+import { TwoFAService } from './2fa.service';
 
 @Controller('auth')
 export class AuthController {
@@ -46,11 +41,15 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly forgetPasswordService: ForgetPasswordService,
     private readonly twoFAService: TwoFAService,
-  ) { }
+  ) {}
 
   @HttpCode(201)
+  @ApiOperation({ summary: 'User registration ( PUBLIC )' })
   @ApiResponse({ status: 201, description: 'User registered successfully' })
-  @ApiResponse({ status: 400, description: 'Validation failed or email exists' })
+  @ApiResponse({
+    status: 400,
+    description: 'Validation failed or email exists',
+  })
   @Public()
   @Post('registration')
   async create(@Body(new ValidationPipe()) createAuthDto: CreateAuthDto) {
@@ -58,6 +57,7 @@ export class AuthController {
   }
 
   @HttpCode(200)
+  @ApiOperation({ summary: 'User login ( PUBLIC )' })
   @ApiResponse({ status: 200, description: 'Login successful' })
   @ApiResponse({ status: 401, description: 'Invalid credentials' })
   @Post('login')
@@ -68,6 +68,7 @@ export class AuthController {
   }
 
   @HttpCode(200)
+  @ApiOperation({ summary: 'Verify login 2FA ( PUBLIC )' })
   @ApiResponse({ status: 200, description: '2FA verification successful' })
   @ApiResponse({ status: 400, description: 'Invalid 2FA code' })
   @Post('verifyLogin')
@@ -78,12 +79,16 @@ export class AuthController {
   }
 
   @HttpCode(200)
+  @ApiOperation({ summary: 'Update password ( USER, ADMIN, ACCOUNTANT )' })
   @ApiResponse({ status: 200, description: 'Password updated successfully' })
   @ApiResponse({ status: 400, description: 'Invalid old password' })
   @Patch('update-password')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
   @UsePipes(new ValidationPipe())
-  async updatePassword(@Body() data: UpdatePasswordDto, @User() user: jwtPayload) {
+  async updatePassword(
+    @Body() data: UpdatePasswordDto,
+    @User() user: jwtPayload,
+  ) {
     return await this.authService.updatePassword(
       user.sub,
       data.oldPassword,
@@ -92,6 +97,7 @@ export class AuthController {
   }
 
   @HttpCode(204)
+  @ApiOperation({ summary: 'Delete account ( USER, ADMIN, ACCOUNTANT )' })
   @ApiResponse({ status: 204, description: 'Account deleted successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @Delete('delete-account')
@@ -100,9 +106,12 @@ export class AuthController {
     return await this.authService.deleteAccount(user.sub);
   }
 
-  @HttpCode(200)
-  @ApiResponse({ status: 200, description: 'Profile picture updated successfully' })
-  @ApiResponse({ status: 400, description: 'Invalid file format or too large' })
+  @ApiOperation({ summary: 'Update profile picture ( USER, ADMIN, ACCOUNTANT )' })
+  @ApiResponse({
+    status: 200,
+    description: 'Profile picture updated successfully',
+  })
+  @ApiResponse({ status: 400, description: 'Invalid base64 image' })
   @Patch('update-profile-pic')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
   @ApiBody({ type: UpdateProfilePicDto })
@@ -111,13 +120,17 @@ export class AuthController {
     @Body() data: UpdateProfilePicDto,
   ) {
     if (!data.profilePic) {
-      throw new BadRequestException('Profile picture URL is required');
+      throw new BadRequestException('Profile picture is required');
     }
     return await this.authService.updateProfilepic(user.sub, data.profilePic);
   }
 
   @HttpCode(200)
-  @ApiResponse({ status: 200, description: 'Profile picture removed successfully' })
+  @ApiOperation({ summary: 'Remove profile picture ( USER, ADMIN, ACCOUNTANT )' })
+  @ApiResponse({
+    status: 200,
+    description: 'Profile picture removed successfully',
+  })
   @ApiResponse({ status: 404, description: 'No profile picture found' })
   @Patch('remove-profile-pic')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
@@ -126,16 +139,21 @@ export class AuthController {
   }
 
   @HttpCode(200)
+  @ApiOperation({ summary: 'Update profile ( USER, ADMIN, ACCOUNTANT )' })
   @ApiResponse({ status: 200, description: 'Profile updated successfully' })
   @ApiResponse({ status: 400, description: 'Validation failed' })
   @Patch('update-profile')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
   @UsePipes(new ValidationPipe())
-  async updateProfile(@Body() data: UpdateProfileDto, @User() user: jwtPayload) {
+  async updateProfile(
+    @Body() data: UpdateProfileDto,
+    @User() user: jwtPayload,
+  ) {
     return await this.authService.updateProfile(user.sub, data);
   }
 
   @HttpCode(200)
+  @ApiOperation({ summary: 'Get profile ( USER, ADMIN, ACCOUNTANT )' })
   @ApiResponse({ status: 200, description: 'Profile retrieved successfully' })
   @ApiResponse({ status: 404, description: 'Profile not found' })
   @Get('profile')
@@ -150,6 +168,7 @@ export class AuthController {
   // }
 
   @HttpCode(200)
+  @ApiOperation({ summary: 'Send forget password code ( PUBLIC )' })
   @ApiResponse({ status: 200, description: 'Forget password code sent' })
   @ApiResponse({ status: 404, description: 'Email not found' })
   @Post('send-forget-password-code')
@@ -159,15 +178,19 @@ export class AuthController {
   }
 
   @HttpCode(200)
+  @ApiOperation({ summary: 'Verify forget password code ( PUBLIC )' })
   @ApiResponse({ status: 200, description: 'Code verified successfully' })
   @ApiResponse({ status: 400, description: 'Invalid or expired code' })
   @Post('verify-forget-password-code')
   @Public()
-  async verifyForgetPassword(@Body(new ValidationPipe()) data: ValidateForgetPass) {
+  async verifyForgetPassword(
+    @Body(new ValidationPipe()) data: ValidateForgetPass,
+  ) {
     return await this.forgetPasswordService.verifyForgetPassCode(data);
   }
 
   @HttpCode(200)
+  @ApiOperation({ summary: 'Change password ( PUBLIC )' })
   @ApiResponse({ status: 200, description: 'Password changed successfully' })
   @ApiResponse({ status: 400, description: 'Invalid or expired token' })
   @Post('change-password/:crypto')
@@ -187,6 +210,7 @@ export class AuthController {
   // 2fa features
 
   @HttpCode(200)
+  @ApiOperation({ summary: 'Enable 2FA ( USER, ADMIN, ACCOUNTANT )' })
   @ApiResponse({ status: 200, description: '2FA code sent successfully' })
   @ApiResponse({ status: 400, description: 'Invalid request data' })
   @Post('2fa/enable')
@@ -196,6 +220,7 @@ export class AuthController {
   }
 
   @HttpCode(200)
+  @ApiOperation({ summary: 'Verify 2FA ( USER, ADMIN, ACCOUNTANT )' })
   @ApiResponse({ status: 200, description: '2FA enabled successfully' })
   @ApiResponse({ status: 400, description: 'Invalid 2FA code' })
   @Post('2fa/verify')
@@ -205,7 +230,11 @@ export class AuthController {
   }
 
   @HttpCode(200)
-  @ApiResponse({ status: 200, description: '2FA disable code sent successfully' })
+  @ApiOperation({ summary: 'Disable 2FA ( USER, ADMIN, ACCOUNTANT )' })
+  @ApiResponse({
+    status: 200,
+    description: '2FA disable code sent successfully',
+  })
   @ApiResponse({ status: 400, description: 'Invalid request data' })
   @Post('2fa/disable')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
@@ -214,39 +243,43 @@ export class AuthController {
   }
 
   @HttpCode(200)
+  @ApiOperation({ summary: 'Verify disable 2FA ( USER, ADMIN, ACCOUNTANT )' })
   @ApiResponse({ status: 200, description: '2FA disabled successfully' })
   @ApiResponse({ status: 400, description: 'Invalid 2FA code' })
   @Post('2fa/disable-verify')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
-  async verifyDisable2FA(@User() user: jwtPayload, @Body() dto: VerifyTwoFADto) {
+  async verifyDisable2FA(
+    @User() user: jwtPayload,
+    @Body() dto: VerifyTwoFADto,
+  ) {
     return await this.twoFAService.verifyAndDisableTwoFA(user.sub, dto);
   }
 
-
-  // image upload for profile picture
-  @ApiTags('File Upload')
-  @Post('upload')
-  @Public()
-  @ApiConsumes('multipart/form-data')
+  @Post('upload-images')
+  @Roles('USER', 'ADMIN', 'ACCOUNTANT')
+  @ApiOperation({ summary: 'Upload images ( USER, ADMIN, ACCOUNTANT )' })
   @ApiBody({ type: UploadImageDto })
-  @UseInterceptors(
-    FilesInterceptor('images', 10, {
-      storage: storageConfig('./uploads'),
-    }),
-  )
-  uploadMultipleFiles(
-    @UploadedFiles() files: Express.Multer.File[],
-  ) {
-    if (!files || files.length === 0) {
-      throw new BadRequestException('No files uploaded');
+  @ApiResponse({ status: 200, description: 'Images processed successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid base64 images' })
+  uploadImages(@Body() dto: UploadImageDto) {
+    if (!dto.images || dto.images.length === 0) {
+      throw new BadRequestException('No images provided');
     }
-    if (!process.env.BASE_URL) {
-      throw new BadRequestException('Base URL not configured');
-    }
-    const fileUrls = files.map((file) =>
-      `${process.env.BASE_URL}/uploads/${file.filename}`
+
+    // Validate base64 format
+    const validImages = dto.images.filter(
+      (img) => img.startsWith('data:image/') && img.includes('base64,'),
     );
 
-    return fileUrls
+    if (validImages.length === 0) {
+      throw new BadRequestException('No valid base64 images found');
+    }
+
+    return {
+      success: true,
+      message: 'Images processed successfully',
+      count: validImages.length,
+      images: validImages,
+    };
   }
 }

@@ -377,19 +377,160 @@ export class InvoicesService {
     }
   }
 
-  remove(id: string) {
+  async findOne(id: string, userId: string) {
     try {
-      const invoice = this.prisma.invoice.delete({
+      const invoice = await this.prisma.invoice.findFirst({
         where: {
           id,
+          userId,
+        },
+        include: {
+          serviceAndItems: true,
+          businessDatas: true,
+        },
+      });
+
+      if (!invoice) {
+        return cResponseData({
+          message: 'Invoice not found',
+          error: 'Invoice not found',
+          success: false,
+        });
+      }
+
+      return cResponseData({
+        message: 'Invoice fetched successfully',
+        data: invoice,
+      });
+    } catch (error) {
+      return cResponseData({
+        message: 'Failed to fetch invoice',
+        error: 'Failed to fetch invoice',
+        success: false,
+      });
+    }
+  }
+
+  async update(id: string, updateInvoiceDto: CreateInvoiceDto, userId: string) {
+    try {
+      const {
+        serviceAndItems,
+        businessDatas,
+        addressAndContactInfo,
+        issueDate,
+        dueDate,
+        isPaymentLinkIncluded,
+        ...invoiceData
+      } = updateInvoiceDto;
+
+      const existingInvoice = await this.prisma.invoice.findFirst({
+        where: {
+          id,
+          userId,
+        },
+      });
+
+      if (!existingInvoice) {
+        return cResponseData({
+          message: 'Invoice not found',
+          error: 'Invoice not found',
+          success: false,
+        });
+      }
+
+      // Convert date strings to Date objects
+      const issueDateObj = new Date(issueDate);
+      const dueDateObj = dueDate ? new Date(dueDate) : null;
+
+      // Delete existing relations
+      await this.prisma.serviceAndItem.deleteMany({
+        where: { invoiceId: id },
+      });
+      
+      await this.prisma.businessData.deleteMany({
+        where: { invoiceId: id },
+      });
+
+      // Update invoice with new data
+      const updatedInvoice = await this.prisma.invoice.update({
+        where: { id },
+        data: {
+          ...invoiceData,
+          issueDate: issueDateObj,
+          dueDate: dueDateObj,
+          AddressAndContactInfo: addressAndContactInfo,
+          serviceAndItems: {
+            create: serviceAndItems.map((item) => ({
+              description: item.description,
+              qty: item.qty,
+              rate: item.rate,
+              totalAmount: item.totalAmount,
+            })),
+          },
+          businessDatas: {
+            create: businessDatas?.map((data) => ({
+              businessIdLabel: data.businessIdLabel,
+              businessIdValue: data.businessIdValue,
+            })),
+          },
+        },
+        include: {
+          serviceAndItems: true,
+          businessDatas: true,
         },
       });
 
       return cResponseData({
-        message: 'Invoice deleted successfully',
-        data: invoice,
+        message: 'Invoice updated successfully',
+        data: updatedInvoice,
       });
     } catch (error) {
+      console.error('Invoice update error:', error);
+      return cResponseData({
+        message: 'Failed to update invoice',
+        error: 'Failed to update invoice',
+        success: false,
+      });
+    }
+  }
+
+  async delete(id: string, userId: string) {
+    try {
+      const invoice = await this.prisma.invoice.findFirst({
+        where: {
+          id,
+          userId,
+        },
+      });
+
+      if (!invoice) {
+        return cResponseData({
+          message: 'Invoice not found',
+          error: 'Invoice not found',
+          success: false,
+        });
+      }
+
+      // Delete relations first (Prisma should handle this with cascade, but being explicit)
+      await this.prisma.serviceAndItem.deleteMany({
+        where: { invoiceId: id },
+      });
+      
+      await this.prisma.businessData.deleteMany({
+        where: { invoiceId: id },
+      });
+
+      // Delete the invoice
+      await this.prisma.invoice.delete({
+        where: { id },
+      });
+
+      return cResponseData({
+        message: 'Invoice deleted successfully',
+        data: { id },
+      });
+    } catch (error) {
+      console.error('Invoice delete error:', error);
       return cResponseData({
         message: 'Failed to delete invoice',
         error: 'Failed to delete invoice',

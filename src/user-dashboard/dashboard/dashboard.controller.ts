@@ -4,6 +4,7 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { User } from 'src/auth/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 import { ReportsService } from '../reports/reports.service';
+import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('user-dashboard')
 export class DashboardController {
@@ -11,12 +12,14 @@ export class DashboardController {
 
   @Get('dashboard-data')
   @Roles('USER')
+  @ApiOperation({ summary: 'Get dashboard data ( USER only )' })
   async dashboardData(@User() user: jwtPayload) {
     return this.dashboardService.dashboardData(user.sub);
   }
 
   @Get("monthly-income-expense")
   @Roles('USER')
+  @ApiOperation({ summary: 'Get monthly income expense ( USER only )' })
   async monthlyIncomeExpense(@User() user: jwtPayload) {
     return this.report.getReportData(user.sub);
   }

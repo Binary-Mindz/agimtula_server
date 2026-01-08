@@ -40,7 +40,6 @@ export type ReceiptMinAggregateOutputType = {
   id: string | null
   receipt_id: number | null
   receiptFileUrl: string | null
-  receiptFileKey: string | null
   vendor: string | null
   date: Date | null
   categoryId: string | null
@@ -54,7 +53,6 @@ export type ReceiptMaxAggregateOutputType = {
   id: string | null
   receipt_id: number | null
   receiptFileUrl: string | null
-  receiptFileKey: string | null
   vendor: string | null
   date: Date | null
   categoryId: string | null
@@ -68,7 +66,6 @@ export type ReceiptCountAggregateOutputType = {
   id: number
   receipt_id: number
   receiptFileUrl: number
-  receiptFileKey: number
   vendor: number
   date: number
   categoryId: number
@@ -94,7 +91,6 @@ export type ReceiptMinAggregateInputType = {
   id?: true
   receipt_id?: true
   receiptFileUrl?: true
-  receiptFileKey?: true
   vendor?: true
   date?: true
   categoryId?: true
@@ -108,7 +104,6 @@ export type ReceiptMaxAggregateInputType = {
   id?: true
   receipt_id?: true
   receiptFileUrl?: true
-  receiptFileKey?: true
   vendor?: true
   date?: true
   categoryId?: true
@@ -122,7 +117,6 @@ export type ReceiptCountAggregateInputType = {
   id?: true
   receipt_id?: true
   receiptFileUrl?: true
-  receiptFileKey?: true
   vendor?: true
   date?: true
   categoryId?: true
@@ -223,7 +217,6 @@ export type ReceiptGroupByOutputType = {
   id: string
   receipt_id: number
   receiptFileUrl: string | null
-  receiptFileKey: string | null
   vendor: string
   date: Date
   categoryId: string
@@ -260,7 +253,6 @@ export type ReceiptWhereInput = {
   id?: Prisma.StringFilter<"Receipt"> | string
   receipt_id?: Prisma.IntFilter<"Receipt"> | number
   receiptFileUrl?: Prisma.StringNullableFilter<"Receipt"> | string | null
-  receiptFileKey?: Prisma.StringNullableFilter<"Receipt"> | string | null
   vendor?: Prisma.StringFilter<"Receipt"> | string
   date?: Prisma.DateTimeFilter<"Receipt"> | Date | string
   categoryId?: Prisma.StringFilter<"Receipt"> | string
@@ -276,7 +268,6 @@ export type ReceiptOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   receipt_id?: Prisma.SortOrder
   receiptFileUrl?: Prisma.SortOrderInput | Prisma.SortOrder
-  receiptFileKey?: Prisma.SortOrderInput | Prisma.SortOrder
   vendor?: Prisma.SortOrder
   date?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
@@ -295,7 +286,6 @@ export type ReceiptWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.ReceiptWhereInput[]
   NOT?: Prisma.ReceiptWhereInput | Prisma.ReceiptWhereInput[]
   receiptFileUrl?: Prisma.StringNullableFilter<"Receipt"> | string | null
-  receiptFileKey?: Prisma.StringNullableFilter<"Receipt"> | string | null
   vendor?: Prisma.StringFilter<"Receipt"> | string
   date?: Prisma.DateTimeFilter<"Receipt"> | Date | string
   categoryId?: Prisma.StringFilter<"Receipt"> | string
@@ -311,7 +301,6 @@ export type ReceiptOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   receipt_id?: Prisma.SortOrder
   receiptFileUrl?: Prisma.SortOrderInput | Prisma.SortOrder
-  receiptFileKey?: Prisma.SortOrderInput | Prisma.SortOrder
   vendor?: Prisma.SortOrder
   date?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
@@ -333,7 +322,6 @@ export type ReceiptScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Receipt"> | string
   receipt_id?: Prisma.IntWithAggregatesFilter<"Receipt"> | number
   receiptFileUrl?: Prisma.StringNullableWithAggregatesFilter<"Receipt"> | string | null
-  receiptFileKey?: Prisma.StringNullableWithAggregatesFilter<"Receipt"> | string | null
   vendor?: Prisma.StringWithAggregatesFilter<"Receipt"> | string
   date?: Prisma.DateTimeWithAggregatesFilter<"Receipt"> | Date | string
   categoryId?: Prisma.StringWithAggregatesFilter<"Receipt"> | string
@@ -347,7 +335,6 @@ export type ReceiptCreateInput = {
   id?: string
   receipt_id?: number
   receiptFileUrl?: string | null
-  receiptFileKey?: string | null
   vendor: string
   date: Date | string
   amount: number
@@ -361,7 +348,6 @@ export type ReceiptUncheckedCreateInput = {
   id?: string
   receipt_id?: number
   receiptFileUrl?: string | null
-  receiptFileKey?: string | null
   vendor: string
   date: Date | string
   categoryId: string
@@ -374,7 +360,6 @@ export type ReceiptUncheckedCreateInput = {
 export type ReceiptUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   receiptFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  receiptFileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendor?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -388,7 +373,6 @@ export type ReceiptUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   receipt_id?: Prisma.IntFieldUpdateOperationsInput | number
   receiptFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  receiptFileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendor?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -402,7 +386,6 @@ export type ReceiptCreateManyInput = {
   id?: string
   receipt_id?: number
   receiptFileUrl?: string | null
-  receiptFileKey?: string | null
   vendor: string
   date: Date | string
   categoryId: string
@@ -415,7 +398,6 @@ export type ReceiptCreateManyInput = {
 export type ReceiptUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   receiptFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  receiptFileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendor?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -427,7 +409,6 @@ export type ReceiptUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   receipt_id?: Prisma.IntFieldUpdateOperationsInput | number
   receiptFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  receiptFileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendor?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -441,7 +422,6 @@ export type ReceiptCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   receipt_id?: Prisma.SortOrder
   receiptFileUrl?: Prisma.SortOrder
-  receiptFileKey?: Prisma.SortOrder
   vendor?: Prisma.SortOrder
   date?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
@@ -460,7 +440,6 @@ export type ReceiptMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   receipt_id?: Prisma.SortOrder
   receiptFileUrl?: Prisma.SortOrder
-  receiptFileKey?: Prisma.SortOrder
   vendor?: Prisma.SortOrder
   date?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
@@ -474,7 +453,6 @@ export type ReceiptMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   receipt_id?: Prisma.SortOrder
   receiptFileUrl?: Prisma.SortOrder
-  receiptFileKey?: Prisma.SortOrder
   vendor?: Prisma.SortOrder
   date?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
@@ -587,7 +565,6 @@ export type ReceiptCreateWithoutCategoryInput = {
   id?: string
   receipt_id?: number
   receiptFileUrl?: string | null
-  receiptFileKey?: string | null
   vendor: string
   date: Date | string
   amount: number
@@ -600,7 +577,6 @@ export type ReceiptUncheckedCreateWithoutCategoryInput = {
   id?: string
   receipt_id?: number
   receiptFileUrl?: string | null
-  receiptFileKey?: string | null
   vendor: string
   date: Date | string
   amount: number
@@ -642,7 +618,6 @@ export type ReceiptScalarWhereInput = {
   id?: Prisma.StringFilter<"Receipt"> | string
   receipt_id?: Prisma.IntFilter<"Receipt"> | number
   receiptFileUrl?: Prisma.StringNullableFilter<"Receipt"> | string | null
-  receiptFileKey?: Prisma.StringNullableFilter<"Receipt"> | string | null
   vendor?: Prisma.StringFilter<"Receipt"> | string
   date?: Prisma.DateTimeFilter<"Receipt"> | Date | string
   categoryId?: Prisma.StringFilter<"Receipt"> | string
@@ -656,7 +631,6 @@ export type ReceiptCreateWithoutUserInput = {
   id?: string
   receipt_id?: number
   receiptFileUrl?: string | null
-  receiptFileKey?: string | null
   vendor: string
   date: Date | string
   amount: number
@@ -669,7 +643,6 @@ export type ReceiptUncheckedCreateWithoutUserInput = {
   id?: string
   receipt_id?: number
   receiptFileUrl?: string | null
-  receiptFileKey?: string | null
   vendor: string
   date: Date | string
   categoryId: string
@@ -708,7 +681,6 @@ export type ReceiptCreateManyCategoryInput = {
   id?: string
   receipt_id?: number
   receiptFileUrl?: string | null
-  receiptFileKey?: string | null
   vendor: string
   date: Date | string
   amount: number
@@ -720,7 +692,6 @@ export type ReceiptCreateManyCategoryInput = {
 export type ReceiptUpdateWithoutCategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   receiptFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  receiptFileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendor?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -733,7 +704,6 @@ export type ReceiptUncheckedUpdateWithoutCategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   receipt_id?: Prisma.IntFieldUpdateOperationsInput | number
   receiptFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  receiptFileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendor?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -746,7 +716,6 @@ export type ReceiptUncheckedUpdateManyWithoutCategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   receipt_id?: Prisma.IntFieldUpdateOperationsInput | number
   receiptFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  receiptFileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendor?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -759,7 +728,6 @@ export type ReceiptCreateManyUserInput = {
   id?: string
   receipt_id?: number
   receiptFileUrl?: string | null
-  receiptFileKey?: string | null
   vendor: string
   date: Date | string
   categoryId: string
@@ -771,7 +739,6 @@ export type ReceiptCreateManyUserInput = {
 export type ReceiptUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   receiptFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  receiptFileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendor?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -784,7 +751,6 @@ export type ReceiptUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   receipt_id?: Prisma.IntFieldUpdateOperationsInput | number
   receiptFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  receiptFileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendor?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -797,7 +763,6 @@ export type ReceiptUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   receipt_id?: Prisma.IntFieldUpdateOperationsInput | number
   receiptFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  receiptFileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendor?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -812,7 +777,6 @@ export type ReceiptSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   id?: boolean
   receipt_id?: boolean
   receiptFileUrl?: boolean
-  receiptFileKey?: boolean
   vendor?: boolean
   date?: boolean
   categoryId?: boolean
@@ -828,7 +792,6 @@ export type ReceiptSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   receipt_id?: boolean
   receiptFileUrl?: boolean
-  receiptFileKey?: boolean
   vendor?: boolean
   date?: boolean
   categoryId?: boolean
@@ -844,7 +807,6 @@ export type ReceiptSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   receipt_id?: boolean
   receiptFileUrl?: boolean
-  receiptFileKey?: boolean
   vendor?: boolean
   date?: boolean
   categoryId?: boolean
@@ -860,7 +822,6 @@ export type ReceiptSelectScalar = {
   id?: boolean
   receipt_id?: boolean
   receiptFileUrl?: boolean
-  receiptFileKey?: boolean
   vendor?: boolean
   date?: boolean
   categoryId?: boolean
@@ -870,7 +831,7 @@ export type ReceiptSelectScalar = {
   createdAt?: boolean
 }
 
-export type ReceiptOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "receipt_id" | "receiptFileUrl" | "receiptFileKey" | "vendor" | "date" | "categoryId" | "amount" | "notes" | "userId" | "createdAt", ExtArgs["result"]["receipt"]>
+export type ReceiptOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "receipt_id" | "receiptFileUrl" | "vendor" | "date" | "categoryId" | "amount" | "notes" | "userId" | "createdAt", ExtArgs["result"]["receipt"]>
 export type ReceiptInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   category?: boolean | Prisma.ReceiptCategoryDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -894,7 +855,6 @@ export type $ReceiptPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     id: string
     receipt_id: number
     receiptFileUrl: string | null
-    receiptFileKey: string | null
     vendor: string
     date: Date
     categoryId: string
@@ -1330,7 +1290,6 @@ export interface ReceiptFieldRefs {
   readonly id: Prisma.FieldRef<"Receipt", 'String'>
   readonly receipt_id: Prisma.FieldRef<"Receipt", 'Int'>
   readonly receiptFileUrl: Prisma.FieldRef<"Receipt", 'String'>
-  readonly receiptFileKey: Prisma.FieldRef<"Receipt", 'String'>
   readonly vendor: Prisma.FieldRef<"Receipt", 'String'>
   readonly date: Prisma.FieldRef<"Receipt", 'DateTime'>
   readonly categoryId: Prisma.FieldRef<"Receipt", 'String'>

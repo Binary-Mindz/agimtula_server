@@ -88,9 +88,10 @@ export class BusinessInfoDto {
 export class UpdateLogoDto {
   @ApiPropertyOptional({
     type: 'string',
-    format: 'binary',
-    description:
-      'Company logo (PNG, JPG, JPEG, max 2MB, recommended 400x400px)',
+    description: 'Base64 encoded company logo image (PNG, JPG, JPEG)',
+    example: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==',
   })
-  logo?: Express.Multer.File;
+  @IsOptional()
+  @IsString()
+  logo?: string;
 }

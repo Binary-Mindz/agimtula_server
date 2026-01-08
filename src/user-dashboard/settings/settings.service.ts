@@ -3,8 +3,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { BusinessInfoDto } from './dto/business-info.dto';
 import { InvoiceLayoutDto } from './dto/invoice-layout.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
-import { deleteFromCloudinary } from 'src/config/cloudinary/deleteImage';
-import uploadToCloudinary from 'src/config/cloudinary/cloudinary';
 import { cResponseData } from 'src/common/cResponse';
 
 @Injectable()
@@ -33,39 +31,31 @@ export class SettingsService {
     }
   }
 
-  async updateBusinessLogo(userId: string, file: Express.Multer.File) {
+  async updateBusinessLogo(userId: string, logoBase64?: string) {
     try {
-      if (!file) throw new NotFoundException('File not found');
-
-      console.log(file.originalname);
+      if (!logoBase64) {
+        throw new NotFoundException('Logo data not provided');
+      }
 
       const businessInfo = await this.prisma.businessInfo.findUnique({
         where: { userId },
       });
 
-      if (!businessInfo) throw new NotFoundException('Business info not found');
-
-      if (businessInfo.logoKey) {
-        await deleteFromCloudinary(businessInfo.logoKey);
+      if (!businessInfo) {
+        throw new NotFoundException('Business info not found');
       }
-
-      console.log(businessInfo);
-
-      const uploadResult = await uploadToCloudinary(file);
-
-      console.log(uploadResult.secure_Url);
 
       await this.prisma.businessInfo.update({
         where: { userId },
         data: {
-          logo: uploadResult.secure_url,
-          logoKey: uploadResult.public_id,
+          logo: logoBase64,
+          logoKey: null, // No longer using Cloudinary keys
         },
       });
 
       return cResponseData({
         message: 'Business logo updated successfully',
-        data: uploadResult.secure_url,
+        data: logoBase64,
       });
     } catch (error) {
       return cResponseData({
@@ -83,10 +73,6 @@ export class SettingsService {
 
       if (!businessInfo) {
         throw new NotFoundException('Business info not found');
-      }
-
-      if (businessInfo.logoKey) {
-        await deleteFromCloudinary(businessInfo.logoKey);
       }
 
       await this.prisma.businessInfo.update({

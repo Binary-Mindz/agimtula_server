@@ -4,7 +4,7 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { RequestAccountant } from './dto/request-accountant.dto';
 import { User } from 'src/auth/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller('requeste-accountant')
 export class RequesteAccountantController {
@@ -14,6 +14,7 @@ export class RequesteAccountantController {
 
   @Post()
   @Roles('USER')
+  @ApiOperation({ summary: 'Request accountant ( USER only )' })
   @ApiResponse({ status: 201, description: 'Accountant request submitted successfully' })
   @ApiResponse({ status: 400, description: 'Invalid request data' })
   requestAccountant(@Body() dto: RequestAccountant, @User() user: jwtPayload) {

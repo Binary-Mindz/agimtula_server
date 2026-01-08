@@ -1,11 +1,16 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { IsArray, IsNotEmpty, IsString } from "class-validator";
 
 export class UploadImageDto {
   @ApiProperty({
-    description: 'image  field is (required)',
+    description: 'Array of base64 encoded image strings',
     type: 'array',
-    items: { type: 'file', format: 'binary' },
+    items: { type: 'string' },
+    example: ['data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD...'],
     required: true,
   })
-  images: Express.Multer.File[];
+  @IsArray()
+  @IsString({ each: true })
+  @IsNotEmpty({ message: 'Images are required' })
+  images: string[];
 }

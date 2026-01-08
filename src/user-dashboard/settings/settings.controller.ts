@@ -6,15 +6,12 @@ import {
   Param,
   Patch,
   Post,
-  UploadedFile,
-  UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { SettingsService } from './settings.service';
 import { BusinessInfoDto, UpdateLogoDto } from './dto/business-info.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CreatePaymentMethodDto } from './dto/create-payment-method.dto';
 import { InvoiceLayoutDto } from './dto/invoice-layout.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
@@ -39,6 +36,7 @@ export class UserSettingsController {
   // business infos
   @Get('business-info')
   @Roles('USER', 'ADMIN')
+  @ApiOperation({ summary: 'Get business info ( USER, ADMIN )' })
   @ApiResponse({ status: 200, description: 'Business info retrieved successfully' })
   getBusinessInfo(@User() user: jwtPayload) {
     return this.settingsService.getBusinessInfo(user.sub);
@@ -46,6 +44,7 @@ export class UserSettingsController {
 
   @Patch('update-business-info')
   @Roles('USER', 'ADMIN')
+  @ApiOperation({ summary: 'Update business info ( USER, ADMIN )' })
   @UsePipes(new ValidationPipe({ transform: true }))
   @ApiResponse({ status: 200, description: 'Business info updated successfully' })
   @ApiResponse({ status: 400, description: 'Invalid business info data' })
@@ -59,20 +58,20 @@ export class UserSettingsController {
 
   @Patch('update-business-logo')
   @Roles('USER', 'ADMIN')
-  @UseInterceptors(FileInterceptor('logo'))
-  @ApiConsumes('multipart/form-data')
+  @ApiOperation({ summary: 'Update business logo ( USER, ADMIN )' })
   @ApiBody({ type: UpdateLogoDto })
   @ApiResponse({ status: 200, description: 'Business logo updated successfully' })
-  @ApiResponse({ status: 400, description: 'Invalid logo file' })
+  @ApiResponse({ status: 400, description: 'Invalid logo data' })
   updateBusinessLogo(
     @User() user: jwtPayload,
-    @UploadedFile() logo: Express.Multer.File,
+    @Body() dto: UpdateLogoDto,
   ) {
-    return this.settingsService.updateBusinessLogo(user.sub, logo);
+    return this.settingsService.updateBusinessLogo(user.sub, dto.logo);
   }
 
   @Patch('remove-business-logo')
   @Roles('USER', 'ADMIN')
+  @ApiOperation({ summary: 'Remove business logo ( USER, ADMIN )' })
   @ApiResponse({ status: 200, description: 'Business logo removed successfully' })
   removeBusinessLogo(@User() user: jwtPayload) {
     return this.settingsService.removeBusinessLogo(user.sub);
@@ -81,6 +80,7 @@ export class UserSettingsController {
   // payment method
   @Post('create-payment-method')
   @Roles('USER', 'ADMIN')
+  @ApiOperation({ summary: 'Create payment method ( USER, ADMIN )' })
   @UsePipes(new ValidationPipe({ transform: true }))
   @ApiResponse({ status: 201, description: 'Payment method created successfully' })
   @ApiResponse({ status: 400, description: 'Invalid payment method data' })
@@ -98,6 +98,7 @@ export class UserSettingsController {
 
   @Patch('update-payment-method/:id')
   @Roles('USER', 'ADMIN')
+  @ApiOperation({ summary: 'Update payment method ( USER, ADMIN )' })
   @UsePipes(new ValidationPipe({ transform: true }))
   @ApiResponse({ status: 200, description: 'Payment method updated successfully' })
   @ApiResponse({ status: 404, description: 'Payment method not found' })
@@ -110,6 +111,7 @@ export class UserSettingsController {
 
   @Get('payment-methods')
   @Roles('USER', 'ADMIN')
+  @ApiOperation({ summary: 'Get payment methods ( USER, ADMIN )' })
   @ApiResponse({ status: 200, description: 'Payment methods retrieved successfully' })
   getPaymentMethods(@User() user: jwtPayload) {
     return this.paymentMethodService.getPaymentMethods(user.sub);
@@ -117,6 +119,7 @@ export class UserSettingsController {
 
   @Patch('make-payment-default/:id')
   @Roles('USER', 'ADMIN')
+  @ApiOperation({ summary: 'Make payment default ( USER, ADMIN )' })
   @ApiBody({
     schema: {
       type: 'object',
@@ -148,6 +151,7 @@ export class UserSettingsController {
 
   @Delete('delete-payment-method')
   @Roles('USER', 'ADMIN')
+  @ApiOperation({ summary: 'Delete payment method ( USER, ADMIN )' })
   @UsePipes(new ValidationPipe({ transform: true }))
   @ApiResponse({ status: 204, description: 'Payment method deleted successfully' })
   @ApiResponse({ status: 404, description: 'Payment method not found' })
@@ -164,6 +168,7 @@ export class UserSettingsController {
   //invoice layout
   @Get('invoice-layout')
   @Roles('USER', 'ADMIN')
+  @ApiOperation({ summary: 'Get invoice layout ( USER, ADMIN )' })
   @ApiResponse({ status: 200, description: 'Invoice layout retrieved successfully' })
   getInvoiceLayout(@User() user: jwtPayload) {
     return this.invoiceLayoutService.findByUser(user.sub);
@@ -171,6 +176,7 @@ export class UserSettingsController {
 
   @Patch('update-invoice-layout')
   @Roles('USER', 'ADMIN')
+  @ApiOperation({ summary: 'Update invoice layout ( USER, ADMIN )' })
   @UsePipes(new ValidationPipe({ transform: true }))
   @ApiResponse({ status: 200, description: 'Invoice layout updated successfully' })
   @ApiResponse({ status: 400, description: 'Invalid layout data' })
@@ -181,6 +187,7 @@ export class UserSettingsController {
   // notification settings
   @Get('notification-settings')
   @Roles('USER', 'ADMIN')
+  @ApiOperation({ summary: 'Get notification settings ( USER, ADMIN )' })
   @ApiResponse({ status: 200, description: 'Notification settings retrieved successfully' })
   getNotificationSettings(@User() user: jwtPayload) {
     return this.notificationService.getPreferences(user.sub);
@@ -188,6 +195,7 @@ export class UserSettingsController {
 
   @Patch('update-notification-settings')
   @Roles('USER', 'ADMIN')
+  @ApiOperation({ summary: 'Update notification settings ( USER, ADMIN )' })
   @UsePipes(new ValidationPipe({ transform: true }))
   @ApiResponse({ status: 200, description: 'Notification settings updated successfully' })
   @ApiResponse({ status: 400, description: 'Invalid notification settings' })

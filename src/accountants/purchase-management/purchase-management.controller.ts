@@ -3,7 +3,7 @@ import { PurchaseManagementService } from './purchase-management.service';
 import { User } from 'src/auth/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 import { Roles } from 'src/auth/decorators/roles.decorator';
-import { ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiQuery } from '@nestjs/swagger';
 
 @Controller('purchase-management')
 export class PurchaseManagementController {
@@ -13,6 +13,7 @@ export class PurchaseManagementController {
 
   @Get('data/:userId')
   @Roles('ACCOUNTANT')
+  @ApiOperation({ summary: 'Get purchase data ( ACCOUNTANT only )' })
   @ApiParam({
     name: 'userId',
     type: String,
@@ -29,6 +30,7 @@ export class PurchaseManagementController {
 
   @Get('history/:userId')
   @Roles('ACCOUNTANT')
+  @ApiOperation({ summary: 'Get purchase history ( ACCOUNTANT only )' })
   @ApiParam({
     name: 'userId',
     type: String,
@@ -54,6 +56,7 @@ export class PurchaseManagementController {
 
   @Get('detailed-report/:userId')
   @Roles('ACCOUNTANT')
+  @ApiOperation({ summary: 'Get purchase detailed report ( ACCOUNTANT only )' })
   @ApiParam({
     name: 'userId',
     type: String,

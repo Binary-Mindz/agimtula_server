@@ -3,7 +3,7 @@ import { SalesInvoicesService } from './sales-invoices.service';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { User } from 'src/auth/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
-import { ApiParam } from '@nestjs/swagger';
+import { ApiOperation, ApiParam } from '@nestjs/swagger';
 
 @Controller('sales-invoices')
 export class SalesInvoicesController {
@@ -11,6 +11,7 @@ export class SalesInvoicesController {
 
   @Get('sales-invoices-data/:userId')
   @Roles('ACCOUNTANT')
+  @ApiOperation({ summary: 'Get sales invoices data ( ACCOUNTANT only )' })
   @ApiParam({ name: 'userId', required: true })
   async getSalesInvoicesData(
     @User() user: jwtPayload,
@@ -21,6 +22,7 @@ export class SalesInvoicesController {
 
   @Get('sales-invoices/:userId')
   @Roles('ACCOUNTANT')
+  @ApiOperation({ summary: 'Get sales invoices ( ACCOUNTANT only )' })
   @ApiParam({ name: 'userId', required: true })
   async getSalesInvoices(
     @User() user: jwtPayload,

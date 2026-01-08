@@ -30,14 +30,14 @@ export class UserReceiptsController {
   @ApiBody({ schema: { properties: { name: { type: 'string' } } } })
   @ApiResponse({ status: 201, description: 'Category created successfully' })
   @ApiResponse({ status: 400, description: 'Invalid category name' })
-  @ApiOperation({ summary: 'Create a new receipt category (ADMIN only)' })
+  @ApiOperation({ summary: 'Create new receipt category ( ADMIN only )' })
   async createReceiptCategory(@Body('name') name: string) {
     return await this.receiptsService.createReceiptCategory(name);
   }
 
   @Get('categories')
   @Roles('USER', 'ADMIN')
-  @ApiOperation({ summary: 'Get all receipt categories (USER and ADMIN)' })
+  @ApiOperation({ summary: 'Get all receipt categories ( USER and ADMIN )' })
   @ApiResponse({
     status: 200,
     description: 'Categories retrieved successfully',
@@ -49,7 +49,7 @@ export class UserReceiptsController {
   @Delete('delete-category/:id')
   @Roles('ADMIN')
   @UsePipes(new ValidationPipe({ transform: true }))
-  @ApiOperation({ summary: 'Delete a receipt category (ADMIN only)' })
+  @ApiOperation({ summary: 'Delete receipt category ( ADMIN only )' })
   @ApiResponse({ status: 204, description: 'Category deleted successfully' })
   @ApiResponse({ status: 404, description: 'Category not found' })
   async deleteCategory(@Param('id') id: string) {
@@ -62,19 +62,13 @@ export class UserReceiptsController {
   @Roles('USER')
   @ApiBody({ type: UploadReceiptDto })
   @ApiResponse({ status: 201, description: 'Receipt uploaded successfully' })
-  @ApiResponse({ status: 400, description: 'Invalid receipt data or file' })
-  @ApiOperation({ summary: 'Upload a new receipt (USER only)' })
+  @ApiResponse({ status: 400, description: 'Invalid receipt data' })
+  @ApiOperation({ summary: 'Upload new receipt ( USER only )' })
   async uploadReceipt(
     @Body() dto: UploadReceiptDto,
     @User() user: jwtPayload,
   ) {
-    if (!dto.receiptFile) {
-      return {
-        message: 'Receipt file is required',
-        error: 'Receipt file is required',
-      };
-    }
-    return await this.receiptsService.uploadReceipt(user.sub, dto, dto.receiptFile);
+    return await this.receiptsService.uploadReceipt(user.sub, dto);
   }
 
   @Get('data')
@@ -85,7 +79,7 @@ export class UserReceiptsController {
     status: 200,
     description: 'Receipts data retrieved successfully',
   })
-  @ApiOperation({ summary: 'Get receipts data (USER only)' })
+  @ApiOperation({ summary: 'Get receipts data ( USER only )' })
   async getReceiptsData(
     @Query('search') search: string,
     @Query('filterCategory') filterCategory: string,
@@ -116,14 +110,14 @@ export class UserReceiptsController {
   })
   @ApiResponse({ status: 200, description: 'Receipt updated successfully' })
   @ApiResponse({ status: 404, description: 'Receipt not found' })
-  @ApiOperation({ summary: 'Update receipt data (USER only)' })
+  @ApiOperation({ summary: 'Update receipt data ( USER only )' })
   async updateReceipt(@Body('id') id: string, @Body() dto: UpdateReceiptDto) {
     return await this.receiptsService.updateReceiptsData(id, dto);
   }
 
   @Delete('delete-receipt')
   @Roles('USER')
-  @ApiOperation({ summary: 'Delete a receipt (USER only)' })
+  @ApiOperation({ summary: 'Delete receipt ( USER only )' })
   @UsePipes(new ValidationPipe({ transform: true }))
   @ApiResponse({ status: 204, description: 'Receipt deleted successfully' })
   @ApiResponse({ status: 404, description: 'Receipt not found' })

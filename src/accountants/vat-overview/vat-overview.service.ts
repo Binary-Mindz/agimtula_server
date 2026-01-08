@@ -3,6 +3,7 @@ import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { ValidateAccountantAccess } from '../validate-accountant-access';
 import { CurrencyConverterService } from 'src/common/currency-converter.service';
+import { InvoiceSource } from 'prisma/generated/prisma/enums';
 
 @Injectable()
 export class VatOverviewService {
@@ -11,64 +12,153 @@ export class VatOverviewService {
     private readonly validateAccess: ValidateAccountantAccess,
     private readonly currencyConverter: CurrencyConverterService,
   ) {}
-  async getVatData(userId: string, accId: string) {
-    await this.validateAccess.validate(userId, accId);
+
+  async getSummary(userId: string, accId: string) {
     try {
-      const [salesDocuments, purchaseDocuments] = await Promise.all([
-        this.prisma.financialDocument.findMany({
-          where: {
-            userId,
-            isPaid: true,
-            totalVat: {
-              gt: 0,
-            },
-          },
-          select: {
-            totalVat: true,
-            currency: true,
-          },
-        }),
+      await this.validateAccess.validate(userId, accId);
 
-        this.prisma.financialDocument.findMany({
-          where: {
-            userId,
-            isPaid: true,
-            totalVat: {
-              lt: 0,
-            },
-          },
-          select: {
-            totalVat: true,
-            currency: true,
-          },
-        }),
-      ]);
-
-      const totalSalesVat = salesDocuments.reduce(
-        (sum, doc) => sum + this.currencyConverter.convertToEUR(Number(doc.totalVat), doc.currency),
-        0
-      );
-
-      const totalPurchaseVat = purchaseDocuments.reduce(
-        (sum, doc) => sum + this.currencyConverter.convertToEUR(Math.abs(Number(doc.totalVat)), doc.currency),
-        0
-      );
-
-      return cResponseData({
-        success: true,
-        message: 'Vat data fetched successfully',
-        data: {
-          totalSalesVat: Math.round(totalSalesVat * 100) / 100,
-          totalPurchaseVat: Math.round(totalPurchaseVat * 100) / 100,
-          vatDue: Math.round((totalSalesVat - totalPurchaseVat) * 100) / 100,
-          currency: 'EUR',
+      const invoices = await this.prisma.invoice.findMany({
+        where: {
+          userId,
+          isPaid: true,
+          isDrafted: false,
+        },
+        select: {
+          vat: true,
+          invoiceSource: true,
         },
       });
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
+      let totalSalesVat = 0;
+      let totalPurchaseVat = 0;
+
+      for (const invoice of invoices) {
+        if (invoice.invoiceSource === InvoiceSource.MANUAL) {
+          totalSalesVat += invoice.vat;
+        }
+
+        if (invoice.invoiceSource === InvoiceSource.EMAIL) {
+          totalPurchaseVat += invoice.vat;
+        }
+      }
+
+      const vatDue = totalSalesVat - totalPurchaseVat;
+
       return cResponseData({
-        message: 'Failed to fetch vat data',
+        success: true,
+        message: 'VAT summary fetched successfully',
+        data: {
+          totalSalesVat: Number(totalSalesVat.toFixed(2)),
+          totalPurchaseVat: Number(totalPurchaseVat.toFixed(2)),
+          vatDue: Number(vatDue.toFixed(2)),
+          currency: 'EUR',
+        },
+      });
+    } catch (error) {
+      console.error(error);
+      return cResponseData({
+        message: 'Failed to get vat overview summary',
+        success: false,
+      });
+    }
+  }
+
+  async getBreakdown(userId: string, accId: string) {
+    try {
+      await this.validateAccess.validate(userId, accId);
+
+      const invoices = await this.prisma.invoice.findMany({
+        where: {
+          userId,
+          isPaid: true,
+          isDrafted: false,
+        },
+        select: {
+          vat: true,
+          subTotal: true,
+          invoiceSource: true,
+        },
+      });
+
+      const breakdown = {
+        sales: { amount: 0, vat: 0 },
+        purchases: { amount: 0, vat: 0 },
+        intraEU: { amount: 0, vat: 0 },
+      };
+
+      for (const inv of invoices) {
+        if (inv.vat === 0) {
+          breakdown.intraEU.amount += inv.subTotal;
+          breakdown.intraEU.vat += 0;
+          continue;
+        }
+
+        if (inv.invoiceSource === InvoiceSource.MANUAL) {
+          breakdown.sales.amount += inv.subTotal;
+          breakdown.sales.vat += inv.vat;
+        }
+
+        if (inv.invoiceSource === InvoiceSource.EMAIL) {
+          breakdown.purchases.amount += inv.subTotal;
+          breakdown.purchases.vat += inv.vat;
+        }
+      }
+
+      return cResponseData({
+        success: true,
+        message: 'VAT breakdown fetched successfully',
+        data: [
+          {
+            category: 'Sales',
+            amount: Number(breakdown.sales.amount.toFixed(2)),
+            vatRate: 'Mixed',
+            calculatedVat: Number(breakdown.sales.vat.toFixed(2)),
+            notes: 'Goods & Services',
+          },
+          {
+            category: 'Purchases',
+            amount: Number(breakdown.purchases.amount.toFixed(2)),
+            vatRate: 'Mixed',
+            calculatedVat: Number(breakdown.purchases.vat.toFixed(2)),
+            notes: 'Business Expenses',
+          },
+          {
+            category: 'Intra-EU Purchases',
+            amount: Number(breakdown.intraEU.amount.toFixed(2)),
+            vatRate: '0%',
+            calculatedVat: 0,
+            notes: 'Reverse charge mechanism',
+          },
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      return cResponseData({
+        message: 'Failed to get vat overview data breakdown',
+        success: false,
+      });
+    }
+  }
+
+  async getAllVatData(userId: string, accId: string) {
+    try {
+      const [summary, breakdown] = await Promise.all([
+        this.getSummary(userId, accId),
+        this.getBreakdown(userId, accId),
+      ]);
+
+      return cResponseData({
+        success: true,
+        message: 'VAT data fetched successfully',
+        data: {
+          summary: summary.data,
+          breakdown: breakdown.data,
+        },
+      });
+    } catch (error) {
+      console.error(error);
+      return cResponseData({
+        message: 'Failed to get vat overview data',
         success: false,
       });
     }

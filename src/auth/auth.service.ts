@@ -57,7 +57,7 @@ export class AuthService {
   }
 
   async generateAccessToken(jwtPayload: jwtPayload) {
-    return this.jwt.signAsync(
+    return await this.jwt.signAsync(
       { sub: jwtPayload.sub, email: jwtPayload.email, role: jwtPayload.role },
       {
         secret: process.env.JWT_SECRET as string,
@@ -316,8 +316,6 @@ export class AuthService {
       if (!userProfile) {
         throw new NotFoundException('User not found');
       }
-
-      console.log(profilePic);
       const user = await this.prisma.user.update({
         where: { id: userId },
         data: {
@@ -398,9 +396,7 @@ export class AuthService {
         message: 'Profile updated successfully',
       };
     } catch (error) {
-      if (error instanceof BadRequestException) {
-        throw error;
-      }
+
       throw new BadRequestException('Failed to update profile');
     }
   }
@@ -427,9 +423,7 @@ export class AuthService {
 
       return user;
     } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
+
       throw new BadRequestException('Failed to get profile');
     }
   }

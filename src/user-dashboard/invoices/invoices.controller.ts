@@ -17,7 +17,7 @@ import { jwtPayload } from 'src/auth/types/jwt-payload';
 
 @Controller('invoices')
 export class InvoicesController {
-  constructor(private readonly invoicesService: InvoicesService) {}
+  constructor(private readonly invoicesService: InvoicesService) { }
 
   @Post()
   @Roles('USER')
@@ -38,6 +38,7 @@ export class InvoicesController {
 
   @Roles('USER')
   @Get()
+  @ApiOperation({ summary: 'Get all invoices with optional search Only (USER)' })
   @ApiQuery({
     name: 'search',
     type: String,

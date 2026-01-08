@@ -31,15 +31,15 @@ export class UserSettingsController {
     private readonly paymentMethodService: PaymentMethodService,
     private readonly invoiceLayoutService: InvoiceLayoutService,
     private readonly notificationService: NotificationsService,
-  ) {}
+  ) { }
 
   // business infos
   @Get('business-info')
   @Roles('USER', 'ADMIN')
   @ApiOperation({ summary: 'Get business info ( USER, ADMIN )' })
   @ApiResponse({ status: 200, description: 'Business info retrieved successfully' })
-  getBusinessInfo(@User() user: jwtPayload) {
-    return this.settingsService.getBusinessInfo(user.sub);
+  async getBusinessInfo(@User() user: jwtPayload) {
+    return await this.settingsService.getBusinessInfo(user.sub);
   }
 
   @Patch('update-business-info')
@@ -62,19 +62,19 @@ export class UserSettingsController {
   @ApiBody({ type: UpdateLogoDto })
   @ApiResponse({ status: 200, description: 'Business logo updated successfully' })
   @ApiResponse({ status: 400, description: 'Invalid logo data' })
-  updateBusinessLogo(
+  async updateBusinessLogo(
     @User() user: jwtPayload,
     @Body() dto: UpdateLogoDto,
   ) {
-    return this.settingsService.updateBusinessLogo(user.sub, dto.logo);
+    return await this.settingsService.updateBusinessLogo(user.sub, dto.logo);
   }
 
   @Patch('remove-business-logo')
   @Roles('USER', 'ADMIN')
   @ApiOperation({ summary: 'Remove business logo ( USER, ADMIN )' })
   @ApiResponse({ status: 200, description: 'Business logo removed successfully' })
-  removeBusinessLogo(@User() user: jwtPayload) {
-    return this.settingsService.removeBusinessLogo(user.sub);
+  async removeBusinessLogo(@User() user: jwtPayload) {
+    return await this.settingsService.removeBusinessLogo(user.sub);
   }
 
   // payment method
@@ -84,12 +84,12 @@ export class UserSettingsController {
   @UsePipes(new ValidationPipe({ transform: true }))
   @ApiResponse({ status: 201, description: 'Payment method created successfully' })
   @ApiResponse({ status: 400, description: 'Invalid payment method data' })
-  createPaymentMethod(
+  async createPaymentMethod(
     @Body() dto: CreatePaymentMethodDto,
     @User() user: jwtPayload,
     makeDefault: boolean,
   ) {
-    return this.paymentMethodService.createPaymentMethod(
+    return await this.paymentMethodService.createPaymentMethod(
       user.sub,
       dto,
       makeDefault,
@@ -102,19 +102,19 @@ export class UserSettingsController {
   @UsePipes(new ValidationPipe({ transform: true }))
   @ApiResponse({ status: 200, description: 'Payment method updated successfully' })
   @ApiResponse({ status: 404, description: 'Payment method not found' })
-  updatePaymentMethod(
+  async updatePaymentMethod(
     @Param('id') id: string,
     @Body() dto: UpdatePaymentMethodDto,
   ) {
-    return this.paymentMethodService.updatePaymentMethod(id, dto);
+    return await this.paymentMethodService.updatePaymentMethod(id, dto);
   }
 
   @Get('payment-methods')
   @Roles('USER', 'ADMIN')
   @ApiOperation({ summary: 'Get payment methods ( USER, ADMIN )' })
   @ApiResponse({ status: 200, description: 'Payment methods retrieved successfully' })
-  getPaymentMethods(@User() user: jwtPayload) {
-    return this.paymentMethodService.getPaymentMethods(user.sub);
+  async getPaymentMethods(@User() user: jwtPayload) {
+    return await this.paymentMethodService.getPaymentMethods(user.sub);
   }
 
   @Patch('make-payment-default/:id')
@@ -134,7 +134,7 @@ export class UserSettingsController {
   @UsePipes(new ValidationPipe({ transform: true }))
   @ApiResponse({ status: 200, description: 'Payment method set as default successfully' })
   @ApiResponse({ status: 404, description: 'Payment method not found' })
-  makePaymentDefault(
+  async makePaymentDefault(
     @Param('id') id: string,
     @User() user: jwtPayload,
     @Body()
@@ -142,7 +142,7 @@ export class UserSettingsController {
       makeDefault: boolean;
     },
   ) {
-    return this.paymentMethodService.makePaymentDefault(
+    return await this.paymentMethodService.makePaymentDefault(
       user.sub,
       id,
       makeDefault?.makeDefault,
@@ -155,11 +155,11 @@ export class UserSettingsController {
   @UsePipes(new ValidationPipe({ transform: true }))
   @ApiResponse({ status: 204, description: 'Payment method deleted successfully' })
   @ApiResponse({ status: 404, description: 'Payment method not found' })
-  deletePaymentMethods(
+  async deletePaymentMethods(
     @User() user: jwtPayload,
     @Param('paymentMethodId') dto: { paymentMethodId: string },
   ) {
-    return this.paymentMethodService.deletePaymentMethods(
+    return await this.paymentMethodService.deletePaymentMethods(
       user.sub,
       dto.paymentMethodId,
     );
@@ -170,8 +170,8 @@ export class UserSettingsController {
   @Roles('USER', 'ADMIN')
   @ApiOperation({ summary: 'Get invoice layout ( USER, ADMIN )' })
   @ApiResponse({ status: 200, description: 'Invoice layout retrieved successfully' })
-  getInvoiceLayout(@User() user: jwtPayload) {
-    return this.invoiceLayoutService.findByUser(user.sub);
+  async getInvoiceLayout(@User() user: jwtPayload) {
+    return await this.invoiceLayoutService.findByUser(user.sub);
   }
 
   @Patch('update-invoice-layout')
@@ -180,8 +180,8 @@ export class UserSettingsController {
   @UsePipes(new ValidationPipe({ transform: true }))
   @ApiResponse({ status: 200, description: 'Invoice layout updated successfully' })
   @ApiResponse({ status: 400, description: 'Invalid layout data' })
-  invoiceLayout(@Body() dto: InvoiceLayoutDto, @User() user: jwtPayload) {
-    return this.invoiceLayoutService.updateLayout(user.sub, dto);
+  async invoiceLayout(@Body() dto: InvoiceLayoutDto, @User() user: jwtPayload) {
+    return await this.invoiceLayoutService.updateLayout(user.sub, dto);
   }
 
   // notification settings
@@ -189,8 +189,8 @@ export class UserSettingsController {
   @Roles('USER', 'ADMIN')
   @ApiOperation({ summary: 'Get notification settings ( USER, ADMIN )' })
   @ApiResponse({ status: 200, description: 'Notification settings retrieved successfully' })
-  getNotificationSettings(@User() user: jwtPayload) {
-    return this.notificationService.getPreferences(user.sub);
+  async getNotificationSettings(@User() user: jwtPayload) {
+    return await this.notificationService.getPreferences(user.sub);
   }
 
   @Patch('update-notification-settings')
@@ -199,10 +199,10 @@ export class UserSettingsController {
   @UsePipes(new ValidationPipe({ transform: true }))
   @ApiResponse({ status: 200, description: 'Notification settings updated successfully' })
   @ApiResponse({ status: 400, description: 'Invalid notification settings' })
-  updateNotificationSettings(
+  async updateNotificationSettings(
     @User() user: jwtPayload,
     @Body() dto: UpdateNotificationSettingsDto,
   ) {
-    return this.notificationService.updatePreferences(user, dto);
+    return await this.notificationService.updatePreferences(user, dto);
   }
 }

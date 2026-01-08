@@ -7,21 +7,21 @@ import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('accountants')
 export class AccountantsController {
-  constructor(private readonly accountantsService: AccountantsService) {}
+  constructor(private readonly accountantsService: AccountantsService) { }
 
   @Post()
   @UseGuards(AuthGuard)
   @Roles('ADMIN')
   @ApiOperation({ summary: 'Create accountant ( ADMIN only )' })
-  create(@Body() createAccountantDto: CreateAccountantDto) {
-    return this.accountantsService.create(createAccountantDto);
+  async create(@Body() createAccountantDto: CreateAccountantDto) {
+    return await this.accountantsService.create(createAccountantDto);
   }
 
   @Get()
   @Roles('ADMIN')
   @ApiOperation({ summary: 'Get all accountants ( ADMIN only )' })
-  findAll() {
-    return this.accountantsService.findAll();
+  async findAll() {
+    return await this.accountantsService.findAll();
   }
 
   // @Get(':id')

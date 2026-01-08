@@ -7,7 +7,7 @@ import { cResponseData } from 'src/common/cResponse';
 
 @Injectable()
 export class SettingsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async updateBusinessInfo(userId: string, dto: BusinessInfoDto) {
     try {
@@ -49,7 +49,7 @@ export class SettingsService {
         where: { userId },
         data: {
           logo: logoBase64,
-          logoKey: null, // No longer using Cloudinary keys
+          logoKey: null,
         },
       });
 

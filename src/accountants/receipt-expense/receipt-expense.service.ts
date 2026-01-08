@@ -275,4 +275,64 @@ export class ReceiptExpenseService {
       })
     }
   }
+
+  async exportData(userId: string, accId: string) {
+    try {
+      await this.validateAccAccess.validate(userId, accId);
+
+      const receipts = await this.prisma.receipt.findMany({
+        where: {
+          userId,
+        },
+        include: {
+          category: true,
+        },
+      });
+
+      const mileage = await this.prisma.mileage.findMany({
+        where: {
+          userId,
+        },
+      });
+
+      const combinedData = [
+        ...receipts.map((item) => ({
+          client: item.vendor,
+          date: item.date,
+          expenseType: item.category?.name,
+          amount: item.amount,
+          source: 'Receipt',
+        })),
+        ...mileage.map((item) => ({
+          client: item.name,
+          date: item.date,
+          expenseType: item.tripType,
+          amount: item.amount,
+          source: 'Mileage',
+        })),
+      ];
+
+      combinedData.sort((a, b) => {
+        const dateA = new Date(a.date).getTime();
+        const dateB = new Date(b.date).getTime();
+        return dateB - dateA;
+      });
+
+      return cResponseData({
+        message: 'Receipt and mileage data fetched successfully',
+        success: true,
+        data: {
+          combinedData,
+        },
+      });
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      return cResponseData({
+        message: 'Failed to fetch receipt and mileage data',
+        success: false,
+        data: null,
+      });
+    }
+  }
 }

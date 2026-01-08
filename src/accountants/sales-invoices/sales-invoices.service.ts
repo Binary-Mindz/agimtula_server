@@ -182,4 +182,33 @@ export class SalesInvoicesService {
       });
     }
   }
+
+  async exportData(userId: string, accountantId: string) {
+    try {
+      await this.validateAccountant.validate(userId, accountantId);
+
+      const salesInvoices = await this.prisma.invoice.findMany({
+        where: {
+          userId,
+          invoiceSource: 'MANUAL',
+        },
+      });
+
+      if (salesInvoices.length === 0) {
+        throw new Error('No sales invoices found');
+      }
+
+      return cResponseData({
+        message: 'Sales invoices exported successfully',
+        success: true,
+        data: salesInvoices,
+      });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      return cResponseData({
+        message: 'Failed to export sales invoices',
+        success: false,
+      });
+    }
+  }
 }

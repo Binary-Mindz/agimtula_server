@@ -161,4 +161,61 @@ export class ReportsService {
       });
     }
   }
+
+  async exportIncomeData(userId: string) {
+    try {
+      const invoices = await this.prisma.invoice.findMany({
+        where: {
+          userId,
+          invoiceSource: 'MANUAL',
+        },
+        select: {
+          invoiceNo: true,
+          companyName: true,
+          dueDate: true,
+          totalAmount: true,
+          isPaid: true,
+          createdAt: true,
+        },
+      });
+
+      return cResponseData({
+        message: 'Income data exported successfully',
+        success: true,
+        data: invoices,
+      });
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      return cResponseData({
+        message: 'Failed to export income data',
+        success: false,
+      });
+    }
+  }
+
+  async exportExpenseData(userId: string) {
+    try {
+      const receipts = await this.prisma.receipt.findMany({
+        where: { userId },
+      });
+
+      const mileages = await this.prisma.mileage.findMany({
+        where: { userId },
+      });
+
+      const expenseAll = [...receipts, ...mileages];
+
+      return cResponseData({
+        message: 'Expense data exported successfully',
+        success: true,
+        data: expenseAll,
+      });
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      return cResponseData({
+        message: 'Failed to export expense data',
+        success: false,
+      });
+    }
+  }
 }

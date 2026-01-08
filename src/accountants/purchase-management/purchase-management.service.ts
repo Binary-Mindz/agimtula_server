@@ -162,4 +162,32 @@ export class PurchaseManagementService {
       });
     }
   }
+
+  async exportData(userId: string, accountantId: string) {
+    try {
+      await this.validateAccountantAccess.validate(userId, accountantId);
+
+      const purchases = await this.prisma.invoice.findMany({
+        where: {
+          userId,
+          invoiceSource: 'EMAIL',
+        },
+      });
+
+      if (purchases.length === 0) {
+        throw new ForbiddenException('No purchase data found');
+      }
+
+      return cResponseData({
+        success: true,
+        message: 'Data exported successfully',
+        data: purchases,
+      });
+    } catch (error) {
+      return cResponseData({
+        success: false,
+        message: 'Failed to export data',
+      });
+    }
+  }
 }

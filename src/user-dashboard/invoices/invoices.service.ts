@@ -377,14 +377,13 @@ export class InvoicesService {
     }
   }
 
-  remove(id: string) {
+  async remove(id: string) {
     try {
-      const invoice = this.prisma.invoice.delete({
+      const invoice = await this.prisma.invoice.delete({
         where: {
           id,
         },
       });
-
       return cResponseData({
         message: 'Invoice deleted successfully',
         data: invoice,

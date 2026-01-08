@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
@@ -228,7 +228,8 @@ export class InvoicesService {
       });
     }
   }
-  async findAll(search: string) {
+  async findAll(search: string, page: number = 1, limit: number = 10) {
+    const skip = (page - 1) * limit;
     const query = {};
 
     if (search) {
@@ -249,12 +250,44 @@ export class InvoicesService {
     }
 
     try {
-      const invoices = await this.prisma.invoice.findMany({
-        where: { ...query, isDrafted: false },
-      });
+      const [invoices, totalRecords] = await Promise.all([
+        this.prisma.invoice.findMany({
+          where: { ...query, isDrafted: false },
+          skip,
+          take: limit,
+          orderBy: { createdAt: 'desc' },
+        }),
+        this.prisma.invoice.count({
+          where: { ...query, isDrafted: false },
+        }),
+      ]);
+
+      const totalPages = Math.ceil(totalRecords / limit);
+
       return cResponseData({
         message: 'Invoices fetched successfully',
-        data: invoices,
+        data: {
+          invoices: invoices.map((inv) => ({
+            invoiceNo: inv.invoiceNo,
+            client: inv.companyName,
+            date: inv.issueDate,
+            amount: inv.totalAmount,
+            status:
+              inv.dueDate && inv.dueDate < new Date()
+                ? 'Overdue'
+                : inv.isPaid
+                  ? 'Paid'
+                  : 'Unpaid',
+          })),
+          pagination: {
+            currentPage: page,
+            totalPages,
+            totalRecords,
+            limit,
+            hasNext: page < totalPages,
+            hasPrev: page > 1,
+          },
+        },
       });
     } catch (error) {
       return cResponseData({
@@ -361,6 +394,32 @@ export class InvoicesService {
         message: 'Failed to delete invoice',
         error: 'Failed to delete invoice',
         success: false,
+      });
+    }
+  }
+
+  async exportInvoices(userId: string) {
+    try {
+      const invoices = await this.prisma.invoice.findMany({
+        where: {
+          userId,
+          isDrafted: false,
+        },
+      });
+
+      if (invoices.length === 0) {
+        throw new ForbiddenException('No invoices found');
+      }
+
+      return cResponseData({
+        success: true,
+        message: 'Invoices exported successfully',
+        data: invoices,
+      });
+    } catch (error) {
+      return cResponseData({
+        success: false,
+        message: 'Failed to export invoices',
       });
     }
   }

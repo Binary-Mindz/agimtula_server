@@ -9,8 +9,6 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 
 export class LoggerController {
   constructor(private readonly loggerService: LoggerService) { }
-
-
   @Get()
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
@@ -21,6 +19,5 @@ export class LoggerController {
   async findAll(@Query() queryDto: QueryLoggerDto) {
     return await this.loggerService.findAll(queryDto);
   }
-
 
 }

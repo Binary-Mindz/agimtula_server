@@ -28,11 +28,13 @@ export class DashboardService {
         lastMonthsReceiptExpense,
         thisMonthsReceiptExpense,
       ] = await Promise.all([
-          
-          // invoice related
+        // invoice related
         this.prisma.invoice.count({
           where: {
             userId,
+            dueDate: {
+              lt: new Date(),
+            },
             createdAt: {
               lte: endDateOfLastMonth,
               gte: startDateOfLastMonth,
@@ -42,6 +44,9 @@ export class DashboardService {
         this.prisma.invoice.count({
           where: {
             userId,
+            dueDate: {
+              lt: new Date(),
+            },
             createdAt: {
               lte: now,
               gte: new Date(now.getFullYear(), now.getMonth(), 1),
@@ -69,7 +74,6 @@ export class DashboardService {
             },
           },
         }),
-
 
         // mileage & expense related
 
@@ -132,15 +136,14 @@ export class DashboardService {
         (thisMonthsTotalInvoices / lastMonthsTotalInvoices) * 100,
       );
 
-        // Mileage Revenue
-        
+      // Mileage Revenue
+
       const mileageRegenueThanLastMonths =
         (mileageExpenseThisMonths._sum.amount || 0) -
           (mileageExpenseFromLastMonths._sum.amount || 0) || 0;
 
-        
-        // Expense calculation
-        
+      // Expense calculation
+
       const lastMonthsReceiptExpenseTotal =
         lastMonthsReceiptExpense._sum.amount || 0;
       const lastMonthMileageExpenseTotal =

@@ -29,7 +29,7 @@ export class SmtpMailService {
         html,
       });
       return info;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       throw new HttpException(
         `Failed to send email`,

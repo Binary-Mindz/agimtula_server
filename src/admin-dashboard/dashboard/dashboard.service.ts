@@ -4,7 +4,7 @@ import { PrismaService } from 'src/config/database/prisma.service';
 
 @Injectable()
 export class DashboardService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async getData() {
     try {

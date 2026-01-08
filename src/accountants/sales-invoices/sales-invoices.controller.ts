@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { SalesInvoicesService } from './sales-invoices.service';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { User } from 'src/auth/decorators/user.decorator';
@@ -9,22 +9,22 @@ import { ApiParam } from '@nestjs/swagger';
 export class SalesInvoicesController {
   constructor(private readonly salesInvoicesService: SalesInvoicesService) {}
 
-  @Get('sales-invoices-data')
+  @Get('sales-invoices-data/:userId')
   @Roles('ACCOUNTANT')
   @ApiParam({ name: 'userId', required: true })
   async getSalesInvoicesData(
     @User() user: jwtPayload,
-    @Query('userId') userId: string,
+    @Param('userId') userId: string,
   ) {
     return this.salesInvoicesService.getSalesInvoicesData(user.sub, userId);
   }
 
-  @Get('sales-invoices')
+  @Get('sales-invoices/:userId')
   @Roles('ACCOUNTANT')
   @ApiParam({ name: 'userId', required: true })
   async getSalesInvoices(
     @User() user: jwtPayload,
-    @Query('userId') userId: string,
+    @Param('userId') userId: string,
   ) {
     return this.salesInvoicesService.getSalesInvoices(user.sub, userId);
   }

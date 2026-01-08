@@ -1,10 +1,10 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
+import {
+  NotFoundAppException,
+  ConflictAppException,
+} from 'src/common/app-exceptions';
 
 @Injectable()
 export class ManageClients {
@@ -34,7 +34,7 @@ export class ManageClients {
       });
 
       if (users.length === 0) {
-        throw new NotFoundException('No user found');
+        throw new NotFoundAppException('No user found');
       }
 
       const data = users.map((user) => ({
@@ -47,13 +47,15 @@ export class ManageClients {
         message: 'User fetched successfully',
         data: data,
       });
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      return cResponseData({
-        message: 'User fetching failed',
-        error: 'User fetching failed',
-        success: false,
-      });
+      if (error instanceof NotFoundAppException) {
+        throw error;
+      }
+      console.error('Get users without accountant error:', error);
+      throw new HttpException(
+        'Failed to fetch users',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -67,7 +69,7 @@ export class ManageClients {
       });
 
       if (hasAcc) {
-        throw new BadRequestException('This user already have an accountant');
+        throw new ConflictAppException('This user already have an accountant');
       }
 
       const addedAcc = await this.prisma.user.update({
@@ -95,14 +97,15 @@ export class ManageClients {
             addedAcc.profile?.firstName + ' ' + addedAcc.profile?.lastName,
         },
       });
-
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      return cResponseData({
-        message: 'Accountant addition failed',
-        error: 'Accountant addition failed',
-        success: false,
-      });
+      if (error instanceof ConflictAppException) {
+        throw error;
+      }
+      console.error('Add client error:', error);
+      throw new HttpException(
+        'Failed to add accountant',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -131,7 +134,7 @@ export class ManageClients {
       });
 
       if (!users) {
-        throw new NotFoundException('No user found');
+        throw new NotFoundAppException('No user found');
       }
 
       const structuredData = users.map((user) => ({
@@ -145,55 +148,58 @@ export class ManageClients {
         message: 'Users are fetched',
         data: structuredData,
       });
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      return cResponseData({
-        message: 'User data fetching failed or not found',
-        error: 'User data fetching failed or not found',
-      });
+      if (error instanceof NotFoundAppException) {
+        throw error;
+      }
+      console.error('Get users with me error:', error);
+      throw new HttpException(
+        'Failed to fetch user data',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async removeFromMe(userId: string, accId: string) {
-  try {
-    // Find the user and ensure this user is linked to the current accountant
-    const user = await this.prisma.user.findFirst({
-      where: {
-        id: userId,
-        haveAccountant: true,
-        accountantId: accId,
-      },
-    });
-
-    if (!user) {
-      return cResponseData({
-        message: 'User not found or not associated with this accountant',
-        error: 'User not found or not associated with this accountant',
-        success: false,
+    try {
+      // Find the user and ensure this user is linked to the current accountant
+      const user = await this.prisma.user.findFirst({
+        where: {
+          id: userId,
+          haveAccountant: true,
+          accountantId: accId,
+        },
       });
+
+      if (!user) {
+        throw new NotFoundAppException(
+          'User not found or not associated with this accountant',
+        );
+      }
+
+      // Update the user to remove accountant link
+      await this.prisma.user.update({
+        where: { id: userId },
+        data: {
+          haveAccountant: false,
+          accountantId: null,
+        },
+      });
+
+      return cResponseData({
+        message: 'User has been successfully removed from your clients.',
+        data: { id: userId },
+        success: true,
+      });
+    } catch (error) {
+      if (error instanceof NotFoundAppException) {
+        throw error;
+      }
+      console.error('Remove from me error:', error);
+      throw new HttpException(
+        'Failed to remove user from clients',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
-
-    // Update the user to remove accountant link
-    await this.prisma.user.update({
-      where: { id: userId },
-      data: {
-        haveAccountant: false,
-        accountantId: null,
-      },
-    });
-
-    return cResponseData({
-      message: 'User has been successfully removed from your clients.',
-      data: { id: userId },
-      success: true,
-    });
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (error) {
-    return cResponseData({
-      message: 'Failed to remove user from your clients',
-      error: 'Failed to remove user from your clients',
-      success: false,
-    });
-  }
   }
 }

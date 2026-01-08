@@ -1,68 +1,137 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+import { HttpStatus } from '@nestjs/common';
+import { ERROR_CODES, ERROR_MESSAGES } from './error-constants';
+
 export interface ErrorResponse {
   success: boolean;
   message: string;
   statusCode: number;
+  errorCode?: string;
   timestamp: string;
   path?: string;
+  details?: any;
+}
+
+export interface SuccessResponse {
+  success: boolean;
+  message: string;
+  statusCode: number;
+  timestamp: string;
   data?: any;
 }
 
 export class ErrorResponseUtil {
   static createErrorResponse(
     message: string,
-    statusCode: number = 400,
+    statusCode: number = HttpStatus.BAD_REQUEST,
+    errorCode?: string,
     path?: string,
-    data?: any
+    details?: any
   ): ErrorResponse {
     return {
       success: false,
       message,
       statusCode,
+      ...(errorCode && { errorCode }),
       timestamp: new Date().toISOString(),
-      path,
-      data,
+      ...(path && { path }),
+      ...(details && { details }),
     };
   }
 
   static createSuccessResponse(
     message: string,
     data?: any,
-    statusCode: number = 200
-  ) {
+    statusCode: number = HttpStatus.OK
+  ): SuccessResponse {
     return {
       success: true,
       message,
       statusCode,
       timestamp: new Date().toISOString(),
-      data,
+      ...(data && { data }),
     };
   }
 
-  // Common error messages in both English and Bangla-friendly format
-  static readonly MESSAGES = {
-    // Payment related
-    PAYMENT_FAILED: 'Payment processing failed',
-    PLAN_NOT_FOUND: 'Subscription plan not found',
-    PLAN_INACTIVE: 'Selected plan is not available',
-    PRICING_NOT_FOUND: 'Pricing information not available',
-    ALREADY_SUBSCRIBED: 'You already have an active subscription',
-    PAYMENT_CONFIG_ERROR: 'Payment system configuration error',
-    STRIPE_ERROR: 'Payment gateway error',
-    
-    // General errors
-    VALIDATION_ERROR: 'Invalid data provided',
-    NOT_FOUND: 'Requested resource not found',
-    UNAUTHORIZED: 'Access denied',
-    FORBIDDEN: 'You do not have permission',
-    CONFLICT: 'Resource already exists',
-    DATABASE_ERROR: 'Database operation failed',
-    INTERNAL_ERROR: 'Something went wrong',
-    
-    // Success messages
-    PAYMENT_SUCCESS: 'Payment processed successfully',
-    PLAN_PURCHASED: 'Subscription plan purchased successfully',
-    PLAN_UPGRADED: 'Plan upgraded successfully',
-    DATA_RETRIEVED: 'Data retrieved successfully',
-    OPERATION_SUCCESS: 'Operation completed successfully',
-  };
+  // Quick error response creators
+  static validationError(message?: string, details?: any): ErrorResponse {
+    return this.createErrorResponse(
+      message || ERROR_MESSAGES[ERROR_CODES.VALIDATION_ERROR],
+      HttpStatus.BAD_REQUEST,
+      ERROR_CODES.VALIDATION_ERROR,
+      undefined,
+      details
+    );
+  }
+
+  static notFoundError(resource: string = 'Resource', details?: any): ErrorResponse {
+    return this.createErrorResponse(
+      `${resource} not found`,
+      HttpStatus.NOT_FOUND,
+      ERROR_CODES.NOT_FOUND,
+      undefined,
+      details
+    );
+  }
+
+  static unauthorizedError(message?: string, details?: any): ErrorResponse {
+    return this.createErrorResponse(
+      message || ERROR_MESSAGES[ERROR_CODES.UNAUTHORIZED],
+      HttpStatus.UNAUTHORIZED,
+      ERROR_CODES.UNAUTHORIZED,
+      undefined,
+      details
+    );
+  }
+
+  static forbiddenError(message?: string, details?: any): ErrorResponse {
+    return this.createErrorResponse(
+      message || ERROR_MESSAGES[ERROR_CODES.FORBIDDEN],
+      HttpStatus.FORBIDDEN,
+      ERROR_CODES.FORBIDDEN,
+      undefined,
+      details
+    );
+  }
+
+  static conflictError(resource: string = 'Resource', details?: any): ErrorResponse {
+    return this.createErrorResponse(
+      `${resource} already exists`,
+      HttpStatus.CONFLICT,
+      ERROR_CODES.CONFLICT,
+      undefined,
+      details
+    );
+  }
+
+  static internalError(message?: string, details?: any): ErrorResponse {
+    return this.createErrorResponse(
+      message || ERROR_MESSAGES[ERROR_CODES.INTERNAL_ERROR],
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      ERROR_CODES.INTERNAL_ERROR,
+      undefined,
+      details
+    );
+  }
+
+  // Common success responses
+  static operationSuccess(message: string = 'Operation completed successfully', data?: any): SuccessResponse {
+    return this.createSuccessResponse(message, data);
+  }
+
+  static dataRetrieved(data: any, message: string = 'Data retrieved successfully'): SuccessResponse {
+    return this.createSuccessResponse(message, data);
+  }
+
+  static resourceCreated(data: any, resource: string = 'Resource'): SuccessResponse {
+    return this.createSuccessResponse(`${resource} created successfully`, data, HttpStatus.CREATED);
+  }
+
+  static resourceUpdated(data: any, resource: string = 'Resource'): SuccessResponse {
+    return this.createSuccessResponse(`${resource} updated successfully`, data);
+  }
+
+  static resourceDeleted(resource: string = 'Resource'): SuccessResponse {
+    return this.createSuccessResponse(`${resource} deleted successfully`);
+  }
 }

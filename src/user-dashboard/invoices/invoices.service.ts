@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
@@ -7,6 +7,7 @@ import { cResponseData } from 'src/common/cResponse';
 import { SmtpMailService } from 'src/config/smtp-mail/smtp-mail.service';
 import { invoiceEmailTemplate } from './invoice-email.template';
 import Stripe from 'stripe';
+import { NotFoundAppException } from 'src/common/app-exceptions';
 
 @Injectable()
 export class InvoicesService {
@@ -144,12 +145,11 @@ export class InvoicesService {
         data: newInvoice,
       });
     } catch (error) {
-      console.error('Invoice creation error:', error);
-      return cResponseData({
-        message: 'Failed to create invoice',
-        error: 'Failed to create invoice',
-        success: false,
-      });
+      console.error('Create invoice error:', error);
+      throw new HttpException(
+        'Failed to create invoice',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -220,12 +220,11 @@ export class InvoicesService {
         data: newInvoice,
       });
     } catch (error) {
-      console.error(error);
-      return cResponseData({
-        message: 'Failed to save invoice to draft',
-        error: 'Failed to save invoice to draft',
-        success: false,
-      });
+      console.error('Save to draft error:', error);
+      throw new HttpException(
+        'Failed to save invoice to draft',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
   async findAll(search: string, page: number = 1, limit: number = 10) {
@@ -290,11 +289,11 @@ export class InvoicesService {
         },
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to fetch invoices',
-        error: 'Failed to fetch invoices',
-        success: false,
-      });
+      console.error('Find all invoices error:', error);
+      throw new HttpException(
+        'Failed to fetch invoices',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -311,11 +310,11 @@ export class InvoicesService {
         data: drafts,
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to fetch drafts',
-        error: 'Failed to fetch drafts',
-        success: false,
-      });
+      console.error('Get drafts error:', error);
+      throw new HttpException(
+        'Failed to fetch drafts',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -335,11 +334,11 @@ export class InvoicesService {
         data: invoice,
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to convert draft to invoice',
-        error: 'Failed to convert draft to invoice',
-        success: false,
-      });
+      console.error('Draft to invoice error:', error);
+      throw new HttpException(
+        'Failed to convert draft to invoice',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -369,11 +368,11 @@ export class InvoicesService {
         data: invoice,
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to delete invoice',
-        error: 'Failed to delete invoice',
-        success: false,
-      });
+      console.error('Delete from draft error:', error);
+      throw new HttpException(
+        'Failed to delete invoice',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -403,11 +402,11 @@ export class InvoicesService {
         data: invoice,
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to fetch invoice',
-        error: 'Failed to fetch invoice',
-        success: false,
-      });
+      console.error('Find one invoice error:', error);
+      throw new HttpException(
+        'Failed to fetch invoice',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -446,7 +445,7 @@ export class InvoicesService {
       await this.prisma.serviceAndItem.deleteMany({
         where: { invoiceId: id },
       });
-      
+
       await this.prisma.businessData.deleteMany({
         where: { invoiceId: id },
       });
@@ -484,12 +483,11 @@ export class InvoicesService {
         data: updatedInvoice,
       });
     } catch (error) {
-      console.error('Invoice update error:', error);
-      return cResponseData({
-        message: 'Failed to update invoice',
-        error: 'Failed to update invoice',
-        success: false,
-      });
+      console.error('Update invoice error:', error);
+      throw new HttpException(
+        'Failed to update invoice',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -514,7 +512,7 @@ export class InvoicesService {
       await this.prisma.serviceAndItem.deleteMany({
         where: { invoiceId: id },
       });
-      
+
       await this.prisma.businessData.deleteMany({
         where: { invoiceId: id },
       });
@@ -529,12 +527,11 @@ export class InvoicesService {
         data: { id },
       });
     } catch (error) {
-      console.error('Invoice delete error:', error);
-      return cResponseData({
-        message: 'Failed to delete invoice',
-        error: 'Failed to delete invoice',
-        success: false,
-      });
+      console.error('Delete invoice error:', error);
+      throw new HttpException(
+        'Failed to delete invoice',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -548,7 +545,7 @@ export class InvoicesService {
       });
 
       if (invoices.length === 0) {
-        throw new ForbiddenException('No invoices found');
+        throw new NotFoundAppException('No invoices found');
       }
 
       return cResponseData({
@@ -557,10 +554,14 @@ export class InvoicesService {
         data: invoices,
       });
     } catch (error) {
-      return cResponseData({
-        success: false,
-        message: 'Failed to export invoices',
-      });
+      if (error instanceof NotFoundAppException) {
+        throw error;
+      }
+      console.error('Export invoices error:', error);
+      throw new HttpException(
+        'Failed to export invoices',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

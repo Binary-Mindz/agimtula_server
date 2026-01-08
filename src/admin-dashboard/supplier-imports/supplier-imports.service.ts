@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
 
@@ -21,10 +21,11 @@ export class SupplierImportsService {
         message: 'Supplier import activity data fetched successfully',
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to fetch supplier import activity data',
-        error: error,
-      });
+      console.error('Get supplier import activity error:', error);
+      throw new HttpException(
+        'Failed to fetch supplier import activity data',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -48,10 +49,11 @@ export class SupplierImportsService {
         message: 'Recent users fetched successfully',
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to fetch recent users',
-        error: error,
-      });
+      console.error('Get recent users error:', error);
+      throw new HttpException(
+        'Failed to fetch recent users',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

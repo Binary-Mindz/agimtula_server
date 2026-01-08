@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { SmtpMailService } from 'src/config/smtp-mail/smtp-mail.service';
 import { EnableTwoFADto, VerifyTwoFADto } from './dto/two-fa.dto';
 import { cResponseData } from 'src/common/cResponse';
 import { RedisServiceService } from 'src/config/redis-service/redis-service.service';
+import { ConflictAppException, ValidationException } from 'src/common/app-exceptions';
 
 interface TwoFARedisPayload {
   code: number;
@@ -50,7 +50,7 @@ export class TwoFAService {
     });
 
     if (!user) {
-      throw new ForbiddenException('User and email do not match');
+      throw new ValidationException('User and email do not match');
     }
 
     return user;
@@ -62,7 +62,7 @@ export class TwoFAService {
       const user = await this.getUserOrFail(userId, email);
 
       if (user.twoFactorEnabled) {
-        throw new ForbiddenException('2FA is already enabled');
+        throw new ConflictAppException('2FA is already enabled');
       }
 
       const redisKey = this.getRedisKey(email, 'ENABLE');
@@ -93,9 +93,11 @@ export class TwoFAService {
         message: '2FA code sent successfully',
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to send 2FA code',
-      });
+      if (error instanceof ConflictAppException || error instanceof ValidationException) {
+        throw error;
+      }
+      console.error('Send 2FA code error:', error);
+      throw new HttpException('Failed to send 2FA code', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -108,18 +110,18 @@ export class TwoFAService {
       const payload = await this.getRedisValue<TwoFARedisPayload>(redisKey);
 
       if (!payload) {
-        throw new ForbiddenException('Verification code expired');
+        throw new ValidationException('Verification code expired');
       }
 
       if (payload.attempts >= this.MAX_ATTEMPTS) {
         await this.redis.del(redisKey);
-        throw new ForbiddenException('Maximum attempts exceeded');
+        throw new ValidationException('Maximum attempts exceeded');
       }
 
       if (payload.code !== code) {
         payload.attempts += 1;
         await this.setRedisValue(redisKey, payload, this.TTL);
-        throw new ForbiddenException('Invalid verification code');
+        throw new ValidationException('Invalid verification code');
       }
 
       await this.prisma.user.update({
@@ -133,9 +135,11 @@ export class TwoFAService {
         message: '2FA enabled successfully',
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to enable 2FA',
-      });
+      if (error instanceof ValidationException) {
+        throw error;
+      }
+      console.error('Verify and enable 2FA error:', error);
+      throw new HttpException('Failed to enable 2FA', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -145,7 +149,7 @@ export class TwoFAService {
       const user = await this.getUserOrFail(userId, email);
 
       if (!user.twoFactorEnabled) {
-        throw new ForbiddenException('2FA is not enabled');
+        throw new ConflictAppException('2FA is not enabled');
       }
 
       const redisKey = this.getRedisKey(email, 'DISABLE');
@@ -176,9 +180,11 @@ export class TwoFAService {
         message: 'Disable 2FA code sent successfully',
       });
     } catch (error) {
-      return cResponseData({
-        message:'Failed to send disable 2FA code',
-      });
+      if (error instanceof ConflictAppException || error instanceof ValidationException) {
+        throw error;
+      }
+      console.error('Send disable 2FA code error:', error);
+      throw new HttpException('Failed to send disable 2FA code', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -191,7 +197,7 @@ export class TwoFAService {
       const payload = await this.getRedisValue<TwoFARedisPayload>(redisKey);
 
       if (!payload || payload.code !== code) {
-        throw new ForbiddenException('Invalid or expired verification code');
+        throw new ValidationException('Invalid or expired verification code');
       }
 
       await this.prisma.user.update({
@@ -205,9 +211,11 @@ export class TwoFAService {
         message: '2FA disabled successfully',
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to disable 2FA',
-      });
+      if (error instanceof ValidationException) {
+        throw error;
+      }
+      console.error('Verify and disable 2FA error:', error);
+      throw new HttpException('Failed to disable 2FA', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }

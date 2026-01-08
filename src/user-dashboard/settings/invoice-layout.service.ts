@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InvoiceLayoutDto } from './dto/invoice-layout.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { cResponseData } from 'src/common/cResponse';
@@ -14,12 +13,17 @@ export class InvoiceLayoutService {
         where: { userId },
       });
 
-      return cResponseData({ data: invoiceLayout });
-    } catch (error) {
       return cResponseData({
-        message: 'Failed to fetch invoice layout',
-        error: 'Failed to fetch invoice layout',
+        success: true,
+        message: 'Invoice layout retrieved successfully',
+        data: invoiceLayout,
       });
+    } catch (error) {
+      console.error('Find invoice layout error:', error);
+      throw new HttpException(
+        'Failed to fetch invoice layout',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -43,18 +47,28 @@ export class InvoiceLayoutService {
           data: updateData,
         });
 
-        return cResponseData({ data: invoiceLayout });
+        return cResponseData({
+          success: true,
+          message: 'Invoice layout updated successfully',
+          data: invoiceLayout,
+        });
       } else {
         const invoiceLayout = await this.prisma.invoiceLayout.create({
           data: { ...dto, userId },
         });
-        return cResponseData({ data: invoiceLayout });
+
+        return cResponseData({
+          success: true,
+          message: 'Invoice layout created successfully',
+          data: invoiceLayout,
+        });
       }
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to update invoice layout',
-        error: 'Failed to update invoice layout',
-      });
+      console.error('Update invoice layout error:', error);
+      throw new HttpException(
+        'Failed to update invoice layout',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

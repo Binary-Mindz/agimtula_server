@@ -3,6 +3,7 @@
 import { Controller, Post, Req, Res } from '@nestjs/common';
 import { Public } from 'src/auth/decorators/public.decorator';
 import { PrismaService } from 'src/config/database/prisma.service';
+import { ApiOperation } from '@nestjs/swagger';
 import Stripe from 'stripe';
 
 @Controller('stripe')
@@ -15,6 +16,7 @@ export class WebhookController {
 
   @Public()
   @Post('webhook')
+  @ApiOperation({ summary: 'Handle Stripe webhook ( PUBLIC )' })
   async handleWebhook(@Req() req: any, @Res() res: any) {
     const sig = req.headers['stripe-signature'];
 

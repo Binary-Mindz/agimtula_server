@@ -16,7 +16,7 @@ export class AccountantDashboardController {
   @Get(':userId')
   @UseGuards(AuthGuard)
   @Roles('ACCOUNTANT')
-  @ApiOperation({ summary: 'Get accountant dashboard data ( ACCOUNTANT only )' })
+  @ApiOperation({ summary: 'Get transactions for a specific user ( ACCOUNTANT )' })
   async findAll(
     @Param('userId') userId: string,
     @User() user: jwtPayload,

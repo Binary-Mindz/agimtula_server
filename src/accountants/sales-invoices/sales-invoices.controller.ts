@@ -7,7 +7,7 @@ import { ApiOperation, ApiParam } from '@nestjs/swagger';
 
 @Controller('sales-invoices')
 export class SalesInvoicesController {
-  constructor(private readonly salesInvoicesService: SalesInvoicesService) {}
+  constructor(private readonly salesInvoicesService: SalesInvoicesService) { }
 
   @Get('sales-invoices-data/:userId')
   @Roles('ACCOUNTANT')
@@ -17,7 +17,7 @@ export class SalesInvoicesController {
     @User() user: jwtPayload,
     @Param('userId') userId: string,
   ) {
-    return this.salesInvoicesService.getSalesInvoicesData(user.sub, userId);
+    return await this.salesInvoicesService.getSalesInvoicesData(user.sub, userId);
   }
 
   @Get('sales-invoices/:userId')
@@ -28,6 +28,6 @@ export class SalesInvoicesController {
     @User() user: jwtPayload,
     @Param('userId') userId: string,
   ) {
-    return this.salesInvoicesService.getSalesInvoices(user.sub, userId);
+    return await this.salesInvoicesService.getSalesInvoices(user.sub, userId);
   }
 }

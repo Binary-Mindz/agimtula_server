@@ -81,6 +81,7 @@ export const ModelName = {
   SubscriptionPlan: 'SubscriptionPlan',
   PackagePricing: 'PackagePricing',
   invoiceAutoSyncInterval: 'invoiceAutoSyncInterval',
+  SupportTicket: 'SupportTicket',
   User: 'User',
   Email: 'Email'
 } as const
@@ -577,6 +578,23 @@ export const InvoiceAutoSyncIntervalScalarFieldEnum = {
 } as const
 
 export type InvoiceAutoSyncIntervalScalarFieldEnum = (typeof InvoiceAutoSyncIntervalScalarFieldEnum)[keyof typeof InvoiceAutoSyncIntervalScalarFieldEnum]
+
+
+export const SupportTicketScalarFieldEnum = {
+  id: 'id',
+  ticketNumber: 'ticketNumber',
+  ticketCode: 'ticketCode',
+  userId: 'userId',
+  subject: 'subject',
+  description: 'description',
+  status: 'status',
+  priority: 'priority',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  resolvedAt: 'resolvedAt'
+} as const
+
+export type SupportTicketScalarFieldEnum = (typeof SupportTicketScalarFieldEnum)[keyof typeof SupportTicketScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {

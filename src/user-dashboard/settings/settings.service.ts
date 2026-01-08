@@ -6,7 +6,7 @@ import { cResponseData } from 'src/common/cResponse';
 
 @Injectable()
 export class SettingsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async updateBusinessInfo(userId: string, dto: BusinessInfoDto) {
     try {

@@ -189,9 +189,7 @@ export class AuthService {
         accessToken,
       };
     } catch (error) {
-      if (error instanceof UnauthorizedException || error instanceof ForbiddenException) {
-        throw error;
-      }
+      console.error(error);
       throw new BadRequestException('Login failed');
     }
   }
@@ -243,9 +241,7 @@ export class AuthService {
         accessToken,
       };
     } catch (error) {
-      if (error instanceof ForbiddenException || error instanceof UnauthorizedException) {
-        throw error;
-      }
+      console.error(error);
       throw new BadRequestException('2FA verification failed');
     }
   }
@@ -281,9 +277,7 @@ export class AuthService {
 
       return { message: 'Password updated successfully' };
     } catch (error) {
-      if (error instanceof UnauthorizedException || error instanceof ForbiddenException) {
-        throw error;
-      }
+      console.error(error);
       throw new BadRequestException('Failed to update password');
     }
   }

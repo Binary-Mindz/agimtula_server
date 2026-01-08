@@ -13,10 +13,6 @@ import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
 import { SmtpMailService } from 'src/config/smtp-mail/smtp-mail.service';
 import { jwtPayload } from './types/jwt-payload';
-<<<<<<< HEAD
-import { deleteFromCloudinary } from 'src/config/cloudinary/deleteImage';
-=======
->>>>>>> ac2ebcf1436576af3732de680749cb256c35c9ee
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { VerifyTwoFADto } from './dto/two-fa.dto';
 import { cResponseData } from 'src/common/cResponse';

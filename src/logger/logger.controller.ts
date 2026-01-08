@@ -18,8 +18,8 @@ export class LoggerController {
   @ApiOperation({ summary: 'Get all logs with pagination and filters' })
   @ApiResponse({ status: 200, description: 'Logs fetched successfully' })
   @ApiResponse({ status: 500, description: 'Internal server error' })
-  findAll(@Query() queryDto: QueryLoggerDto) {
-    return this.loggerService.findAll(queryDto);
+  async findAll(@Query() queryDto: QueryLoggerDto) {
+    return await this.loggerService.findAll(queryDto);
   }
 
 

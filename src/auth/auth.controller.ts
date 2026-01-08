@@ -78,6 +78,7 @@ export class AuthController {
     status: 400,
     description: 'Invalid verification token or user exists',
   })
+
   @Public()
   @Post('registration/complete')
   async completeRegistration(@Body(new ValidationPipe()) dto: CompleteRegistrationDto) {

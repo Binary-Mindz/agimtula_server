@@ -81,6 +81,15 @@ export class PurchaseManagementService {
     try {
       await this.validateAccountantAccess.validate(userId, accId);
 
+      const user = await this.prisma.user.findFirst({
+        where: {
+          id: userId,
+        },
+        include: {
+          profile: true,
+        },
+      });
+
       const skip = (page - 1) * limit;
       const take = limit;
       const whereClause = {
@@ -107,7 +116,15 @@ export class PurchaseManagementService {
       return cResponseData({
         success: true,
         message: 'Purchase history fetched successfully',
-        data: purchases,
+        data: {
+          purchases: purchases.map((purchase) => ({
+            supplier: purchase.companyName,
+            client: user?.profile?.firstName,
+            date: purchase.issueDate,
+            amount: purchase.totalAmount,
+            vat: purchase.vat,
+          })),
+        },
       });
     } catch (error) {
       return cResponseData({
@@ -120,13 +137,12 @@ export class PurchaseManagementService {
   async getPurchaseDetailedReport(userId: string, accId: string, id: string) {
     try {
       await this.validateAccountantAccess.validate(userId, accId);
-      const isPurchaseInFinanceDoc =
-        await this.prisma.invoice.findFirst({
-          where: {
-            id,
-            userId,
-          },
-        });
+      const isPurchaseInInvoiceDoc = await this.prisma.invoice.findFirst({
+        where: {
+          id,
+          userId,
+        },
+      });
       const isPurchaseInTransaction = await this.prisma.transaction.findFirst({
         where: {
           id,
@@ -137,7 +153,7 @@ export class PurchaseManagementService {
       return cResponseData({
         success: true,
         message: 'Purchase detailed report fetched successfully',
-        data: isPurchaseInFinanceDoc || isPurchaseInTransaction,
+        data: isPurchaseInInvoiceDoc || isPurchaseInTransaction,
       });
     } catch (error) {
       return cResponseData({

@@ -2866,6 +2866,7 @@ export type BankScalarFieldEnum = (typeof BankScalarFieldEnum)[keyof typeof Bank
 export const MileageScalarFieldEnum = {
   id: 'id',
   milage_id: 'milage_id',
+  name: 'name',
   date: 'date',
   startLocation: 'startLocation',
   endLocation: 'endLocation',

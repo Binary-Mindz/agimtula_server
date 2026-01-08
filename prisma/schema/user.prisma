@@ -24,6 +24,8 @@ model User {
   accountantId    String?
   tinkAccessToken String  @default("0")
 
+  supportTickets SupportTicket[]
+
   @@map("user")
 }
 

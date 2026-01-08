@@ -7,20 +7,20 @@ import { ApiOperation, ApiParam, ApiQuery } from '@nestjs/swagger';
 export class AccountantRequestsController {
   constructor(
     private readonly accountantRequestsService: AccountantRequestsService,
-  ) {}
+  ) { }
 
   @Get('getAccountantRequests')
   @Roles('ADMIN')
   @ApiOperation({ summary: 'Get accountant requests ( ADMIN only )' })
-  getAccountantRequests() {
-   return this.accountantRequestsService.getAccountantRequests();
+  async getAccountantRequests() {
+    return await this.accountantRequestsService.getAccountantRequests();
   }
 
   @Get('getAccountantIds')
   @Roles('ADMIN')
   @ApiOperation({ summary: 'Get accountant IDs ( ADMIN only )' })
-  getAccountantIds() {
-    return this.accountantRequestsService.getAccountantIds();
+  async getAccountantIds() {
+    return await this.accountantRequestsService.getAccountantIds();
   }
 
   @Patch('approve/:id')
@@ -28,11 +28,11 @@ export class AccountantRequestsController {
   @ApiOperation({ summary: 'Approve accountant request ( ADMIN only )' })
   @ApiQuery({ name: 'accountantId', required: true })
   @ApiParam({ name: 'id', required: true })
-  approveAccountantRequest(
+  async approveAccountantRequest(
     @Query('accountantId') accountantId: string,
     @Param('id') id: string,
   ) {
-    return this.accountantRequestsService.approveAccountantRequest(
+    return await this.accountantRequestsService.approveAccountantRequest(
       accountantId,
       id,
     );
@@ -42,7 +42,7 @@ export class AccountantRequestsController {
   @Roles('ADMIN')
   @ApiOperation({ summary: 'Reject accountant request ( ADMIN only )' })
   @ApiParam({ name: 'id', required: true })
-  rejectAccountantRequest(@Param('id') id: string) {
-    return this.accountantRequestsService.rejectAccountantRequest(id);
+  async rejectAccountantRequest(@Param('id') id: string) {
+    return await this.accountantRequestsService.rejectAccountantRequest(id);
   }
 }

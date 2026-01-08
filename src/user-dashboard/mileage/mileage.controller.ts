@@ -14,7 +14,7 @@ import { LogTripDto } from './dto/log-trip.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 import { User } from 'src/auth/decorators/user.decorator';
-import { ApiParam, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { urlPrefix } from '../url-prefix';
 
 @Controller(`${urlPrefix}mileage`)
@@ -23,6 +23,7 @@ export class UserMileageController {
 
   @Post('log-trip')
   @Roles('USER')
+  @ApiOperation({ summary: 'Log new trip ( USER only )' })
   @UsePipes(new ValidationPipe({ transform: true }))
   @ApiResponse({ status: 201, description: 'Trip logged successfully' })
   @ApiResponse({ status: 400, description: 'Invalid trip data' })
@@ -32,6 +33,7 @@ export class UserMileageController {
 
   @Get('mileage-track')
   @Roles('USER')
+  @ApiOperation({ summary: 'Get mileage track ( USER only )' })
   @ApiResponse({ status: 200, description: 'Mileage track retrieved successfully' })
   async getMileageTrack(@User() user: jwtPayload) {
     return await this.mileageService.getMileageTrack(user.sub);
@@ -39,6 +41,7 @@ export class UserMileageController {
 
   @Patch('edit-trip/:id')
   @Roles('USER')
+  @ApiOperation({ summary: 'Edit trip ( USER only )' })
   @UsePipes(new ValidationPipe({ transform: true }))
   @ApiParam({ name: 'id', type: 'string' })
   @ApiResponse({ status: 200, description: 'Trip updated successfully' })
@@ -53,6 +56,7 @@ export class UserMileageController {
 
   @Delete('delete-trip/:id')
   @Roles('USER')
+  @ApiOperation({ summary: 'Delete trip ( USER only )' })
   @ApiParam({ name: 'id', type: 'string' })
   @ApiResponse({ status: 204, description: 'Trip deleted successfully' })
   @ApiResponse({ status: 404, description: 'Trip not found' })

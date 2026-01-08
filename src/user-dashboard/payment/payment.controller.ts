@@ -13,7 +13,7 @@ import { PaymentService } from './payment.service';
 import { User } from 'src/auth/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 import { Roles } from 'src/auth/decorators/roles.decorator';
-import { ApiBody, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { urlPrefix } from '../url-prefix';
 
 @Controller(`${urlPrefix}/payment`)
@@ -22,6 +22,7 @@ export class UserPaymentController {
 
   @Post('buy-plan/:id')
   @Roles('USER')
+  @ApiOperation({ summary: 'Buy plan ( USER only )' })
   @ApiBody({
     schema: {
       type: 'object',
@@ -49,6 +50,7 @@ export class UserPaymentController {
 
   @Post('upgrade-plan/:id')
   @Roles('USER')
+  @ApiOperation({ summary: 'Upgrade plan ( USER only )' })
   @ApiBody({
     schema: {
       type: 'object',

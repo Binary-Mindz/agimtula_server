@@ -444,7 +444,6 @@ export const ReceiptScalarFieldEnum = {
   id: 'id',
   receipt_id: 'receipt_id',
   receiptFileUrl: 'receiptFileUrl',
-  receiptFileKey: 'receiptFileKey',
   vendor: 'vendor',
   date: 'date',
   categoryId: 'categoryId',

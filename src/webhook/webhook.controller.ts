@@ -44,6 +44,15 @@ export class WebhookController {
         if (session.metadata?.invoiceId) {
           const invoiceId = session.metadata.invoiceId;
 
+          const invoice = await this.prisma.invoice.findUnique({
+            where: { id: invoiceId },
+          });
+
+          if (!invoice) {
+            console.error('Invoice not found:', invoiceId);
+            return res.json({ received: true });
+          }
+
           await this.prisma.invoice.update({
             where: { id: invoiceId },
             data: {

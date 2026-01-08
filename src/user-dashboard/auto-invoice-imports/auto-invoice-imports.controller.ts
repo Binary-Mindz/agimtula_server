@@ -17,7 +17,7 @@ import { urlPrefix } from '../url-prefix';
 import { ImapApisService } from 'src/imap-apis/imap-apis.service';
 import { Public } from 'src/auth/decorators/public.decorator';
 import { Response } from 'express';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller(`${urlPrefix}/auto-invoice-imports`)
 export class UserAutoInvoiceImportsController {
@@ -30,6 +30,7 @@ export class UserAutoInvoiceImportsController {
   // get invoice Auto Sync Interval data
   @Get('get-imap-configuration')
   @Roles('USER')
+  @ApiOperation({ summary: 'Get IMAP configuration ( USER only )' })
   @ApiResponse({ status: 200, description: 'IMAP configuration retrieved successfully' })
   getImapConfiguration(@User() user: jwtPayload) {
     return this.manageConnectionService.getImapConfiguration(user.sub);
@@ -38,6 +39,7 @@ export class UserAutoInvoiceImportsController {
   // imap configuration
   @Patch('set-imap-configuration')
   @Roles('USER')
+  @ApiOperation({ summary: 'Set IMAP configuration ( USER only )' })
   @UsePipes(new ValidationPipe())
   @ApiResponse({ status: 200, description: 'IMAP configuration saved successfully' })
   @ApiResponse({ status: 400, description: 'Invalid configuration or subscription required' })
@@ -51,6 +53,7 @@ export class UserAutoInvoiceImportsController {
   // Disconnect Imap
   @Patch('imap-disconnect')
   @Roles('USER')
+  @ApiOperation({ summary: 'Disconnect IMAP ( USER only )' })
   @ApiResponse({ status: 200, description: 'IMAP disconnected successfully' })
   imapDisconnect(@User() user: jwtPayload) {
     return this.manageConnectionService.imap_DisConnect(user.sub);
@@ -59,6 +62,7 @@ export class UserAutoInvoiceImportsController {
   // imap test
   @Public()
   @Patch('imap-test')
+  @ApiOperation({ summary: 'Test IMAP connection ( PUBLIC )' })
   @UsePipes(new ValidationPipe())
   @ApiResponse({ status: 200, description: 'IMAP connection test successful' })
   @ApiResponse({ status: 400, description: 'IMAP connection test failed' })
@@ -68,6 +72,7 @@ export class UserAutoInvoiceImportsController {
 
   @Public()
   @Get('imap-Connection-Test')
+  @ApiOperation({ summary: 'IMAP connection test ( PUBLIC )' })
   @ApiResponse({ status: 200, description: 'IMAP connection test completed' })
   imapConnectionTest() {
     return this.imapApisService.imapConnectionTest();

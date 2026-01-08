@@ -4,7 +4,7 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { ManageClients } from './manage-clients.service';
 import { User } from 'src/auth/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
-import { ApiParam } from '@nestjs/swagger';
+import { ApiOperation, ApiParam } from '@nestjs/swagger';
 
 @Controller('accountant-settings')
 export class AccountantSettingsController {
@@ -15,12 +15,14 @@ export class AccountantSettingsController {
 
   @Get('manage-clients/client-without-accountant')
   @Roles('ACCOUNTANT')
+  @ApiOperation({ summary: 'Get users without accountant ( ACCOUNTANT only )' })
   async getUsersWithoutAccountant() {
     return await this.manageClients.getUsersWithoutAccountant();
   }
 
   @Post('manage-clients/add-accountant/:userId')
   @Roles('ACCOUNTANT')
+  @ApiOperation({ summary: 'Add client ( ACCOUNTANT only )' })
   @ApiParam({ name: 'userId', type: 'string' })
   async addClient(@User() acc: jwtPayload, @Param('userId') userId: string) {
     return await this.manageClients.addClient(userId, acc.sub);
@@ -28,12 +30,14 @@ export class AccountantSettingsController {
 
   @Get('manage-clients/my-clients')
   @Roles('ACCOUNTANT')
+  @ApiOperation({ summary: 'Get my clients ( ACCOUNTANT only )' })
   async getClients(@User() acc: jwtPayload) {
     return await this.manageClients.usersWithMe(acc.sub);
   }
 
   @Post('manage-clients/remove-client/:userId')
   @Roles('ACCOUNTANT')
+  @ApiOperation({ summary: 'Remove client ( ACCOUNTANT only )' })
   @ApiParam({ name: 'userId', type: 'string' })
   async removeFromMe(@User() acc: jwtPayload, @Param('userId') userId: string) {
     return await this.manageClients.removeFromMe(userId, acc.sub);

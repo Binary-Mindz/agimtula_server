@@ -45,10 +45,10 @@ export class UpdateProfilePicDto {
   @ApiProperty({
     required: true,
     type: String,
-    description: 'URL of the new profile picture',
-    example: 'https://example.com/profile-pic.jpg',
+    description: 'Base64 encoded profile picture image',
+    example: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD...',
   })
-  @IsNotEmpty({ message: 'Profile picture URL should not be empty' })
-  @IsString({ message: 'Profile picture URL must be a string' })
+  @IsNotEmpty({ message: 'Profile picture should not be empty' })
+  @IsString({ message: 'Profile picture must be a string' })
   profilePic: string;
 }

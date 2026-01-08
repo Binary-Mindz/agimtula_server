@@ -479,7 +479,6 @@ export class InvoicesService {
           businessDatas: true,
         },
       });
-
       return cResponseData({
         message: 'Invoice updated successfully',
         data: updatedInvoice,

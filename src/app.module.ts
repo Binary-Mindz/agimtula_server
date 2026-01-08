@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { DatabaseModule } from './config/database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { AdminDashboardModule } from './admin-dashboard/admin-dashboard.module';
@@ -55,13 +53,12 @@ import { ReceiptExpenseModule } from './accountants/receipt-expense/receipt-expe
     DashboardModule,
     ReceiptExpenseModule,
   ],
-  controllers: [AppController, WebhookController],
+  controllers: [WebhookController],
   providers: [
-    AppService,
     {
       provide: 'APP_GUARD',
       useClass: AuthGuard,
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }

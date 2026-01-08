@@ -42,7 +42,7 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException('No token provided');
 
     const token: string = authHeader.split(' ')[1];
-    console.log(token);
+
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET!) as jwtPayload;
 
@@ -63,7 +63,7 @@ export class AuthGuard implements CanActivate {
     const userRole: string = request.user?.role;
 
     if (!requiredRoles.includes(userRole)) {
-      throw new ForbiddenException('Access denied');
+      throw new ForbiddenException('Insufficient permissions to access this resource ');
     }
 
     return true;

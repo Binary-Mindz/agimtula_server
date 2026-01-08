@@ -188,6 +188,11 @@ export type PackagePricing = Prisma.PackagePricingModel
  */
 export type invoiceAutoSyncInterval = Prisma.invoiceAutoSyncIntervalModel
 /**
+ * Model SupportTicket
+ * 
+ */
+export type SupportTicket = Prisma.SupportTicketModel
+/**
  * Model User
  * 
  */

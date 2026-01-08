@@ -12,6 +12,7 @@ export class MileageService {
     try {
       const trip = await this.prisma.mileage.create({
         data: {
+          name:dto.name,
           date: dto.date,
           startLocation: dto.startLocation,
           endLocation: dto.endLocation,

@@ -86,7 +86,6 @@ export class SalesInvoicesService {
         success: true,
         message: 'Sales invoices data fetched successfully',
       });
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       console.log(error);
 
@@ -101,6 +100,15 @@ export class SalesInvoicesService {
     try {
       await this.validateAccountant.validate(userId, accountantId);
 
+      const user = await this.prisma.user.findFirst({
+        where: {
+          id: userId,
+        },
+        include: {
+          profile: true,
+        },
+      });
+
       const invoices = await this.prisma.invoice.findMany({
         where: {
           userId,
@@ -114,13 +122,63 @@ export class SalesInvoicesService {
       return cResponseData({
         message: 'Sales invoices fetched successfully',
         success: true,
-        data: invoices,
+        data: {
+          invoices: invoices.map((invoice) => ({
+            invoiceNo: invoice.invoiceNo,
+            business: invoice.companyName,
+            client: user?.profile?.firstName,
+            date: invoice.issueDate,
+            total: invoice.totalAmount,
+            vat: invoice.vat,
+            paymentStatus:
+              invoice.dueDate && invoice.dueDate < new Date()
+                ? 'Overdue'
+                : invoice.isPaid
+                  ? 'Paid'
+                  : 'Pending',
+          })),
+        },
       });
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       return cResponseData({
         success: false,
         message: 'Failed to fetch sales invoices',
+      });
+    }
+  }
+
+  async getData(userId: string, accountantId: string, salesId: string) {
+    try {
+      await this.validateAccountant.validate(userId, accountantId);
+
+      const salesInvoice = await this.prisma.invoice.findFirst({
+        where: {
+          id: salesId,
+          userId,
+        },
+        include: {
+          serviceAndItems: true,
+          businessDatas: true,
+        },
+      });
+
+      return cResponseData({
+        message: 'Sales invoice data fetched successfully',
+        success: true,
+        data: {
+          ...salesInvoice,
+          serviceAndItems: salesInvoice?.serviceAndItems.map((item) => ({
+            ...item,
+            total: item.qty * item.rate,
+          })),
+        },
+      });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      return cResponseData({
+        message: 'Failed to fetch sales invoice data',
+        success: false,
       });
     }
   }

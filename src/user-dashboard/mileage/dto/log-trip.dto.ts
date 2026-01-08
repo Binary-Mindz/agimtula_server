@@ -11,6 +11,14 @@ import {
 
 export class LogTripDto {
   @ApiProperty({
+    description: 'Visitor name',
+    example: 'John Doe',
+  })
+  @IsString({ message: 'Visitor name must be a string' })
+  @IsNotEmpty({ message: 'Visitor name is required' })
+  name: string;
+
+  @ApiProperty({
     description: 'Date of the trip',
     example: '2025-12-10',
   })

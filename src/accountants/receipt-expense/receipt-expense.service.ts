@@ -79,6 +79,15 @@ export class ReceiptExpenseService {
     try {
       await this.validateAccAccess.validate(userId, accountantId);
 
+      const user = await this.prisma.user.findUnique({
+        where: {
+          id: userId,
+        },
+        include: {
+          profile: true,
+        },
+      });
+
       const skip = (page - 1) * limit;
       const receiptSearchFilter = search
         ? {
@@ -173,7 +182,20 @@ export class ReceiptExpenseService {
         message: 'Receipt and mileage data fetched successfully',
         success: true,
         data: {
-          paginatedData,
+          paginatedData: paginatedData.map((item) => ({
+            client: user?.profile?.firstName,
+            name:
+              item.type === 'receipt'
+                ? (item as any).vendor
+                : `${(item as any).name}`,
+            date: item.date || item.createdAt,
+            expenseType:
+              item.type === 'receipt'
+                ? (item as any).category?.name
+                : (item as any).tripType,
+            amount: item.amount,
+            source: item.type === 'receipt' ? 'Receipt' : 'Mileage',
+          })),
           pagination: {
             currentPage: page,
             totalPages,
@@ -184,6 +206,7 @@ export class ReceiptExpenseService {
           },
         },
       });
+
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       return cResponseData({
@@ -191,6 +214,65 @@ export class ReceiptExpenseService {
         success: false,
         data: null,
       });
+    }
+  }
+
+  async getData(userId: string, accId: string,expenseId:string) {
+    try {
+      await this.validateAccAccess.validate(userId, accId);
+
+      const receipt = await this.prisma.receipt.findFirst({
+        where: {
+          id: expenseId,
+          userId,
+        },
+        include: {
+          category: true,
+        },
+      });
+      const mileage = await this.prisma.mileage.findFirst({
+        where: {
+          id: expenseId,
+          userId,
+        },
+      });
+
+      if (!receipt || !mileage) {
+        throw new Error('Receipt or mileage not found');
+      }
+
+      return cResponseData({
+        message: 'Receipt and mileage data fetched successfully',
+        success: true,
+        data: {
+          receipt: receipt
+            ? {
+                client: receipt.vendor,
+                date: receipt.date,
+                expenseType: receipt.category?.name,
+                amount: receipt.amount,
+                source: 'Receipt',
+              }
+            : null,
+          mileage: mileage
+            ? {
+                client: mileage.name,
+                date: mileage.date,
+                expenseType: mileage.tripType,
+                amount: mileage.amount,
+                source: 'Mileage',
+              }
+            : null,
+        },
+      });
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      return cResponseData({
+        message: 'Failed to fetch data',
+        success: false,
+        data: null,
+      })
     }
   }
 }

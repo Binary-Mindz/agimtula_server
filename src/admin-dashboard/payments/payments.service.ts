@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { PaymentStatus } from 'prisma/generated/prisma/enums';
 import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
@@ -89,13 +89,12 @@ export class PaymentsService {
           totalPayments: successfulPayment + pendingPayment + failedPayment,
         },
       });
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to fetch payment data',
-        error: 'Failed to fetch payment data',
-        success: false,
-      });
+      console.error('Get payment data error:', error);
+      throw new HttpException(
+        'Failed to fetch payment data',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -234,13 +233,12 @@ export class PaymentsService {
         message: 'Transactions are fetched',
         data: transactions,
       });
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      return cResponseData({
-        message: 'Transactions fetching failed',
-        error: 'Transactions fetching failed',
-        success: false,
-      });
+      console.error('Get transactions data error:', error);
+      throw new HttpException(
+        'Failed to fetch transactions data',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

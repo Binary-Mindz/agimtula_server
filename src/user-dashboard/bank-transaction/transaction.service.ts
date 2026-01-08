@@ -1,7 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Decimal } from '@prisma/client/runtime/client';
 import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
+import { NotFoundAppException } from 'src/common/app-exceptions';
 
 interface TransactionRow {
   date: string;
@@ -16,12 +17,10 @@ interface TransactionRow {
 
 @Injectable()
 export class TransactionService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async storeTransactions(transactions: TransactionRow[]) {
-
     for (const trx of transactions) {
-
       const existing = await this.prisma.transaction.findFirst({
         where: {
           date: new Date(trx.date),
@@ -55,24 +54,32 @@ export class TransactionService {
     });
   }
   async getAllUserTransactions(userId: string) {
-
     try {
       const userExit = await this.prisma.user.findFirst({
         where: {
-          id: userId
-        }
-      })
+          id: userId,
+        },
+      });
       if (!userExit) {
-        throw new NotFoundException('User not found');
+        throw new NotFoundAppException('User not found');
       }
       const data = await this.prisma.transaction.findMany({
         where: { userId: userId },
         orderBy: { date: 'desc' },
       });
-      return cResponseData({ data, message: `Transactions for user ${userId} retrieved successfully` });
+      return cResponseData({
+        data,
+        message: `Transactions for user ${userId} retrieved successfully`,
+      });
     } catch (error) {
+      if (error instanceof NotFoundAppException) {
+        throw error;
+      }
       console.error(error);
-      throw new BadRequestException('Failed to retrieve transactions for user');
+      throw new HttpException(
+        'Failed to retrieve transactions for user',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -104,7 +111,7 @@ export class TransactionService {
           Math.abs(
             new Date(trx1.date).getTime() - new Date(trx2.date).getTime(),
           ) <=
-          60 * 60 * 1000
+            60 * 60 * 1000
         ) {
           await this.prisma.transaction.updateMany({
             where: { id: { in: [trx1.id, trx2.id] } },

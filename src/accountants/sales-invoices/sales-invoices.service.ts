@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { ValidateAccountantAccess } from '../validate-accountant-access';
 import { cResponseData } from 'src/common/cResponse';
+import { NotFoundAppException } from 'src/common/app-exceptions';
 
 @Injectable()
 export class SalesInvoicesService {
@@ -87,12 +88,11 @@ export class SalesInvoicesService {
         message: 'Sales invoices data fetched successfully',
       });
     } catch (error) {
-      console.log(error);
-
-      return cResponseData({
-        message: 'Failed to fetch sales invoices data',
-        success: false,
-      });
+      console.error('Get sales invoices data error:', error);
+      throw new HttpException(
+        'Failed to fetch sales invoices data',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -139,12 +139,12 @@ export class SalesInvoicesService {
           })),
         },
       });
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      return cResponseData({
-        success: false,
-        message: 'Failed to fetch sales invoices',
-      });
+      console.error('Get sales invoices error:', error);
+      throw new HttpException(
+        'Failed to fetch sales invoices',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -174,12 +174,12 @@ export class SalesInvoicesService {
           })),
         },
       });
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to fetch sales invoice data',
-        success: false,
-      });
+      console.error('Get sales invoice data error:', error);
+      throw new HttpException(
+        'Failed to fetch sales invoice data',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -195,7 +195,7 @@ export class SalesInvoicesService {
       });
 
       if (salesInvoices.length === 0) {
-        throw new Error('No sales invoices found');
+        throw new NotFoundAppException('No sales invoices found');
       }
 
       return cResponseData({
@@ -203,12 +203,15 @@ export class SalesInvoicesService {
         success: true,
         data: salesInvoices,
       });
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to export sales invoices',
-        success: false,
-      });
+      if (error instanceof NotFoundAppException) {
+        throw error;
+      }
+      console.error('Export sales invoices error:', error);
+      throw new HttpException(
+        'Failed to export sales invoices',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

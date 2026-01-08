@@ -34,7 +34,7 @@ export class PermissionManagementController {
 
   @Post('user/grant')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Grant module access to a user' })
+  @ApiOperation({ summary: 'Grant module access to user ( ADMIN only )' })
   @ApiResponse({ status: 200, description: 'Module access granted successfully' })
   async grantUserModuleAccess(
     @Body() body: GrantUserModuleDto,
@@ -49,7 +49,7 @@ export class PermissionManagementController {
 
   @Delete('user/revoke')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Revoke module access from a user' })
+  @ApiOperation({ summary: 'Revoke module access from user ( ADMIN only )' })
   @ApiResponse({ status: 200, description: 'Module access revoked successfully' })
   async revokeUserModuleAccess(@Body() body: RevokeUserModuleDto) {
     return this.permissionService.revokeUserModuleAccess(
@@ -59,7 +59,7 @@ export class PermissionManagementController {
   }
 
   @Get('user/:userId')
-  @ApiOperation({ summary: 'Get all modules accessible by a user' })
+  @ApiOperation({ summary: 'Get user modules ( ADMIN only )' })
   @ApiResponse({ status: 200, description: 'User modules retrieved successfully' })
   async getUserModules(@Param('userId') userId: string) {
     return await this.permissionService.getUserModules(userId);
@@ -67,7 +67,7 @@ export class PermissionManagementController {
 
 
   @Get()
-  @ApiOperation({ summary: 'Get all available modules' })
+  @ApiOperation({ summary: 'Get all modules ( ADMIN only )' })
   @ApiResponse({ status: 200, description: 'All modules retrieved successfully' })
   async getAllModules() {
     return await this.permissionService.getAllModules();

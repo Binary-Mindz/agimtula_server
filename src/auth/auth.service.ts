@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   BadRequestException,
   ConflictException,
   ForbiddenException,
   Injectable,
+  Logger,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -17,6 +19,7 @@ import { UpdateProfileDto } from './dto/update-profile.dto';
 import { VerifyTwoFADto } from './dto/two-fa.dto';
 import { cResponseData } from 'src/common/cResponse';
 import { RedisServiceService } from 'src/config/redis-service/redis-service.service';
+import { logpriority, LogType } from 'prisma/generated/prisma/enums';
 
 interface Login2FAPayload {
   userId: string;
@@ -27,14 +30,13 @@ interface Login2FAPayload {
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
   constructor(
     private prisma: PrismaService,
     private jwt: JwtService,
     private mail: SmtpMailService,
     private redis: RedisServiceService,
-
-  ) { }
-
+  ) {}
 
   private async setRedisValue<T>(key: string, value: T, ttl: number) {
     await this.redis.set(key, JSON.stringify(value), 'EX', ttl);
@@ -50,7 +52,7 @@ export class AuthService {
   }
 
   async generateAccessToken(jwtPayload: jwtPayload) {
-    return await this.jwt.signAsync(
+    return this.jwt.signAsync(
       { sub: jwtPayload.sub, email: jwtPayload.email, role: jwtPayload.role },
       {
         secret: process.env.JWT_SECRET as string,
@@ -96,19 +98,22 @@ export class AuthService {
         },
       });
 
-      return {
-        message: 'User created successfully',
-        id: user.id,
-        firstName: user.profile?.firstName,
-        lastName: user.profile?.lastName,
-        email: user.email?.email,
-
-      };
-    } catch (error) {
       return cResponseData({
-
-        message: error.message || 'Failed to create user',
+        success: true,
+        message: 'User created successfully',
+        data: {
+          id: user.id,
+          firstName: user.profile?.firstName,
+          lastName: user.profile?.lastName,
+          email: user.email?.email,
+        },
       });
+    } catch (error) {
+      if (error instanceof ConflictException) {
+        throw error;
+      }
+      console.error('Create user error:', error);
+      throw new BadRequestException('Failed to create user');
     }
   }
 
@@ -136,6 +141,7 @@ export class AuthService {
         throw new UnauthorizedException('User not valid');
       }
 
+      // 2FA LOGIN FLOW
       if (user.twoFactorEnabled) {
         const redisKey = `2fa:login:${user.email.email}`;
 
@@ -163,11 +169,14 @@ export class AuthService {
       `,
         );
 
-        return {
+        return cResponseData({
+          success: true,
           message: 'Verify your 2FA code to complete login',
-          twoFactorEnabled: true,
-          email: user.email.email,
-        };
+          data: {
+            twoFactorEnabled: true,
+            email: user.email.email,
+          },
+        });
       }
 
       // NORMAL LOGIN
@@ -177,16 +186,24 @@ export class AuthService {
         role: user.role,
       });
 
-      return {
+      return cResponseData({
+        success: true,
         message: 'Login successful',
-        id: user.id,
-        firstName: user.profile?.firstName,
-        lastName: user.profile?.lastName,
-        email: user.email.email,
-        accessToken,
-      };
+        data: {
+          id: user.id,
+          firstName: user.profile?.firstName,
+          lastName: user.profile?.lastName,
+          email: user.email.email,
+          accessToken,
+        },
+      });
     } catch (error) {
-      console.error(error);
+      if (
+        error instanceof UnauthorizedException ||
+        error instanceof ForbiddenException
+      ) {
+        throw error;
+      }
       throw new BadRequestException('Login failed');
     }
   }
@@ -229,16 +246,24 @@ export class AuthService {
         role: user.role,
       });
 
-      return {
+      return cResponseData({
+        success: true,
         message: 'Login successful',
-        id: user.id,
-        firstName: user.profile?.firstName,
-        lastName: user.profile?.lastName,
-        email: user.email.email,
-        accessToken,
-      };
+        data: {
+          id: user.id,
+          firstName: user.profile?.firstName,
+          lastName: user.profile?.lastName,
+          email: user.email.email,
+          accessToken,
+        },
+      });
     } catch (error) {
-      console.error(error);
+      if (
+        error instanceof ForbiddenException ||
+        error instanceof UnauthorizedException
+      ) {
+        throw error;
+      }
       throw new BadRequestException('2FA verification failed');
     }
   }
@@ -272,9 +297,17 @@ export class AuthService {
         },
       });
 
-      return { message: 'Password updated successfully' };
+      return cResponseData({
+        success: true,
+        message: 'Password updated successfully',
+      });
     } catch (error) {
-      console.error(error);
+      if (
+        error instanceof UnauthorizedException ||
+        error instanceof ForbiddenException
+      ) {
+        throw error;
+      }
       throw new BadRequestException('Failed to update password');
     }
   }
@@ -285,11 +318,11 @@ export class AuthService {
         where: { userId },
       });
 
-      return {
+      return cResponseData({
+        success: true,
         message: 'Account deleted successfully',
-      };
+      });
     } catch (error) {
-      console.error(error);
       throw new BadRequestException('Failed to delete account');
     }
   }
@@ -303,6 +336,8 @@ export class AuthService {
       if (!userProfile) {
         throw new NotFoundException('User not found');
       }
+
+      console.log(profilePic);
       const user = await this.prisma.user.update({
         where: { id: userId },
         data: {
@@ -318,12 +353,18 @@ export class AuthService {
         throw new BadRequestException('User Updation Failed');
       }
 
-      return {
+      return cResponseData({
+        success: true,
         message: 'Profile picture updated successfully',
-        user,
-      };
+        data: user,
+      });
     } catch (error) {
-      console.error(error);
+      if (
+        error instanceof NotFoundException ||
+        error instanceof BadRequestException
+      ) {
+        throw error;
+      }
       throw new BadRequestException('Failed to update profile picture');
     }
   }
@@ -342,11 +383,11 @@ export class AuthService {
         },
       });
 
-      return {
+      return cResponseData({
+        success: true,
         message: 'Profile picture removed successfully',
-      };
+      });
     } catch (error) {
-      console.error(error);
       throw new BadRequestException('Failed to remove profile picture');
     }
   }
@@ -370,11 +411,14 @@ export class AuthService {
         throw new BadRequestException('User Updation Failed');
       }
 
-      return {
+      return cResponseData({
+        success: true,
         message: 'Profile updated successfully',
-      };
+      });
     } catch (error) {
-      console.error(error);
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
       throw new BadRequestException('Failed to update profile');
     }
   }
@@ -399,10 +443,28 @@ export class AuthService {
         throw new NotFoundException('User not found');
       }
 
-      return user;
+      return cResponseData({
+        success: true,
+        message: 'Profile retrieved successfully',
+        data: user,
+      });
     } catch (error) {
-      console.error(error);
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
       throw new BadRequestException('Failed to get profile');
     }
+  }
+
+  findAll() {
+    return 'This section returns all auth related data';
+  }
+
+  findOne(id: number) {
+    return `This action returns a #${id} auth`;
+  }
+
+  remove(id: number) {
+    return `This action removes a #${id} auth`;
   }
 }

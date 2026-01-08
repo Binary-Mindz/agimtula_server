@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { CreatePaymentMethodDto } from './dto/create-payment-method.dto';
 import { UpdatePaymentMethodDto } from './dto/update-payment-method.dto';
@@ -14,55 +13,59 @@ export class PaymentMethodService {
     dto: CreatePaymentMethodDto,
     makeDefault = false,
   ) {
-   try {
-     const existing = await this.prisma.paymentMethod.findFirst({
-       where: {
-         userId,
-         acc_name: dto.accountName,
-         bank_name: dto.bankName,
-         iban: dto.iban,
-       },
-     });
+    try {
+      const existing = await this.prisma.paymentMethod.findFirst({
+        where: {
+          userId,
+          acc_name: dto.accountName,
+          bank_name: dto.bankName,
+          iban: dto.iban,
+        },
+      });
 
-     if (existing) {
-       throw new ForbiddenException(
-         'Payment method already exists for this user',
-       );
-     }
+      if (existing) {
+        throw new HttpException(
+          'Payment method already exists',
+          HttpStatus.CONFLICT,
+        );
+      }
 
-     if (makeDefault) {
-       await this.prisma.paymentMethod.updateMany({
-         where: { userId, isDefault: true },
-         data: { isDefault: false },
-       });
-     }
+      if (makeDefault) {
+        await this.prisma.paymentMethod.updateMany({
+          where: { userId, isDefault: true },
+          data: { isDefault: false },
+        });
+      }
 
-     const paymentMethod = await this.prisma.paymentMethod.create({
-       data: {
-         acc_name: dto.accountName,
-         bank_name: dto.bankName,
-         sort_code: dto.sortCode,
-         iban: dto.iban,
-         bic_swift: dto.bicSwift,
+      const paymentMethod = await this.prisma.paymentMethod.create({
+        data: {
+          acc_name: dto.accountName,
+          bank_name: dto.bankName,
+          sort_code: dto.sortCode,
+          iban: dto.iban,
+          bic_swift: dto.bicSwift,
+          default_payment_term: dto.defaultPaymentTerm,
+          late_payment_fee: dto.latePaymentFee,
+          payment_instructions: dto.paymentInstructions,
+          isDefault: makeDefault,
+          user: {
+            connect: { id: userId },
+          },
+        },
+      });
 
-         default_payment_term: dto.defaultPaymentTerm,
-         late_payment_fee: dto.latePaymentFee,
-         payment_instructions: dto.paymentInstructions,
-
-         isDefault: makeDefault,
-         user: {
-           connect: { id: userId },
-         },
-       },
-     });
-
-     return cResponseData({ data: paymentMethod });
-   } catch (error) {
-    return cResponseData({
-      message: 'Failed to create payment method',
-      error: 'Failed to create payment method',
-    });
-   }
+      return cResponseData({
+        success: true,
+        message: 'Payment method created successfully',
+        data: paymentMethod,
+      });
+    } catch (error) {
+      console.error('Create payment method error:', error);
+      throw new HttpException(
+        'Failed to create payment method',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   async updatePaymentMethod(
@@ -75,7 +78,10 @@ export class PaymentMethodService {
       });
 
       if (!existing) {
-        return null;
+        throw new HttpException(
+          'Payment method not found',
+          HttpStatus.NOT_FOUND,
+        );
       }
 
       const updateData: any = {
@@ -99,19 +105,22 @@ export class PaymentMethodService {
         updateData.isDefault = !existing.isDefault;
       }
 
-      const payment = this.prisma.paymentMethod.update({
+      const payment = await this.prisma.paymentMethod.update({
         where: { id: paymentMethodId },
         data: updateData,
       });
 
       return cResponseData({
+        success: true,
+        message: 'Payment method updated successfully',
         data: payment,
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to update payment method',
-        error: 'Failed to update payment method',
-      });
+      console.error('Update payment method error:', error);
+      throw new HttpException(
+        'Failed to update payment method',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -126,7 +135,10 @@ export class PaymentMethodService {
       });
 
       if (!existing || existing.userId !== userId) {
-        return { success: false, message: 'Payment method not found' };
+        throw new HttpException(
+          'Payment method not found',
+          HttpStatus.NOT_FOUND,
+        );
       }
 
       let isDefault: boolean;
@@ -154,11 +166,11 @@ export class PaymentMethodService {
         data: { isDefault },
       });
     } catch (error) {
-      return cResponseData({
-        success: false,
-        message: 'Failed to update payment method',
-        error: 'Failed to update payment method',
-      });
+      console.error('Make payment default error:', error);
+      throw new HttpException(
+        'Failed to update payment method',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -168,15 +180,17 @@ export class PaymentMethodService {
         where: { userId },
       });
 
-      if (!paymentMethods) {
-        throw new Error('No payment methods found');
-      }
-      return cResponseData({ data: paymentMethods });
-    } catch (error) {
       return cResponseData({
-        message: 'Failed to retrieve payment methods',
-        error: 'Failed to retrieve payment methods',
+        success: true,
+        message: 'Payment methods retrieved successfully',
+        data: paymentMethods,
       });
+    } catch (error) {
+      console.error('Get payment methods error:', error);
+      throw new HttpException(
+        'Failed to retrieve payment methods',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -187,7 +201,10 @@ export class PaymentMethodService {
       });
 
       if (!existing || existing.userId !== userId) {
-        return { success: false, message: 'Payment method not found' };
+        throw new HttpException(
+          'Payment method not found',
+          HttpStatus.NOT_FOUND,
+        );
       }
 
       await this.prisma.paymentMethod.delete({
@@ -199,11 +216,11 @@ export class PaymentMethodService {
         message: 'Payment method deleted successfully',
       });
     } catch (error) {
-      return cResponseData({
-        success: false,
-        message: 'Failed to delete payment method',
-        error: 'Failed to delete payment method',
-      });
+      console.error('Delete payment method error:', error);
+      throw new HttpException(
+        'Failed to delete payment method',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

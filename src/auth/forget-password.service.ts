@@ -1,9 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  ForbiddenException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import {
   ForgetPassDto,
   ResetPass,
@@ -15,6 +10,10 @@ import * as bcrypt from 'bcrypt';
 import { cResponseData } from 'src/common/cResponse';
 import { RedisServiceService } from 'src/config/redis-service/redis-service.service';
 import * as crypto from 'crypto';
+import {
+  NotFoundAppException,
+  ValidationException,
+} from 'src/common/app-exceptions';
 
 @Injectable()
 export class ForgetPasswordService {
@@ -71,7 +70,7 @@ export class ForgetPasswordService {
       });
 
       if (!user) {
-        throw new UnauthorizedException('User not found');
+        throw new NotFoundAppException('User not found');
       }
 
       const existing = await this.redis.get(`${this.FORG_PREFIX}_${email}`);
@@ -102,43 +101,62 @@ export class ForgetPasswordService {
         message: 'Forget password code sent successfully',
       });
     } catch (error) {
-      return cResponseData({
-        message:'Failed to send forget password code',
-      });
+      if (error instanceof NotFoundAppException) {
+        throw error;
+      }
+      console.error('Send forget password code error:', error);
+      throw new HttpException(
+        'Failed to send forget password code',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async verifyForgetPassCode(data: ValidateForgetPass) {
-    const val = await this.redis.get(`${this.FORG_PREFIX}_${data.email}`);
+    try {
+      const val = await this.redis.get(`${this.FORG_PREFIX}_${data.email}`);
 
-    const user = await this.prisma.user.findFirst({
-      where: {
-        email: {
-          email: data.email,
+      const user = await this.prisma.user.findFirst({
+        where: {
+          email: {
+            email: data.email,
+          },
         },
-      },
-    });
+      });
 
-    if (!user) {
-      throw new UnauthorizedException('User not found');
+      if (!user) {
+        throw new NotFoundAppException('User not found');
+      }
+
+      if (!val || val !== data.verificationCode.toString()) {
+        throw new ValidationException('Code invalid or expired');
+      }
+
+      await this.redis.del(`${this.FORG_PREFIX}_${data.email}`);
+
+      const newCrypto = this.generateCrypto();
+
+      await this.storeRedis(newCrypto, user.id, 'CRYPTO');
+
+      return cResponseData({
+        message: 'Code is verified, now you can change your password',
+        data: {
+          crypto: newCrypto,
+        },
+      });
+    } catch (error) {
+      if (
+        error instanceof NotFoundAppException ||
+        error instanceof ValidationException
+      ) {
+        throw error;
+      }
+      console.error('Verify forget password code error:', error);
+      throw new HttpException(
+        'Failed to verify forget password code',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
-
-    if (!val || val !== data.verificationCode.toString()) {
-      throw new ForbiddenException('Code invalid or expired');
-    }
-
-    await this.redis.del(`${this.FORG_PREFIX}_${data.email}`);
-
-    const newCrypto = this.generateCrypto();
-
-    await this.storeRedis(newCrypto, user.id, 'CRYPTO');
-
-    return cResponseData({
-      message: 'Code is verified, now you can change your password',
-      data: {
-        crypto: newCrypto,
-      },
-    });
   }
 
   async changePassword(data: ResetPass, cryptoVal: string) {
@@ -148,7 +166,7 @@ export class ForgetPasswordService {
       const userId = await this.redis.get(`${this.CRYPTO_PREFIX}_${crypto}`);
 
       if (!userId) {
-        throw new UnauthorizedException('Invalid or expired crypto');
+        throw new ValidationException('Invalid or expired crypto');
       }
 
       const user = await this.prisma.user.findUnique({
@@ -158,7 +176,7 @@ export class ForgetPasswordService {
       });
 
       if (!user) {
-        throw new UnauthorizedException('User not found');
+        throw new NotFoundAppException('User not found');
       }
 
       const hashedPass = await bcrypt.hash(data.password, 10);
@@ -178,9 +196,17 @@ export class ForgetPasswordService {
         message: 'Password changed successfully',
       });
     } catch (error) {
-      return cResponseData({
-        message:  'Failed to change password',
-      });
+      if (
+        error instanceof ValidationException ||
+        error instanceof NotFoundAppException
+      ) {
+        throw error;
+      }
+      console.error('Change password error:', error);
+      throw new HttpException(
+        'Failed to change password',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

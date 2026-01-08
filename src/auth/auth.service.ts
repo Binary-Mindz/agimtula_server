@@ -6,7 +6,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
+// import { CreateAuthDto } from './dto/create-auth.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from './dto/login.dto';
@@ -17,9 +17,20 @@ import { UpdateProfileDto } from './dto/update-profile.dto';
 import { VerifyTwoFADto } from './dto/two-fa.dto';
 import { cResponseData } from 'src/common/cResponse';
 import { RedisServiceService } from 'src/config/redis-service/redis-service.service';
+import { SendRegistrationOtpDto } from './dto/send-registration-otp.dto';
+import { VerifyRegistrationOtpDto } from './dto/verify-registration-otp.dto';
+import { CompleteRegistrationDto } from './dto/complete-registration.dto';
+import * as crypto from 'crypto';
 
 interface Login2FAPayload {
   userId: string;
+  code: number;
+  attempts: number;
+  createdAt: number;
+}
+
+interface RegistrationOtpPayload {
+  email: string;
   code: number;
   attempts: number;
   createdAt: number;
@@ -59,12 +70,103 @@ export class AuthService {
     );
   }
 
-  async create(createAuthDto: CreateAuthDto) {
+  async sendRegistrationOtp(dto: SendRegistrationOtpDto) {
     try {
       const isUser = await this.prisma.user.findFirst({
         where: {
           email: {
-            email: createAuthDto.email,
+            email: dto.email,
+          },
+        },
+      });
+
+      if (isUser) {
+        throw new ConflictException('User already exists with this email');
+      }
+
+      const redisKey = `otp:registration:${dto.email}`;
+      const code = this.generateCode();
+
+      const payload: RegistrationOtpPayload = {
+        email: dto.email,
+        code,
+        attempts: 0,
+        createdAt: Date.now(),
+      };
+
+      await this.setRedisValue(redisKey, payload, 300);
+
+      await this.mail.sendMail(
+        dto.email,
+        'Your Registration OTP Code',
+        `
+        <h3>Registration Verification</h3>
+        <p>Your 6-digit verification code:</p>
+        <h2>${code}</h2>
+        <p>This code expires in 5 minutes.</p>
+      `,
+      );
+
+      return cResponseData({
+        message: 'OTP sent successfully to your email',
+        data: { email: dto.email },
+      });
+    } catch (error) {
+      throw new BadRequestException(error.message || 'Failed to send OTP');
+    }
+  }
+
+  async verifyRegistrationOtp(dto: VerifyRegistrationOtpDto) {
+    try {
+      const redisKey = `otp:registration:${dto.email}`;
+      const payload = await this.getRedisValue<RegistrationOtpPayload>(redisKey);
+
+      if (!payload) {
+        throw new BadRequestException('OTP expired or not found. Please request a new one.');
+      }
+
+      if (payload.attempts >= 3) {
+        await this.redis.del(redisKey);
+        throw new BadRequestException('Too many failed attempts. Please request a new OTP.');
+      }
+
+      if (payload.code !== dto.code) {
+        payload.attempts += 1;
+        await this.setRedisValue(redisKey, payload, 300);
+        throw new BadRequestException(`Invalid OTP code. ${3 - payload.attempts} attempts remaining.`);
+      }
+
+      const verificationToken = crypto.randomBytes(32).toString('hex');
+      const tokenKey = `otp:verified:${verificationToken}`;
+
+      await this.setRedisValue(tokenKey, { email: dto.email }, 600);
+      await this.redis.del(redisKey);
+
+      return cResponseData({
+        message: 'OTP verified successfully',
+        data: {
+          verificationToken,
+          email: dto.email,
+        },
+      });
+    } catch (error) {
+      throw new BadRequestException(error.message || 'OTP verification failed');
+    }
+  }
+
+  async completeRegistration(dto: CompleteRegistrationDto) {
+    try {
+      const tokenKey = `otp:verified:${dto.verificationToken}`;
+      const verified = await this.getRedisValue<{ email: string }>(tokenKey);
+
+      if (!verified || verified.email !== dto.email) {
+        throw new BadRequestException('Invalid or expired verification token');
+      }
+
+      const isUser = await this.prisma.user.findFirst({
+        where: {
+          email: {
+            email: dto.email,
           },
         },
       });
@@ -73,19 +175,19 @@ export class AuthService {
         throw new ConflictException('User already exists');
       }
 
-      const hashedPass = await bcrypt.hash(createAuthDto.password, 10);
+      const hashedPass = await bcrypt.hash(dto.password, 10);
 
       const user = await this.prisma.user.create({
         data: {
           profile: {
             create: {
-              firstName: createAuthDto.firstName,
-              lastName: createAuthDto.lastName,
+              firstName: dto.firstName,
+              lastName: dto.lastName,
             },
           },
           email: {
             create: {
-              email: createAuthDto.email,
+              email: dto.email,
             },
           },
           password: hashedPass,
@@ -96,19 +198,19 @@ export class AuthService {
         },
       });
 
-      return {
-        message: 'User created successfully',
-        id: user.id,
-        firstName: user.profile?.firstName,
-        lastName: user.profile?.lastName,
-        email: user.email?.email,
+      await this.redis.del(tokenKey);
 
-      };
-    } catch (error) {
       return cResponseData({
-
-        message: error.message || 'Failed to create user',
+        message: 'User registered successfully',
+        data: {
+          id: user.id,
+          firstName: user.profile?.firstName,
+          lastName: user.profile?.lastName,
+          email: user.email?.email,
+        },
       });
+    } catch (error) {
+      throw new BadRequestException(error.message || 'Failed to complete registration');
     }
   }
 

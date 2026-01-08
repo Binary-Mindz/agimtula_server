@@ -19,5 +19,4 @@ export class CreateSupportTicketDto {
   @IsEnum(SupportTicketPriority)
   priority?: SupportTicketPriority;
 
-
 }

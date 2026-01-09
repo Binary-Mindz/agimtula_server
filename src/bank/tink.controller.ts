@@ -174,8 +174,6 @@ export class TinkController {
         dto.accessToken,
       );
 
-      // Store in database
-      // const transaction = await this.transactionService.storeTransactions(transactions);
       const savedData = await this.tinkService.storeMyTransaction(user.sub, transactions, dto.accessToken);
       return savedData;
     } catch (err: unknown) {

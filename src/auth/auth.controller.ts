@@ -16,7 +16,6 @@ import { LoginDto } from './dto/login.dto';
 import { SendRegistrationOtpDto } from './dto/send-registration-otp.dto';
 import { VerifyRegistrationOtpDto } from './dto/verify-registration-otp.dto';
 import { CompleteRegistrationDto } from './dto/complete-registration.dto';
-
 import { Public } from './decorators/public.decorator';
 import {
   ForgetPassDto,

@@ -6,10 +6,10 @@ import { PrismaService } from 'src/config/database/prisma.service';
 export class SubscriptionExpiryCron {
   private readonly logger = new Logger(SubscriptionExpiryCron.name);
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, {
-    timeZone: 'Europe/Amsterdam', // Netharlands time
+    timeZone: 'Europe/Amsterdam',
   })
   async deactivateExpiredSubscriptions() {
     const now = new Date();

@@ -4,8 +4,6 @@ import {
   Get,
   Patch,
   Res,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { AutoInvoiceImportsService } from './auto-invoice-imports.service';
 import { ImapEmailConnectionDto, ImapTest } from './dto/imap-email-connection.dto';
@@ -40,7 +38,6 @@ export class UserAutoInvoiceImportsController {
   @Patch('set-imap-configuration')
   @Roles('USER')
   @ApiOperation({ summary: 'Set IMAP configuration ( USER only )' })
-  @UsePipes(new ValidationPipe())
   @ApiResponse({ status: 200, description: 'IMAP configuration saved successfully' })
   @ApiResponse({ status: 400, description: 'Invalid configuration or subscription required' })
   setImapConfiguration(
@@ -63,7 +60,6 @@ export class UserAutoInvoiceImportsController {
   @Public()
   @Patch('imap-test')
   @ApiOperation({ summary: 'Test IMAP connection ( PUBLIC )' })
-  @UsePipes(new ValidationPipe())
   @ApiResponse({ status: 200, description: 'IMAP connection test successful' })
   @ApiResponse({ status: 400, description: 'IMAP connection test failed' })
   imapTest(@Body() data: ImapTest, @Res() res: Response) {

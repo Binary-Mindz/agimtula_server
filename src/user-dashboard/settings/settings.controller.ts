@@ -6,8 +6,6 @@ import {
   Param,
   Patch,
   Post,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { SettingsService } from './settings.service';
 import { BusinessInfoDto, UpdateLogoDto } from './dto/business-info.dto';
@@ -45,7 +43,6 @@ export class UserSettingsController {
   @Patch('update-business-info')
   @Roles('USER', 'ADMIN')
   @ApiOperation({ summary: 'Update business info ( USER, ADMIN )' })
-  @UsePipes(new ValidationPipe({ transform: true }))
   @ApiResponse({ status: 200, description: 'Business info updated successfully' })
   @ApiResponse({ status: 400, description: 'Invalid business info data' })
   async updateBusinessInfo(
@@ -81,7 +78,6 @@ export class UserSettingsController {
   @Post('create-payment-method')
   @Roles('USER', 'ADMIN')
   @ApiOperation({ summary: 'Create payment method ( USER, ADMIN )' })
-  @UsePipes(new ValidationPipe({ transform: true }))
   @ApiResponse({ status: 201, description: 'Payment method created successfully' })
   @ApiResponse({ status: 400, description: 'Invalid payment method data' })
   async createPaymentMethod(
@@ -99,7 +95,6 @@ export class UserSettingsController {
   @Patch('update-payment-method/:id')
   @Roles('USER', 'ADMIN')
   @ApiOperation({ summary: 'Update payment method ( USER, ADMIN )' })
-  @UsePipes(new ValidationPipe({ transform: true }))
   @ApiResponse({ status: 200, description: 'Payment method updated successfully' })
   @ApiResponse({ status: 404, description: 'Payment method not found' })
   async updatePaymentMethod(
@@ -131,7 +126,6 @@ export class UserSettingsController {
       },
     },
   })
-  @UsePipes(new ValidationPipe({ transform: true }))
   @ApiResponse({ status: 200, description: 'Payment method set as default successfully' })
   @ApiResponse({ status: 404, description: 'Payment method not found' })
   async makePaymentDefault(
@@ -152,7 +146,6 @@ export class UserSettingsController {
   @Delete('delete-payment-method')
   @Roles('USER', 'ADMIN')
   @ApiOperation({ summary: 'Delete payment method ( USER, ADMIN )' })
-  @UsePipes(new ValidationPipe({ transform: true }))
   @ApiResponse({ status: 204, description: 'Payment method deleted successfully' })
   @ApiResponse({ status: 404, description: 'Payment method not found' })
   async deletePaymentMethods(
@@ -177,7 +170,6 @@ export class UserSettingsController {
   @Patch('update-invoice-layout')
   @Roles('USER', 'ADMIN')
   @ApiOperation({ summary: 'Update invoice layout ( USER, ADMIN )' })
-  @UsePipes(new ValidationPipe({ transform: true }))
   @ApiResponse({ status: 200, description: 'Invoice layout updated successfully' })
   @ApiResponse({ status: 400, description: 'Invalid layout data' })
   async invoiceLayout(@Body() dto: InvoiceLayoutDto, @User() user: jwtPayload) {
@@ -196,7 +188,6 @@ export class UserSettingsController {
   @Patch('update-notification-settings')
   @Roles('USER', 'ADMIN')
   @ApiOperation({ summary: 'Update notification settings ( USER, ADMIN )' })
-  @UsePipes(new ValidationPipe({ transform: true }))
   @ApiResponse({ status: 200, description: 'Notification settings updated successfully' })
   @ApiResponse({ status: 400, description: 'Invalid notification settings' })
   async updateNotificationSettings(

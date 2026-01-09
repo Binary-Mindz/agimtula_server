@@ -2,10 +2,8 @@ import {
   Controller,
   Post,
   Body,
-  ValidationPipe,
   HttpCode,
   Patch,
-  UsePipes,
   Get,
   Delete,
   Param,
@@ -52,7 +50,7 @@ export class AuthController {
   })
   @Public()
   @Post('registration')
-  async create(@Body(new ValidationPipe()) createAuthDto: CreateAuthDto) {
+  async create(@Body() createAuthDto: CreateAuthDto) {
     return await this.authService.create(createAuthDto);
   }
 
@@ -62,7 +60,6 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'Invalid credentials' })
   @Post('login')
   @Public()
-  @UsePipes(new ValidationPipe())
   async login(@Body() loginDto: LoginDto) {
     return await this.authService.login(loginDto);
   }
@@ -73,7 +70,6 @@ export class AuthController {
   @ApiResponse({ status: 400, description: 'Invalid 2FA code' })
   @Post('verifyLogin')
   @Public()
-  @UsePipes(new ValidationPipe())
   async verifyLogin(@Body() verify: VerifyTwoFADto) {
     return await this.authService.verifyLogin2FA(verify);
   }
@@ -84,7 +80,6 @@ export class AuthController {
   @ApiResponse({ status: 400, description: 'Invalid old password' })
   @Patch('update-password')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
-  @UsePipes(new ValidationPipe())
   async updatePassword(
     @Body() data: UpdatePasswordDto,
     @User() user: jwtPayload,
@@ -106,7 +101,9 @@ export class AuthController {
     return await this.authService.deleteAccount(user.sub);
   }
 
-  @ApiOperation({ summary: 'Update profile picture ( USER, ADMIN, ACCOUNTANT )' })
+  @ApiOperation({
+    summary: 'Update profile picture ( USER, ADMIN, ACCOUNTANT )',
+  })
   @ApiResponse({
     status: 200,
     description: 'Profile picture updated successfully',
@@ -126,7 +123,9 @@ export class AuthController {
   }
 
   @HttpCode(200)
-  @ApiOperation({ summary: 'Remove profile picture ( USER, ADMIN, ACCOUNTANT )' })
+  @ApiOperation({
+    summary: 'Remove profile picture ( USER, ADMIN, ACCOUNTANT )',
+  })
   @ApiResponse({
     status: 200,
     description: 'Profile picture removed successfully',
@@ -144,7 +143,6 @@ export class AuthController {
   @ApiResponse({ status: 400, description: 'Validation failed' })
   @Patch('update-profile')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
-  @UsePipes(new ValidationPipe())
   async updateProfile(
     @Body() data: UpdateProfileDto,
     @User() user: jwtPayload,
@@ -173,7 +171,7 @@ export class AuthController {
   @ApiResponse({ status: 404, description: 'Email not found' })
   @Post('send-forget-password-code')
   @Public()
-  async forgetPassword(@Body(new ValidationPipe()) dto: ForgetPassDto) {
+  async forgetPassword(@Body() dto: ForgetPassDto) {
     return await this.forgetPasswordService.sendForgetPassCode(dto);
   }
 
@@ -183,9 +181,7 @@ export class AuthController {
   @ApiResponse({ status: 400, description: 'Invalid or expired code' })
   @Post('verify-forget-password-code')
   @Public()
-  async verifyForgetPassword(
-    @Body(new ValidationPipe()) data: ValidateForgetPass,
-  ) {
+  async verifyForgetPassword(@Body() data: ValidateForgetPass) {
     return await this.forgetPasswordService.verifyForgetPassCode(data);
   }
 
@@ -201,7 +197,7 @@ export class AuthController {
     example: 'a5d7fa9c87f385f0934fbed3b8cc7c81681360c7dbfe1925bdaa8d0a1d32bf14',
   })
   async changePassword(
-    @Body(new ValidationPipe()) data: ResetPass,
+    @Body() data: ResetPass,
     @Param('crypto') crypto: string,
   ) {
     return await this.forgetPasswordService.changePassword(data, crypto);

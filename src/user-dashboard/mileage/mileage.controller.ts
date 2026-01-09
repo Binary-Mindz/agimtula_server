@@ -2,8 +2,6 @@ import {
   Controller,
   Post,
   Body,
-  UsePipes,
-  ValidationPipe,
   Get,
   Patch,
   Param,
@@ -25,7 +23,6 @@ export class UserMileageController {
   @Post('log-trip')
   @Roles('USER')
   @ApiOperation({ summary: 'Log new trip ( USER only )' })
-  @UsePipes(new ValidationPipe({ transform: true }))
   @ApiResponse({ status: 201, description: 'Trip logged successfully' })
   @ApiResponse({ status: 400, description: 'Invalid trip data' })
   async logTrip(@Body() dto: LogTripDto, @User() user: jwtPayload) {
@@ -78,7 +75,6 @@ export class UserMileageController {
   @Patch('edit-trip/:id')
   @Roles('USER')
   @ApiOperation({ summary: 'Edit trip ( USER only )' })
-  @UsePipes(new ValidationPipe({ transform: true }))
   @ApiParam({ name: 'id', type: 'string' })
   @ApiResponse({ status: 200, description: 'Trip updated successfully' })
   @ApiResponse({ status: 404, description: 'Trip not found' })

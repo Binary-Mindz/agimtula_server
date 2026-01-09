@@ -4,10 +4,15 @@ import { cResponseData } from 'src/common/cResponse';
 
 @Injectable()
 export class PermissionService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
-  async grantUserModuleAccess(
-    userId: string,
+  // ============ ROLE-BASED PERMISSIONS ============
+
+  /**
+   * Assign module permission to a role
+   */
+  async assignRolePermission(
+    role: string,
     moduleName: string,
     grantedBy: string,
   ) {
@@ -20,15 +25,15 @@ export class PermissionService {
         throw new HttpException('Module not found', HttpStatus.NOT_FOUND);
       }
 
-      const moduleAccess = await this.prisma.userModuleAccess.upsert({
+      const permission = await this.prisma.roleModulePermission.upsert({
         where: {
-          userId_moduleId: {
-            userId,
+          role_moduleId: {
+            role: role as any,
             moduleId: module.id,
           },
         },
         create: {
-          userId,
+          role: role as any,
           moduleId: module.id,
           isEnabled: true,
           grantedBy,
@@ -42,19 +47,22 @@ export class PermissionService {
 
       return cResponseData({
         success: true,
-        message: 'Module access granted successfully',
-        data: moduleAccess,
+        message: `Permission granted to ${role} role for ${moduleName} module`,
+        data: permission,
       });
     } catch (error) {
-      console.error('Grant module access error:', error);
+      console.error('Assign role permission error:', error);
       throw new HttpException(
-        'Failed to grant module access',
+        error?.message || 'Failed to assign role permission',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }
 
-  async revokeUserModuleAccess(userId: string, moduleName: string) {
+  /**
+   * Revoke module permission from a role
+   */
+  async revokeRolePermission(role: string, moduleName: string) {
     try {
       const module = await this.prisma.module.findUnique({
         where: { name: moduleName },
@@ -64,9 +72,9 @@ export class PermissionService {
         throw new HttpException('Module not found', HttpStatus.NOT_FOUND);
       }
 
-      const result = await this.prisma.userModuleAccess.updateMany({
+      const result = await this.prisma.roleModulePermission.updateMany({
         where: {
-          userId,
+          role: role as any,
           moduleId: module.id,
         },
         data: {
@@ -76,54 +84,32 @@ export class PermissionService {
 
       return cResponseData({
         success: true,
-        message: 'Module access revoked successfully',
+        message: `Permission revoked from ${role} role for ${moduleName} module`,
         data: { affectedRecords: result.count },
       });
     } catch (error) {
-      console.error('Revoke module access error:', error);
+      console.error('Revoke role permission error:', error);
       throw new HttpException(
-        'Failed to revoke module access',
+        'Failed to revoke role permission',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }
 
-  async getUserModules(userId: string) {
+  /**
+   * Get all permissions for a specific role
+   */
+  async getRolePermissions(role: string) {
     try {
-      const result = await this.prisma.userModuleAccess.findMany({
-        where: { userId, isEnabled: true },
+      const permissions = await this.prisma.roleModulePermission.findMany({
+        where: { role: role as any, isEnabled: true },
         include: {
-          module: true,
-        },
-      });
-
-      return cResponseData({
-        success: true,
-        message: 'User modules retrieved successfully',
-        data: result,
-      });
-    } catch (error) {
-      console.error('Get user modules error:', error);
-      throw new HttpException(
-        'Failed to retrieve user modules',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-  }
-
-  async getAllModules() {
-    try {
-      const result = await this.prisma.module.findMany({
-        include: {
-          userModuleAccess: {
-            where: { isEnabled: true },
-            include: {
-              user: {
-                select: {
-                  id: true,
-                  role: true,
-                },
-              },
+          module: {
+            select: {
+              id: true,
+              name: true,
+              displayName: true,
+              description: true,
             },
           },
         },
@@ -131,15 +117,89 @@ export class PermissionService {
 
       return cResponseData({
         success: true,
-        message: 'All modules retrieved successfully',
-        data: result,
+        message: `Permissions retrieved for ${role} role`,
+        data: {
+          role,
+          permissions,
+          totalPermissions: permissions.length,
+        },
       });
     } catch (error) {
-      console.error('Get all modules error:', error);
+      console.error('Get role permissions error:', error);
       throw new HttpException(
-        'Failed to retrieve modules',
+        'Failed to retrieve role permissions',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }
+
+  /**
+   * Get all roles with their permissions
+   */
+  async getAllRolesWithPermissions() {
+    try {
+      const roles = ['ADMIN', 'USER', 'ACCOUNTANT'];
+      const result = await Promise.all(
+        roles.map(async (role) => {
+          const permissions = await this.prisma.roleModulePermission.findMany({
+            where: { role: role as any, isEnabled: true },
+            include: {
+              module: {
+                select: {
+                  name: true,
+                  displayName: true,
+                },
+              },
+            },
+          });
+          return {
+            role,
+            permissions,
+            totalPermissions: permissions.length,
+          };
+        }),
+      );
+
+      return cResponseData({
+        success: true,
+        message: 'All roles with permissions retrieved successfully',
+        data: result,
+      });
+    } catch (error) {
+      console.error('Get all roles with permissions error:', error);
+      throw new HttpException(
+        'Failed to retrieve roles with permissions',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+
+  async hasRolePermission(role: string, moduleName: string): Promise<boolean> {
+    try {
+      const module = await this.prisma.module.findUnique({
+        where: { name: moduleName },
+      });
+
+      if (!module) {
+        return false;
+      }
+
+      const permission = await this.prisma.roleModulePermission.findUnique({
+        where: {
+          role_moduleId: {
+            role: role as any,
+            moduleId: module.id,
+          },
+        },
+      });
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      return permission?.isEnabled ?? false;
+    } catch (error) {
+      console.error('Check role permission error:', error);
+      return false;
+    }
+  }
 }
+

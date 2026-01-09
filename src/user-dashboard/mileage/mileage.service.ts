@@ -39,8 +39,9 @@ export class MileageService {
     }
   }
 
-  async getMileageTrack(userId: string) {
+  async getMileageTrack(userId: string, page: number = 1, limit: number = 10) {
     try {
+      const skip = (page - 1) * limit;
       const firstDayThisMonth = new Date(
         new Date().getFullYear(),
         new Date().getMonth(),
@@ -54,41 +55,53 @@ export class MileageService {
         59,
         59,
       );
-      const [totalDistance, reimbursement, totalTripLastMonth, trips] =
-        await Promise.all([
-          this.prisma.mileage.aggregate({
-            where: { userId },
-            _sum: { distance: true },
-          }),
+      const [
+        totalDistance,
+        reimbursement,
+        totalTripLastMonth,
+        trips,
+        totalTrips,
+      ] = await Promise.all([
+        this.prisma.mileage.aggregate({
+          where: { userId },
+          _sum: { distance: true },
+        }),
 
-          this.prisma.mileage.aggregate({
-            where: { userId },
-            _sum: { amount: true },
-          }),
+        this.prisma.mileage.aggregate({
+          where: { userId },
+          _sum: { amount: true },
+        }),
 
-          this.prisma.mileage.count({
-            where: {
-              userId,
-              date: {
-                gte: firstDayThisMonth,
-                lte: lastDayThisMonth,
-              },
+        this.prisma.mileage.count({
+          where: {
+            userId,
+            date: {
+              gte: firstDayThisMonth,
+              lte: lastDayThisMonth,
             },
-          }),
+          },
+        }),
 
-          this.prisma.mileage.findMany({
-            where: { userId },
-            select: {
-              id: true,
-              startLocation: true,
-              endLocation: true,
-              date: true,
-              distance: true,
-              amount: true,
-            },
-            orderBy: { date: 'desc' },
-          }),
-        ]);
+        this.prisma.mileage.findMany({
+          where: { userId },
+          select: {
+            id: true,
+            startLocation: true,
+            endLocation: true,
+            date: true,
+            distance: true,
+            amount: true,
+            milage_id: true,
+          },
+          orderBy: { date: 'desc' },
+          skip,
+          take: limit,
+        }),
+
+        this.prisma.mileage.count({ where: { userId } }),
+      ]);
+
+      const totalPages = Math.ceil(totalTrips / limit);
 
       return cResponseData({
         success: true,
@@ -98,6 +111,14 @@ export class MileageService {
           totalTripThisMonth: totalTripLastMonth || 0,
           reimbursement: reimbursement._sum.amount || 0,
           trips,
+          pagination: {
+            currentPage: page,
+            totalPages,
+            totalRecords: totalTrips,
+            limit,
+            hasNext: page < totalPages,
+            hasPrev: page > 1,
+          },
         },
       });
     } catch (error) {

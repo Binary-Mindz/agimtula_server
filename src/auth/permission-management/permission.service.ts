@@ -53,7 +53,7 @@ export class PermissionService {
     } catch (error) {
       console.error('Assign role permission error:', error);
       throw new HttpException(
-        error?.message || 'Failed to assign role permission',
+        'Failed to assign role permission',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

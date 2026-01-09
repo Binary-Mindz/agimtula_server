@@ -5,8 +5,6 @@ import {
   Get,
   Param,
   Post,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { SubscriptionsService } from './subscriptions.service';
 import { CreateSubscriptionPlanDto } from './dto/create-subscription.dto';
@@ -33,7 +31,6 @@ export class AdminSubscriptionsController {
   @Post('plans')
   @Roles('ADMIN')
   @ApiOperation({ summary: 'Create subscription plan ( ADMIN only )' })
-  @UsePipes(new ValidationPipe({ transform: true }))
   createSubscriptionPlan(@Body() dto: CreateSubscriptionPlanDto) {
     return this.subscriptionsService.createSubscription(dto);
   }
@@ -63,7 +60,6 @@ export class AdminSubscriptionsController {
   @Post('invoice-auto-sync-interval')
   @Roles('ADMIN')
   @ApiOperation({ summary: 'Create invoice auto sync interval ( ADMIN only )' })
-  @UsePipes(new ValidationPipe({ transform: true }))
   createInvoiceAutoSyncInterval(@Body() dto: InvoiceAutoSyncDto) {
     return this.invoiceAutoSyncIntervalService.createInvoiceAutoSyncInterval(
       dto,

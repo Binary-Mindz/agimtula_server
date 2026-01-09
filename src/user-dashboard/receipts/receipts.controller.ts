@@ -7,8 +7,6 @@ import {
   Patch,
   Post,
   Query,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { ReceiptsService } from './receipts.service';
 import { UploadReceiptDto } from './dto/upload-receipt.dto';
@@ -26,7 +24,6 @@ export class UserReceiptsController {
 
   @Post('create-category')
   @Roles('ADMIN')
-  @UsePipes(new ValidationPipe({ transform: true }))
   @ApiBody({ schema: { properties: { name: { type: 'string' } } } })
   @ApiResponse({ status: 201, description: 'Category created successfully' })
   @ApiResponse({ status: 400, description: 'Invalid category name' })
@@ -48,7 +45,6 @@ export class UserReceiptsController {
 
   @Delete('delete-category/:id')
   @Roles('ADMIN')
-  @UsePipes(new ValidationPipe({ transform: true }))
   @ApiOperation({ summary: 'Delete receipt category ( ADMIN only )' })
   @ApiResponse({ status: 204, description: 'Category deleted successfully' })
   @ApiResponse({ status: 404, description: 'Category not found' })
@@ -123,8 +119,6 @@ export class UserReceiptsController {
 
   @Patch('update-receipt')
   @Roles('USER')
-
-  @UsePipes(new ValidationPipe({ transform: true }))
   @ApiBody({
     schema: {
       properties: {
@@ -147,7 +141,6 @@ export class UserReceiptsController {
   @Delete('delete-receipt')
   @Roles('USER')
   @ApiOperation({ summary: 'Delete receipt ( USER only )' })
-  @UsePipes(new ValidationPipe({ transform: true }))
   @ApiResponse({ status: 204, description: 'Receipt deleted successfully' })
   @ApiResponse({ status: 404, description: 'Receipt not found' })
   async deleteReceipt(@Param('id') id: string) {

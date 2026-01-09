@@ -29,7 +29,7 @@ export class QuotationsController {
   @Get()
   @Roles('USER')
   @ApiOperation({ summary: 'Get all quotations ( USER )' })
-  async findAll(@Query(new ValidationPipe({ transform: true })) query: QueryQuotationDto) {
+  async findAll(@Query() query: QueryQuotationDto) {
     return await this.quotationsService.findAll(query);
   }
 

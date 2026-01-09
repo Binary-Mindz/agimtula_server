@@ -22,6 +22,7 @@ import { SendRegistrationOtpDto } from './dto/send-registration-otp.dto';
 import { VerifyRegistrationOtpDto } from './dto/verify-registration-otp.dto';
 import { CompleteRegistrationDto } from './dto/complete-registration.dto';
 import * as crypto from 'crypto';
+import { profile } from 'console';
 
 interface Login2FAPayload {
   userId: string;
@@ -45,7 +46,7 @@ export class AuthService {
     private jwt: JwtService,
     private mail: SmtpMailService,
     private redis: RedisServiceService,
-  ) {}
+  ) { }
 
   private async setRedisValue<T>(key: string, value: T, ttl: number) {
     await this.redis.set(key, JSON.stringify(value), 'EX', ttl);
@@ -237,7 +238,6 @@ export class AuthService {
           twoFactorEnabled: true,
         },
       });
-
       if (!user) {
         throw new UnauthorizedException('User not found');
       }
@@ -313,17 +313,14 @@ export class AuthService {
           firstName: user.profile?.firstName,
           lastName: user.profile?.lastName,
           email: user.email.email,
+          role: user.role,
+          profilePicture: user.profile?.profilePicture,
           accessToken,
         },
       });
     } catch (error) {
-      if (
-        error instanceof UnauthorizedException ||
-        error instanceof ForbiddenException
-      ) {
-        throw error;
-      }
-      throw new BadRequestException('Login failed');
+      console.log(error);
+      throw new BadRequestException(error.message || 'Login failed');
     }
   }
   async verifyLogin2FA(dto: VerifyTwoFADto) {

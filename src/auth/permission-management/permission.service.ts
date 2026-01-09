@@ -1,16 +1,12 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { cResponseData } from 'src/common/cResponse';
+import { ExceptionFactory } from 'src/common/exception-factory';
 
 @Injectable()
 export class PermissionService {
   constructor(private prisma: PrismaService) { }
 
-  // ============ ROLE-BASED PERMISSIONS ============
-
-  /**
-   * Assign module permission to a role
-   */
   async assignRolePermission(
     role: string,
     moduleName: string,
@@ -22,7 +18,7 @@ export class PermissionService {
       });
 
       if (!module) {
-        throw new HttpException('Module not found', HttpStatus.NOT_FOUND);
+        throw ExceptionFactory.notFound('Module');
       }
 
       const permission = await this.prisma.roleModulePermission.upsert({
@@ -52,16 +48,14 @@ export class PermissionService {
       });
     } catch (error) {
       console.error('Assign role permission error:', error);
-      throw new HttpException(
-        error?.message || 'Failed to assign role permission',
-        HttpStatus.INTERNAL_SERVER_ERROR,
+      throw ExceptionFactory.custom(
+        'DATABASE_ERROR',
+        'Failed to assign role permission'
       );
     }
   }
 
-  /**
-   * Revoke module permission from a role
-   */
+
   async revokeRolePermission(role: string, moduleName: string) {
     try {
       const module = await this.prisma.module.findUnique({
@@ -69,7 +63,7 @@ export class PermissionService {
       });
 
       if (!module) {
-        throw new HttpException('Module not found', HttpStatus.NOT_FOUND);
+        throw ExceptionFactory.notFound('Module');
       }
 
       const result = await this.prisma.roleModulePermission.updateMany({
@@ -89,16 +83,14 @@ export class PermissionService {
       });
     } catch (error) {
       console.error('Revoke role permission error:', error);
-      throw new HttpException(
-        'Failed to revoke role permission',
-        HttpStatus.INTERNAL_SERVER_ERROR,
+      throw ExceptionFactory.custom(
+        'DATABASE_ERROR',
+        'Failed to revoke role permission'
       );
     }
   }
 
-  /**
-   * Get all permissions for a specific role
-   */
+
   async getRolePermissions(role: string) {
     try {
       const permissions = await this.prisma.roleModulePermission.findMany({
@@ -126,16 +118,14 @@ export class PermissionService {
       });
     } catch (error) {
       console.error('Get role permissions error:', error);
-      throw new HttpException(
-        'Failed to retrieve role permissions',
-        HttpStatus.INTERNAL_SERVER_ERROR,
+      throw ExceptionFactory.custom(
+        'DATABASE_ERROR',
+        'Failed to retrieve role permissions'
       );
     }
   }
 
-  /**
-   * Get all roles with their permissions
-   */
+
   async getAllRolesWithPermissions() {
     try {
       const roles = ['ADMIN', 'USER', 'ACCOUNTANT'];
@@ -167,9 +157,9 @@ export class PermissionService {
       });
     } catch (error) {
       console.error('Get all roles with permissions error:', error);
-      throw new HttpException(
-        'Failed to retrieve roles with permissions',
-        HttpStatus.INTERNAL_SERVER_ERROR,
+      throw ExceptionFactory.custom(
+        'DATABASE_ERROR',
+        'Failed to retrieve roles with permissions'
       );
     }
   }

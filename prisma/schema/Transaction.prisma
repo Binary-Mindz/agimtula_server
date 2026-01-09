@@ -1,5 +1,6 @@
 model Transaction {
     id          String            @id @default(cuid())
+    trx_id      Int               @default(autoincrement())
     date        DateTime
     description String
     amount      Decimal           @db.Decimal(10, 2)

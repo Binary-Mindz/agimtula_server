@@ -39,6 +39,7 @@ model userSubscriptionPlan {
 
 model userSubscriptionPlanHistory {
   id                            String                         @id @unique @default(uuid())
+  trx_id                        Int                            @default(autoincrement())
   planName                      String
   UserId                        String
   isLimitedInvoicePerMonth      Boolean

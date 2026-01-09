@@ -11,13 +11,13 @@ import {
 import { InvoicesService } from './invoices.service';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
-import { ApiOperation, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { User } from 'src/auth/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 
 @Controller('invoices')
 export class InvoicesController {
-  constructor(private readonly invoicesService: InvoicesService) { }
+  constructor(private readonly invoicesService: InvoicesService) {}
 
   @Post()
   @Roles('USER')
@@ -38,15 +38,37 @@ export class InvoicesController {
 
   @Roles('USER')
   @Get()
-  @ApiOperation({ summary: 'Get all invoices with optional search Only (USER)' })
+  @ApiOperation({
+    summary: 'Get all invoices with optional search Only (USER)',
+  })
   @ApiQuery({
     name: 'search',
     type: String,
     required: false,
   })
+  @ApiQuery({
+    name: 'page',
+    type: Number,
+    required: false,
+  })
+  @ApiQuery({
+    name: 'limit',
+    type: Number,
+    required: false,
+  })
   @ApiOperation({ summary: 'Get all invoices ( USER only )' })
-  async findAll(@Query('search') search: string) {
-    return await this.invoicesService.findAll(search);
+  async findAll(
+    @User() user: jwtPayload,
+    @Query('search') search: string,
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ) {
+    return await this.invoicesService.findAll(
+      search,
+      page || 1,
+      limit || 10,
+      user.sub,
+    );
   }
 
   @Roles('USER')
@@ -75,9 +97,26 @@ export class InvoicesController {
     type: String,
     required: true,
   })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        isPaymentLinkIncluded: {
+          type: 'boolean',
+          default: true,
+        },
+      },
+    },
+  })
   @ApiOperation({ summary: 'Convert draft to invoice ( USER only )' })
-  async draftToInvoice(@Param('id') id: string) {
-    return await this.invoicesService.draftToInvoice(id);
+  async draftToInvoice(
+    @Param('id') id: string,
+    @Body() body?: { isPaymentLinkIncluded?: boolean },
+  ) {
+    return await this.invoicesService.draftToInvoice(
+      id,
+      body?.isPaymentLinkIncluded,
+    );
   }
 
   @Roles('USER')

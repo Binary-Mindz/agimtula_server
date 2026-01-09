@@ -227,7 +227,12 @@ export class InvoicesService {
       );
     }
   }
-  async findAll(search: string, page: number = 1, limit: number = 10) {
+  async findAll(
+    search: string,
+    page: number = 1,
+    limit: number = 10,
+    userId: string,
+  ) {
     const skip = (page - 1) * limit;
     const query = {};
 
@@ -251,13 +256,13 @@ export class InvoicesService {
     try {
       const [invoices, totalRecords] = await Promise.all([
         this.prisma.invoice.findMany({
-          where: { ...query, isDrafted: false },
+          where: { ...query, isDrafted: false, userId },
           skip,
           take: limit,
           orderBy: { createdAt: 'desc' },
         }),
         this.prisma.invoice.count({
-          where: { ...query, isDrafted: false },
+          where: { ...query, isDrafted: false, userId },
         }),
       ]);
 
@@ -267,6 +272,7 @@ export class InvoicesService {
         message: 'Invoices fetched successfully',
         data: {
           invoices: invoices.map((inv) => ({
+            id: inv.id,
             invoiceNo: inv.invoiceNo,
             client: inv.companyName,
             date: inv.issueDate,
@@ -318,20 +324,93 @@ export class InvoicesService {
     }
   }
 
-  async draftToInvoice(id: string) {
+  async draftToInvoice(id: string, isPaymentLinkIncluded?: boolean) {
     try {
+      const draft = await this.prisma.invoice.findFirst({
+        where: { id, isDrafted: true },
+      });
+
+      if (!draft) {
+        return cResponseData({
+          message: 'Draft not found',
+          error: 'Draft not found',
+          success: false,
+        });
+      }
+
+      let isPaid = !isPaymentLinkIncluded;
+      let session: any;
+
+      // Logic for isPaid based on due date and payment link
+      if (draft.dueDate) {
+        if (draft.dueDate < new Date()) {
+          isPaid = false;
+        } else {
+          isPaid = !isPaymentLinkIncluded;
+        }
+      }
+
       const invoice = await this.prisma.invoice.update({
-        where: {
-          id,
-        },
+        where: { id },
         data: {
           isDrafted: false,
+          isPaid,
         },
       });
 
+      // Create payment session if payment link is included and due date is in future
+      if (
+        isPaymentLinkIncluded &&
+        draft.dueDate &&
+        draft.dueDate > new Date()
+      ) {
+        session = await this.stripe.checkout.sessions.create({
+          customer_email: draft.email,
+          line_items: [
+            {
+              price_data: {
+                currency: 'usd',
+                product_data: {
+                  name: draft.companyName,
+                },
+                unit_amount: draft.totalAmount * 100,
+              },
+              quantity: 1,
+            },
+          ],
+          mode: 'payment',
+          success_url: `${process.env.FRONTEND_URL}/invoice/${draft.id}`,
+          cancel_url: `${process.env.FRONTEND_URL}/invoice/${draft.id}`,
+          metadata: {
+            invoiceId: draft.id,
+          },
+        });
+
+        await this.prisma.invoice.update({
+          where: { id },
+          data: {
+            stripeSessionId: session.id,
+            isPaid: false,
+          },
+        });
+
+        // Send email with payment link
+        await this.mail.sendMail(
+          draft.email,
+          `Invoice #${draft.invoiceNo}`,
+          invoiceEmailTemplate({
+            ...draft,
+            mobilePaymentLink: session.url,
+          }),
+        );
+      }
+
       return cResponseData({
         message: 'Draft converted to invoice successfully',
-        data: invoice,
+        data: {
+          invoice,
+          paymentUrl: session?.url || null,
+        },
       });
     } catch (error) {
       console.error('Draft to invoice error:', error);
@@ -410,7 +489,7 @@ export class InvoicesService {
     }
   }
 
-  async update(id: string, updateInvoiceDto: CreateInvoiceDto, userId: string) {
+  async update(id: string, updateInvoiceDto: UpdateInvoiceDto, userId: string) {
     try {
       const {
         serviceAndItems,
@@ -438,28 +517,18 @@ export class InvoicesService {
       }
 
       // Convert date strings to Date objects
-      const issueDateObj = new Date(issueDate);
+
       const dueDateObj = dueDate ? new Date(dueDate) : null;
-
-      // Delete existing relations
-      await this.prisma.serviceAndItem.deleteMany({
-        where: { invoiceId: id },
-      });
-
-      await this.prisma.businessData.deleteMany({
-        where: { invoiceId: id },
-      });
 
       // Update invoice with new data
       const updatedInvoice = await this.prisma.invoice.update({
         where: { id },
         data: {
           ...invoiceData,
-          issueDate: issueDateObj,
           dueDate: dueDateObj,
           AddressAndContactInfo: addressAndContactInfo,
           serviceAndItems: {
-            create: serviceAndItems.map((item) => ({
+            create: serviceAndItems?.map((item) => ({
               description: item.description,
               qty: item.qty,
               rate: item.rate,

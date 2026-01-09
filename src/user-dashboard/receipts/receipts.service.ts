@@ -107,42 +107,65 @@ export class ReceiptsService {
     }
   }
 
-  async getReceiptsData(userId: string, search: string, filterCategory: string) {
+  async getReceiptsData(
+    userId: string,
+    search?: string,
+    filterCategory?: string,
+    page: number = 1,
+    limit: number = 10,
+  ) {
     try {
-      const query = {
-        userId: userId,
-      };
+      const skip = (page - 1) * limit;
+      const query: any = { userId };
 
       if (search) {
-        query['vendor'] = { contains: search, mode: 'insensitive' };
+        query.vendor = { contains: search, mode: 'insensitive' };
       }
 
       if (filterCategory) {
-        query['category'] = { name: filterCategory };
+        query.category = { name: filterCategory };
       }
 
-      const receipts = await this.prisma.receipt.findMany({
-        where: query,
-        select: {
-          id: true,
-          vendor: true,
-          date: true,
-          amount: true,
-          receipt_id: true,
-          notes: true,
-          receiptFileUrl: true,
-          category: {
-            select: {
-              name: true,
+      const [receipts, totalRecords] = await Promise.all([
+        this.prisma.receipt.findMany({
+          where: query,
+          skip,
+          take: limit,
+          orderBy: { date: 'desc' },
+          select: {
+            id: true,
+            vendor: true,
+            date: true,
+            amount: true,
+            receipt_id: true,
+            notes: true,
+            receiptFileUrl: true,
+            category: {
+              select: {
+                name: true,
+              },
             },
           },
-        },
-      });
+        }),
+        this.prisma.receipt.count({ where: query }),
+      ]);
+
+      const totalPages = Math.ceil(totalRecords / limit);
 
       return cResponseData({
         success: true,
         message: receipts.length > 0 ? 'Receipts retrieved successfully' : 'No receipts found',
-        data: receipts,
+        data: {
+          receipts,
+          pagination: {
+            currentPage: page,
+            totalPages,
+            totalRecords,
+            limit,
+            hasNext: page < totalPages,
+            hasPrev: page > 1,
+          },
+        },
       });
     } catch (error) {
       console.error('Get receipts data error:', error);

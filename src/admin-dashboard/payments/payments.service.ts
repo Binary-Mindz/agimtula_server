@@ -216,6 +216,7 @@ export class PaymentsService {
           include: {
             user: {
               select: {
+                id: true,
                 profile: {
                   select: {
                     firstName: true,
@@ -238,12 +239,72 @@ export class PaymentsService {
 
       return cResponseData({
         message: 'Transactions are fetched',
-        data: transactions,
+        data: {
+          transactions: transactions.map((transaction) => ({
+            id: transaction.id,
+            trx_id: transaction.trx_id,
+            planName: transaction.planName,
+            price: transaction.price,
+            paymentMethod: 'Stripe',
+            paymentStatus:
+              transaction.subscriptionPlanPaymentStatus?.paymentStatus,
+            createdAt: transaction.createdAt,
+            user: {
+              firstName: transaction.user.profile?.firstName,
+              lastName: transaction.user.profile?.lastName,
+            },
+          })),
+        },
       });
     } catch (error) {
       console.error('Get transactions data error:', error);
       throw new HttpException(
         'Failed to fetch transactions data',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async viewPaymentDetails(paymentId: string) {
+    try {
+      const paymentDetails =
+        await this.prisma.userSubscriptionPlanHistory.findFirst({
+          where: {
+            id: paymentId,
+          },
+          include: {
+            user: {
+              select: {
+                id: true,
+                profile: {
+                  select: {
+                    firstName: true,
+                    lastName: true,
+                  },
+                },
+                email: {
+                  select: {
+                    email: true,
+                  },
+                },
+              },
+            },
+            subscriptionPlanPaymentStatus: true,
+          },
+        });
+
+      if (!paymentDetails) {
+        throw new HttpException('Payment not found', HttpStatus.NOT_FOUND);
+      }
+
+      return cResponseData({
+        message: 'Payment details fetched successfully',
+        data: paymentDetails,
+      });
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'Failed to fetch payment details',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

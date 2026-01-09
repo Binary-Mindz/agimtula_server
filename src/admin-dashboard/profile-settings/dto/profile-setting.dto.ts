@@ -1,8 +1,9 @@
+// here will be firstName lastName email businessName? and vat Number? with swagger
+
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-// there will be firstName lastName email phone company name address
-export class CreateUserManagementDto {
+export class ProfileSettingsDto {
   @ApiProperty({
     example: 'John Doe',
     description: "User's First name here",
@@ -30,29 +31,20 @@ export class CreateUserManagementDto {
   email: string;
 
   @ApiProperty({
+    example: 'abcd',
+    description: 'User business data',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  businessName?: string;
+
+  @ApiProperty({
     example: '1234567890',
-    description: "User's phone number here",
+    description: 'User business data',
     required: false,
   })
   @IsString()
   @IsOptional()
-  phone?: string;
-
-  @ApiProperty({
-    example: 'ABC Company',
-    description: "User's company name here",
-    required: false,
-  })
-  @IsString()
-  @IsOptional()
-  company: string;
-
-  @ApiProperty({
-    example: '123 Main St, City, Country',
-    description: "User's address here",
-    required: false,
-  })
-  @IsString()
-  @IsOptional()
-  address: string;
+  vatNumber?: string;
 }

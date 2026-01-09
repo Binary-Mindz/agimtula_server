@@ -4,6 +4,7 @@ model User {
   role                        UserRole                      @default(USER)
   twoFactorEnabled            Boolean                       @default(false)
   status                      Boolean                       @default(true)
+  isDeleted                   Boolean                       @default(false)
   created_at                  DateTime                      @default(now())
   updated_at                  DateTime                      @updatedAt
   receipts                    Receipt[]

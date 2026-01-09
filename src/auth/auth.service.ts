@@ -45,7 +45,7 @@ export class AuthService {
     private jwt: JwtService,
     private mail: SmtpMailService,
     private redis: RedisServiceService,
-  ) { }
+  ) {}
 
   private async setRedisValue<T>(key: string, value: T, ttl: number) {
     await this.redis.set(key, JSON.stringify(value), 'EX', ttl);
@@ -119,21 +119,28 @@ export class AuthService {
   async verifyRegistrationOtp(dto: VerifyRegistrationOtpDto) {
     try {
       const redisKey = `otp:registration:${dto.email}`;
-      const payload = await this.getRedisValue<RegistrationOtpPayload>(redisKey);
+      const payload =
+        await this.getRedisValue<RegistrationOtpPayload>(redisKey);
 
       if (!payload) {
-        throw new BadRequestException('OTP expired or not found. Please request a new one.');
+        throw new BadRequestException(
+          'OTP expired or not found. Please request a new one.',
+        );
       }
 
       if (payload.attempts >= 3) {
         await this.redis.del(redisKey);
-        throw new BadRequestException('Too many failed attempts. Please request a new OTP.');
+        throw new BadRequestException(
+          'Too many failed attempts. Please request a new OTP.',
+        );
       }
 
       if (payload.code !== dto.code) {
         payload.attempts += 1;
         await this.setRedisValue(redisKey, payload, 300);
-        throw new BadRequestException(`Invalid OTP code. ${3 - payload.attempts} attempts remaining.`);
+        throw new BadRequestException(
+          `Invalid OTP code. ${3 - payload.attempts} attempts remaining.`,
+        );
       }
 
       const verificationToken = crypto.randomBytes(32).toString('hex');
@@ -210,7 +217,9 @@ export class AuthService {
         },
       });
     } catch (error) {
-      throw new BadRequestException(error.message || 'Failed to complete registration');
+      throw new BadRequestException(
+        error.message || 'Failed to complete registration',
+      );
     }
   }
 
@@ -218,11 +227,23 @@ export class AuthService {
     try {
       const user = await this.prisma.user.findFirst({
         where: { email: { email: loginDto.email } },
-        include: { email: true, profile: true },
+        select: {
+          id: true,
+          role: true,
+          email: true,
+          profile: true,
+          isDeleted: true,
+          password: true,
+          twoFactorEnabled: true,
+        },
       });
 
       if (!user) {
         throw new UnauthorizedException('User not found');
+      }
+
+      if (user.isDeleted) {
+        throw new NotFoundException('User account is deleted');
       }
 
       const isPasswordValid = await bcrypt.compare(
@@ -256,6 +277,7 @@ export class AuthService {
         }
 
         await this.mail.sendMail(
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           user.email.email,
           'Your 2FA Verification Code',
           `
@@ -411,8 +433,11 @@ export class AuthService {
 
   async deleteAccount(userId: string) {
     try {
-      await this.prisma.email.delete({
-        where: { userId },
+      await this.prisma.user.update({
+        where: { id: userId },
+        data: {
+          isDeleted: true,
+        },
       });
 
       return cResponseData({

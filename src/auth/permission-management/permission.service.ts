@@ -1,6 +1,7 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { cResponseData } from 'src/common/cResponse';
+import { ExceptionFactory } from 'src/common/exception-factory';
 
 @Injectable()
 export class PermissionService {
@@ -17,7 +18,7 @@ export class PermissionService {
       });
 
       if (!module) {
-        throw new HttpException('Module not found', HttpStatus.NOT_FOUND);
+        throw ExceptionFactory.notFound('Module');
       }
 
       const permission = await this.prisma.roleModulePermission.upsert({
@@ -47,9 +48,9 @@ export class PermissionService {
       });
     } catch (error) {
       console.error('Assign role permission error:', error);
-      throw new HttpException(
-        'Failed to assign role permission',
-        HttpStatus.INTERNAL_SERVER_ERROR,
+      throw ExceptionFactory.custom(
+        'DATABASE_ERROR',
+        'Failed to assign role permission'
       );
     }
   }
@@ -62,7 +63,7 @@ export class PermissionService {
       });
 
       if (!module) {
-        throw new HttpException('Module not found', HttpStatus.NOT_FOUND);
+        throw ExceptionFactory.notFound('Module');
       }
 
       const result = await this.prisma.roleModulePermission.updateMany({
@@ -82,9 +83,9 @@ export class PermissionService {
       });
     } catch (error) {
       console.error('Revoke role permission error:', error);
-      throw new HttpException(
-        'Failed to revoke role permission',
-        HttpStatus.INTERNAL_SERVER_ERROR,
+      throw ExceptionFactory.custom(
+        'DATABASE_ERROR',
+        'Failed to revoke role permission'
       );
     }
   }
@@ -117,9 +118,9 @@ export class PermissionService {
       });
     } catch (error) {
       console.error('Get role permissions error:', error);
-      throw new HttpException(
-        'Failed to retrieve role permissions',
-        HttpStatus.INTERNAL_SERVER_ERROR,
+      throw ExceptionFactory.custom(
+        'DATABASE_ERROR',
+        'Failed to retrieve role permissions'
       );
     }
   }
@@ -156,9 +157,9 @@ export class PermissionService {
       });
     } catch (error) {
       console.error('Get all roles with permissions error:', error);
-      throw new HttpException(
-        'Failed to retrieve roles with permissions',
-        HttpStatus.INTERNAL_SERVER_ERROR,
+      throw ExceptionFactory.custom(
+        'DATABASE_ERROR',
+        'Failed to retrieve roles with permissions'
       );
     }
   }

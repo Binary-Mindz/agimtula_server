@@ -3,11 +3,11 @@ import {
   CanActivate,
   ExecutionContext,
   HttpException,
-  HttpStatus,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { jwtPayload } from '../types/jwt-payload';
+import { ExceptionFactory } from 'src/common/exception-factory';
 
 export const RequiredPermission = Reflector.createDecorator<string>();
 
@@ -32,7 +32,7 @@ export class PermissionGuard implements CanActivate {
     const user = request.user as jwtPayload;
 
     if (!user) {
-      throw new HttpException('User not found', HttpStatus.UNAUTHORIZED);
+      throw ExceptionFactory.unauthorized('User not found');
     }
 
     // ADMIN users have access to all modules
@@ -48,9 +48,8 @@ export class PermissionGuard implements CanActivate {
       );
 
       if (!hasPermission) {
-        throw new HttpException(
-          `Access denied. ${user.role} role does not have permission for ${requiredModule} module`,
-          HttpStatus.FORBIDDEN,
+        throw ExceptionFactory.forbidden(
+          `${user.role} role does not have permission for ${requiredModule} module`
         );
       }
 
@@ -61,9 +60,9 @@ export class PermissionGuard implements CanActivate {
       }
 
       console.error('Permission check error:', error);
-      throw new HttpException(
-        'Error checking permissions',
-        HttpStatus.INTERNAL_SERVER_ERROR,
+      throw ExceptionFactory.custom(
+        'INTERNAL_ERROR',
+        'Error checking permissions'
       );
     }
   }

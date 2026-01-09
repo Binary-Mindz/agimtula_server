@@ -320,7 +320,7 @@ export class AuthService {
       });
     } catch (error) {
       console.log(error);
-      throw new BadRequestException('Login failed');
+      throw new BadRequestException(error.message || 'Login failed');
     }
   }
   async verifyLogin2FA(dto: VerifyTwoFADto) {

@@ -72,16 +72,16 @@ export class ModuleAccessGuard implements CanActivate {
       return false;
     }
 
-    // Check User Module Access
-    const userModuleAccess = await this.prisma.userModuleAccess.findUnique({
+    // Check Role-Based Module Access
+    const roleModuleAccess = await this.prisma.roleModulePermission.findUnique({
       where: {
-        userId_moduleId: {
-          userId: userId,
+        role_moduleId: {
+          role: role as any,
           moduleId: module.id,
         },
       },
     });
 
-    return !!(userModuleAccess && userModuleAccess.isEnabled);
+    return !!(roleModuleAccess && roleModuleAccess.isEnabled);
   }
 }

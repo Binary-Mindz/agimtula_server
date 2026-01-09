@@ -46,7 +46,7 @@ async function seedSuperAdmin() {
     return;
   }
 
-  const hashedPassword = await bcrypt.hash('Admin@12A', 10);
+  const hashedPassword = await bcrypt.hash('12345678', 10);
 
   await prisma.user.create({
     data: {
@@ -110,7 +110,112 @@ async function seedPermissions() {
     });
   }
 
-  console.log('✅ Modules & Permissions seeded successfully');
+  console.log('✅ Modules seeded successfully');
+}
+
+async function seedRolePermissions() {
+
+  const allModules = await prisma.module.findMany();
+
+  // ADMIN - সব modules এ access
+  for (const module of allModules) {
+    await prisma.roleModulePermission.upsert({
+      where: {
+        role_moduleId: {
+          role: UserRole.ADMIN,
+          moduleId: module.id,
+        },
+      },
+      create: {
+        role: UserRole.ADMIN,
+        moduleId: module.id,
+        isEnabled: true,
+        grantedBy: 'system',
+      },
+      update: {
+        isEnabled: true,
+        updatedAt: new Date(),
+      },
+    });
+  }
+
+  console.log('✅ Admin role permissions seeded successfully');
+
+  // USER - basic modules এ access
+  const userModules = [
+    'dashboard',
+    'profile',
+    'invoices',
+    'receipts',
+    'quotations',
+    'mileage',
+    'reports',
+  ];
+
+  const userModuleObjects = allModules.filter((m) =>
+    userModules.includes(m.name),
+  );
+
+  for (const module of userModuleObjects) {
+    await prisma.roleModulePermission.upsert({
+      where: {
+        role_moduleId: {
+          role: UserRole.USER,
+          moduleId: module.id,
+        },
+      },
+      create: {
+        role: UserRole.USER,
+        moduleId: module.id,
+        isEnabled: true,
+        grantedBy: 'system',
+      },
+      update: {
+        isEnabled: true,
+        updatedAt: new Date(),
+      },
+    });
+  }
+
+  console.log('✅ User role permissions seeded successfully');
+
+  // ACCOUNTANT - accountant specific modules
+  const accountantModules = [
+    'dashboard',
+    'invoices',
+    'receipts',
+    'reports',
+    'bank_transactions',
+    'vat_overview',
+    'profile',
+  ];
+
+  const accountantModuleObjects = allModules.filter((m) =>
+    accountantModules.includes(m.name),
+  );
+
+  for (const module of accountantModuleObjects) {
+    await prisma.roleModulePermission.upsert({
+      where: {
+        role_moduleId: {
+          role: UserRole.ACCOUNTANT,
+          moduleId: module.id,
+        },
+      },
+      create: {
+        role: UserRole.ACCOUNTANT,
+        moduleId: module.id,
+        isEnabled: true,
+        grantedBy: 'system',
+      },
+      update: {
+        isEnabled: true,
+        updatedAt: new Date(),
+      },
+    });
+  }
+
+  console.log('✅ Accountant role permissions seeded successfully');
 }
 
 async function main() {
@@ -118,6 +223,7 @@ async function main() {
 
   await seedSuperAdmin();
   await seedPermissions();
+  await seedRolePermissions();
   console.log('🎉 Seeding completed successfully');
 }
 

@@ -8,13 +8,13 @@ import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller(`${urlPrefix}reports`)
 export class UserReportsController {
-  constructor(private readonly reportsService: ReportsService) {}
+  constructor(private readonly reportsService: ReportsService) { }
 
   @Get('report-summury')
   @Roles('USER')
   @ApiOperation({ summary: 'Get report summary ( USER only )' })
   @ApiResponse({ status: 200, description: 'Report summary retrieved successfully' })
-  getReportSummury(@User() user: jwtPayload) {
-    return this.reportsService.getReportData(user.sub);
+  async getReportSummury(@User() user: jwtPayload) {
+    return await this.reportsService.getReportData(user.sub);
   }
 }

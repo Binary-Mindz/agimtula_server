@@ -17,7 +17,7 @@ import { jwtPayload } from 'src/auth/types/jwt-payload';
 
 @Controller('invoices')
 export class InvoicesController {
-  constructor(private readonly invoicesService: InvoicesService) {}
+  constructor(private readonly invoicesService: InvoicesService) { }
 
   @Post()
   @Roles('USER')

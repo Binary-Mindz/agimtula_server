@@ -1,20 +1,17 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { UploadReceiptDto } from './dto/upload-receipt.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { cResponseData } from 'src/common/cResponse';
 import { UpdateReceiptDto } from './dto/update-receipt-dto';
+import { NotFoundAppException } from 'src/common/app-exceptions';
 
 @Injectable()
 export class ReceiptsService {
   constructor(private prisma: PrismaService) { }
 
-  // Receipt Category
-
   async createReceiptCategory(name: string) {
-    const receiptName = name.trim().toLowerCase();
-
     try {
+      const receiptName = name.trim().toLowerCase();
       const rec = await this.prisma.receiptCategory.upsert({
         where: { name: receiptName },
         update: {},
@@ -22,14 +19,13 @@ export class ReceiptsService {
       });
 
       return cResponseData({
+        success: true,
         message: 'Receipt category created successfully',
         data: rec,
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Receipt category creation failed',
-        error: 'Receipt category creation failed',
-      });
+      console.error('Create receipt category error:', error);
+      throw new HttpException('Failed to create receipt category', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -38,45 +34,41 @@ export class ReceiptsService {
       const categories = await this.prisma.receiptCategory.findMany();
 
       return cResponseData({
+        success: true,
         message: 'Receipt categories retrieved successfully',
         data: categories,
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Receipt categories retrieve failed',
-        error: 'Receipt categories retrieve failed',
-      });
+      console.error('Get receipt categories error:', error);
+      throw new HttpException('Failed to retrieve receipt categories', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   async deleteCategory(id: string) {
     try {
-      const category = await this.prisma.receiptCategory.findUnique({
+      const category = await this.prisma.receiptCategory.delete({
         where: { id },
       });
+
       return cResponseData({
+        success: true,
         message: 'Category deleted successfully',
         data: category,
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Receipt categories delete failed',
-        error: 'Receipt categories delete failed',
-      });
+      console.error('Delete receipt category error:', error);
+      throw new HttpException('Failed to delete receipt category', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
-  async uploadReceipt(
-    userId: string,
-    dto: UploadReceiptDto,
-  ) {
+  async uploadReceipt(userId: string, dto: UploadReceiptDto) {
     try {
       const userExits = await this.prisma.user.findUnique({
         where: { id: userId },
       });
 
       if (!userExits) {
-        throw new NotFoundException('User not found');
+        throw new NotFoundAppException('User not found');
       }
 
       const categoryExits = await this.prisma.receiptCategory.findUnique({
@@ -84,7 +76,7 @@ export class ReceiptsService {
       });
 
       if (!categoryExits) {
-        throw new NotFoundException('Category not found');
+        throw new NotFoundAppException('Category not found');
       }
 
       const { vendor, amount, date, category, notes, receiptImage } = dto;
@@ -102,73 +94,89 @@ export class ReceiptsService {
       });
 
       return cResponseData({
+        success: true,
         message: 'Receipt uploaded successfully',
         data: rec,
       });
     } catch (error) {
-      console.error(error);
-      return cResponseData({
-        message: "Receipt upload failed",
-        error: "Receipt upload failed",
-      });
+      if (error instanceof NotFoundAppException) {
+        throw error;
+      }
+      console.error('Upload receipt error:', error);
+      throw new HttpException('Failed to upload receipt', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   async getReceiptsData(
     userId: string,
-    search: string,
-    filterCategory: string,
+    search?: string,
+    filterCategory?: string,
+    page: number = 1,
+    limit: number = 10,
   ) {
     try {
-      const query = {
-        userId: userId,
-      };
+      const skip = (page - 1) * limit;
+      const query: any = { userId };
 
       if (search) {
-        query['vendor'] = { contains: search, mode: 'insensitive' };
+        query.vendor = { contains: search, mode: 'insensitive' };
       }
 
       if (filterCategory) {
-        query['category'] = { name: filterCategory };
+        query.category = { name: filterCategory };
       }
 
-      const receipts = await this.prisma.receipt.findMany({
-        where: query,
-        select: {
-          id: true,
-          vendor: true,
-          date: true,
-          amount: true,
-          receipt_id: true,
-          notes: true,
-          receiptFileUrl: true, // Include base64 image
-          category: {
-            select: {
-              name: true,
+      const [receipts, totalRecords] = await Promise.all([
+        this.prisma.receipt.findMany({
+          where: query,
+          skip,
+          take: limit,
+          orderBy: { date: 'desc' },
+          select: {
+            id: true,
+            vendor: true,
+            date: true,
+            amount: true,
+            receipt_id: true,
+            notes: true,
+            receiptFileUrl: true,
+            category: {
+              select: {
+                name: true,
+              },
             },
+          },
+        }),
+        this.prisma.receipt.count({ where: query }),
+      ]);
+
+      const totalPages = Math.ceil(totalRecords / limit);
+
+      return cResponseData({
+        success: true,
+        message: receipts.length > 0 ? 'Receipts retrieved successfully' : 'No receipts found',
+        data: {
+          receipts,
+          pagination: {
+            currentPage: page,
+            totalPages,
+            totalRecords,
+            limit,
+            hasNext: page < totalPages,
+            hasPrev: page > 1,
           },
         },
       });
-
-      if (receipts.length === 0) {
-        return cResponseData({ message: 'No receipts found' });
-      }
-      return cResponseData({
-        message: 'Receipts retrieved successfully',
-        data: receipts,
-      });
     } catch (error) {
-      return cResponseData({
-        message: 'Receipt retrive failed',
-        error: 'Receipt retrive failed',
-      });
+      console.error('Get receipts data error:', error);
+      throw new HttpException('Failed to retrieve receipts', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   async updateReceiptsData(id: string, dto: UpdateReceiptDto) {
-    const { vendor, amount, date, category } = dto;
     try {
-      await this.prisma.receipt.update({
+      const { vendor, amount, date, category } = dto;
+      const updatedReceipt = await this.prisma.receipt.update({
         where: { id },
         data: {
           vendor,
@@ -178,26 +186,32 @@ export class ReceiptsService {
           notes: dto.notes,
         },
       });
-      return cResponseData({ message: 'Receipt updated successfully' });
-    } catch (error) {
+
       return cResponseData({
-        message: 'Receipt update failed',
-        error: 'Receipt update failed',
+        success: true,
+        message: 'Receipt updated successfully',
+        data: updatedReceipt,
       });
+    } catch (error) {
+      console.error('Update receipt error:', error);
+      throw new HttpException('Failed to update receipt', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   async deleteReceiptsData(id: string) {
     try {
-      await this.prisma.receipt.delete({
+      const deletedReceipt = await this.prisma.receipt.delete({
         where: { id },
       });
-      return cResponseData({ message: 'Receipt deleted successfully' });
-    } catch (error) {
+
       return cResponseData({
-        message: 'Receipt delete failed',
-        error: 'Receipt delete failed',
+        success: true,
+        message: 'Receipt deleted successfully',
+        data: deletedReceipt,
       });
+    } catch (error) {
+      console.error('Delete receipt error:', error);
+      throw new HttpException('Failed to delete receipt', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }

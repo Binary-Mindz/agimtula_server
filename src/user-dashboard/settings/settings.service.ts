@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { BusinessInfoDto } from './dto/business-info.dto';
 import { InvoiceLayoutDto } from './dto/invoice-layout.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
@@ -22,19 +21,27 @@ export class SettingsService {
         },
       });
 
-      return cResponseData({ data: businessInfo });
-    } catch (error) {
       return cResponseData({
-        message: 'Failed to update business info',
-        error: 'Failed to update business info',
+        success: true,
+        message: 'Business info updated successfully',
+        data: businessInfo,
       });
+    } catch (error) {
+      console.error('Update business info error:', error);
+      throw new HttpException(
+        'Failed to update business info',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async updateBusinessLogo(userId: string, logoBase64?: string) {
     try {
       if (!logoBase64) {
-        throw new NotFoundException('Logo data not provided');
+        throw new HttpException(
+          'Logo data not provided',
+          HttpStatus.BAD_REQUEST,
+        );
       }
 
       const businessInfo = await this.prisma.businessInfo.findUnique({
@@ -42,7 +49,10 @@ export class SettingsService {
       });
 
       if (!businessInfo) {
-        throw new NotFoundException('Business info not found');
+        throw new HttpException(
+          'Business info not found',
+          HttpStatus.NOT_FOUND,
+        );
       }
 
       await this.prisma.businessInfo.update({
@@ -54,14 +64,16 @@ export class SettingsService {
       });
 
       return cResponseData({
+        success: true,
         message: 'Business logo updated successfully',
         data: logoBase64,
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to update business logo',
-        error: 'Failed to update business logo',
-      });
+      console.error('Update business logo error:', error);
+      throw new HttpException(
+        'Failed to update business logo',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -72,7 +84,10 @@ export class SettingsService {
       });
 
       if (!businessInfo) {
-        throw new NotFoundException('Business info not found');
+        throw new HttpException(
+          'Business info not found',
+          HttpStatus.NOT_FOUND,
+        );
       }
 
       await this.prisma.businessInfo.update({
@@ -84,22 +99,37 @@ export class SettingsService {
       });
 
       return cResponseData({
+        success: true,
         message: 'Business logo removed successfully',
         data: null,
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to remove business logo',
-        error: 'Failed to remove business logo',
-      });
+      console.error('Remove business logo error:', error);
+      throw new HttpException(
+        'Failed to remove business logo',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async getBusinessInfo(userId: string) {
-    const businessInfo = await this.prisma.businessInfo.findUnique({
-      where: { userId },
-    });
-    return cResponseData({ data: businessInfo });
+    try {
+      const businessInfo = await this.prisma.businessInfo.findUnique({
+        where: { userId },
+      });
+
+      return cResponseData({
+        success: true,
+        message: 'Business info retrieved successfully',
+        data: businessInfo,
+      });
+    } catch (error) {
+      console.error('Get business info error:', error);
+      throw new HttpException(
+        'Failed to retrieve business info',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   invoiceLayout(dto: InvoiceLayoutDto) {

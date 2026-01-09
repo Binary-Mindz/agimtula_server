@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
@@ -7,6 +7,7 @@ import { cResponseData } from 'src/common/cResponse';
 import { SmtpMailService } from 'src/config/smtp-mail/smtp-mail.service';
 import { invoiceEmailTemplate } from './invoice-email.template';
 import Stripe from 'stripe';
+import { NotFoundAppException } from 'src/common/app-exceptions';
 
 @Injectable()
 export class InvoicesService {
@@ -144,12 +145,11 @@ export class InvoicesService {
         data: newInvoice,
       });
     } catch (error) {
-      console.error('Invoice creation error:', error);
-      return cResponseData({
-        message: 'Failed to create invoice',
-        error: 'Failed to create invoice',
-        success: false,
-      });
+      console.error('Create invoice error:', error);
+      throw new HttpException(
+        'Failed to create invoice',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -220,15 +220,19 @@ export class InvoicesService {
         data: newInvoice,
       });
     } catch (error) {
-      console.error(error);
-      return cResponseData({
-        message: 'Failed to save invoice to draft',
-        error: 'Failed to save invoice to draft',
-        success: false,
-      });
+      console.error('Save to draft error:', error);
+      throw new HttpException(
+        'Failed to save invoice to draft',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
-  async findAll(search: string, page: number = 1, limit: number = 10) {
+  async findAll(
+    search: string,
+    page: number = 1,
+    limit: number = 10,
+    userId: string,
+  ) {
     const skip = (page - 1) * limit;
     const query = {};
 
@@ -252,13 +256,13 @@ export class InvoicesService {
     try {
       const [invoices, totalRecords] = await Promise.all([
         this.prisma.invoice.findMany({
-          where: { ...query, isDrafted: false },
+          where: { ...query, isDrafted: false, userId },
           skip,
           take: limit,
           orderBy: { createdAt: 'desc' },
         }),
         this.prisma.invoice.count({
-          where: { ...query, isDrafted: false },
+          where: { ...query, isDrafted: false, userId },
         }),
       ]);
 
@@ -268,6 +272,7 @@ export class InvoicesService {
         message: 'Invoices fetched successfully',
         data: {
           invoices: invoices.map((inv) => ({
+            id: inv.id,
             invoiceNo: inv.invoiceNo,
             client: inv.companyName,
             date: inv.issueDate,
@@ -290,11 +295,11 @@ export class InvoicesService {
         },
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to fetch invoices',
-        error: 'Failed to fetch invoices',
-        success: false,
-      });
+      console.error('Find all invoices error:', error);
+      throw new HttpException(
+        'Failed to fetch invoices',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -311,35 +316,108 @@ export class InvoicesService {
         data: drafts,
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to fetch drafts',
-        error: 'Failed to fetch drafts',
-        success: false,
-      });
+      console.error('Get drafts error:', error);
+      throw new HttpException(
+        'Failed to fetch drafts',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
-  async draftToInvoice(id: string) {
+  async draftToInvoice(id: string, isPaymentLinkIncluded?: boolean) {
     try {
+      const draft = await this.prisma.invoice.findFirst({
+        where: { id, isDrafted: true },
+      });
+
+      if (!draft) {
+        return cResponseData({
+          message: 'Draft not found',
+          error: 'Draft not found',
+          success: false,
+        });
+      }
+
+      let isPaid = !isPaymentLinkIncluded;
+      let session: any;
+
+      // Logic for isPaid based on due date and payment link
+      if (draft.dueDate) {
+        if (draft.dueDate < new Date()) {
+          isPaid = false;
+        } else {
+          isPaid = !isPaymentLinkIncluded;
+        }
+      }
+
       const invoice = await this.prisma.invoice.update({
-        where: {
-          id,
-        },
+        where: { id },
         data: {
           isDrafted: false,
+          isPaid,
         },
       });
 
+      // Create payment session if payment link is included and due date is in future
+      if (
+        isPaymentLinkIncluded &&
+        draft.dueDate &&
+        draft.dueDate > new Date()
+      ) {
+        session = await this.stripe.checkout.sessions.create({
+          customer_email: draft.email,
+          line_items: [
+            {
+              price_data: {
+                currency: 'usd',
+                product_data: {
+                  name: draft.companyName,
+                },
+                unit_amount: draft.totalAmount * 100,
+              },
+              quantity: 1,
+            },
+          ],
+          mode: 'payment',
+          success_url: `${process.env.FRONTEND_URL}/invoice/${draft.id}`,
+          cancel_url: `${process.env.FRONTEND_URL}/invoice/${draft.id}`,
+          metadata: {
+            invoiceId: draft.id,
+          },
+        });
+
+        await this.prisma.invoice.update({
+          where: { id },
+          data: {
+            stripeSessionId: session.id,
+            isPaid: false,
+          },
+        });
+
+        // Send email with payment link
+        await this.mail.sendMail(
+          draft.email,
+          `Invoice #${draft.invoiceNo}`,
+          invoiceEmailTemplate({
+            ...draft,
+            mobilePaymentLink: session.url,
+          }),
+        );
+      }
+
       return cResponseData({
         message: 'Draft converted to invoice successfully',
-        data: invoice,
+        data: {
+          invoice,
+          paymentUrl: session?.url || null,
+        },
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to convert draft to invoice',
-        error: 'Failed to convert draft to invoice',
-        success: false,
-      });
+      console.error('Draft to invoice error:', error);
+      throw new HttpException(
+        'Failed to convert draft to invoice',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -369,11 +447,11 @@ export class InvoicesService {
         data: invoice,
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to delete invoice',
-        error: 'Failed to delete invoice',
-        success: false,
-      });
+      console.error('Delete from draft error:', error);
+      throw new HttpException(
+        'Failed to delete invoice',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -403,15 +481,15 @@ export class InvoicesService {
         data: invoice,
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to fetch invoice',
-        error: 'Failed to fetch invoice',
-        success: false,
-      });
+      console.error('Find one invoice error:', error);
+      throw new HttpException(
+        'Failed to fetch invoice',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
-  async update(id: string, updateInvoiceDto: CreateInvoiceDto, userId: string) {
+  async update(id: string, updateInvoiceDto: UpdateInvoiceDto, userId: string) {
     try {
       const {
         serviceAndItems,
@@ -439,28 +517,18 @@ export class InvoicesService {
       }
 
       // Convert date strings to Date objects
-      const issueDateObj = new Date(issueDate);
-      const dueDateObj = dueDate ? new Date(dueDate) : null;
 
-      // Delete existing relations
-      await this.prisma.serviceAndItem.deleteMany({
-        where: { invoiceId: id },
-      });
-      
-      await this.prisma.businessData.deleteMany({
-        where: { invoiceId: id },
-      });
+      const dueDateObj = dueDate ? new Date(dueDate) : null;
 
       // Update invoice with new data
       const updatedInvoice = await this.prisma.invoice.update({
         where: { id },
         data: {
           ...invoiceData,
-          issueDate: issueDateObj,
           dueDate: dueDateObj,
           AddressAndContactInfo: addressAndContactInfo,
           serviceAndItems: {
-            create: serviceAndItems.map((item) => ({
+            create: serviceAndItems?.map((item) => ({
               description: item.description,
               qty: item.qty,
               rate: item.rate,
@@ -484,12 +552,11 @@ export class InvoicesService {
         data: updatedInvoice,
       });
     } catch (error) {
-      console.error('Invoice update error:', error);
-      return cResponseData({
-        message: 'Failed to update invoice',
-        error: 'Failed to update invoice',
-        success: false,
-      });
+      console.error('Update invoice error:', error);
+      throw new HttpException(
+        'Failed to update invoice',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -514,7 +581,7 @@ export class InvoicesService {
       await this.prisma.serviceAndItem.deleteMany({
         where: { invoiceId: id },
       });
-      
+
       await this.prisma.businessData.deleteMany({
         where: { invoiceId: id },
       });
@@ -529,12 +596,11 @@ export class InvoicesService {
         data: { id },
       });
     } catch (error) {
-      console.error('Invoice delete error:', error);
-      return cResponseData({
-        message: 'Failed to delete invoice',
-        error: 'Failed to delete invoice',
-        success: false,
-      });
+      console.error('Delete invoice error:', error);
+      throw new HttpException(
+        'Failed to delete invoice',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -548,7 +614,7 @@ export class InvoicesService {
       });
 
       if (invoices.length === 0) {
-        throw new ForbiddenException('No invoices found');
+        throw new NotFoundAppException('No invoices found');
       }
 
       return cResponseData({
@@ -557,10 +623,14 @@ export class InvoicesService {
         data: invoices,
       });
     } catch (error) {
-      return cResponseData({
-        success: false,
-        message: 'Failed to export invoices',
-      });
+      if (error instanceof NotFoundAppException) {
+        throw error;
+      }
+      console.error('Export invoices error:', error);
+      throw new HttpException(
+        'Failed to export invoices',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

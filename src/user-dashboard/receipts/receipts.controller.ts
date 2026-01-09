@@ -7,8 +7,6 @@ import {
   Patch,
   Post,
   Query,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { ReceiptsService } from './receipts.service';
 import { UploadReceiptDto } from './dto/upload-receipt.dto';
@@ -26,7 +24,6 @@ export class UserReceiptsController {
 
   @Post('create-category')
   @Roles('ADMIN')
-  @UsePipes(new ValidationPipe({ transform: true }))
   @ApiBody({ schema: { properties: { name: { type: 'string' } } } })
   @ApiResponse({ status: 201, description: 'Category created successfully' })
   @ApiResponse({ status: 400, description: 'Invalid category name' })
@@ -48,7 +45,6 @@ export class UserReceiptsController {
 
   @Delete('delete-category/:id')
   @Roles('ADMIN')
-  @UsePipes(new ValidationPipe({ transform: true }))
   @ApiOperation({ summary: 'Delete receipt category ( ADMIN only )' })
   @ApiResponse({ status: 204, description: 'Category deleted successfully' })
   @ApiResponse({ status: 404, description: 'Category not found' })
@@ -73,29 +69,56 @@ export class UserReceiptsController {
 
   @Get('data')
   @Roles('USER')
-  @ApiQuery({ name: 'search', required: false, type: 'string' })
-  @ApiQuery({ name: 'filterCategory', required: false, type: 'string' })
+  @ApiQuery({ name: 'search', required: false, type: 'string', description: 'Search by vendor name' })
+  @ApiQuery({ name: 'filterCategory', required: false, type: 'string', description: 'Filter by category name' })
+  @ApiQuery({ name: 'page', required: false, type: 'number', description: 'Page number (default: 1)' })
+  @ApiQuery({ name: 'limit', required: false, type: 'number', description: 'Items per page (default: 10)' })
   @ApiResponse({
     status: 200,
-    description: 'Receipts data retrieved successfully',
+    description: 'Receipts data retrieved successfully with pagination',
+    schema: {
+      properties: {
+        success: { type: 'boolean' },
+        message: { type: 'string' },
+        data: {
+          type: 'object',
+          properties: {
+            receipts: { type: 'array' },
+            pagination: {
+              type: 'object',
+              properties: {
+                currentPage: { type: 'number' },
+                totalPages: { type: 'number' },
+                totalRecords: { type: 'number' },
+                limit: { type: 'number' },
+                hasNext: { type: 'boolean' },
+                hasPrev: { type: 'boolean' },
+              },
+            },
+          },
+        },
+      },
+    },
   })
-  @ApiOperation({ summary: 'Get receipts data ( USER only )' })
+  @ApiOperation({ summary: 'Get receipts data with pagination and filtering ( USER only )' })
   async getReceiptsData(
-    @Query('search') search: string,
-    @Query('filterCategory') filterCategory: string,
     @User() user: jwtPayload,
+    @Query('search') search?: string,
+    @Query('filterCategory') filterCategory?: string,
+    @Query('page') page?: number,
+    @Query('limit') limit?: number,
   ) {
     return await this.receiptsService.getReceiptsData(
       user.sub,
       search,
       filterCategory,
+      page || 1,
+      limit || 10,
     );
   }
 
   @Patch('update-receipt')
   @Roles('USER')
-
-  @UsePipes(new ValidationPipe({ transform: true }))
   @ApiBody({
     schema: {
       properties: {
@@ -118,7 +141,6 @@ export class UserReceiptsController {
   @Delete('delete-receipt')
   @Roles('USER')
   @ApiOperation({ summary: 'Delete receipt ( USER only )' })
-  @UsePipes(new ValidationPipe({ transform: true }))
   @ApiResponse({ status: 204, description: 'Receipt deleted successfully' })
   @ApiResponse({ status: 404, description: 'Receipt not found' })
   async deleteReceipt(@Param('id') id: string) {

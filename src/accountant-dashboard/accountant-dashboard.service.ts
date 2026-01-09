@@ -1,41 +1,39 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { cResponseData } from 'src/common/cResponse';
 import { TransactionQueryDto } from './dto/TransactionQueryDto';
 import { TransactionStatus } from 'prisma/generated/prisma/enums';
+import { NotFoundAppException } from 'src/common/app-exceptions';
 
 @Injectable()
 export class AccountantDashboardService {
-  constructor(private readonly prisma: PrismaService) { }
-
+  constructor(private readonly prisma: PrismaService) {}
 
   async findAll(
     userId: string,
     accountantId: string,
-    query: TransactionQueryDto
+    query: TransactionQueryDto,
   ) {
-
     try {
       const ACCOUNTANT = await this.prisma.user.findFirst({
-        where: { id: accountantId }
+        where: { id: accountantId },
       });
       console.log(accountantId);
       if (!ACCOUNTANT) {
-        throw new NotFoundException('User not found');
+        throw new NotFoundAppException('User not found');
       }
 
       const userExist = await this.prisma.user.findFirst({
-        where: { id: userId }
+        where: { id: userId },
       });
       console.log({ userExist });
 
       if (!userExist) {
-        throw new NotFoundException('Client not found');
+        throw new NotFoundAppException('Client not found');
       }
       if (accountantId !== userExist.accountantId) {
-        throw new NotFoundException('Client id mismatch');
+        throw new NotFoundAppException('Client id mismatch');
       }
-
 
       const page = query.page ?? 1;
       const limit = query.limit ?? 10;
@@ -58,13 +56,13 @@ export class AccountantDashboardService {
           ...(search && {
             OR: [
               { description: { contains: search, mode: 'insensitive' } },
-              { currency: { contains: search, mode: 'insensitive' } }
-            ]
-          })
+              { currency: { contains: search, mode: 'insensitive' } },
+            ],
+          }),
         },
         orderBy: { date: 'desc' },
         skip,
-        take: limit
+        take: limit,
       });
       // Total count for pagination
       const totalCount = await this.prisma.transaction.count({
@@ -74,12 +72,11 @@ export class AccountantDashboardService {
           ...(search && {
             OR: [
               { description: { contains: search, mode: 'insensitive' } },
-              { currency: { contains: search, mode: 'insensitive' } }
-            ]
-          })
-        }
+              { currency: { contains: search, mode: 'insensitive' } },
+            ],
+          }),
+        },
       });
-
 
       const now = new Date();
       const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -90,34 +87,34 @@ export class AccountantDashboardService {
         23,
         59,
         59,
-        999
+        999,
       );
 
-      const thisMonthTransactions = transaction.filter(trx => {
+      const thisMonthTransactions = transaction.filter((trx) => {
         const trxDate = new Date(trx.date);
         return trxDate >= startOfMonth && trxDate <= endOfMonth;
       });
 
-
-      const totalByCurrency = thisMonthTransactions.reduce((acc, trx) => {
-        const amount = Number(trx.amount);
-        acc[trx.currency] = (acc[trx.currency] || 0) + amount;
-        return acc;
-      }, {} as Record<string, number>);
-
+      const totalByCurrency = thisMonthTransactions.reduce(
+        (acc, trx) => {
+          const amount = Number(trx.amount);
+          acc[trx.currency] = (acc[trx.currency] || 0) + amount;
+          return acc;
+        },
+        {} as Record<string, number>,
+      );
 
       const summary = {
         totalTransactions: thisMonthTransactions.length,
         matched: 0,
         unmatched: 0,
-        missingReceipt: 0
+        missingReceipt: 0,
       };
 
       for (const trx of thisMonthTransactions) {
         if (trx.status === 'MATCHED') summary.matched++;
         if (trx.status === 'UNMATCHED') summary.unmatched++;
       }
-
 
       return cResponseData({
         message: 'Transactions retrieved successfully',
@@ -129,13 +126,19 @@ export class AccountantDashboardService {
             page,
             limit,
             total: totalCount,
-            totalPages: Math.ceil(totalCount / limit)
-          }
-        }
+            totalPages: Math.ceil(totalCount / limit),
+          },
+        },
       });
     } catch (error) {
-      console.error(error);
-      throw error;
+      if (error instanceof NotFoundAppException) {
+        throw error;
+      }
+      console.error('Find all transactions error:', error);
+      throw new HttpException(
+        'Failed to retrieve transactions',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

@@ -1,13 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { CreateSubscriptionPlanDto } from './dto/create-subscription.dto';
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
 
 @Injectable()
 export class SubscriptionsService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async subscriptionsDashboardGraph() {
     try {
@@ -132,10 +131,11 @@ export class SubscriptionsService {
         data: { graphCal, totalRevenueGraph, subscriptionPlans },
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to get subscription dashboard data',
-        error: 'Failed to get subscription dashboard data',
-      });
+      console.error('Subscription dashboard error:', error);
+      throw new HttpException(
+        'Failed to get subscription dashboard data',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -171,10 +171,11 @@ export class SubscriptionsService {
         data: plan,
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to create subscription plan',
-        error: 'Failed to create subscription plan',
-      });
+      console.error('Create subscription error:', error);
+      throw new HttpException(
+        'Failed to create subscription plan',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -237,10 +238,11 @@ export class SubscriptionsService {
         })),
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to get subscription plans',
-        error: 'Failed to get subscription plans',
-      });
+      console.error('Get subscription plans error:', error);
+      throw new HttpException(
+        'Failed to get subscription plans',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -256,7 +258,10 @@ export class SubscriptionsService {
       });
 
       if (!plan) {
-        throw new Error('Subscription plan not found');
+        throw new HttpException(
+          'Subscription plan not found',
+          HttpStatus.NOT_FOUND,
+        );
       }
 
       const interval = await this.prisma.invoiceAutoSyncInterval.findMany({
@@ -281,10 +286,14 @@ export class SubscriptionsService {
         },
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to get subscription plan',
-        error: 'Failed to get subscription plan',
-      });
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      console.error('Get subscription plan error:', error);
+      throw new HttpException(
+        'Failed to get subscription plan',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -301,10 +310,11 @@ export class SubscriptionsService {
         data: plan,
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to delete subscription plan',
-        error: 'Failed to delete subscription plan',
-      });
+      console.error('Delete subscription error:', error);
+      throw new HttpException(
+        'Failed to delete subscription plan',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -312,5 +322,5 @@ export class SubscriptionsService {
     return { id, dto };
   }
 
-  getSubscriptionData() { }
+  getSubscriptionData() {}
 }

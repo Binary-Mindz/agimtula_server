@@ -29,11 +29,7 @@ export class TinkController {
 
   @Post('connect-bank')
   @Public()
-  @ApiOperation({
-    summary: 'Generate bank connection URL',
-    description:
-      'Creates Tink authorization URL to initiate bank connection flow. Open the returned URL in browser to connect your bank.',
-  })
+  @ApiOperation({ summary: 'Generate bank connection URL ( PUBLIC )' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Authorization URL generated successfully',
@@ -59,11 +55,7 @@ export class TinkController {
 
   @Get('callback')
   @Public()
-  @ApiOperation({
-    summary: 'OAuth callback handler',
-    description:
-      'Receives authorization code from Tink OAuth flow, exchanges it for access token, and fetches transactions',
-  })
+  @ApiOperation({ summary: 'OAuth callback handler ( PUBLIC )' })
   @ApiQuery({
     name: 'code',
     required: true,
@@ -119,10 +111,7 @@ export class TinkController {
 
   @Post('exchange-token')
   @Public()
-  @ApiOperation({
-    summary: 'Exchange authorization code for access token',
-    description: 'Manually exchange Tink authorization code for access token',
-  })
+  @ApiOperation({ summary: 'Exchange authorization code ( PUBLIC )' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Token exchanged successfully',
@@ -150,11 +139,7 @@ export class TinkController {
   @Post('stored-my-transactions')
   @UseGuards(AuthGuard)
   @Roles('USER')
-  @ApiOperation({
-    summary: 'Fetch transactions using access token',
-    description:
-      'Retrieve user transactions from Tink using a valid access token',
-  })
+  @ApiOperation({ summary: 'Fetch transactions ( USER only )' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Transactions fetched successfully',
@@ -186,10 +171,7 @@ export class TinkController {
 
   @Get('connected-accounts')
   @Public()
-  @ApiOperation({
-    summary: 'Fetch connected accounts',
-    description: 'Retrieve user connected accounts from Tink',
-  })
+  @ApiOperation({ summary: 'Fetch connected accounts ( PUBLIC )' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Connected accounts fetched successfully',

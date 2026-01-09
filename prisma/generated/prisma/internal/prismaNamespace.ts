@@ -400,6 +400,7 @@ export const ModelName = {
   Loggers: 'Loggers',
   Module: 'Module',
   UserModuleAccess: 'UserModuleAccess',
+  RoleModulePermission: 'RoleModulePermission',
   Profile: 'Profile',
   ForgetPass: 'ForgetPass',
   TwoFA: 'TwoFA',
@@ -432,7 +433,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "bank" | "mileage" | "transaction" | "accountantRequest" | "emailTemplate" | "financialDocument" | "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "invoice" | "businessData" | "serviceAndItem" | "loggers" | "module" | "userModuleAccess" | "profile" | "forgetPass" | "twoFA" | "language" | "quotation" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "supportTicket" | "user" | "email"
+    modelProps: "bank" | "mileage" | "transaction" | "accountantRequest" | "emailTemplate" | "financialDocument" | "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "invoice" | "businessData" | "serviceAndItem" | "loggers" | "module" | "userModuleAccess" | "roleModulePermission" | "profile" | "forgetPass" | "twoFA" | "language" | "quotation" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "supportTicket" | "user" | "email"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1617,6 +1618,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UserModuleAccessCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UserModuleAccessCountAggregateOutputType> | number
+        }
+      }
+    }
+    RoleModulePermission: {
+      payload: Prisma.$RoleModulePermissionPayload<ExtArgs>
+      fields: Prisma.RoleModulePermissionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RoleModulePermissionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoleModulePermissionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RoleModulePermissionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoleModulePermissionPayload>
+        }
+        findFirst: {
+          args: Prisma.RoleModulePermissionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoleModulePermissionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RoleModulePermissionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoleModulePermissionPayload>
+        }
+        findMany: {
+          args: Prisma.RoleModulePermissionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoleModulePermissionPayload>[]
+        }
+        create: {
+          args: Prisma.RoleModulePermissionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoleModulePermissionPayload>
+        }
+        createMany: {
+          args: Prisma.RoleModulePermissionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RoleModulePermissionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoleModulePermissionPayload>[]
+        }
+        delete: {
+          args: Prisma.RoleModulePermissionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoleModulePermissionPayload>
+        }
+        update: {
+          args: Prisma.RoleModulePermissionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoleModulePermissionPayload>
+        }
+        deleteMany: {
+          args: Prisma.RoleModulePermissionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RoleModulePermissionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RoleModulePermissionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoleModulePermissionPayload>[]
+        }
+        upsert: {
+          args: Prisma.RoleModulePermissionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoleModulePermissionPayload>
+        }
+        aggregate: {
+          args: Prisma.RoleModulePermissionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRoleModulePermission>
+        }
+        groupBy: {
+          args: Prisma.RoleModulePermissionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RoleModulePermissionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RoleModulePermissionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RoleModulePermissionCountAggregateOutputType> | number
         }
       }
     }
@@ -3194,6 +3269,19 @@ export const UserModuleAccessScalarFieldEnum = {
 export type UserModuleAccessScalarFieldEnum = (typeof UserModuleAccessScalarFieldEnum)[keyof typeof UserModuleAccessScalarFieldEnum]
 
 
+export const RoleModulePermissionScalarFieldEnum = {
+  id: 'id',
+  role: 'role',
+  moduleId: 'moduleId',
+  isEnabled: 'isEnabled',
+  grantedBy: 'grantedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RoleModulePermissionScalarFieldEnum = (typeof RoleModulePermissionScalarFieldEnum)[keyof typeof RoleModulePermissionScalarFieldEnum]
+
+
 export const ProfileScalarFieldEnum = {
   id: 'id',
   firstName: 'firstName',
@@ -3687,6 +3775,20 @@ export type ListEnumlogpriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$
 
 
 /**
+ * Reference to a field of type 'UserRole'
+ */
+export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole'>
+    
+
+
+/**
+ * Reference to a field of type 'UserRole[]'
+ */
+export type ListEnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole[]'>
+    
+
+
+/**
  * Reference to a field of type 'TwoFAPurpose'
  */
 export type EnumTwoFAPurposeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TwoFAPurpose'>
@@ -3739,20 +3841,6 @@ export type EnumSupportTicketPriorityFieldRefInput<$PrismaModel> = FieldRefInput
  * Reference to a field of type 'SupportTicketPriority[]'
  */
 export type ListEnumSupportTicketPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SupportTicketPriority[]'>
-    
-
-
-/**
- * Reference to a field of type 'UserRole'
- */
-export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole'>
-    
-
-
-/**
- * Reference to a field of type 'UserRole[]'
- */
-export type ListEnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole[]'>
     
 
 /**
@@ -3866,6 +3954,7 @@ export type GlobalOmitConfig = {
   loggers?: Prisma.LoggersOmit
   module?: Prisma.ModuleOmit
   userModuleAccess?: Prisma.UserModuleAccessOmit
+  roleModulePermission?: Prisma.RoleModulePermissionOmit
   profile?: Prisma.ProfileOmit
   forgetPass?: Prisma.ForgetPassOmit
   twoFA?: Prisma.TwoFAOmit

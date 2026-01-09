@@ -66,7 +66,6 @@ export const ModelName = {
   ServiceAndItem: 'ServiceAndItem',
   Loggers: 'Loggers',
   Module: 'Module',
-  UserModuleAccess: 'UserModuleAccess',
   RoleModulePermission: 'RoleModulePermission',
   Profile: 'Profile',
   ForgetPass: 'ForgetPass',
@@ -367,19 +366,6 @@ export const ModuleScalarFieldEnum = {
 } as const
 
 export type ModuleScalarFieldEnum = (typeof ModuleScalarFieldEnum)[keyof typeof ModuleScalarFieldEnum]
-
-
-export const UserModuleAccessScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  moduleId: 'moduleId',
-  isEnabled: 'isEnabled',
-  grantedBy: 'grantedBy',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type UserModuleAccessScalarFieldEnum = (typeof UserModuleAccessScalarFieldEnum)[keyof typeof UserModuleAccessScalarFieldEnum]
 
 
 export const RoleModulePermissionScalarFieldEnum = {

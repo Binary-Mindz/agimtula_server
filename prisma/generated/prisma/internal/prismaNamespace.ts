@@ -399,7 +399,6 @@ export const ModelName = {
   ServiceAndItem: 'ServiceAndItem',
   Loggers: 'Loggers',
   Module: 'Module',
-  UserModuleAccess: 'UserModuleAccess',
   RoleModulePermission: 'RoleModulePermission',
   Profile: 'Profile',
   ForgetPass: 'ForgetPass',
@@ -433,7 +432,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "bank" | "mileage" | "transaction" | "accountantRequest" | "emailTemplate" | "financialDocument" | "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "invoice" | "businessData" | "serviceAndItem" | "loggers" | "module" | "userModuleAccess" | "roleModulePermission" | "profile" | "forgetPass" | "twoFA" | "language" | "quotation" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "supportTicket" | "user" | "email"
+    modelProps: "bank" | "mileage" | "transaction" | "accountantRequest" | "emailTemplate" | "financialDocument" | "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "invoice" | "businessData" | "serviceAndItem" | "loggers" | "module" | "roleModulePermission" | "profile" | "forgetPass" | "twoFA" | "language" | "quotation" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "supportTicket" | "user" | "email"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1544,80 +1543,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.ModuleCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.ModuleCountAggregateOutputType> | number
-        }
-      }
-    }
-    UserModuleAccess: {
-      payload: Prisma.$UserModuleAccessPayload<ExtArgs>
-      fields: Prisma.UserModuleAccessFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.UserModuleAccessFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserModuleAccessPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.UserModuleAccessFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserModuleAccessPayload>
-        }
-        findFirst: {
-          args: Prisma.UserModuleAccessFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserModuleAccessPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.UserModuleAccessFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserModuleAccessPayload>
-        }
-        findMany: {
-          args: Prisma.UserModuleAccessFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserModuleAccessPayload>[]
-        }
-        create: {
-          args: Prisma.UserModuleAccessCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserModuleAccessPayload>
-        }
-        createMany: {
-          args: Prisma.UserModuleAccessCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.UserModuleAccessCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserModuleAccessPayload>[]
-        }
-        delete: {
-          args: Prisma.UserModuleAccessDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserModuleAccessPayload>
-        }
-        update: {
-          args: Prisma.UserModuleAccessUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserModuleAccessPayload>
-        }
-        deleteMany: {
-          args: Prisma.UserModuleAccessDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.UserModuleAccessUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.UserModuleAccessUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserModuleAccessPayload>[]
-        }
-        upsert: {
-          args: Prisma.UserModuleAccessUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserModuleAccessPayload>
-        }
-        aggregate: {
-          args: Prisma.UserModuleAccessAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateUserModuleAccess>
-        }
-        groupBy: {
-          args: Prisma.UserModuleAccessGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.UserModuleAccessGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.UserModuleAccessCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.UserModuleAccessCountAggregateOutputType> | number
         }
       }
     }
@@ -3258,19 +3183,6 @@ export const ModuleScalarFieldEnum = {
 export type ModuleScalarFieldEnum = (typeof ModuleScalarFieldEnum)[keyof typeof ModuleScalarFieldEnum]
 
 
-export const UserModuleAccessScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  moduleId: 'moduleId',
-  isEnabled: 'isEnabled',
-  grantedBy: 'grantedBy',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type UserModuleAccessScalarFieldEnum = (typeof UserModuleAccessScalarFieldEnum)[keyof typeof UserModuleAccessScalarFieldEnum]
-
-
 export const RoleModulePermissionScalarFieldEnum = {
   id: 'id',
   role: 'role',
@@ -3956,7 +3868,6 @@ export type GlobalOmitConfig = {
   serviceAndItem?: Prisma.ServiceAndItemOmit
   loggers?: Prisma.LoggersOmit
   module?: Prisma.ModuleOmit
-  userModuleAccess?: Prisma.UserModuleAccessOmit
   roleModulePermission?: Prisma.RoleModulePermissionOmit
   profile?: Prisma.ProfileOmit
   forgetPass?: Prisma.ForgetPassOmit

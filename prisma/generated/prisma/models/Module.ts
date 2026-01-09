@@ -198,7 +198,6 @@ export type ModuleWhereInput = {
   isActive?: Prisma.BoolFilter<"Module"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Module"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Module"> | Date | string
-  userModuleAccess?: Prisma.UserModuleAccessListRelationFilter
   rolePermissions?: Prisma.RoleModulePermissionListRelationFilter
 }
 
@@ -210,7 +209,6 @@ export type ModuleOrderByWithRelationInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  userModuleAccess?: Prisma.UserModuleAccessOrderByRelationAggregateInput
   rolePermissions?: Prisma.RoleModulePermissionOrderByRelationAggregateInput
 }
 
@@ -225,7 +223,6 @@ export type ModuleWhereUniqueInput = Prisma.AtLeast<{
   isActive?: Prisma.BoolFilter<"Module"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Module"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Module"> | Date | string
-  userModuleAccess?: Prisma.UserModuleAccessListRelationFilter
   rolePermissions?: Prisma.RoleModulePermissionListRelationFilter
 }, "id" | "name">
 
@@ -263,7 +260,6 @@ export type ModuleCreateInput = {
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutModuleInput
   rolePermissions?: Prisma.RoleModulePermissionCreateNestedManyWithoutModuleInput
 }
 
@@ -275,7 +271,6 @@ export type ModuleUncheckedCreateInput = {
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutModuleInput
   rolePermissions?: Prisma.RoleModulePermissionUncheckedCreateNestedManyWithoutModuleInput
 }
 
@@ -287,7 +282,6 @@ export type ModuleUpdateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutModuleNestedInput
   rolePermissions?: Prisma.RoleModulePermissionUpdateManyWithoutModuleNestedInput
 }
 
@@ -299,7 +293,6 @@ export type ModuleUncheckedUpdateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutModuleNestedInput
   rolePermissions?: Prisma.RoleModulePermissionUncheckedUpdateManyWithoutModuleNestedInput
 }
 
@@ -368,20 +361,6 @@ export type ModuleScalarRelationFilter = {
   isNot?: Prisma.ModuleWhereInput
 }
 
-export type ModuleCreateNestedOneWithoutUserModuleAccessInput = {
-  create?: Prisma.XOR<Prisma.ModuleCreateWithoutUserModuleAccessInput, Prisma.ModuleUncheckedCreateWithoutUserModuleAccessInput>
-  connectOrCreate?: Prisma.ModuleCreateOrConnectWithoutUserModuleAccessInput
-  connect?: Prisma.ModuleWhereUniqueInput
-}
-
-export type ModuleUpdateOneRequiredWithoutUserModuleAccessNestedInput = {
-  create?: Prisma.XOR<Prisma.ModuleCreateWithoutUserModuleAccessInput, Prisma.ModuleUncheckedCreateWithoutUserModuleAccessInput>
-  connectOrCreate?: Prisma.ModuleCreateOrConnectWithoutUserModuleAccessInput
-  upsert?: Prisma.ModuleUpsertWithoutUserModuleAccessInput
-  connect?: Prisma.ModuleWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.ModuleUpdateToOneWithWhereWithoutUserModuleAccessInput, Prisma.ModuleUpdateWithoutUserModuleAccessInput>, Prisma.ModuleUncheckedUpdateWithoutUserModuleAccessInput>
-}
-
 export type ModuleCreateNestedOneWithoutRolePermissionsInput = {
   create?: Prisma.XOR<Prisma.ModuleCreateWithoutRolePermissionsInput, Prisma.ModuleUncheckedCreateWithoutRolePermissionsInput>
   connectOrCreate?: Prisma.ModuleCreateOrConnectWithoutRolePermissionsInput
@@ -396,66 +375,6 @@ export type ModuleUpdateOneRequiredWithoutRolePermissionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ModuleUpdateToOneWithWhereWithoutRolePermissionsInput, Prisma.ModuleUpdateWithoutRolePermissionsInput>, Prisma.ModuleUncheckedUpdateWithoutRolePermissionsInput>
 }
 
-export type ModuleCreateWithoutUserModuleAccessInput = {
-  id?: string
-  name: string
-  displayName: string
-  description?: string | null
-  isActive?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  rolePermissions?: Prisma.RoleModulePermissionCreateNestedManyWithoutModuleInput
-}
-
-export type ModuleUncheckedCreateWithoutUserModuleAccessInput = {
-  id?: string
-  name: string
-  displayName: string
-  description?: string | null
-  isActive?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  rolePermissions?: Prisma.RoleModulePermissionUncheckedCreateNestedManyWithoutModuleInput
-}
-
-export type ModuleCreateOrConnectWithoutUserModuleAccessInput = {
-  where: Prisma.ModuleWhereUniqueInput
-  create: Prisma.XOR<Prisma.ModuleCreateWithoutUserModuleAccessInput, Prisma.ModuleUncheckedCreateWithoutUserModuleAccessInput>
-}
-
-export type ModuleUpsertWithoutUserModuleAccessInput = {
-  update: Prisma.XOR<Prisma.ModuleUpdateWithoutUserModuleAccessInput, Prisma.ModuleUncheckedUpdateWithoutUserModuleAccessInput>
-  create: Prisma.XOR<Prisma.ModuleCreateWithoutUserModuleAccessInput, Prisma.ModuleUncheckedCreateWithoutUserModuleAccessInput>
-  where?: Prisma.ModuleWhereInput
-}
-
-export type ModuleUpdateToOneWithWhereWithoutUserModuleAccessInput = {
-  where?: Prisma.ModuleWhereInput
-  data: Prisma.XOR<Prisma.ModuleUpdateWithoutUserModuleAccessInput, Prisma.ModuleUncheckedUpdateWithoutUserModuleAccessInput>
-}
-
-export type ModuleUpdateWithoutUserModuleAccessInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  displayName?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  rolePermissions?: Prisma.RoleModulePermissionUpdateManyWithoutModuleNestedInput
-}
-
-export type ModuleUncheckedUpdateWithoutUserModuleAccessInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  displayName?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  rolePermissions?: Prisma.RoleModulePermissionUncheckedUpdateManyWithoutModuleNestedInput
-}
-
 export type ModuleCreateWithoutRolePermissionsInput = {
   id?: string
   name: string
@@ -464,7 +383,6 @@ export type ModuleCreateWithoutRolePermissionsInput = {
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutModuleInput
 }
 
 export type ModuleUncheckedCreateWithoutRolePermissionsInput = {
@@ -475,7 +393,6 @@ export type ModuleUncheckedCreateWithoutRolePermissionsInput = {
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutModuleInput
 }
 
 export type ModuleCreateOrConnectWithoutRolePermissionsInput = {
@@ -502,7 +419,6 @@ export type ModuleUpdateWithoutRolePermissionsInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutModuleNestedInput
 }
 
 export type ModuleUncheckedUpdateWithoutRolePermissionsInput = {
@@ -513,7 +429,6 @@ export type ModuleUncheckedUpdateWithoutRolePermissionsInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutModuleNestedInput
 }
 
 
@@ -522,12 +437,10 @@ export type ModuleUncheckedUpdateWithoutRolePermissionsInput = {
  */
 
 export type ModuleCountOutputType = {
-  userModuleAccess: number
   rolePermissions: number
 }
 
 export type ModuleCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  userModuleAccess?: boolean | ModuleCountOutputTypeCountUserModuleAccessArgs
   rolePermissions?: boolean | ModuleCountOutputTypeCountRolePermissionsArgs
 }
 
@@ -539,13 +452,6 @@ export type ModuleCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exten
    * Select specific fields to fetch from the ModuleCountOutputType
    */
   select?: Prisma.ModuleCountOutputTypeSelect<ExtArgs> | null
-}
-
-/**
- * ModuleCountOutputType without action
- */
-export type ModuleCountOutputTypeCountUserModuleAccessArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.UserModuleAccessWhereInput
 }
 
 /**
@@ -564,7 +470,6 @@ export type ModuleSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  userModuleAccess?: boolean | Prisma.Module$userModuleAccessArgs<ExtArgs>
   rolePermissions?: boolean | Prisma.Module$rolePermissionsArgs<ExtArgs>
   _count?: boolean | Prisma.ModuleCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["module"]>
@@ -601,7 +506,6 @@ export type ModuleSelectScalar = {
 
 export type ModuleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "displayName" | "description" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["module"]>
 export type ModuleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  userModuleAccess?: boolean | Prisma.Module$userModuleAccessArgs<ExtArgs>
   rolePermissions?: boolean | Prisma.Module$rolePermissionsArgs<ExtArgs>
   _count?: boolean | Prisma.ModuleCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -611,7 +515,6 @@ export type ModuleIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type $ModulePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Module"
   objects: {
-    userModuleAccess: Prisma.$UserModuleAccessPayload<ExtArgs>[]
     rolePermissions: Prisma.$RoleModulePermissionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1016,7 +919,6 @@ readonly fields: ModuleFieldRefs;
  */
 export interface Prisma__ModuleClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  userModuleAccess<T extends Prisma.Module$userModuleAccessArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Module$userModuleAccessArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserModuleAccessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   rolePermissions<T extends Prisma.Module$rolePermissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Module$rolePermissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RoleModulePermissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1439,30 +1341,6 @@ export type ModuleDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Limit how many Modules to delete.
    */
   limit?: number
-}
-
-/**
- * Module.userModuleAccess
- */
-export type Module$userModuleAccessArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the UserModuleAccess
-   */
-  select?: Prisma.UserModuleAccessSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the UserModuleAccess
-   */
-  omit?: Prisma.UserModuleAccessOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.UserModuleAccessInclude<ExtArgs> | null
-  where?: Prisma.UserModuleAccessWhereInput
-  orderBy?: Prisma.UserModuleAccessOrderByWithRelationInput | Prisma.UserModuleAccessOrderByWithRelationInput[]
-  cursor?: Prisma.UserModuleAccessWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.UserModuleAccessScalarFieldEnum | Prisma.UserModuleAccessScalarFieldEnum[]
 }
 
 /**

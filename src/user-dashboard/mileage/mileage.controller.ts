@@ -18,7 +18,7 @@ import { urlPrefix } from '../url-prefix';
 
 @Controller(`${urlPrefix}mileage`)
 export class UserMileageController {
-  constructor(private readonly mileageService: MileageService) {}
+  constructor(private readonly mileageService: MileageService) { }
 
   @Post('log-trip')
   @Roles('USER')

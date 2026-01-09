@@ -10,14 +10,14 @@ import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 export class RequesteAccountantController {
   constructor(
     private readonly requesteAccountantService: RequesteAccountantService,
-  ) {}
+  ) { }
 
   @Post()
   @Roles('USER')
   @ApiOperation({ summary: 'Request accountant ( USER only )' })
   @ApiResponse({ status: 201, description: 'Accountant request submitted successfully' })
   @ApiResponse({ status: 400, description: 'Invalid request data' })
-  requestAccountant(@Body() dto: RequestAccountant, @User() user: jwtPayload) {
-    return this.requesteAccountantService.requestAccountant(user.sub, dto);
+  async requestAccountant(@Body() dto: RequestAccountant, @User() user: jwtPayload) {
+    return await this.requesteAccountantService.requestAccountant(user.sub, dto);
   }
 }

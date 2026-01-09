@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { HttpException, Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateEmailTemplateDto } from './dto/create-email-template.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { cResponseData } from 'src/common/cResponse';
@@ -29,10 +28,8 @@ export class SystemSettingsService {
 
       if (!createdTemplate) {
         throw new HttpException(
-          cResponseData({
-            message: 'Failed to create email template',
-          }),
-          400,
+          'Failed to create email template',
+          HttpStatus.BAD_REQUEST,
         );
       }
 
@@ -41,12 +38,10 @@ export class SystemSettingsService {
         message: 'Email template created successfully',
       });
     } catch (error) {
+      console.error('Create email template error:', error);
       throw new HttpException(
-        cResponseData({
-          message: 'Failed to create email template',
-
-        }),
-        400,
+        'Failed to create email template',
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }
@@ -65,10 +60,11 @@ export class SystemSettingsService {
         message: 'Email templates retrieved successfully',
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to retrieve email templates',
-
-      });
+      console.error('Find all email templates error:', error);
+      throw new HttpException(
+        'Failed to retrieve email templates',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -90,12 +86,10 @@ export class SystemSettingsService {
         message: 'Email template updated successfully',
       });
     } catch (error) {
+      console.error('Update email template error:', error);
       throw new HttpException(
-        cResponseData({
-          message: 'Failed to update email template',
-
-        }),
-        400,
+        'Failed to update email template',
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }
@@ -110,12 +104,10 @@ export class SystemSettingsService {
         data: { id },
       });
     } catch (error) {
+      console.error('Remove email template error:', error);
       throw new HttpException(
-        cResponseData({
-          message: 'Failed to remove email template',
-
-        }),
-        400,
+        'Failed to remove email template',
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }
@@ -130,10 +122,8 @@ export class SystemSettingsService {
 
       if (!template) {
         throw new HttpException(
-          {
-            message: 'No email template found for testing',
-          },
-          400,
+          'No email template found for testing',
+          HttpStatus.NOT_FOUND,
         );
       }
 
@@ -141,15 +131,19 @@ export class SystemSettingsService {
       const html = render(template.bodyHtml, dto.data);
 
       await this.mail.sendMail(dto.to, subject, html);
-      
+
       return cResponseData({
         message: 'Test email sent successfully',
       });
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to send test email',
-
-      });
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      console.error('Test email error:', error);
+      throw new HttpException(
+        'Failed to send test email',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

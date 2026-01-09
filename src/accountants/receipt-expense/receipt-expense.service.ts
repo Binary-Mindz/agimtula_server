@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { ValidateAccountantAccess } from '../validate-accountant-access';
 import { cResponseData } from 'src/common/cResponse';
+import { NotFoundAppException } from 'src/common/app-exceptions';
 
 @Injectable()
 export class ReceiptExpenseService {
@@ -57,13 +58,12 @@ export class ReceiptExpenseService {
           totalAmount,
         },
       });
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to fetch receipt and mileage data',
-        success: false,
-        data: null,
-      });
+      console.error('Get total expense error:', error);
+      throw new HttpException(
+        'Failed to fetch receipt and mileage data',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -206,18 +206,16 @@ export class ReceiptExpenseService {
           },
         },
       });
-
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to fetch receipt and mileage data',
-        success: false,
-        data: null,
-      });
+      console.error('Get receipt and mileage error:', error);
+      throw new HttpException(
+        'Failed to fetch receipt and mileage data',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
-  async getData(userId: string, accId: string,expenseId:string) {
+  async getData(userId: string, accId: string, expenseId: string) {
     try {
       await this.validateAccAccess.validate(userId, accId);
 
@@ -238,7 +236,7 @@ export class ReceiptExpenseService {
       });
 
       if (!receipt || !mileage) {
-        throw new Error('Receipt or mileage not found');
+        throw new NotFoundAppException('Receipt or mileage not found');
       }
 
       return cResponseData({
@@ -265,14 +263,15 @@ export class ReceiptExpenseService {
             : null,
         },
       });
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to fetch data',
-        success: false,
-        data: null,
-      })
+      if (error instanceof NotFoundAppException) {
+        throw error;
+      }
+      console.error('Get data error:', error);
+      throw new HttpException(
+        'Failed to fetch data',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -325,14 +324,12 @@ export class ReceiptExpenseService {
           combinedData,
         },
       });
-
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to fetch receipt and mileage data',
-        success: false,
-        data: null,
-      });
+      console.error('Export data error:', error);
+      throw new HttpException(
+        'Failed to export receipt and mileage data',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

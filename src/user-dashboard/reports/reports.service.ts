@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
 
@@ -35,7 +35,6 @@ export class ReportsService {
           },
           select: { totalAmount: true, createdAt: true },
         }),
-
         this.prisma.invoice.aggregate({
           where: {
             userId,
@@ -46,7 +45,6 @@ export class ReportsService {
           },
           _sum: { totalAmount: true },
         }),
-
         this.prisma.invoice.aggregate({
           where: {
             userId,
@@ -58,7 +56,6 @@ export class ReportsService {
           },
           _sum: { totalAmount: true },
         }),
-
         this.prisma.invoice.aggregate({
           where: {
             userId,
@@ -70,7 +67,6 @@ export class ReportsService {
           },
           _sum: { totalAmount: true },
         }),
-
         this.prisma.receipt.aggregate({
           where: { userId },
           _sum: { amount: true },
@@ -114,7 +110,6 @@ export class ReportsService {
       });
 
       const expenseAll = [...receipt, ...mileage];
-
       const expressMonthlySummary: { month: string; total: number }[] = [];
 
       for (const item of expenseAll) {
@@ -137,28 +132,27 @@ export class ReportsService {
       }
 
       return cResponseData({
-        message: 'Retrived reports data',
+        success: true,
+        message: 'Reports data retrieved successfully',
         data: {
           totalIncome: totalIncome._sum.totalAmount || 0,
           totalPaid: totalPaid._sum.totalAmount || 0,
           totalPending: totalPending._sum.totalAmount || 0,
-
           totalExpense:
             (totalReceipt._sum.amount || 0) + (totalMileage._sum.amount || 0) ||
             0,
           totalReceipt: totalReceipt._sum.amount || 0,
           totalMileage: totalMileage._sum.amount || 0,
-
           incomeMonthlySummury,
           expressMonthlySummary,
         },
       });
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to retrive reports data',
-        error: 'Failed to retrive reports data',
-      });
+      console.error('Get report data error:', error);
+      throw new HttpException(
+        'Failed to retrieve reports data',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -180,16 +174,16 @@ export class ReportsService {
       });
 
       return cResponseData({
-        message: 'Income data exported successfully',
         success: true,
+        message: 'Income data exported successfully',
         data: invoices,
       });
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to export income data',
-        success: false,
-      });
+      console.error('Export income data error:', error);
+      throw new HttpException(
+        'Failed to export income data',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -206,16 +200,16 @@ export class ReportsService {
       const expenseAll = [...receipts, ...mileages];
 
       return cResponseData({
-        message: 'Expense data exported successfully',
         success: true,
+        message: 'Expense data exported successfully',
         data: expenseAll,
       });
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      return cResponseData({
-        message: 'Failed to export expense data',
-        success: false,
-      });
+      console.error('Export expense data error:', error);
+      throw new HttpException(
+        'Failed to export expense data',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

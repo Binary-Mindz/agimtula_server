@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
 
@@ -14,16 +14,24 @@ export class AccountantRequestsService {
     });
   }
   async getAccountantRequests() {
-    const requests = await this.prisma.accountantRequest.findMany({
-      where: {
-        status: 'PENDING',
-      },
-    });
+    try {
+      const requests = await this.prisma.accountantRequest.findMany({
+        where: {
+          status: 'PENDING',
+        },
+      });
 
-    return cResponseData({
-      data: requests,
-      message: 'Accountant requests fetched successfully',
-    });
+      return cResponseData({
+        data: requests,
+        message: 'Accountant requests fetched successfully',
+      });
+    } catch (error) {
+      console.error('Get accountant requests error:', error);
+      throw new HttpException(
+        'Failed to fetch accountant requests',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   async approveAccountantRequest(accountantId: string, requestId: string) {
@@ -52,8 +60,11 @@ export class AccountantRequestsService {
         message: 'Accountant request approved successfully',
       });
     } catch (error) {
-      console.error('Database error:', error);
-      throw new Error(`Failed to approve accountant request`);
+      console.error('Approve accountant request error:', error);
+      throw new HttpException(
+        'Failed to approve accountant request',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -73,8 +84,11 @@ export class AccountantRequestsService {
         data: rejected,
       });
     } catch (error) {
-      console.error('Database error:', error);
-      throw new Error(`Failed to reject accountant request`);
+      console.error('Reject accountant request error:', error);
+      throw new HttpException(
+        'Failed to reject accountant request',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

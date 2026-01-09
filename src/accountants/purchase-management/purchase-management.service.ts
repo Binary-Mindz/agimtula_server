@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { ValidateAccountantAccess } from '../validate-accountant-access';
+import { NotFoundAppException } from 'src/common/app-exceptions';
 
 @Injectable()
 export class PurchaseManagementService {
@@ -64,10 +64,11 @@ export class PurchaseManagementService {
         },
       });
     } catch (error) {
-      return cResponseData({
-        success: false,
-        message: 'Failed to fetch purchase data',
-      });
+      console.error('Get purchase data error:', error);
+      throw new HttpException(
+        'Failed to fetch purchase data',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -127,10 +128,11 @@ export class PurchaseManagementService {
         },
       });
     } catch (error) {
-      return cResponseData({
-        success: false,
-        message: 'Failed to fetch purchase history',
-      });
+      console.error('Get purchase history error:', error);
+      throw new HttpException(
+        'Failed to fetch purchase history',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -156,10 +158,11 @@ export class PurchaseManagementService {
         data: isPurchaseInInvoiceDoc || isPurchaseInTransaction,
       });
     } catch (error) {
-      return cResponseData({
-        success: false,
-        message: 'Failed to fetch purchase detailed report',
-      });
+      console.error('Get purchase detailed report error:', error);
+      throw new HttpException(
+        'Failed to fetch purchase detailed report',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -175,7 +178,7 @@ export class PurchaseManagementService {
       });
 
       if (purchases.length === 0) {
-        throw new ForbiddenException('No purchase data found');
+        throw new NotFoundAppException('No purchase data found');
       }
 
       return cResponseData({
@@ -184,10 +187,14 @@ export class PurchaseManagementService {
         data: purchases,
       });
     } catch (error) {
-      return cResponseData({
-        success: false,
-        message: 'Failed to export data',
-      });
+      if (error instanceof NotFoundAppException) {
+        throw error;
+      }
+      console.error('Export data error:', error);
+      throw new HttpException(
+        'Failed to export data',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

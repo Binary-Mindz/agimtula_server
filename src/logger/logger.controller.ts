@@ -13,7 +13,7 @@ export class LoggerController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @Roles('ADMIN')
-  @ApiOperation({ summary: 'Get all logs with pagination and filters' })
+  @ApiOperation({ summary: 'Get all logs ( ADMIN only )' })
   @ApiResponse({ status: 200, description: 'Logs fetched successfully' })
   @ApiResponse({ status: 500, description: 'Internal server error' })
   async findAll(@Query() queryDto: QueryLoggerDto) {

@@ -20,7 +20,18 @@ export class PaymentsService {
         0,
       );
 
-      const [totalRevenue, successfulPayment, pendingPayment, failedPayment] =
+      const firstDayOfLastMonth = new Date(
+        new Date().getFullYear(),
+        new Date().getMonth() - 1,
+        1,
+      );
+      const lastDayOfLastMonth = new Date(
+        new Date().getFullYear(),
+        new Date().getMonth(),
+        0,
+      );
+
+      const [totalRevenue, successfulPayment, pendingPayment, failedPayment, lastMonthRevenue] =
         await Promise.all([
           // Total revenue from history with paid status
           this.prisma.userSubscriptionPlanHistory.aggregate({
@@ -74,10 +85,33 @@ export class PaymentsService {
               },
             },
           }),
+          // Last month revenue
+          this.prisma.userSubscriptionPlanHistory.aggregate({
+            where: {
+              subscriptionPlanPaymentStatus: {
+                paymentStatus: 'PAID',
+              },
+              createdAt: {
+                gte: firstDayOfLastMonth,
+                lte: lastDayOfLastMonth,
+              },
+            },
+            _sum: {
+              price: true,
+              setupFee: true,
+            },
+          }),
         ]);
 
       const totalAmount =
         (totalRevenue._sum.price || 0) + (totalRevenue._sum.setupFee || 0);
+      
+      const lastMonthAmount =
+        (lastMonthRevenue._sum.price || 0) + (lastMonthRevenue._sum.setupFee || 0);
+      
+      const percentageChange = lastMonthAmount === 0 
+        ? (totalAmount > 0 ? 100 : 0)
+        : ((totalAmount - lastMonthAmount) / lastMonthAmount) * 100;
 
       return cResponseData({
         message: 'Payment data fetched successfully',
@@ -87,6 +121,7 @@ export class PaymentsService {
           pendingPayments: pendingPayment,
           failedPayments: failedPayment,
           totalPayments: successfulPayment + pendingPayment + failedPayment,
+          percentageChange: Math.round(percentageChange * 100) / 100,
         },
       });
     } catch (error) {
@@ -216,6 +251,7 @@ export class PaymentsService {
           include: {
             user: {
               select: {
+                id: true,
                 profile: {
                   select: {
                     firstName: true,
@@ -238,12 +274,72 @@ export class PaymentsService {
 
       return cResponseData({
         message: 'Transactions are fetched',
-        data: transactions,
+        data: {
+          transactions: transactions.map((transaction) => ({
+            id: transaction.id,
+            trx_id: transaction.trx_id,
+            planName: transaction.planName,
+            price: transaction.price,
+            paymentMethod: 'Stripe',
+            paymentStatus:
+              transaction.subscriptionPlanPaymentStatus?.paymentStatus,
+            createdAt: transaction.createdAt,
+            user: {
+              firstName: transaction.user.profile?.firstName,
+              lastName: transaction.user.profile?.lastName,
+            },
+          })),
+        },
       });
     } catch (error) {
       console.error('Get transactions data error:', error);
       throw new HttpException(
         'Failed to fetch transactions data',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async viewPaymentDetails(paymentId: string) {
+    try {
+      const paymentDetails =
+        await this.prisma.userSubscriptionPlanHistory.findFirst({
+          where: {
+            id: paymentId,
+          },
+          include: {
+            user: {
+              select: {
+                id: true,
+                profile: {
+                  select: {
+                    firstName: true,
+                    lastName: true,
+                  },
+                },
+                email: {
+                  select: {
+                    email: true,
+                  },
+                },
+              },
+            },
+            subscriptionPlanPaymentStatus: true,
+          },
+        });
+
+      if (!paymentDetails) {
+        throw new HttpException('Payment not found', HttpStatus.NOT_FOUND);
+      }
+
+      return cResponseData({
+        message: 'Payment details fetched successfully',
+        data: paymentDetails,
+      });
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'Failed to fetch payment details',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

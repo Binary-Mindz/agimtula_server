@@ -28,6 +28,9 @@ export class SupportTicketsService {
           },
         },
       },
+      where: {
+        isDeleted: false,
+      },
     },
   } as const;
 
@@ -38,7 +41,7 @@ export class SupportTicketsService {
   async createTicket(userIdFromToken: string, dto: CreateSupportTicketDto) {
     try {
       const userExists = await this.prisma.user.findUnique({
-        where: { id: userIdFromToken },
+        where: { id: userIdFromToken, isDeleted: false },
       });
 
       if (!userExists) {

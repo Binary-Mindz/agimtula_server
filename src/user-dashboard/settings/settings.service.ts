@@ -11,7 +11,10 @@ export class SettingsService {
   async updateBusinessInfo(userId: string, dto: BusinessInfoDto) {
     try {
       const businessInfo = await this.prisma.businessInfo.upsert({
-        where: { userId },
+        where: { 
+          userId,
+          user: { isDeleted: false },
+        },
         update: dto,
         create: {
           ...dto,
@@ -45,7 +48,10 @@ export class SettingsService {
       }
 
       const businessInfo = await this.prisma.businessInfo.findUnique({
-        where: { userId },
+        where: { 
+          userId,
+          user: { isDeleted: false },
+        },
       });
 
       if (!businessInfo) {
@@ -80,7 +86,10 @@ export class SettingsService {
   async removeBusinessLogo(userId: string) {
     try {
       const businessInfo = await this.prisma.businessInfo.findUnique({
-        where: { userId },
+        where: { 
+          userId,
+          user: { isDeleted: false },
+        },
       });
 
       if (!businessInfo) {
@@ -115,7 +124,10 @@ export class SettingsService {
   async getBusinessInfo(userId: string) {
     try {
       const businessInfo = await this.prisma.businessInfo.findUnique({
-        where: { userId },
+        where: { 
+          userId,
+          user: { isDeleted: false },
+        },
       });
 
       return cResponseData({

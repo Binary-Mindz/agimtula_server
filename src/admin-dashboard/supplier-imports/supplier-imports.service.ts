@@ -9,7 +9,7 @@ export class SupplierImportsService {
   async getActivity() {
     try {
       const [totalUser, totalImapConnection] = await Promise.all([
-        this.prisma.user.count({ where: { role: 'USER' } }),
+        this.prisma.user.count({ where: { role: 'USER', isDeleted: false } }),
         this.prisma.imapConfiguration.count(),
       ]);
 
@@ -32,7 +32,7 @@ export class SupplierImportsService {
   async getRecentUsers() {
     try {
       const recentUsers = await this.prisma.user.findMany({
-        where: { role: 'USER' },
+        where: { role: 'USER', isDeleted: false },
         select: {
           id: true,
           profile: { select: { firstName: true, lastName: true } },

@@ -122,6 +122,7 @@ export class PaymentsService {
           },
           {
             user: {
+              isDeleted: false,
               email: {
                 email: {
                   contains: search,
@@ -132,6 +133,7 @@ export class PaymentsService {
           },
           {
             user: {
+              isDeleted: false,
               profile: {
                 firstName: {
                   contains: search,
@@ -142,6 +144,7 @@ export class PaymentsService {
           },
           {
             user: {
+              isDeleted: false,
               profile: {
                 lastName: {
                   contains: search,
@@ -151,6 +154,10 @@ export class PaymentsService {
             },
           },
         ];
+      } else {
+        query['user'] = {
+          isDeleted: false,
+        };
       }
 
       if (date) {

@@ -15,7 +15,7 @@ import { BankModule } from './bank/bank.module';
 import { ImapApisModule } from './imap-apis/imap-apis.module';
 import { BankTransactionModule } from './user-dashboard/bank-transaction/transaction.module';
 import { BankDataModule } from './admin-dashboard/bank-data/bank-data.module';
-import { QuotationsModule } from './quotations/quotations.module';
+import { QuotationsModule } from './user-dashboard/quotations/quotations.module';
 import { WebhookController } from './webhook/webhook.controller';
 import { PaymentsModule } from './admin-dashboard/payments/payments.module';
 import { LoggerModule } from './logger/logger.module';
@@ -63,4 +63,4 @@ import { VatOverviewModule } from './accountants/vat-overview/vat-overview.modul
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }

@@ -8,44 +8,82 @@ export class ReportsAndAnalyticsService {
 
   async userActivity() {
     try {
-      const users = await this.prisma.user.findMany({
-        where: {
-          isDeleted: false,
-        },
-        select: {
-          id: true,
-          created_at: true,
-        },
-      });
-
-      // month-wise grouping
-      const monthWiseData = users.reduce(
-        (acc, user) => {
-          const date = new Date(user.created_at);
-          const month = `${date.getFullYear()}-${String(
-            date.getMonth() + 1,
-          ).padStart(2, '0')}`;
-
-          if (!acc[month]) {
-            acc[month] = 0;
-          }
-
-          acc[month] += 1;
-          return acc;
-        },
-        {} as Record<string, number>,
+      const lastSixMonths = new Date(
+        new Date().getFullYear(),
+        new Date().getMonth() - 5,
+        1,
       );
 
-      // object → array (chart friendly)
-      const result = Object.keys(monthWiseData)
-        .sort()
-        .map((month) => ({
-          month,
-          total: monthWiseData[month],
-        }));
+      const [lastSixMonthsUsers, lastSixMonthsActiveUsers] = await Promise.all([
+        this.prisma.user.findMany({
+          where: {
+            created_at: {
+              gte: lastSixMonths,
+            },
+            role: 'USER',
+            isDeleted: false,
+          },
+          select: { created_at: true },
+        }),
+        this.prisma.user.findMany({
+          where: {
+            created_at: {
+              gte: lastSixMonths,
+            },
+            isDeleted: false,
+            role: 'USER',
+            status: true,
+          },
+          select: { created_at: true },
+        }),
+      ]);
+
+      const userActivity: {
+        month: string;
+        totalUsers: number;
+        activeUsers: number;
+      }[] = [];
+
+      // Process total users
+      lastSixMonthsUsers.forEach((item) => {
+        const month = item.created_at.getMonth() + 1;
+        const year = item.created_at.getFullYear();
+        const monthYear = `${year}-${month}`;
+
+        const existingMonth = userActivity.find((m) => m.month === monthYear);
+
+        if (existingMonth) {
+          existingMonth.totalUsers += 1;
+        } else {
+          userActivity.push({
+            month: monthYear,
+            totalUsers: 1,
+            activeUsers: 0,
+          });
+        }
+      });
+
+      // Process active users
+      lastSixMonthsActiveUsers.forEach((item) => {
+        const month = item.created_at.getMonth() + 1;
+        const year = item.created_at.getFullYear();
+        const monthYear = `${year}-${month}`;
+
+        const existingMonth = userActivity.find((m) => m.month === monthYear);
+
+        if (existingMonth) {
+          existingMonth.activeUsers += 1;
+        } else {
+          userActivity.push({
+            month: monthYear,
+            totalUsers: 0,
+            activeUsers: 1,
+          });
+        }
+      });
 
       return cResponseData({
-        data: result,
+        data: userActivity,
       });
     } catch (error) {
       console.error('User activity error:', error);

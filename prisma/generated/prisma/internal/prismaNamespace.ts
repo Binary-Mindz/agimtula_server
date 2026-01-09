@@ -2961,6 +2961,7 @@ export type MileageScalarFieldEnum = (typeof MileageScalarFieldEnum)[keyof typeo
 
 export const TransactionScalarFieldEnum = {
   id: 'id',
+  trx_id: 'trx_id',
   date: 'date',
   description: 'description',
   amount: 'amount',
@@ -3073,6 +3074,7 @@ export type UserSubscriptionPlanScalarFieldEnum = (typeof UserSubscriptionPlanSc
 
 export const UserSubscriptionPlanHistoryScalarFieldEnum = {
   id: 'id',
+  trx_id: 'trx_id',
   planName: 'planName',
   UserId: 'UserId',
   isLimitedInvoicePerMonth: 'isLimitedInvoicePerMonth',

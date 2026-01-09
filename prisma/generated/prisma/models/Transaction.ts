@@ -27,15 +27,18 @@ export type AggregateTransaction = {
 }
 
 export type TransactionAvgAggregateOutputType = {
+  trx_id: number | null
   amount: runtime.Decimal | null
 }
 
 export type TransactionSumAggregateOutputType = {
+  trx_id: number | null
   amount: runtime.Decimal | null
 }
 
 export type TransactionMinAggregateOutputType = {
   id: string | null
+  trx_id: number | null
   date: Date | null
   description: string | null
   amount: runtime.Decimal | null
@@ -49,6 +52,7 @@ export type TransactionMinAggregateOutputType = {
 
 export type TransactionMaxAggregateOutputType = {
   id: string | null
+  trx_id: number | null
   date: Date | null
   description: string | null
   amount: runtime.Decimal | null
@@ -62,6 +66,7 @@ export type TransactionMaxAggregateOutputType = {
 
 export type TransactionCountAggregateOutputType = {
   id: number
+  trx_id: number
   date: number
   description: number
   amount: number
@@ -77,15 +82,18 @@ export type TransactionCountAggregateOutputType = {
 
 
 export type TransactionAvgAggregateInputType = {
+  trx_id?: true
   amount?: true
 }
 
 export type TransactionSumAggregateInputType = {
+  trx_id?: true
   amount?: true
 }
 
 export type TransactionMinAggregateInputType = {
   id?: true
+  trx_id?: true
   date?: true
   description?: true
   amount?: true
@@ -99,6 +107,7 @@ export type TransactionMinAggregateInputType = {
 
 export type TransactionMaxAggregateInputType = {
   id?: true
+  trx_id?: true
   date?: true
   description?: true
   amount?: true
@@ -112,6 +121,7 @@ export type TransactionMaxAggregateInputType = {
 
 export type TransactionCountAggregateInputType = {
   id?: true
+  trx_id?: true
   date?: true
   description?: true
   amount?: true
@@ -213,6 +223,7 @@ export type TransactionGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
 
 export type TransactionGroupByOutputType = {
   id: string
+  trx_id: number
   date: Date
   description: string
   amount: runtime.Decimal
@@ -250,6 +261,7 @@ export type TransactionWhereInput = {
   OR?: Prisma.TransactionWhereInput[]
   NOT?: Prisma.TransactionWhereInput | Prisma.TransactionWhereInput[]
   id?: Prisma.StringFilter<"Transaction"> | string
+  trx_id?: Prisma.IntFilter<"Transaction"> | number
   date?: Prisma.DateTimeFilter<"Transaction"> | Date | string
   description?: Prisma.StringFilter<"Transaction"> | string
   amount?: Prisma.DecimalFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -264,6 +276,7 @@ export type TransactionWhereInput = {
 
 export type TransactionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  trx_id?: Prisma.SortOrder
   date?: Prisma.SortOrder
   description?: Prisma.SortOrder
   amount?: Prisma.SortOrder
@@ -282,6 +295,7 @@ export type TransactionWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.TransactionWhereInput | Prisma.TransactionWhereInput[]
   OR?: Prisma.TransactionWhereInput[]
   NOT?: Prisma.TransactionWhereInput | Prisma.TransactionWhereInput[]
+  trx_id?: Prisma.IntFilter<"Transaction"> | number
   date?: Prisma.DateTimeFilter<"Transaction"> | Date | string
   description?: Prisma.StringFilter<"Transaction"> | string
   amount?: Prisma.DecimalFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -296,6 +310,7 @@ export type TransactionWhereUniqueInput = Prisma.AtLeast<{
 
 export type TransactionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  trx_id?: Prisma.SortOrder
   date?: Prisma.SortOrder
   description?: Prisma.SortOrder
   amount?: Prisma.SortOrder
@@ -318,6 +333,7 @@ export type TransactionScalarWhereWithAggregatesInput = {
   OR?: Prisma.TransactionScalarWhereWithAggregatesInput[]
   NOT?: Prisma.TransactionScalarWhereWithAggregatesInput | Prisma.TransactionScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Transaction"> | string
+  trx_id?: Prisma.IntWithAggregatesFilter<"Transaction"> | number
   date?: Prisma.DateTimeWithAggregatesFilter<"Transaction"> | Date | string
   description?: Prisma.StringWithAggregatesFilter<"Transaction"> | string
   amount?: Prisma.DecimalWithAggregatesFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -332,6 +348,7 @@ export type TransactionScalarWhereWithAggregatesInput = {
 
 export type TransactionCreateInput = {
   id?: string
+  trx_id?: number
   date: Date | string
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -346,6 +363,7 @@ export type TransactionCreateInput = {
 
 export type TransactionUncheckedCreateInput = {
   id?: string
+  trx_id?: number
   date: Date | string
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -360,6 +378,7 @@ export type TransactionUncheckedCreateInput = {
 
 export type TransactionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  trx_id?: Prisma.IntFieldUpdateOperationsInput | number
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -374,6 +393,7 @@ export type TransactionUpdateInput = {
 
 export type TransactionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  trx_id?: Prisma.IntFieldUpdateOperationsInput | number
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -388,6 +408,7 @@ export type TransactionUncheckedUpdateInput = {
 
 export type TransactionCreateManyInput = {
   id?: string
+  trx_id?: number
   date: Date | string
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -402,6 +423,7 @@ export type TransactionCreateManyInput = {
 
 export type TransactionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  trx_id?: Prisma.IntFieldUpdateOperationsInput | number
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -416,6 +438,7 @@ export type TransactionUpdateManyMutationInput = {
 
 export type TransactionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  trx_id?: Prisma.IntFieldUpdateOperationsInput | number
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -444,6 +467,7 @@ export type TransactionDateDescriptionAmountCompoundUniqueInput = {
 
 export type TransactionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  trx_id?: Prisma.SortOrder
   date?: Prisma.SortOrder
   description?: Prisma.SortOrder
   amount?: Prisma.SortOrder
@@ -457,11 +481,13 @@ export type TransactionCountOrderByAggregateInput = {
 }
 
 export type TransactionAvgOrderByAggregateInput = {
+  trx_id?: Prisma.SortOrder
   amount?: Prisma.SortOrder
 }
 
 export type TransactionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  trx_id?: Prisma.SortOrder
   date?: Prisma.SortOrder
   description?: Prisma.SortOrder
   amount?: Prisma.SortOrder
@@ -475,6 +501,7 @@ export type TransactionMaxOrderByAggregateInput = {
 
 export type TransactionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  trx_id?: Prisma.SortOrder
   date?: Prisma.SortOrder
   description?: Prisma.SortOrder
   amount?: Prisma.SortOrder
@@ -487,6 +514,7 @@ export type TransactionMinOrderByAggregateInput = {
 }
 
 export type TransactionSumOrderByAggregateInput = {
+  trx_id?: Prisma.SortOrder
   amount?: Prisma.SortOrder
 }
 
@@ -515,6 +543,7 @@ export type TransactionUpdateattachmentsInput = {
 
 export type TransactionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  trx_id?: boolean
   date?: boolean
   description?: boolean
   amount?: boolean
@@ -529,6 +558,7 @@ export type TransactionSelect<ExtArgs extends runtime.Types.Extensions.InternalA
 
 export type TransactionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  trx_id?: boolean
   date?: boolean
   description?: boolean
   amount?: boolean
@@ -543,6 +573,7 @@ export type TransactionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
 
 export type TransactionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  trx_id?: boolean
   date?: boolean
   description?: boolean
   amount?: boolean
@@ -557,6 +588,7 @@ export type TransactionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
 
 export type TransactionSelectScalar = {
   id?: boolean
+  trx_id?: boolean
   date?: boolean
   description?: boolean
   amount?: boolean
@@ -569,13 +601,14 @@ export type TransactionSelectScalar = {
   userId?: boolean
 }
 
-export type TransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "date" | "description" | "amount" | "currency" | "status" | "source" | "attachments" | "accountId" | "createdAt" | "userId", ExtArgs["result"]["transaction"]>
+export type TransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "trx_id" | "date" | "description" | "amount" | "currency" | "status" | "source" | "attachments" | "accountId" | "createdAt" | "userId", ExtArgs["result"]["transaction"]>
 
 export type $TransactionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Transaction"
   objects: {}
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    trx_id: number
     date: Date
     description: string
     amount: runtime.Decimal
@@ -1010,6 +1043,7 @@ export interface Prisma__TransactionClient<T, Null = never, ExtArgs extends runt
  */
 export interface TransactionFieldRefs {
   readonly id: Prisma.FieldRef<"Transaction", 'String'>
+  readonly trx_id: Prisma.FieldRef<"Transaction", 'Int'>
   readonly date: Prisma.FieldRef<"Transaction", 'DateTime'>
   readonly description: Prisma.FieldRef<"Transaction", 'String'>
   readonly amount: Prisma.FieldRef<"Transaction", 'Decimal'>

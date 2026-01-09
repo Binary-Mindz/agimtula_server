@@ -6,11 +6,6 @@ import { cResponseData } from 'src/common/cResponse';
 export class PermissionService {
   constructor(private prisma: PrismaService) { }
 
-  // ============ ROLE-BASED PERMISSIONS ============
-
-  /**
-   * Assign module permission to a role
-   */
   async assignRolePermission(
     role: string,
     moduleName: string,
@@ -59,9 +54,7 @@ export class PermissionService {
     }
   }
 
-  /**
-   * Revoke module permission from a role
-   */
+
   async revokeRolePermission(role: string, moduleName: string) {
     try {
       const module = await this.prisma.module.findUnique({
@@ -96,9 +89,7 @@ export class PermissionService {
     }
   }
 
-  /**
-   * Get all permissions for a specific role
-   */
+
   async getRolePermissions(role: string) {
     try {
       const permissions = await this.prisma.roleModulePermission.findMany({
@@ -133,9 +124,7 @@ export class PermissionService {
     }
   }
 
-  /**
-   * Get all roles with their permissions
-   */
+
   async getAllRolesWithPermissions() {
     try {
       const roles = ['ADMIN', 'USER', 'ACCOUNTANT'];

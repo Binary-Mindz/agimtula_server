@@ -95,7 +95,7 @@ export class AdminUserManagementController {
     return this.userManagementService.updateStatus(userId, status);
   }
 
-  @Patch("updateRole/:id")
+  @Patch('updateRole/:id')
   @Roles('ADMIN')
   @ApiBody({
     schema: {
@@ -114,5 +114,15 @@ export class AdminUserManagementController {
   })
   updateRole(@Param() id: string, @Body() role: 'USER' | 'ACCOUNTANT') {
     return this.userManagementService.updateRole(id, role);
+  }
+
+  @Patch('deleteAccount/:userId')
+  @Roles('ADMIN')
+  @ApiParam({
+    name: 'userId',
+    type: String,
+  })
+  deleteAccount(@Param() userId: string) {
+    return this.userManagementService.deleteAccount(userId);
   }
 }

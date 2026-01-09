@@ -64,7 +64,7 @@ export class ReceiptsService {
   async uploadReceipt(userId: string, dto: UploadReceiptDto) {
     try {
       const userExits = await this.prisma.user.findUnique({
-        where: { id: userId },
+        where: { id: userId, isDeleted: false },
       });
 
       if (!userExits) {
@@ -128,7 +128,10 @@ export class ReceiptsService {
 
       const [receipts, totalRecords] = await Promise.all([
         this.prisma.receipt.findMany({
-          where: query,
+          where: {
+            ...query,
+            user: { isDeleted: false },
+          },
           skip,
           take: limit,
           orderBy: { date: 'desc' },
@@ -147,7 +150,12 @@ export class ReceiptsService {
             },
           },
         }),
-        this.prisma.receipt.count({ where: query }),
+        this.prisma.receipt.count({ 
+          where: {
+            ...query,
+            user: { isDeleted: false },
+          },
+        }),
       ]);
 
       const totalPages = Math.ceil(totalRecords / limit);

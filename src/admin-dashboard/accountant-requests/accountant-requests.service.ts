@@ -10,6 +10,7 @@ export class AccountantRequestsService {
     return this.prisma.user.findMany({
       where: {
         role: 'ACCOUNTANT',
+        isDeleted: false,
       },
     });
   }

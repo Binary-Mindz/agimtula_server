@@ -47,11 +47,11 @@ export class AuthGuard implements CanActivate {
       const decoded = jwt.verify(token, process.env.JWT_SECRET!) as jwtPayload;
 
       const user = await this.prisma.user.findUnique({
-        where: { id: decoded.sub },
+        where: { id: decoded.sub, isDeleted: false },
       });
 
       if (!user) {
-        throw new UnauthorizedException('User not found');
+        throw new UnauthorizedException('User not found or deleted');
       }
 
       request.user = decoded;

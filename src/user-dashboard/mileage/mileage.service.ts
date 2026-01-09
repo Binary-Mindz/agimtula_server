@@ -63,18 +63,19 @@ export class MileageService {
         totalTrips,
       ] = await Promise.all([
         this.prisma.mileage.aggregate({
-          where: { userId },
+          where: { userId, user: { isDeleted: false } },
           _sum: { distance: true },
         }),
 
         this.prisma.mileage.aggregate({
-          where: { userId },
+          where: { userId, user: { isDeleted: false } },
           _sum: { amount: true },
         }),
 
         this.prisma.mileage.count({
           where: {
             userId,
+            user: { isDeleted: false },
             date: {
               gte: firstDayThisMonth,
               lte: lastDayThisMonth,
@@ -83,7 +84,7 @@ export class MileageService {
         }),
 
         this.prisma.mileage.findMany({
-          where: { userId },
+          where: { userId, user: { isDeleted: false } },
           select: {
             id: true,
             startLocation: true,
@@ -98,7 +99,7 @@ export class MileageService {
           take: limit,
         }),
 
-        this.prisma.mileage.count({ where: { userId } }),
+        this.prisma.mileage.count({ where: { userId, user: { isDeleted: false } } }),
       ]);
 
       const totalPages = Math.ceil(totalTrips / limit);
@@ -133,7 +134,11 @@ export class MileageService {
   async editLoggedTrip(userId: string, tripId: string, dto: LogTripDto) {
     try {
       const updatedTrip = await this.prisma.mileage.update({
-        where: { userId, id: tripId },
+        where: { 
+          userId, 
+          id: tripId,
+          user: { isDeleted: false },
+        },
         data: {
           date: dto.date,
           startLocation: dto.startLocation,
@@ -164,7 +169,11 @@ export class MileageService {
   async deleteLoggedTrip(userId: string, tripId: string) {
     try {
       const deletedTrip = await this.prisma.mileage.delete({
-        where: { userId, id: tripId },
+        where: { 
+          userId, 
+          id: tripId,
+          user: { isDeleted: false },
+        },
       });
 
       return cResponseData({

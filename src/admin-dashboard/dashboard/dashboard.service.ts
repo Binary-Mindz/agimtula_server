@@ -31,11 +31,13 @@ export class DashboardService {
         pendingPaymentCount,
         lastSixMonthsData,
         lastSixMonthsUsers,
+        activeUsers,
       ] = await Promise.all([
         this.prisma.user.count({
           where: {
             role: 'USER',
             status: true,
+            isDeleted: false,
           },
         }),
 
@@ -85,6 +87,18 @@ export class DashboardService {
               gte: lastSixMonths,
             },
             role: 'USER',
+            isDeleted: false,
+          },
+          select: { created_at: true },
+        }),
+        this.prisma.user.findMany({
+          where: {
+            created_at: {
+              gte: lastSixMonths,
+            },
+            isDeleted: false,
+            role: 'USER',
+            status: true,
           },
           select: { created_at: true },
         }),
@@ -141,6 +155,30 @@ export class DashboardService {
         }
       });
 
+      const activeUsersMonthlyData: {
+        month: string;
+        activeUserCount: number;
+      }[] = [];
+
+      activeUsers.forEach((item) => {
+        const month = item.created_at.getMonth() + 1;
+        const year = item.created_at.getFullYear();
+        const monthYear = `${year}-${month}`;
+
+        const existingMonth = activeUsersMonthlyData.find(
+          (m) => m.month === monthYear,
+        );
+
+        if (existingMonth) {
+          existingMonth.activeUserCount += 1;
+        } else {
+          activeUsersMonthlyData.push({
+            month: monthYear,
+            activeUserCount: 1,
+          });
+        }
+      });
+
       return cResponseData({
         data: {
           userCount,
@@ -148,6 +186,7 @@ export class DashboardService {
           pendingPaymentCount: pendingPaymentCount || 0,
           monthlyData,
           userMonthlyData,
+          activeUsersMonthlyData,
         },
       });
     } catch (error) {

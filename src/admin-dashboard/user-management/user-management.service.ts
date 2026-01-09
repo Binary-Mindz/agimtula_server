@@ -3,13 +3,13 @@ import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { CreateUserManagementDto } from './dto/create-user-management.dto';
 import * as bcrypt from 'bcrypt';
-import { MailerService } from '@nestjs-modules/mailer';
+import { SmtpMailService } from 'src/config/smtp-mail/smtp-mail.service';
 
 @Injectable()
 export class UserManagementService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly mailer: MailerService,
+    private readonly mailer: SmtpMailService,
   ) {}
 
   async findAllUsers(
@@ -67,6 +67,9 @@ export class UserManagementService {
       if (isActive !== undefined) {
         where.status = isActive;
       }
+
+      // Exclude deleted users
+      where.isDeleted = false;
 
       const [users, total] = await Promise.all([
         this.prisma.user.findMany({
@@ -205,11 +208,10 @@ export class UserManagementService {
         },
       });
 
-      await this.mailer.sendMail({
-        to: dto.email,
-        subject: 'Welcome to Agimtula',
-
-        html: `
+      await this.mailer.sendMail(
+        dto.email,
+        'Welcome to Agimtula',
+        `
         <div style="background-color: #f5f5f5; padding: 20px; border-radius: 10px; text-align: center;">
           <h1 style="color: #333;">Welcome to Agimtula</h1>
           <p style="color: #666;">Your account has been created successfully.</p>
@@ -218,7 +220,7 @@ export class UserManagementService {
           <p style="color: #666;">Thank you for joining Agimtula!</p>
         </div> 
         `,
-      });
+      );
 
       return cResponseData({
         success: true,
@@ -240,7 +242,7 @@ export class UserManagementService {
   async updateStatus(userId: string, status: boolean) {
     try {
       const user = await this.prisma.user.findUnique({
-        where: { id: userId },
+        where: { id: userId, isDeleted: false },
         select: { status: true },
       });
 
@@ -273,7 +275,7 @@ export class UserManagementService {
   async updateRole(userId: string, role: 'USER' | 'ACCOUNTANT') {
     try {
       const user = await this.prisma.user.findUnique({
-        where: { id: userId },
+        where: { id: userId, isDeleted: false },
       });
 
       if (!user) {
@@ -305,7 +307,7 @@ export class UserManagementService {
   async deleteAccount(userId: string) {
     try {
       const user = await this.prisma.user.findUnique({
-        where: { id: userId },
+        where: { id: userId, isDeleted: false },
       });
 
       if (!user) {

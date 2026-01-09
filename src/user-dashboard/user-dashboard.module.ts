@@ -6,9 +6,8 @@ import { ReportsModule } from './reports/reports.module';
 import { RequesteAccountantModule } from './request-accountant/request-accountant.module';
 import { InvoicesModule } from './invoices/invoices.module';
 import { DashboardModule } from './dashboard/dashboard.module';
-import { SupportModule } from './support/support.module';
 
 @Module({
-  imports: [AutoInvoiceImportsModule, ReceiptsModule, PaymentModule, ReportsModule, RequesteAccountantModule, InvoicesModule, DashboardModule, SupportModule],
+  imports: [AutoInvoiceImportsModule, ReceiptsModule, PaymentModule, ReportsModule, RequesteAccountantModule, InvoicesModule, DashboardModule],
 })
 export class UserDashboardModule { }

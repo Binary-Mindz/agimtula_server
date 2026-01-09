@@ -19,10 +19,9 @@ model User {
   userSubscriptionPlan        userSubscriptionPlan?
   userSubscriptionPlanHistory userSubscriptionPlanHistory[]
   quotations                  quotation[]
-
-  haveAccountant  Boolean @default(false)
-  accountantId    String?
-  tinkAccessToken String  @default("0")
+  haveAccountant              Boolean                       @default(false)
+  accountantId                String?
+  tinkAccessToken             String                        @default("0")
 
   supportTickets SupportTicket[]
 

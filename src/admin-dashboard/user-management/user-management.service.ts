@@ -179,8 +179,9 @@ export class UserManagementService {
               email: dto.email,
             },
           },
-          role: 'USER',
-          status: true,
+
+          role: dto.role,
+          status: dto.isActive,
           profile: {
             create: {
               firstName: dto.firstName,
@@ -301,6 +302,25 @@ export class UserManagementService {
         'Failed to update user role',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
+    }
+  }
+
+  async getPlans() {
+    try {
+      const plans = await this.prisma.subscriptionPlan.findMany({
+        select: {
+          id: true,
+          planName: true,
+        },
+      });
+
+      return cResponseData({
+        success: true,
+        message: 'Plans fetched successfully',
+        data: plans,
+      });
+    } catch (error) {
+      console.error(error);
     }
   }
 

@@ -113,11 +113,6 @@ export type Loggers = Prisma.LoggersModel
  */
 export type Module = Prisma.ModuleModel
 /**
- * Model UserModuleAccess
- * 
- */
-export type UserModuleAccess = Prisma.UserModuleAccessModel
-/**
  * Model RoleModulePermission
  * 
  */

@@ -29,6 +29,7 @@ export class DashboardService {
         userCount,
         subscriptionAmountThisMonth,
         pendingPaymentCount,
+        activeSubscriptionsCount,
         lastSixMonthsData,
         lastSixMonthsUsers,
         activeUsers,
@@ -65,6 +66,16 @@ export class DashboardService {
             },
           },
         }),
+
+        this.prisma.userSubscriptionPlan.count({
+          where: {
+            isActive: true,
+            expiredAt: {
+              gt: new Date(),
+            },
+          },
+        }),
+
         this.prisma.userSubscriptionPlanHistory.findMany({
           where: {
             createdAt: {
@@ -184,9 +195,10 @@ export class DashboardService {
           userCount,
           subscriptionAmount,
           pendingPaymentCount: pendingPaymentCount || 0,
-          monthlyData,
-          userMonthlyData,
-          activeUsersMonthlyData,
+          activeSubscriptionsCount,
+          revenueTrend: monthlyData,
+          monthlyTotalUser: userMonthlyData,
+          thisMonthTotalActiveUser: activeUsersMonthlyData,
         },
       });
     } catch (error) {

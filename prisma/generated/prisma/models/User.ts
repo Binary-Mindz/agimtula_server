@@ -242,7 +242,6 @@ export type UserWhereInput = {
   userSubscriptionPlan?: Prisma.XOR<Prisma.UserSubscriptionPlanNullableScalarRelationFilter, Prisma.userSubscriptionPlanWhereInput> | null
   userSubscriptionPlanHistory?: Prisma.UserSubscriptionPlanHistoryListRelationFilter
   quotations?: Prisma.QuotationListRelationFilter
-  userModuleAccess?: Prisma.UserModuleAccessListRelationFilter
   supportTickets?: Prisma.SupportTicketListRelationFilter
 }
 
@@ -270,7 +269,6 @@ export type UserOrderByWithRelationInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanOrderByWithRelationInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryOrderByRelationAggregateInput
   quotations?: Prisma.quotationOrderByRelationAggregateInput
-  userModuleAccess?: Prisma.UserModuleAccessOrderByRelationAggregateInput
   supportTickets?: Prisma.SupportTicketOrderByRelationAggregateInput
 }
 
@@ -301,7 +299,6 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   userSubscriptionPlan?: Prisma.XOR<Prisma.UserSubscriptionPlanNullableScalarRelationFilter, Prisma.userSubscriptionPlanWhereInput> | null
   userSubscriptionPlanHistory?: Prisma.UserSubscriptionPlanHistoryListRelationFilter
   quotations?: Prisma.QuotationListRelationFilter
-  userModuleAccess?: Prisma.UserModuleAccessListRelationFilter
   supportTickets?: Prisma.SupportTicketListRelationFilter
 }, "id" | "id">
 
@@ -363,7 +360,6 @@ export type UserCreateInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationCreateNestedManyWithoutSenderInput
-  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
 }
 
@@ -391,7 +387,6 @@ export type UserUncheckedCreateInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationUncheckedCreateNestedManyWithoutSenderInput
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -419,7 +414,6 @@ export type UserUpdateInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUpdateManyWithoutSenderNestedInput
-  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
 }
 
@@ -447,7 +441,6 @@ export type UserUncheckedUpdateInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUncheckedUpdateManyWithoutSenderNestedInput
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -601,20 +594,6 @@ export type UserUpdateOneRequiredWithoutUserSubscriptionPlanHistoryNestedInput =
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUserSubscriptionPlanHistoryInput, Prisma.UserUpdateWithoutUserSubscriptionPlanHistoryInput>, Prisma.UserUncheckedUpdateWithoutUserSubscriptionPlanHistoryInput>
 }
 
-export type UserCreateNestedOneWithoutUserModuleAccessInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutUserModuleAccessInput, Prisma.UserUncheckedCreateWithoutUserModuleAccessInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserModuleAccessInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutUserModuleAccessNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutUserModuleAccessInput, Prisma.UserUncheckedCreateWithoutUserModuleAccessInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserModuleAccessInput
-  upsert?: Prisma.UserUpsertWithoutUserModuleAccessInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUserModuleAccessInput, Prisma.UserUpdateWithoutUserModuleAccessInput>, Prisma.UserUncheckedUpdateWithoutUserModuleAccessInput>
-}
-
 export type UserCreateNestedOneWithoutProfileInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutProfileInput, Prisma.UserUncheckedCreateWithoutProfileInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutProfileInput
@@ -766,7 +745,6 @@ export type UserCreateWithoutMileagesInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationCreateNestedManyWithoutSenderInput
-  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
 }
 
@@ -793,7 +771,6 @@ export type UserUncheckedCreateWithoutMileagesInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationUncheckedCreateNestedManyWithoutSenderInput
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -836,7 +813,6 @@ export type UserUpdateWithoutMileagesInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUpdateManyWithoutSenderNestedInput
-  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
 }
 
@@ -863,7 +839,6 @@ export type UserUncheckedUpdateWithoutMileagesInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUncheckedUpdateManyWithoutSenderNestedInput
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -890,7 +865,6 @@ export type UserCreateWithoutImapConfigurationsInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationCreateNestedManyWithoutSenderInput
-  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
 }
 
@@ -917,7 +891,6 @@ export type UserUncheckedCreateWithoutImapConfigurationsInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationUncheckedCreateNestedManyWithoutSenderInput
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -960,7 +933,6 @@ export type UserUpdateWithoutImapConfigurationsInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUpdateManyWithoutSenderNestedInput
-  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
 }
 
@@ -987,7 +959,6 @@ export type UserUncheckedUpdateWithoutImapConfigurationsInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUncheckedUpdateManyWithoutSenderNestedInput
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -1014,7 +985,6 @@ export type UserCreateWithoutUserSubscriptionPlanInput = {
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationCreateNestedManyWithoutSenderInput
-  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
 }
 
@@ -1041,7 +1011,6 @@ export type UserUncheckedCreateWithoutUserSubscriptionPlanInput = {
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationUncheckedCreateNestedManyWithoutSenderInput
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -1084,7 +1053,6 @@ export type UserUpdateWithoutUserSubscriptionPlanInput = {
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUpdateManyWithoutSenderNestedInput
-  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
 }
 
@@ -1111,7 +1079,6 @@ export type UserUncheckedUpdateWithoutUserSubscriptionPlanInput = {
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUncheckedUpdateManyWithoutSenderNestedInput
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -1138,7 +1105,6 @@ export type UserCreateWithoutUserSubscriptionPlanHistoryInput = {
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
   userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
   quotations?: Prisma.quotationCreateNestedManyWithoutSenderInput
-  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
 }
 
@@ -1165,7 +1131,6 @@ export type UserUncheckedCreateWithoutUserSubscriptionPlanHistoryInput = {
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
   quotations?: Prisma.quotationUncheckedCreateNestedManyWithoutSenderInput
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -1208,7 +1173,6 @@ export type UserUpdateWithoutUserSubscriptionPlanHistoryInput = {
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
   quotations?: Prisma.quotationUpdateManyWithoutSenderNestedInput
-  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
 }
 
@@ -1234,131 +1198,6 @@ export type UserUncheckedUpdateWithoutUserSubscriptionPlanHistoryInput = {
   paymentMethods?: Prisma.PaymentMethodUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
-  quotations?: Prisma.quotationUncheckedUpdateManyWithoutSenderNestedInput
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutUserNestedInput
-  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
-}
-
-export type UserCreateWithoutUserModuleAccessInput = {
-  id?: string
-  password: string
-  role?: $Enums.UserRole
-  twoFactorEnabled?: boolean
-  status?: boolean
-  isDeleted?: boolean
-  created_at?: Date | string
-  updated_at?: Date | string
-  haveAccountant?: boolean
-  accountantId?: string | null
-  tinkAccessToken?: string
-  receipts?: Prisma.ReceiptCreateNestedManyWithoutUserInput
-  businessInfo?: Prisma.BusinessInfoCreateNestedOneWithoutUserInput
-  email?: Prisma.EmailCreateNestedOneWithoutUserInput
-  imapConfigurations?: Prisma.imapConfigurationCreateNestedOneWithoutUserInput
-  invoiceLayout?: Prisma.InvoiceLayoutCreateNestedOneWithoutUserInput
-  languages?: Prisma.LanguageCreateNestedManyWithoutUserInput
-  mileages?: Prisma.MileageCreateNestedManyWithoutUserInput
-  paymentMethods?: Prisma.PaymentMethodCreateNestedManyWithoutUserInput
-  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
-  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
-  quotations?: Prisma.quotationCreateNestedManyWithoutSenderInput
-  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
-}
-
-export type UserUncheckedCreateWithoutUserModuleAccessInput = {
-  id?: string
-  password: string
-  role?: $Enums.UserRole
-  twoFactorEnabled?: boolean
-  status?: boolean
-  isDeleted?: boolean
-  created_at?: Date | string
-  updated_at?: Date | string
-  haveAccountant?: boolean
-  accountantId?: string | null
-  tinkAccessToken?: string
-  receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutUserInput
-  businessInfo?: Prisma.BusinessInfoUncheckedCreateNestedOneWithoutUserInput
-  email?: Prisma.EmailUncheckedCreateNestedOneWithoutUserInput
-  imapConfigurations?: Prisma.imapConfigurationUncheckedCreateNestedOneWithoutUserInput
-  invoiceLayout?: Prisma.InvoiceLayoutUncheckedCreateNestedOneWithoutUserInput
-  languages?: Prisma.LanguageUncheckedCreateNestedManyWithoutUserInput
-  mileages?: Prisma.MileageUncheckedCreateNestedManyWithoutUserInput
-  paymentMethods?: Prisma.PaymentMethodUncheckedCreateNestedManyWithoutUserInput
-  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
-  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
-  quotations?: Prisma.quotationUncheckedCreateNestedManyWithoutSenderInput
-  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
-}
-
-export type UserCreateOrConnectWithoutUserModuleAccessInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutUserModuleAccessInput, Prisma.UserUncheckedCreateWithoutUserModuleAccessInput>
-}
-
-export type UserUpsertWithoutUserModuleAccessInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutUserModuleAccessInput, Prisma.UserUncheckedUpdateWithoutUserModuleAccessInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutUserModuleAccessInput, Prisma.UserUncheckedCreateWithoutUserModuleAccessInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutUserModuleAccessInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutUserModuleAccessInput, Prisma.UserUncheckedUpdateWithoutUserModuleAccessInput>
-}
-
-export type UserUpdateWithoutUserModuleAccessInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  tinkAccessToken?: Prisma.StringFieldUpdateOperationsInput | string
-  receipts?: Prisma.ReceiptUpdateManyWithoutUserNestedInput
-  businessInfo?: Prisma.BusinessInfoUpdateOneWithoutUserNestedInput
-  email?: Prisma.EmailUpdateOneWithoutUserNestedInput
-  imapConfigurations?: Prisma.imapConfigurationUpdateOneWithoutUserNestedInput
-  invoiceLayout?: Prisma.InvoiceLayoutUpdateOneWithoutUserNestedInput
-  languages?: Prisma.LanguageUpdateManyWithoutUserNestedInput
-  mileages?: Prisma.MileageUpdateManyWithoutUserNestedInput
-  paymentMethods?: Prisma.PaymentMethodUpdateManyWithoutUserNestedInput
-  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
-  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
-  quotations?: Prisma.quotationUpdateManyWithoutSenderNestedInput
-  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
-}
-
-export type UserUncheckedUpdateWithoutUserModuleAccessInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  haveAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  accountantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  tinkAccessToken?: Prisma.StringFieldUpdateOperationsInput | string
-  receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutUserNestedInput
-  businessInfo?: Prisma.BusinessInfoUncheckedUpdateOneWithoutUserNestedInput
-  email?: Prisma.EmailUncheckedUpdateOneWithoutUserNestedInput
-  imapConfigurations?: Prisma.imapConfigurationUncheckedUpdateOneWithoutUserNestedInput
-  invoiceLayout?: Prisma.InvoiceLayoutUncheckedUpdateOneWithoutUserNestedInput
-  languages?: Prisma.LanguageUncheckedUpdateManyWithoutUserNestedInput
-  mileages?: Prisma.MileageUncheckedUpdateManyWithoutUserNestedInput
-  paymentMethods?: Prisma.PaymentMethodUncheckedUpdateManyWithoutUserNestedInput
-  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
-  userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
-  userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUncheckedUpdateManyWithoutSenderNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -1386,7 +1225,6 @@ export type UserCreateWithoutProfileInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationCreateNestedManyWithoutSenderInput
-  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
 }
 
@@ -1413,7 +1251,6 @@ export type UserUncheckedCreateWithoutProfileInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationUncheckedCreateNestedManyWithoutSenderInput
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -1456,7 +1293,6 @@ export type UserUpdateWithoutProfileInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUpdateManyWithoutSenderNestedInput
-  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
 }
 
@@ -1483,7 +1319,6 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUncheckedUpdateManyWithoutSenderNestedInput
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -1510,7 +1345,6 @@ export type UserCreateWithoutLanguagesInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationCreateNestedManyWithoutSenderInput
-  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
 }
 
@@ -1537,7 +1371,6 @@ export type UserUncheckedCreateWithoutLanguagesInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationUncheckedCreateNestedManyWithoutSenderInput
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -1580,7 +1413,6 @@ export type UserUpdateWithoutLanguagesInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUpdateManyWithoutSenderNestedInput
-  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
 }
 
@@ -1607,7 +1439,6 @@ export type UserUncheckedUpdateWithoutLanguagesInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUncheckedUpdateManyWithoutSenderNestedInput
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -1634,7 +1465,6 @@ export type UserCreateWithoutQuotationsInput = {
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
   userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
-  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
 }
 
@@ -1661,7 +1491,6 @@ export type UserUncheckedCreateWithoutQuotationsInput = {
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -1704,7 +1533,6 @@ export type UserUpdateWithoutQuotationsInput = {
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
-  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
 }
 
@@ -1731,7 +1559,6 @@ export type UserUncheckedUpdateWithoutQuotationsInput = {
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -1758,7 +1585,6 @@ export type UserCreateWithoutReceiptsInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationCreateNestedManyWithoutSenderInput
-  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
 }
 
@@ -1785,7 +1611,6 @@ export type UserUncheckedCreateWithoutReceiptsInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationUncheckedCreateNestedManyWithoutSenderInput
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -1828,7 +1653,6 @@ export type UserUpdateWithoutReceiptsInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUpdateManyWithoutSenderNestedInput
-  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
 }
 
@@ -1855,7 +1679,6 @@ export type UserUncheckedUpdateWithoutReceiptsInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUncheckedUpdateManyWithoutSenderNestedInput
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -1882,7 +1705,6 @@ export type UserCreateWithoutBusinessInfoInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationCreateNestedManyWithoutSenderInput
-  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
 }
 
@@ -1909,7 +1731,6 @@ export type UserUncheckedCreateWithoutBusinessInfoInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationUncheckedCreateNestedManyWithoutSenderInput
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -1952,7 +1773,6 @@ export type UserUpdateWithoutBusinessInfoInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUpdateManyWithoutSenderNestedInput
-  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
 }
 
@@ -1979,7 +1799,6 @@ export type UserUncheckedUpdateWithoutBusinessInfoInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUncheckedUpdateManyWithoutSenderNestedInput
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -2006,7 +1825,6 @@ export type UserCreateWithoutPaymentMethodsInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationCreateNestedManyWithoutSenderInput
-  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
 }
 
@@ -2033,7 +1851,6 @@ export type UserUncheckedCreateWithoutPaymentMethodsInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationUncheckedCreateNestedManyWithoutSenderInput
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -2076,7 +1893,6 @@ export type UserUpdateWithoutPaymentMethodsInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUpdateManyWithoutSenderNestedInput
-  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
 }
 
@@ -2103,7 +1919,6 @@ export type UserUncheckedUpdateWithoutPaymentMethodsInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUncheckedUpdateManyWithoutSenderNestedInput
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -2130,7 +1945,6 @@ export type UserCreateWithoutInvoiceLayoutInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationCreateNestedManyWithoutSenderInput
-  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
 }
 
@@ -2157,7 +1971,6 @@ export type UserUncheckedCreateWithoutInvoiceLayoutInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationUncheckedCreateNestedManyWithoutSenderInput
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -2200,7 +2013,6 @@ export type UserUpdateWithoutInvoiceLayoutInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUpdateManyWithoutSenderNestedInput
-  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
 }
 
@@ -2227,7 +2039,6 @@ export type UserUncheckedUpdateWithoutInvoiceLayoutInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUncheckedUpdateManyWithoutSenderNestedInput
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -2255,7 +2066,6 @@ export type UserCreateWithoutSupportTicketsInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationCreateNestedManyWithoutSenderInput
-  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSupportTicketsInput = {
@@ -2282,7 +2092,6 @@ export type UserUncheckedCreateWithoutSupportTicketsInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationUncheckedCreateNestedManyWithoutSenderInput
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSupportTicketsInput = {
@@ -2325,7 +2134,6 @@ export type UserUpdateWithoutSupportTicketsInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUpdateManyWithoutSenderNestedInput
-  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSupportTicketsInput = {
@@ -2352,7 +2160,6 @@ export type UserUncheckedUpdateWithoutSupportTicketsInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUncheckedUpdateManyWithoutSenderNestedInput
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutEmailInput = {
@@ -2378,7 +2185,6 @@ export type UserCreateWithoutEmailInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationCreateNestedManyWithoutSenderInput
-  userModuleAccess?: Prisma.UserModuleAccessCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
 }
 
@@ -2405,7 +2211,6 @@ export type UserUncheckedCreateWithoutEmailInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedCreateNestedOneWithoutUserInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedCreateNestedManyWithoutUserInput
   quotations?: Prisma.quotationUncheckedCreateNestedManyWithoutSenderInput
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -2448,7 +2253,6 @@ export type UserUpdateWithoutEmailInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUpdateManyWithoutSenderNestedInput
-  userModuleAccess?: Prisma.UserModuleAccessUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
 }
 
@@ -2475,7 +2279,6 @@ export type UserUncheckedUpdateWithoutEmailInput = {
   userSubscriptionPlan?: Prisma.userSubscriptionPlanUncheckedUpdateOneWithoutUserNestedInput
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryUncheckedUpdateManyWithoutUserNestedInput
   quotations?: Prisma.quotationUncheckedUpdateManyWithoutSenderNestedInput
-  userModuleAccess?: Prisma.UserModuleAccessUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -2491,7 +2294,6 @@ export type UserCountOutputType = {
   paymentMethods: number
   userSubscriptionPlanHistory: number
   quotations: number
-  userModuleAccess: number
   supportTickets: number
 }
 
@@ -2502,7 +2304,6 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   paymentMethods?: boolean | UserCountOutputTypeCountPaymentMethodsArgs
   userSubscriptionPlanHistory?: boolean | UserCountOutputTypeCountUserSubscriptionPlanHistoryArgs
   quotations?: boolean | UserCountOutputTypeCountQuotationsArgs
-  userModuleAccess?: boolean | UserCountOutputTypeCountUserModuleAccessArgs
   supportTickets?: boolean | UserCountOutputTypeCountSupportTicketsArgs
 }
 
@@ -2561,13 +2362,6 @@ export type UserCountOutputTypeCountQuotationsArgs<ExtArgs extends runtime.Types
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountUserModuleAccessArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.UserModuleAccessWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
 export type UserCountOutputTypeCountSupportTicketsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.SupportTicketWhereInput
 }
@@ -2597,7 +2391,6 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   userSubscriptionPlan?: boolean | Prisma.User$userSubscriptionPlanArgs<ExtArgs>
   userSubscriptionPlanHistory?: boolean | Prisma.User$userSubscriptionPlanHistoryArgs<ExtArgs>
   quotations?: boolean | Prisma.User$quotationsArgs<ExtArgs>
-  userModuleAccess?: boolean | Prisma.User$userModuleAccessArgs<ExtArgs>
   supportTickets?: boolean | Prisma.User$supportTicketsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
@@ -2658,7 +2451,6 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   userSubscriptionPlan?: boolean | Prisma.User$userSubscriptionPlanArgs<ExtArgs>
   userSubscriptionPlanHistory?: boolean | Prisma.User$userSubscriptionPlanHistoryArgs<ExtArgs>
   quotations?: boolean | Prisma.User$quotationsArgs<ExtArgs>
-  userModuleAccess?: boolean | Prisma.User$userModuleAccessArgs<ExtArgs>
   supportTickets?: boolean | Prisma.User$supportTicketsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -2680,7 +2472,6 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     userSubscriptionPlan: Prisma.$userSubscriptionPlanPayload<ExtArgs> | null
     userSubscriptionPlanHistory: Prisma.$userSubscriptionPlanHistoryPayload<ExtArgs>[]
     quotations: Prisma.$quotationPayload<ExtArgs>[]
-    userModuleAccess: Prisma.$UserModuleAccessPayload<ExtArgs>[]
     supportTickets: Prisma.$SupportTicketPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -3101,7 +2892,6 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   userSubscriptionPlan<T extends Prisma.User$userSubscriptionPlanArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$userSubscriptionPlanArgs<ExtArgs>>): Prisma.Prisma__userSubscriptionPlanClient<runtime.Types.Result.GetResult<Prisma.$userSubscriptionPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   userSubscriptionPlanHistory<T extends Prisma.User$userSubscriptionPlanHistoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$userSubscriptionPlanHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$userSubscriptionPlanHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   quotations<T extends Prisma.User$quotationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$quotationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$quotationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  userModuleAccess<T extends Prisma.User$userModuleAccessArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$userModuleAccessArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserModuleAccessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   supportTickets<T extends Prisma.User$supportTicketsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$supportTicketsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SupportTicketPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -3786,30 +3576,6 @@ export type User$quotationsArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.QuotationScalarFieldEnum | Prisma.QuotationScalarFieldEnum[]
-}
-
-/**
- * User.userModuleAccess
- */
-export type User$userModuleAccessArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the UserModuleAccess
-   */
-  select?: Prisma.UserModuleAccessSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the UserModuleAccess
-   */
-  omit?: Prisma.UserModuleAccessOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.UserModuleAccessInclude<ExtArgs> | null
-  where?: Prisma.UserModuleAccessWhereInput
-  orderBy?: Prisma.UserModuleAccessOrderByWithRelationInput | Prisma.UserModuleAccessOrderByWithRelationInput[]
-  cursor?: Prisma.UserModuleAccessWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.UserModuleAccessScalarFieldEnum | Prisma.UserModuleAccessScalarFieldEnum[]
 }
 
 /**

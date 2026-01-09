@@ -116,6 +116,12 @@ export class AdminUserManagementController {
     return this.userManagementService.updateRole(id, role);
   }
 
+  @Get('get-plans')
+  @Roles('ADMIN')
+  getPlans() {
+    return this.userManagementService.getPlans();
+  }
+
   @Patch('deleteAccount/:userId')
   @Roles('ADMIN')
   @ApiParam({

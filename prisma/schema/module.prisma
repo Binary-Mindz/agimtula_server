@@ -1,20 +1,19 @@
 model Module {
-  id               String             @id @default(uuid())
-  name             String             @unique
-  displayName      String
-  description      String?
-  isActive         Boolean            @default(true)
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @updatedAt
-  userModuleAccess UserModuleAccess[]
+  id              String                 @id @default(uuid())
+  name            String                 @unique
+  displayName     String
+  description     String?
+  isActive        Boolean                @default(true)
+  createdAt       DateTime               @default(now())
+  updatedAt       DateTime               @updatedAt
+  rolePermissions RoleModulePermission[]
 
   @@map("module")
 }
 
-model UserModuleAccess {
+model RoleModulePermission {
   id        String   @id @default(uuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      UserRole
   moduleId  String
   module    Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
   isEnabled Boolean  @default(true)
@@ -22,6 +21,6 @@ model UserModuleAccess {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([userId, moduleId])
-  @@map("user_module_access")
+  @@unique([role, moduleId])
+  @@map("role_module_permission")
 }

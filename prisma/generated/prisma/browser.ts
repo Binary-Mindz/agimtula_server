@@ -98,6 +98,11 @@ export type Module = Prisma.ModuleModel
  */
 export type UserModuleAccess = Prisma.UserModuleAccessModel
 /**
+ * Model RoleModulePermission
+ * 
+ */
+export type RoleModulePermission = Prisma.RoleModulePermissionModel
+/**
  * Model Profile
  * 
  */

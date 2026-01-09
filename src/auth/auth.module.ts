@@ -10,6 +10,7 @@ import { RedisServiceModule } from 'src/config/redis-service/redis-service.modul
 import { PermissionService } from './permission-management/permission.service';
 import { AuthGuard } from './guard/auth.guard';
 import { ModuleAccessGuard } from './guard/module-access.guard';
+import { PermissionGuard } from './guard/permission.guard';
 import { PermissionManagementController } from './permission-management/permission-management.controller';
 
 @Module({
@@ -29,8 +30,9 @@ import { PermissionManagementController } from './permission-management/permissi
     RedisServiceModule,
     PermissionService,
     ModuleAccessGuard,
+    PermissionGuard,
     AuthGuard
   ],
-  exports: [PermissionService, ModuleAccessGuard, AuthGuard],
+  exports: [PermissionService, ModuleAccessGuard, PermissionGuard, AuthGuard],
 })
 export class AuthModule { }

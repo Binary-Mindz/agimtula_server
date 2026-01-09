@@ -8,19 +8,19 @@ import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('user-dashboard')
 export class DashboardController {
-  constructor(private readonly dashboardService: DashboardService,private readonly report:ReportsService) {}
+  constructor(private readonly dashboardService: DashboardService, private readonly report: ReportsService) { }
 
   @Get('dashboard-data')
   @Roles('USER')
   @ApiOperation({ summary: 'Get dashboard data ( USER only )' })
   async dashboardData(@User() user: jwtPayload) {
-    return this.dashboardService.dashboardData(user.sub);
+    return await this.dashboardService.dashboardData(user.sub);
   }
 
   @Get("monthly-income-expense")
   @Roles('USER')
   @ApiOperation({ summary: 'Get monthly income expense ( USER only )' })
   async monthlyIncomeExpense(@User() user: jwtPayload) {
-    return this.report.getReportData(user.sub);
+    return await this.report.getReportData(user.sub);
   }
 }

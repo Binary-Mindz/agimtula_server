@@ -4,8 +4,8 @@ import { Injectable } from '@nestjs/common';
 export class CurrencyConverterService {
   private readonly exchangeRates = {
     EUR: 1,
-    BDT: 0.0085, // 1 BDT = 0.0085 EUR
-    USD: 0.92,   // 1 USD = 0.92 EUR
+    BDT: 0.0085,
+    USD: 0.92,
   };
 
   convertToEUR(amount: number, fromCurrency: string): number {

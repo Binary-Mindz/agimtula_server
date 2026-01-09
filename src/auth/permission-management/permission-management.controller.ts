@@ -3,7 +3,6 @@ import {
   Post,
   Delete,
   Get,
-  Body,
   Param,
   UseGuards,
   HttpCode,
@@ -17,8 +16,6 @@ import {
 } from '@nestjs/swagger';
 import { PermissionService } from './permission.service';
 import { Roles } from '../decorators/roles.decorator';
-import { GrantUserModuleDto } from './dto/GrandUser.dto';
-import { RevokeUserModuleDto } from './dto/revoke-user-module.dto';
 import { User } from '../decorators/user.decorator';
 import { jwtPayload } from '../types/jwt-payload';
 import { AuthGuard } from '../guard/auth.guard';
@@ -27,50 +24,53 @@ import { AuthGuard } from '../guard/auth.guard';
 @ApiBearerAuth()
 @UseGuards(AuthGuard)
 @Roles('ADMIN')
-@Controller('permissions/modules')
+@Controller('permissions')
 export class PermissionManagementController {
   constructor(private readonly permissionService: PermissionService) { }
 
+  // ============ ROLE-BASED PERMISSIONS ============
 
-  @Post('user/grant')
+  @Post('roles/:role/modules/:moduleName/assign')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Grant module access to user ( ADMIN only )' })
-  @ApiResponse({ status: 200, description: 'Module access granted successfully' })
-  async grantUserModuleAccess(
-    @Body() body: GrantUserModuleDto,
-    @User() user: jwtPayload
+  @ApiOperation({ summary: 'Assign module permission to a role (ADMIN only)' })
+  @ApiResponse({ status: 200, description: 'Permission assigned successfully' })
+  async assignRolePermission(
+    @Param('role') role: string,
+    @Param('moduleName') moduleName: string,
+    @User() user: jwtPayload,
   ) {
-    return await this.permissionService.grantUserModuleAccess(
-      body.userId,
-      body.moduleName,
+    return await this.permissionService.assignRolePermission(
+      role,
+      moduleName,
       user.sub,
     );
   }
 
-  @Delete('user/revoke')
+  @Delete('roles/:role/modules/:moduleName/revoke')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Revoke module access from user ( ADMIN only )' })
-  @ApiResponse({ status: 200, description: 'Module access revoked successfully' })
-  async revokeUserModuleAccess(@Body() body: RevokeUserModuleDto) {
-    return this.permissionService.revokeUserModuleAccess(
-      body.userId,
-      body.moduleName,
-    );
+  @ApiOperation({ summary: 'Revoke module permission from a role (ADMIN only)' })
+  @ApiResponse({ status: 200, description: 'Permission revoked successfully' })
+  async revokeRolePermission(
+    @Param('role') role: string,
+    @Param('moduleName') moduleName: string,
+  ) {
+    return await this.permissionService.revokeRolePermission(role, moduleName);
   }
 
-  @Get('user/:userId')
-  @ApiOperation({ summary: 'Get user modules ( ADMIN only )' })
-  @ApiResponse({ status: 200, description: 'User modules retrieved successfully' })
-  async getUserModules(@Param('userId') userId: string) {
-    return await this.permissionService.getUserModules(userId);
+  @Get('roles/:role/modules')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Get all permissions for a specific role (ADMIN only)' })
+  @ApiResponse({ status: 200, description: 'Role permissions retrieved successfully' })
+  async getRolePermissions(@Param('role') role: string) {
+    return await this.permissionService.getRolePermissions(role);
   }
 
-
-  @Get()
-  @ApiOperation({ summary: 'Get all modules ( ADMIN only )' })
-  @ApiResponse({ status: 200, description: 'All modules retrieved successfully' })
-  async getAllModules() {
-    return await this.permissionService.getAllModules();
+  @Get('roles/all')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Get all roles with their permissions (ADMIN only)' })
+  @ApiResponse({ status: 200, description: 'All roles with permissions retrieved successfully' })
+  async getAllRolesWithPermissions() {
+    return await this.permissionService.getAllRolesWithPermissions();
   }
-
 }
+

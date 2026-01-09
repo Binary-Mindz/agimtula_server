@@ -256,13 +256,21 @@ export class InvoicesService {
     try {
       const [invoices, totalRecords] = await Promise.all([
         this.prisma.invoice.findMany({
-          where: { ...query, isDrafted: false, userId },
+          where: { 
+            ...query, 
+            isDrafted: false, 
+            userId,
+          },
           skip,
           take: limit,
           orderBy: { createdAt: 'desc' },
         }),
         this.prisma.invoice.count({
-          where: { ...query, isDrafted: false, userId },
+          where: { 
+            ...query, 
+            isDrafted: false, 
+            userId,
+          },
         }),
       ]);
 

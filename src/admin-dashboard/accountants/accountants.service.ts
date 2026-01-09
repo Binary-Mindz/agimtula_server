@@ -85,6 +85,7 @@ export class AccountantsService {
       const accountants = await this.Prisma.user.findMany({
         where: {
           role: 'ACCOUNTANT',
+          isDeleted: false,
         },
         include: {
           profile: true,

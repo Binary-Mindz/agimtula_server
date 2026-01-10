@@ -22,8 +22,7 @@ model User {
   haveAccountant              Boolean                       @default(false)
   accountantId                String?
   tinkAccessToken             String                        @default("0")
-
-  supportTickets SupportTicket[]
+  supportTickets              SupportTicket[]
 
   @@map("user")
 }

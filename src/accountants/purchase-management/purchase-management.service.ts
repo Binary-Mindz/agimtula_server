@@ -26,30 +26,45 @@ export class PurchaseManagementService {
         0,
       );
 
-      const [totalPurchaseThisMonth, vatToClaim] = await Promise.all([
-        this.prisma.invoice.aggregate({
-          where: {
-            userId,
-            invoiceSource: 'EMAIL',
-            createdAt: {
-              lt: endDateOfThisMonth,
-              gt: startDateOfThisMonth,
+      const [totalPurchaseThisMonth, vatToClaim, pendingReview, missingReport] =
+        await Promise.all([
+          this.prisma.invoice.aggregate({
+            where: {
+              userId,
+              invoiceSource: 'EMAIL',
+              createdAt: {
+                lt: endDateOfThisMonth,
+                gt: startDateOfThisMonth,
+              },
             },
-          },
-          _sum: {
-            totalAmount: true,
-          },
-        }),
-        this.prisma.invoice.aggregate({
-          where: {
-            userId,
-            invoiceSource: 'EMAIL',
-          },
-          _sum: {
-            vat: true,
-          },
-        }),
-      ]);
+            _sum: {
+              totalAmount: true,
+            },
+          }),
+          this.prisma.invoice.aggregate({
+            where: {
+              userId,
+              invoiceSource: 'EMAIL',
+            },
+            _sum: {
+              vat: true,
+            },
+          }),
+          this.prisma.invoice.count({
+            where: {
+              userId,
+              invoiceSource: 'EMAIL',
+              previewedByAccountant: false,
+            },
+          }),
+          this.prisma.invoice.count({
+            where: {
+              userId,
+              invoiceSource: 'EMAIL',
+              haveAttachment: false,
+            },
+          }),
+        ]);
 
       return cResponseData({
         success: true,
@@ -58,8 +73,8 @@ export class PurchaseManagementService {
           totalPurchaseThisMonth: Math.abs(
             Number(totalPurchaseThisMonth._sum.totalAmount) || 0,
           ),
-          //   pendingReview: pendingReview || 0,
-          //   missingReport: missingReport || 0,
+          pendingReview: pendingReview || 0,
+          missingReport: missingReport || 0,
           vatToClaim: Math.abs(Number(vatToClaim._sum.vat) || 0),
         },
       });
@@ -124,6 +139,7 @@ export class PurchaseManagementService {
             date: purchase.issueDate,
             amount: purchase.totalAmount,
             vat: purchase.vat,
+            status: purchase.previewedByAccountant,
           })),
         },
       });
@@ -145,17 +161,24 @@ export class PurchaseManagementService {
           userId,
         },
       });
-      const isPurchaseInTransaction = await this.prisma.transaction.findFirst({
+
+      if (!isPurchaseInInvoiceDoc) {
+        throw new NotFoundAppException('Purchase not found');
+      }
+
+      await this.prisma.invoice.update({
         where: {
           id,
-          userId,
+        },
+        data: {
+          previewedByAccountant: true,
         },
       });
 
       return cResponseData({
         success: true,
         message: 'Purchase detailed report fetched successfully',
-        data: isPurchaseInInvoiceDoc || isPurchaseInTransaction,
+        data: isPurchaseInInvoiceDoc,
       });
     } catch (error) {
       console.error('Get purchase detailed report error:', error);

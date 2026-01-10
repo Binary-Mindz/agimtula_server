@@ -3164,6 +3164,7 @@ export const LoggersScalarFieldEnum = {
   level: 'level',
   logpriority: 'logpriority',
   information: 'information',
+  userId: 'userId',
   timestamp: 'timestamp'
 } as const
 

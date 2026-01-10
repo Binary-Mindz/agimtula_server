@@ -3,6 +3,7 @@ model Loggers {
   level       LogType
   logpriority logpriority
   information String
+  userId      String?
   timestamp   DateTime    @default(now())
 }
 

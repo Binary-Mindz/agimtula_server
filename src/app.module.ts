@@ -26,6 +26,8 @@ import { SalesInvoicesModule } from './accountants/sales-invoices/sales-invoices
 import { DashboardModule } from './user-dashboard/dashboard/dashboard.module';
 import { ReceiptExpenseModule } from './accountants/receipt-expense/receipt-expense.module';
 import { VatOverviewModule } from './accountants/vat-overview/vat-overview.module';
+import { ClientsModule } from './accountants/clients/clients.module';
+import { ReportsModule } from './accountants/reports/reports.module';
 
 @Module({
   imports: [
@@ -54,6 +56,8 @@ import { VatOverviewModule } from './accountants/vat-overview/vat-overview.modul
     DashboardModule,
     ReceiptExpenseModule,
     VatOverviewModule,
+    ClientsModule,
+    ReportsModule,
   ],
   controllers: [WebhookController],
   providers: [
@@ -63,4 +67,4 @@ import { VatOverviewModule } from './accountants/vat-overview/vat-overview.modul
     },
   ],
 })
-export class AppModule { }
+export class AppModule {}

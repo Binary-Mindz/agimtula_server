@@ -3131,6 +3131,7 @@ export const InvoiceScalarFieldEnum = {
   haveAttachment: 'haveAttachment',
   attachmentUrl: 'attachmentUrl',
   isDrafted: 'isDrafted',
+  previewedByAccountant: 'previewedByAccountant',
   createdAt: 'createdAt'
 } as const
 

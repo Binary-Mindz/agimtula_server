@@ -62,6 +62,7 @@ export type InvoiceMinAggregateOutputType = {
   haveAttachment: boolean | null
   attachmentUrl: string | null
   isDrafted: boolean | null
+  previewedByAccountant: boolean | null
   createdAt: Date | null
 }
 
@@ -89,6 +90,7 @@ export type InvoiceMaxAggregateOutputType = {
   haveAttachment: boolean | null
   attachmentUrl: string | null
   isDrafted: boolean | null
+  previewedByAccountant: boolean | null
   createdAt: Date | null
 }
 
@@ -116,6 +118,7 @@ export type InvoiceCountAggregateOutputType = {
   haveAttachment: number
   attachmentUrl: number
   isDrafted: number
+  previewedByAccountant: number
   createdAt: number
   _all: number
 }
@@ -157,6 +160,7 @@ export type InvoiceMinAggregateInputType = {
   haveAttachment?: true
   attachmentUrl?: true
   isDrafted?: true
+  previewedByAccountant?: true
   createdAt?: true
 }
 
@@ -184,6 +188,7 @@ export type InvoiceMaxAggregateInputType = {
   haveAttachment?: true
   attachmentUrl?: true
   isDrafted?: true
+  previewedByAccountant?: true
   createdAt?: true
 }
 
@@ -211,6 +216,7 @@ export type InvoiceCountAggregateInputType = {
   haveAttachment?: true
   attachmentUrl?: true
   isDrafted?: true
+  previewedByAccountant?: true
   createdAt?: true
   _all?: true
 }
@@ -325,6 +331,7 @@ export type InvoiceGroupByOutputType = {
   haveAttachment: boolean
   attachmentUrl: string | null
   isDrafted: boolean
+  previewedByAccountant: boolean
   createdAt: Date
   _count: InvoiceCountAggregateOutputType | null
   _avg: InvoiceAvgAggregateOutputType | null
@@ -375,6 +382,7 @@ export type InvoiceWhereInput = {
   haveAttachment?: Prisma.BoolFilter<"Invoice"> | boolean
   attachmentUrl?: Prisma.StringNullableFilter<"Invoice"> | string | null
   isDrafted?: Prisma.BoolFilter<"Invoice"> | boolean
+  previewedByAccountant?: Prisma.BoolFilter<"Invoice"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Invoice"> | Date | string
   serviceAndItems?: Prisma.ServiceAndItemListRelationFilter
   businessDatas?: Prisma.BusinessDataListRelationFilter
@@ -404,6 +412,7 @@ export type InvoiceOrderByWithRelationInput = {
   haveAttachment?: Prisma.SortOrder
   attachmentUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   isDrafted?: Prisma.SortOrder
+  previewedByAccountant?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   serviceAndItems?: Prisma.ServiceAndItemOrderByRelationAggregateInput
   businessDatas?: Prisma.BusinessDataOrderByRelationAggregateInput
@@ -436,6 +445,7 @@ export type InvoiceWhereUniqueInput = Prisma.AtLeast<{
   haveAttachment?: Prisma.BoolFilter<"Invoice"> | boolean
   attachmentUrl?: Prisma.StringNullableFilter<"Invoice"> | string | null
   isDrafted?: Prisma.BoolFilter<"Invoice"> | boolean
+  previewedByAccountant?: Prisma.BoolFilter<"Invoice"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Invoice"> | Date | string
   serviceAndItems?: Prisma.ServiceAndItemListRelationFilter
   businessDatas?: Prisma.BusinessDataListRelationFilter
@@ -465,6 +475,7 @@ export type InvoiceOrderByWithAggregationInput = {
   haveAttachment?: Prisma.SortOrder
   attachmentUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   isDrafted?: Prisma.SortOrder
+  previewedByAccountant?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.InvoiceCountOrderByAggregateInput
   _avg?: Prisma.InvoiceAvgOrderByAggregateInput
@@ -500,6 +511,7 @@ export type InvoiceScalarWhereWithAggregatesInput = {
   haveAttachment?: Prisma.BoolWithAggregatesFilter<"Invoice"> | boolean
   attachmentUrl?: Prisma.StringNullableWithAggregatesFilter<"Invoice"> | string | null
   isDrafted?: Prisma.BoolWithAggregatesFilter<"Invoice"> | boolean
+  previewedByAccountant?: Prisma.BoolWithAggregatesFilter<"Invoice"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Invoice"> | Date | string
 }
 
@@ -527,6 +539,7 @@ export type InvoiceCreateInput = {
   haveAttachment?: boolean
   attachmentUrl?: string | null
   isDrafted?: boolean
+  previewedByAccountant?: boolean
   createdAt?: Date | string
   serviceAndItems?: Prisma.ServiceAndItemCreateNestedManyWithoutInvoiceInput
   businessDatas?: Prisma.BusinessDataCreateNestedManyWithoutInvoiceInput
@@ -556,6 +569,7 @@ export type InvoiceUncheckedCreateInput = {
   haveAttachment?: boolean
   attachmentUrl?: string | null
   isDrafted?: boolean
+  previewedByAccountant?: boolean
   createdAt?: Date | string
   serviceAndItems?: Prisma.ServiceAndItemUncheckedCreateNestedManyWithoutInvoiceInput
   businessDatas?: Prisma.BusinessDataUncheckedCreateNestedManyWithoutInvoiceInput
@@ -585,6 +599,7 @@ export type InvoiceUpdateInput = {
   haveAttachment?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDrafted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  previewedByAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   serviceAndItems?: Prisma.ServiceAndItemUpdateManyWithoutInvoiceNestedInput
   businessDatas?: Prisma.BusinessDataUpdateManyWithoutInvoiceNestedInput
@@ -614,6 +629,7 @@ export type InvoiceUncheckedUpdateInput = {
   haveAttachment?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDrafted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  previewedByAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   serviceAndItems?: Prisma.ServiceAndItemUncheckedUpdateManyWithoutInvoiceNestedInput
   businessDatas?: Prisma.BusinessDataUncheckedUpdateManyWithoutInvoiceNestedInput
@@ -643,6 +659,7 @@ export type InvoiceCreateManyInput = {
   haveAttachment?: boolean
   attachmentUrl?: string | null
   isDrafted?: boolean
+  previewedByAccountant?: boolean
   createdAt?: Date | string
 }
 
@@ -670,6 +687,7 @@ export type InvoiceUpdateManyMutationInput = {
   haveAttachment?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDrafted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  previewedByAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -697,6 +715,7 @@ export type InvoiceUncheckedUpdateManyInput = {
   haveAttachment?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDrafted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  previewedByAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -724,6 +743,7 @@ export type InvoiceCountOrderByAggregateInput = {
   haveAttachment?: Prisma.SortOrder
   attachmentUrl?: Prisma.SortOrder
   isDrafted?: Prisma.SortOrder
+  previewedByAccountant?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -757,6 +777,7 @@ export type InvoiceMaxOrderByAggregateInput = {
   haveAttachment?: Prisma.SortOrder
   attachmentUrl?: Prisma.SortOrder
   isDrafted?: Prisma.SortOrder
+  previewedByAccountant?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -784,6 +805,7 @@ export type InvoiceMinOrderByAggregateInput = {
   haveAttachment?: Prisma.SortOrder
   attachmentUrl?: Prisma.SortOrder
   isDrafted?: Prisma.SortOrder
+  previewedByAccountant?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -858,6 +880,7 @@ export type InvoiceCreateWithoutBusinessDatasInput = {
   haveAttachment?: boolean
   attachmentUrl?: string | null
   isDrafted?: boolean
+  previewedByAccountant?: boolean
   createdAt?: Date | string
   serviceAndItems?: Prisma.ServiceAndItemCreateNestedManyWithoutInvoiceInput
 }
@@ -886,6 +909,7 @@ export type InvoiceUncheckedCreateWithoutBusinessDatasInput = {
   haveAttachment?: boolean
   attachmentUrl?: string | null
   isDrafted?: boolean
+  previewedByAccountant?: boolean
   createdAt?: Date | string
   serviceAndItems?: Prisma.ServiceAndItemUncheckedCreateNestedManyWithoutInvoiceInput
 }
@@ -930,6 +954,7 @@ export type InvoiceUpdateWithoutBusinessDatasInput = {
   haveAttachment?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDrafted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  previewedByAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   serviceAndItems?: Prisma.ServiceAndItemUpdateManyWithoutInvoiceNestedInput
 }
@@ -958,6 +983,7 @@ export type InvoiceUncheckedUpdateWithoutBusinessDatasInput = {
   haveAttachment?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDrafted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  previewedByAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   serviceAndItems?: Prisma.ServiceAndItemUncheckedUpdateManyWithoutInvoiceNestedInput
 }
@@ -986,6 +1012,7 @@ export type InvoiceCreateWithoutServiceAndItemsInput = {
   haveAttachment?: boolean
   attachmentUrl?: string | null
   isDrafted?: boolean
+  previewedByAccountant?: boolean
   createdAt?: Date | string
   businessDatas?: Prisma.BusinessDataCreateNestedManyWithoutInvoiceInput
 }
@@ -1014,6 +1041,7 @@ export type InvoiceUncheckedCreateWithoutServiceAndItemsInput = {
   haveAttachment?: boolean
   attachmentUrl?: string | null
   isDrafted?: boolean
+  previewedByAccountant?: boolean
   createdAt?: Date | string
   businessDatas?: Prisma.BusinessDataUncheckedCreateNestedManyWithoutInvoiceInput
 }
@@ -1058,6 +1086,7 @@ export type InvoiceUpdateWithoutServiceAndItemsInput = {
   haveAttachment?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDrafted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  previewedByAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   businessDatas?: Prisma.BusinessDataUpdateManyWithoutInvoiceNestedInput
 }
@@ -1086,6 +1115,7 @@ export type InvoiceUncheckedUpdateWithoutServiceAndItemsInput = {
   haveAttachment?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDrafted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  previewedByAccountant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   businessDatas?: Prisma.BusinessDataUncheckedUpdateManyWithoutInvoiceNestedInput
 }
@@ -1154,6 +1184,7 @@ export type InvoiceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   haveAttachment?: boolean
   attachmentUrl?: boolean
   isDrafted?: boolean
+  previewedByAccountant?: boolean
   createdAt?: boolean
   serviceAndItems?: boolean | Prisma.Invoice$serviceAndItemsArgs<ExtArgs>
   businessDatas?: boolean | Prisma.Invoice$businessDatasArgs<ExtArgs>
@@ -1184,6 +1215,7 @@ export type InvoiceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   haveAttachment?: boolean
   attachmentUrl?: boolean
   isDrafted?: boolean
+  previewedByAccountant?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["invoice"]>
 
@@ -1211,6 +1243,7 @@ export type InvoiceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   haveAttachment?: boolean
   attachmentUrl?: boolean
   isDrafted?: boolean
+  previewedByAccountant?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["invoice"]>
 
@@ -1238,10 +1271,11 @@ export type InvoiceSelectScalar = {
   haveAttachment?: boolean
   attachmentUrl?: boolean
   isDrafted?: boolean
+  previewedByAccountant?: boolean
   createdAt?: boolean
 }
 
-export type InvoiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "invoiceNo" | "userId" | "issueDate" | "dueDate" | "type" | "companyName" | "email" | "AddressAndContactInfo" | "projectInformation" | "projectDescription" | "vat" | "subTotal" | "totalAmount" | "isPaid" | "paidAt" | "stripeSessionId" | "stripePaymentIntentId" | "additionalNote" | "invoiceSource" | "haveAttachment" | "attachmentUrl" | "isDrafted" | "createdAt", ExtArgs["result"]["invoice"]>
+export type InvoiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "invoiceNo" | "userId" | "issueDate" | "dueDate" | "type" | "companyName" | "email" | "AddressAndContactInfo" | "projectInformation" | "projectDescription" | "vat" | "subTotal" | "totalAmount" | "isPaid" | "paidAt" | "stripeSessionId" | "stripePaymentIntentId" | "additionalNote" | "invoiceSource" | "haveAttachment" | "attachmentUrl" | "isDrafted" | "previewedByAccountant" | "createdAt", ExtArgs["result"]["invoice"]>
 export type InvoiceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   serviceAndItems?: boolean | Prisma.Invoice$serviceAndItemsArgs<ExtArgs>
   businessDatas?: boolean | Prisma.Invoice$businessDatasArgs<ExtArgs>
@@ -1280,6 +1314,7 @@ export type $InvoicePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     haveAttachment: boolean
     attachmentUrl: string | null
     isDrafted: boolean
+    previewedByAccountant: boolean
     createdAt: Date
   }, ExtArgs["result"]["invoice"]>
   composites: {}
@@ -1729,6 +1764,7 @@ export interface InvoiceFieldRefs {
   readonly haveAttachment: Prisma.FieldRef<"Invoice", 'Boolean'>
   readonly attachmentUrl: Prisma.FieldRef<"Invoice", 'String'>
   readonly isDrafted: Prisma.FieldRef<"Invoice", 'Boolean'>
+  readonly previewedByAccountant: Prisma.FieldRef<"Invoice", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Invoice", 'DateTime'>
 }
     

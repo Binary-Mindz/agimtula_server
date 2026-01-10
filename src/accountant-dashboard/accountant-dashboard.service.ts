@@ -9,6 +9,93 @@ import { NotFoundAppException } from 'src/common/app-exceptions';
 export class AccountantDashboardService {
   constructor(private readonly prisma: PrismaService) {}
 
+  async fetchAccountantDashboardData(accId: string) {
+    try {
+      // Get all clients under this accountant
+      const clients = await this.prisma.user.findMany({
+        where: {
+          accountantId: accId,
+          isDeleted: false,
+          role: 'USER',
+        },
+        select: { id: true },
+      });
+
+      const clientIds = clients.map((client) => client.id);
+
+      const [
+        totalClients,
+        newPurchaseInvoice,
+        missingDocuments,
+        newSalesInvoice,
+        unmatchedBankTransactions,
+      ] = await Promise.all([
+        this.prisma.user.count({
+          where: {
+            accountantId: accId,
+            isDeleted: false,
+            role: 'USER',
+          },
+        }),
+
+        this.prisma.invoice.count({
+          where: {
+            userId: { in: clientIds },
+            invoiceSource: 'EMAIL',
+            haveAttachment: false,
+            createdAt: {
+              gte: new Date(new Date().setDate(new Date().getDate() - 7)),
+            },
+          },
+        }),
+        this.prisma.invoice.count({
+          where: {
+            userId: { in: clientIds },
+            invoiceSource: 'EMAIL',
+            haveAttachment: false,
+          },
+        }),
+
+        this.prisma.invoice.count({
+          where: {
+            userId: { in: clientIds },
+            invoiceSource: 'MANUAL',
+            previewedByAccountant: false,
+            createdAt: {
+              gte: new Date(new Date().setDate(new Date().getDate() - 30)),
+            },
+          },
+        }),
+        this.prisma.transaction.count({
+          where: {
+            userId: { in: clientIds },
+            status: 'UNMATCHED',
+            createdAt: {
+              gte: new Date(new Date().setDate(new Date().getDate() - 30)),
+            },
+          },
+        }),
+      ]);
+
+      return cResponseData({
+        message: 'Accountant dashboard data fetched successfully',
+        data: {
+          totalClients,
+          newPurchaseInvoice,
+          missingDocuments,
+          newSalesInvoice,
+          unmatchedBankTransactions,
+        },
+      });
+    } catch (error) {
+      console.error('Get accountant dashboard data error:', error);
+      throw new HttpException(
+        'Failed to fetch accountant dashboard data',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   async findAll(
     userId: string,
     accountantId: string,

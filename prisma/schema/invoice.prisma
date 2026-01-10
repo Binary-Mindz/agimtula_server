@@ -28,7 +28,8 @@ model Invoice {
     haveAttachment Boolean       @default(false)
     attachmentUrl  String?
 
-    isDrafted Boolean @default(false)
+    isDrafted             Boolean @default(false)
+    previewedByAccountant Boolean @default(false)
 
     createdAt DateTime @default(now())
 }

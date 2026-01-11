@@ -17,7 +17,7 @@ interface TransactionRow {
 
 @Injectable()
 export class TransactionService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async storeTransactions(transactions: TransactionRow[]) {
     for (const trx of transactions) {
@@ -111,7 +111,7 @@ export class TransactionService {
           Math.abs(
             new Date(trx1.date).getTime() - new Date(trx2.date).getTime(),
           ) <=
-            60 * 60 * 1000
+          60 * 60 * 1000
         ) {
           await this.prisma.transaction.updateMany({
             where: { id: { in: [trx1.id, trx2.id] } },

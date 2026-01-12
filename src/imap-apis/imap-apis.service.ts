@@ -236,59 +236,99 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
             parsed.from?.value?.[0]?.address?.toLowerCase() || '';
           if (!fromAddress.includes(domain)) continue;
 
-          if (!parsed.attachments?.length) continue;
+          const hasAttachments = parsed.attachments?.length > 0;
+          let invoiceCreated = false;
 
-          for (const attachment of parsed.attachments) {
-            if (!attachment.filename?.toLowerCase().endsWith('.pdf')) continue;
+          if (hasAttachments) {
+            for (const attachment of parsed.attachments) {
+              if (!attachment.filename?.toLowerCase().endsWith('.pdf')) continue;
 
-            const formData = new FormData();
-            formData.append('userID', userId);
-            formData.append('file', attachment.content, {
-              filename: attachment.filename,
-              contentType: attachment.contentType || 'application/pdf',
-            });
+              const formData = new FormData();
+              formData.append('userID', userId);
+              formData.append('file', attachment.content, {
+                filename: attachment.filename,
+                contentType: attachment.contentType || 'application/pdf',
+              });
 
-            try {
-              console.log(
-                `Attempting PDF extraction for: ${attachment.filename}`,
-              );
-              console.log(`File size: ${attachment.content.length} bytes`);
-
-              const { data } = await axios.post(
-                'https://pdf-extractor-gsoh.onrender.com/extract',
-                formData,
-                {
-                  headers: formData.getHeaders(),
-                  timeout: 60_000,
-                  maxContentLength: 50 * 1024 * 1024, // 50MB
-                },
-              );
-
-              console.log('PDF extraction response:', data);
-
-              if (data?.invoice) {
-                const created = await this.createInvoiceFromExtractedData({
-                  userID: userId,
-                  invoice: data.invoice,
-                });
-                allTransactions.push(created);
+              try {
                 console.log(
-                  `Successfully created invoice: ${data.invoice.invoiceNo}`,
+                  `Attempting PDF extraction for: ${attachment.filename}`,
                 );
-              } else {
-                console.log('No invoice data in response');
+                console.log(`File size: ${attachment.content.length} bytes`);
+
+                const { data } = await axios.post(
+                  'https://pdf-extractor-gsoh.onrender.com/extract',
+                  formData,
+                  {
+                    headers: formData.getHeaders(),
+                    timeout: 60_000,
+                    maxContentLength: 50 * 1024 * 1024, // 50MB
+                  },
+                );
+
+                console.log('PDF extraction response:', data);
+
+                if (data?.invoice) {
+                  const created = await this.createInvoiceFromExtractedData({
+                    userID: userId,
+                    invoice: { ...data.invoice, haveAttachment: true },
+                  });
+                  allTransactions.push(created);
+                  console.log(
+                    `Successfully created invoice: ${data.invoice.invoiceNo}`,
+                  );
+                  invoiceCreated = true;
+                }
+              } catch (apiErr: any) {
+                console.error(
+                  `PDF extraction failed for ${attachment.filename}:`,
+                  {
+                    message: apiErr.message,
+                    status: apiErr.response?.status,
+                    statusText: apiErr.response?.statusText,
+                    data: JSON.stringify(apiErr.response?.data, null, 2),
+                    code: apiErr.code,
+                  },
+                );
               }
-            } catch (apiErr: any) {
-              console.error(
-                `PDF extraction failed for ${attachment.filename}:`,
-                {
-                  message: apiErr.message,
-                  status: apiErr.response?.status,
-                  statusText: apiErr.response?.statusText,
-                  data: JSON.stringify(apiErr.response?.data, null, 2),
-                  code: apiErr.code,
-                },
-              );
+            }
+          }
+
+          // Create invoice without attachment if no PDF was processed
+          if (!invoiceCreated) {
+            try {
+              const fallbackInvoice = {
+                invoiceNo: `EMAIL-${Date.now()}`,
+                companyName: fromAddress.split('@')[1] || 'Unknown',
+                email: fromAddress,
+                issueDate: new Date().toISOString(),
+                type: 'BUSINESS' as const,
+                currency: 'EUR',
+                vatCurrency: 'EUR',
+                subTotalCurrency: 'EUR',
+                totalAmountCurrency: 'EUR',
+                totalAmount: 0,
+                subTotal: 0,
+                vat: 0,
+                serviceAndItems: [{
+                  name: parsed.subject || 'Email Invoice',
+                  quantity: 1,
+                  unitPrice: 0,
+                  unitPriceCurrency: 'EUR',
+                  total: 0,
+                  totalCurrency: 'EUR'
+                }],
+                haveAttachment: false
+              };
+
+              const created = await this.createInvoiceFromExtractedData({
+                userID: userId,
+                invoice: fallbackInvoice,
+              });
+              allTransactions.push(created);
+              console.log(`Created invoice without attachment: ${fallbackInvoice.invoiceNo}`);
+            } catch (fallbackErr) {
+              console.error('Failed to create fallback invoice:', fallbackErr);
             }
           }
         }

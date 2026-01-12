@@ -86,7 +86,6 @@ export class TinkController {
   async callback(
     @Query('code') code: string,
   ) {
-    console.log(code);
     if (!code) {
       return {
         error: 'Missing authorization code',

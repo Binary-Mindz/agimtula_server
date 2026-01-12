@@ -124,6 +124,7 @@ export class SalesInvoicesService {
         success: true,
         data: {
           invoices: invoices.map((invoice) => ({
+            id: invoice.id,
             invoiceNo: invoice.invoiceNo,
             business: invoice.companyName,
             client: user?.profile?.firstName,

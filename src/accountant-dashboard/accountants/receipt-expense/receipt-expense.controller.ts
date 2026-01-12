@@ -48,4 +48,42 @@ export class ReceiptExpenseController {
       sortOrder || 'desc',
     );
   }
+
+  @Get('export-data/:userId')
+  @Roles('ACCOUNTANT')
+  @ApiOperation({
+    summary: 'Export receipt and mileage data ( ACCOUNTANT only )',
+  })
+  @ApiParam({
+    name: 'userId',
+    type: String,
+  })
+  async exportData(@Param('userId') userId: string, @User() user: jwtPayload) {
+    const accountantId = user.sub;
+
+    return await this.receiptExpenseService.exportData(userId, accountantId);
+  }
+
+  @Get(':userId/detailed-report')
+  @Roles('ACCOUNTANT')
+  @ApiOperation({ summary: 'Get detailed report ( ACCOUNTANT only )' })
+  @ApiParam({
+    name: 'userId',
+    type: String,
+  })
+  @ApiQuery({
+    name: 'receiptId',
+    type: String,
+  })
+  async getDetailedReport(
+    @User() user: jwtPayload,
+    @Param('userId') userId: string,
+    @Query('receiptId') receiptId: string,
+  ) {
+    return await this.receiptExpenseService.getData(
+      userId,
+      user.sub,
+      receiptId,
+    );
+  }
 }

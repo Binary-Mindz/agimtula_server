@@ -3,11 +3,19 @@ import { AutoInvoiceImportsModule } from './auto-invoice-imports/auto-invoice-im
 import { ReceiptsModule } from './receipts/receipts.module';
 import { PaymentModule } from './payment/payment.module';
 import { ReportsModule } from './reports/reports.module';
-import { RequesteAccountantModule } from './request-accountant/request-accountant.module';
+import { RequestAccountantModule } from './request-accountant/request-accountant.module';
 import { InvoicesModule } from './invoices/invoices.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
-  imports: [AutoInvoiceImportsModule, ReceiptsModule, PaymentModule, ReportsModule, RequesteAccountantModule, InvoicesModule, DashboardModule],
+  imports: [
+    AutoInvoiceImportsModule,
+    ReceiptsModule,
+    PaymentModule,
+    ReportsModule,
+    RequestAccountantModule,
+    InvoicesModule,
+    DashboardModule,
+  ],
 })
-export class UserDashboardModule { }
+export class UserDashboardModule {}

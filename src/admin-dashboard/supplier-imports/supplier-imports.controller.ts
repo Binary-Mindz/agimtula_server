@@ -1,13 +1,13 @@
 import { Controller, Get } from '@nestjs/common';
 import { SupplierImportsService } from './supplier-imports.service';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Roles } from 'src/decorators/roles.decorator';
 import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('supplier-imports')
 export class SupplierImportsController {
   constructor(
     private readonly supplierImportsService: SupplierImportsService,
-  ) {}
+  ) { }
 
   @Get('activity')
   @Roles('ADMIN')

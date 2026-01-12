@@ -1,5 +1,5 @@
 import { HttpStatus } from '@nestjs/common';
-import { 
+import {
   AppException,
   ValidationException,
   NotFoundAppException,
@@ -16,9 +16,7 @@ import {
 import { ERROR_CODES, ERROR_MESSAGES, ErrorCode } from './error-constants';
 
 export class ExceptionFactory {
-  /**
-   * Create a validation exception with proper error code
-   */
+
   static validation(message?: string, details?: any): ValidationException {
     return new ValidationException(
       message || ERROR_MESSAGES[ERROR_CODES.VALIDATION_ERROR],
@@ -26,9 +24,7 @@ export class ExceptionFactory {
     );
   }
 
-  /**
-   * Create a not found exception with proper error code
-   */
+
   static notFound(resource: string = 'Resource', details?: any): NotFoundAppException {
     return new NotFoundAppException(
       `${resource} not found`,
@@ -36,9 +32,7 @@ export class ExceptionFactory {
     );
   }
 
-  /**
-   * Create an unauthorized exception with proper error code
-   */
+
   static unauthorized(message?: string, details?: any): UnauthorizedAppException {
     return new UnauthorizedAppException(
       message || ERROR_MESSAGES[ERROR_CODES.UNAUTHORIZED],
@@ -46,9 +40,6 @@ export class ExceptionFactory {
     );
   }
 
-  /**
-   * Create a forbidden exception with proper error code
-   */
   static forbidden(message?: string, details?: any): ForbiddenAppException {
     return new ForbiddenAppException(
       message || ERROR_MESSAGES[ERROR_CODES.FORBIDDEN],
@@ -56,9 +47,7 @@ export class ExceptionFactory {
     );
   }
 
-  /**
-   * Create a conflict exception with proper error code
-   */
+
   static conflict(resource: string = 'Resource', details?: any): ConflictAppException {
     return new ConflictAppException(
       `${resource} already exists`,
@@ -66,9 +55,7 @@ export class ExceptionFactory {
     );
   }
 
-  /**
-   * Create a database exception with proper error code
-   */
+
   static database(message?: string, details?: any): DatabaseException {
     return new DatabaseException(
       message || ERROR_MESSAGES[ERROR_CODES.DATABASE_ERROR],
@@ -123,9 +110,7 @@ export class ExceptionFactory {
     );
   }
 
-  /**
-   * Create a custom exception with specific error code
-   */
+
   static custom(
     errorCode: ErrorCode,
     message?: string,

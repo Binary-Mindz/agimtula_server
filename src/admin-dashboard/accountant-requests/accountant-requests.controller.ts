@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Patch, Query } from '@nestjs/common';
 import { AccountantRequestsService } from './accountant-requests.service';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Roles } from 'src/decorators/roles.decorator';
 import { ApiOperation, ApiParam, ApiQuery } from '@nestjs/swagger';
 
 @Controller('accountant-requests')

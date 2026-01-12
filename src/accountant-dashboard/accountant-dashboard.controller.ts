@@ -1,7 +1,7 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { AccountantDashboardService } from './accountant-dashboard.service';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { User } from 'src/auth/decorators/user.decorator';
+import { Roles } from 'src/decorators/roles.decorator';
+import { User } from 'src/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 import { TransactionQueryDto } from './dto/TransactionQueryDto';
 import { ApiOperation } from '@nestjs/swagger';
@@ -10,7 +10,7 @@ import { ApiOperation } from '@nestjs/swagger';
 export class AccountantDashboardController {
   constructor(
     private readonly accountantDashboardService: AccountantDashboardService,
-  ) {}
+  ) { }
 
   @Get()
   @Roles('ACCOUNTANT')

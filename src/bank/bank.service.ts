@@ -1,36 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-// import { Injectable } from '@nestjs/common';
-
-// @Injectable()
-// export class TinkService {
-//   private apiUrl = 'https://api.tink.com';
-
-//   async exchangeToken(code: string): Promise<any> {
-//     const body = new URLSearchParams({
-//       code,
-//       client_id: process.env.TINK_CLIENT_ID!,
-//       client_secret: process.env.TINK_CLIENT_SECRET!,
-//       grant_type: 'authorization_code',
-//     });
-
-//     const res = await fetch(${this.apiUrl}/api/v1/oauth/token, {
-//       method: 'POST',
-//       body,
-//     });
-
-//     if (!res.ok) throw new Error(Tink token error: ${res.status});
-//     return res.json();
-//   }
-
-//   async getTransactions(accessToken: string): Promise<any> {
-//     const res = await fetch(${this.apiUrl}/data/v2/transactions, {
-//       headers: { Authorization: Bearer ${accessToken} },
-//     });
-//     if (!res.ok) throw new Error(Failed to fetch transactions: ${res.status});
-//     return res.json();
-//   }
-// }
-
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import axios from 'axios';
 import * as crypto from 'crypto';
@@ -144,14 +111,14 @@ export class BankService {
       const state = crypto.randomBytes(16).toString('hex');
       const consentUrl = `https://link.tink.com/1.0/account-check/?client_id=${encodeURIComponent(
         this.clientId,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       )}&redirect_uri=${encodeURIComponent(`${this.redirectUri}?code=${encodeURIComponent(grantCode)}`)}&code=${encodeURIComponent(grantCode)}&market=NL&locale=nl_NL&state=${encodeURIComponent(
         state,
       )}`;
-      console.log(consentUrl);
       this.logger.log('🔗 Consent URL constructed');
       return { userId, consentUrl, state, grantData };
     } catch (error: any) {
+      console.error('Error creating Tink user or consent session:', error);
       this.logger.error(
         '❌ Error creating Tink user or consent session'
       );

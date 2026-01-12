@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { User } from 'src/auth/decorators/user.decorator';
+import { Roles } from 'src/decorators/roles.decorator';
+import { User } from 'src/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 import { ReportsService } from '../reports/reports.service';
 import { ApiOperation } from '@nestjs/swagger';

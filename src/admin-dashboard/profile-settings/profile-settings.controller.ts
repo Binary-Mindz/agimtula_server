@@ -1,6 +1,6 @@
 import { Body, Controller, Param, Patch } from '@nestjs/common';
 import { ProfileSettingsService } from './profile-settings.service';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Roles } from 'src/decorators/roles.decorator';
 import { ProfileSettingsDto } from './dto/profile-setting.dto';
 import { ApiParam } from '@nestjs/swagger';
 
@@ -8,7 +8,7 @@ import { ApiParam } from '@nestjs/swagger';
 export class ProfileSettingsController {
   constructor(
     private readonly profileSettingsService: ProfileSettingsService,
-  ) {}
+  ) { }
 
   // PATCH /profile-settings/:userId
   @Patch(':userId')

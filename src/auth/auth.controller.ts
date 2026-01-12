@@ -15,17 +15,17 @@ import { LoginDto } from './dto/login.dto';
 import { SendRegistrationOtpDto } from './dto/send-registration-otp.dto';
 import { VerifyRegistrationOtpDto } from './dto/verify-registration-otp.dto';
 import { CompleteRegistrationDto } from './dto/complete-registration.dto';
-import { Public } from './decorators/public.decorator';
+import { Public } from '../decorators/public.decorator';
 import {
   ForgetPassDto,
   ResetPass,
   ValidateForgetPass,
 } from './dto/forget-pass-dto';
 import { ForgetPasswordService } from './forget-password.service';
-import { User } from './decorators/user.decorator';
+import { User } from '../decorators/user.decorator';
 import { jwtPayload } from './types/jwt-payload';
 import { UpdatePasswordDto } from './dto/update-password.dto';
-import { Roles } from './decorators/roles.decorator';
+import { Roles } from '../decorators/roles.decorator';
 import { ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import {
   UpdateProfileDto,

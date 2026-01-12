@@ -10,9 +10,9 @@ import {
 } from '@nestjs/common';
 import { MileageService } from './mileage.service';
 import { LogTripDto } from './dto/log-trip.dto';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Roles } from 'src/decorators/roles.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
-import { User } from 'src/auth/decorators/user.decorator';
+import { User } from 'src/decorators/user.decorator';
 import { ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { urlPrefix } from '../url-prefix';
 

@@ -10,12 +10,12 @@ import {
 import { UserManagementService } from './user-management.service';
 import { urlPrefix } from '../url-prefix';
 import { ApiBody, ApiOperation, ApiParam, ApiQuery } from '@nestjs/swagger';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Roles } from 'src/decorators/roles.decorator';
 import { CreateUserManagementDto } from './dto/create-user-management.dto';
 
 @Controller(`${urlPrefix}/user-management`)
 export class AdminUserManagementController {
-  constructor(private readonly userManagementService: UserManagementService) {}
+  constructor(private readonly userManagementService: UserManagementService) { }
 
   @Roles('ADMIN')
   @Get()

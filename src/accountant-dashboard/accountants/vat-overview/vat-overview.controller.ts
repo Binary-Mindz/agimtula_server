@@ -1,13 +1,13 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { VatOverviewService } from './vat-overview.service';
 import { ApiOperation, ApiParam } from '@nestjs/swagger';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { User } from 'src/auth/decorators/user.decorator';
+import { Roles } from 'src/decorators/roles.decorator';
+import { User } from 'src/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 
 @Controller('vat-overview')
 export class VatOverviewController {
-  constructor(private readonly vatOverviewService: VatOverviewService) {}
+  constructor(private readonly vatOverviewService: VatOverviewService) { }
 
   @Get(':userId/summary')
   @Roles('ACCOUNTANT')

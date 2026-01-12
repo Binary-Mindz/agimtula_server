@@ -7,8 +7,8 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import * as jwt from 'jsonwebtoken';
-import { IS_PUBLIC_KEY } from 'src/auth/decorators/public.decorator';
-import { ROLE_KEY } from 'src/auth/decorators/roles.decorator';
+import { IS_PUBLIC_KEY } from 'src/decorators/public.decorator';
+import { ROLE_KEY } from 'src/decorators/roles.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 import { PrismaService } from 'src/config/database/prisma.service';
 

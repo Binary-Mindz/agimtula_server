@@ -1,13 +1,13 @@
 import { Body, Controller, Get, Param, Patch, Post, Query, } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Roles } from 'src/decorators/roles.decorator';
 import { CreateSupportTicketDto } from './dto/create-support-ticket.dto';
 import { SupportTicketQueryDto } from './dto/support-ticket-query.dto';
 import { UpdateSupportTicketStatusDto } from './dto/update-support-ticket-status.dto';
 import { UpdateSupportTicketDto } from './dto/update-support-ticket.dto';
 import { SupportTicketsService } from './support-tickets.service';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
-import { User } from 'src/auth/decorators/user.decorator';
+import { User } from 'src/decorators/user.decorator';
 
 @ApiTags('Support Tickets')
 @Controller('support-tickets')

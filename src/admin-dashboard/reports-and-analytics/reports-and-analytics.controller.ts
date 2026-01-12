@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { ReportsAndAnalyticsService } from './reports-and-analytics.service';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Roles } from 'src/decorators/roles.decorator';
 import { urlPrefix } from '../url-prefix';
 import { ApiOperation } from '@nestjs/swagger';
 
@@ -8,7 +8,7 @@ import { ApiOperation } from '@nestjs/swagger';
 export class AdminReportsAndAnalyticsController {
   constructor(
     private readonly reportsAndAnalyticsService: ReportsAndAnalyticsService,
-  ) {}
+  ) { }
 
   @Get('user-activity')
   @Roles('ADMIN')

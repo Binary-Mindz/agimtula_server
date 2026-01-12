@@ -10,15 +10,15 @@ import {
 import { PaymentService } from './payment.service';
 // import { CreatePaymentDto } from './dto/create-payment.dto';
 // import { UpdatePaymentDto } from './dto/update-payment.dto';
-import { User } from 'src/auth/decorators/user.decorator';
+import { User } from 'src/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Roles } from 'src/decorators/roles.decorator';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { urlPrefix } from '../url-prefix';
 
 @Controller(`${urlPrefix}/payment`)
 export class UserPaymentController {
-  constructor(private readonly paymentService: PaymentService) {}
+  constructor(private readonly paymentService: PaymentService) { }
 
   @Post('buy-plan/:id')
   @Roles('USER')

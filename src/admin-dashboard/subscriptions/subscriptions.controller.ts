@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { SubscriptionsService } from './subscriptions.service';
 import { CreateSubscriptionPlanDto } from './dto/create-subscription.dto';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Roles } from 'src/decorators/roles.decorator';
 import { InvoiceAutoSyncDto } from './dto/invoiceAutoSyncDto';
 import { InvoiceAutoSyncIntervalService } from './invoiceAutoSyncInterval.service';
 import { urlPrefix } from '../url-prefix';
@@ -19,7 +19,7 @@ export class AdminSubscriptionsController {
   constructor(
     private readonly subscriptionsService: SubscriptionsService,
     private readonly invoiceAutoSyncIntervalService: InvoiceAutoSyncIntervalService,
-  ) {}
+  ) { }
 
   @Get()
   @Roles('ADMIN')

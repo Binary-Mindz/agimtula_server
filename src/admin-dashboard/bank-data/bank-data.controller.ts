@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Post, Body } from '@nestjs/common';
 import { BankDataService } from './bank-data.service';
-import { Public } from 'src/auth/decorators/public.decorator';
+import { Public } from 'src/decorators/public.decorator';
 import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('admin/bank-data')

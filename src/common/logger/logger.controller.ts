@@ -3,7 +3,7 @@ import { LoggerService } from './logger.service';
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { QueryLoggerDto } from './dto/logquery.dto';
 import { AuthGuard } from 'src/auth/guard/auth.guard';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Roles } from 'src/decorators/roles.decorator';
 
 @Controller('logger')
 

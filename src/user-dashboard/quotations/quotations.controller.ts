@@ -2,11 +2,11 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ValidationPip
 import { QuotationsService } from './quotations.service';
 import { CreateQuotationDto } from './dto/create-quotation.dto';
 import { UpdateQuotationDto } from './dto/update-quotation.dto';
-import { User } from 'src/auth/decorators/user.decorator';
+import { User } from 'src/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Roles } from 'src/decorators/roles.decorator';
 import { QueryQuotationDto } from './dto/QueryQuotationDto';
-import { HasModuleAccess } from 'src/auth/decorators/module-access.decorator';
+import { HasModuleAccess } from 'src/decorators/module-access.decorator';
 import { ModuleAccessGuard } from 'src/auth/guard/module-access.guard';
 import { AuthGuard } from 'src/auth/guard/auth.guard';
 import { ApiOperation } from '@nestjs/swagger';

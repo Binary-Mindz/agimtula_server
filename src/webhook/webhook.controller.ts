@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Controller, Post, Req, Res } from '@nestjs/common';
-import { Public } from 'src/auth/decorators/public.decorator';
+import { Public } from 'src/decorators/public.decorator';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { ApiOperation } from '@nestjs/swagger';
 import Stripe from 'stripe';
@@ -38,11 +38,6 @@ export class WebhookController {
         const session = event.data.object as Stripe.Checkout.Session;
         console.log('Session completed:', session.id);
 
-        /**
-         * ===============================
-         * 1️⃣ MANUAL INVOICE PAYMENT
-         * ===============================
-         */
         if (session.metadata?.invoiceId) {
           const invoiceId = session.metadata.invoiceId;
 

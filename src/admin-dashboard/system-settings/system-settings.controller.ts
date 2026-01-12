@@ -9,14 +9,14 @@ import {
 } from '@nestjs/common';
 import { SystemSettingsService } from './system-settings.service';
 import { CreateEmailTemplateDto } from './dto/create-email-template.dto';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Roles } from 'src/decorators/roles.decorator';
 import { TestDto } from './dto/test-dto';
-import { Public } from 'src/auth/decorators/public.decorator';
+import { Public } from 'src/decorators/public.decorator';
 import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('system-settings')
 export class SystemSettingsController {
-  constructor(private readonly systemSettingsService: SystemSettingsService) {}
+  constructor(private readonly systemSettingsService: SystemSettingsService) { }
 
   @Post('create-email-template')
   @Roles('ADMIN')

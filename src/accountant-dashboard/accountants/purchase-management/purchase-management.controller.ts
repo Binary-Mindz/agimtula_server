@@ -1,15 +1,15 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { PurchaseManagementService } from './purchase-management.service';
-import { User } from 'src/auth/decorators/user.decorator';
+import { User } from 'src/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Roles } from 'src/decorators/roles.decorator';
 import { ApiOperation, ApiParam, ApiQuery } from '@nestjs/swagger';
 
 @Controller('purchase-management')
 export class PurchaseManagementController {
   constructor(
     private readonly purchaseManagementService: PurchaseManagementService,
-  ) {}
+  ) { }
 
   @Get('data/:userId')
   @Roles('ACCOUNTANT')

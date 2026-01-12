@@ -1,13 +1,13 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ReceiptExpenseService } from './receipt-expense.service';
-import { User } from 'src/auth/decorators/user.decorator';
+import { User } from 'src/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Roles } from 'src/decorators/roles.decorator';
 import { ApiOperation, ApiParam, ApiQuery } from '@nestjs/swagger';
 
 @Controller('receipt-expense')
 export class ReceiptExpenseController {
-  constructor(private readonly receiptExpenseService: ReceiptExpenseService) {}
+  constructor(private readonly receiptExpenseService: ReceiptExpenseService) { }
 
   @Get(':userId/total')
   @Roles('ACCOUNTANT')

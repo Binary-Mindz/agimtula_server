@@ -3,7 +3,7 @@
 import { Controller, Get, Query, Post, Body, HttpStatus, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { TinkService } from './tink.service';
-import { Public } from 'src/auth/decorators/public.decorator';
+import { Public } from 'src/decorators/public.decorator';
 import {
   ConnectBankDto,
   ConnectBankResponseDto,
@@ -14,10 +14,10 @@ import {
   TokenResponseDto,
   TransactionResponseDto,
 } from './dto/tink.dto';
-import { User } from 'src/auth/decorators/user.decorator';
+import { User } from 'src/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 import { AuthGuard } from 'src/auth/guard/auth.guard';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Roles } from 'src/decorators/roles.decorator';
 
 
 @ApiTags('Tink Bank Integration')

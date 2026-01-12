@@ -1,12 +1,12 @@
 import { Controller, Get, Query, HttpStatus } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Roles } from 'src/decorators/roles.decorator';
 import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { PaymentStatus } from 'prisma/generated/prisma/enums';
 
 @Controller('payments')
 export class PaymentsController {
-  constructor(private readonly paymentsService: PaymentsService) {}
+  constructor(private readonly paymentsService: PaymentsService) { }
 
   @Get('data')
   @Roles('ADMIN')

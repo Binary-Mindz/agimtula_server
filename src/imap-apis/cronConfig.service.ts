@@ -9,13 +9,13 @@ export class CronConfigService {
   constructor(
     private schedulerRegistry: SchedulerRegistry,
     // private prisma: PrismaService, // Your DB service
-  ) {}
+  ) { }
 
   createCronForAccount(email: string, minutes: number) {
     const jobName = `cron_${email}`;
-    const cronTime = `*/5 * * * * *`; // Every 'minutes' minutes
+    const cronTime = `*/5 * * * * *`;
 
-    this.stopCronForAccount(email); // Stop existing job if any
+    this.stopCronForAccount(email); //  
 
     const job = new CronJob(cronTime, () => {
       // this.runCronJob(email);

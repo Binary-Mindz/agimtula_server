@@ -55,4 +55,10 @@ export class BankStatementController {
       throw new BadRequestException(`Failed to process file: ${error.message}`);
     }
   }
+
+
+
+
+
+
 }

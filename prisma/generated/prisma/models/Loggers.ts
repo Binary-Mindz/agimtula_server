@@ -39,6 +39,7 @@ export type LoggersMinAggregateOutputType = {
   level: $Enums.LogType | null
   logpriority: $Enums.logpriority | null
   information: string | null
+  userId: string | null
   timestamp: Date | null
 }
 
@@ -47,6 +48,7 @@ export type LoggersMaxAggregateOutputType = {
   level: $Enums.LogType | null
   logpriority: $Enums.logpriority | null
   information: string | null
+  userId: string | null
   timestamp: Date | null
 }
 
@@ -55,6 +57,7 @@ export type LoggersCountAggregateOutputType = {
   level: number
   logpriority: number
   information: number
+  userId: number
   timestamp: number
   _all: number
 }
@@ -73,6 +76,7 @@ export type LoggersMinAggregateInputType = {
   level?: true
   logpriority?: true
   information?: true
+  userId?: true
   timestamp?: true
 }
 
@@ -81,6 +85,7 @@ export type LoggersMaxAggregateInputType = {
   level?: true
   logpriority?: true
   information?: true
+  userId?: true
   timestamp?: true
 }
 
@@ -89,6 +94,7 @@ export type LoggersCountAggregateInputType = {
   level?: true
   logpriority?: true
   information?: true
+  userId?: true
   timestamp?: true
   _all?: true
 }
@@ -184,6 +190,7 @@ export type LoggersGroupByOutputType = {
   level: $Enums.LogType
   logpriority: $Enums.logpriority
   information: string
+  userId: string | null
   timestamp: Date
   _count: LoggersCountAggregateOutputType | null
   _avg: LoggersAvgAggregateOutputType | null
@@ -215,6 +222,7 @@ export type LoggersWhereInput = {
   level?: Prisma.EnumLogTypeFilter<"Loggers"> | $Enums.LogType
   logpriority?: Prisma.EnumlogpriorityFilter<"Loggers"> | $Enums.logpriority
   information?: Prisma.StringFilter<"Loggers"> | string
+  userId?: Prisma.StringNullableFilter<"Loggers"> | string | null
   timestamp?: Prisma.DateTimeFilter<"Loggers"> | Date | string
 }
 
@@ -223,6 +231,7 @@ export type LoggersOrderByWithRelationInput = {
   level?: Prisma.SortOrder
   logpriority?: Prisma.SortOrder
   information?: Prisma.SortOrder
+  userId?: Prisma.SortOrderInput | Prisma.SortOrder
   timestamp?: Prisma.SortOrder
 }
 
@@ -234,6 +243,7 @@ export type LoggersWhereUniqueInput = Prisma.AtLeast<{
   level?: Prisma.EnumLogTypeFilter<"Loggers"> | $Enums.LogType
   logpriority?: Prisma.EnumlogpriorityFilter<"Loggers"> | $Enums.logpriority
   information?: Prisma.StringFilter<"Loggers"> | string
+  userId?: Prisma.StringNullableFilter<"Loggers"> | string | null
   timestamp?: Prisma.DateTimeFilter<"Loggers"> | Date | string
 }, "id">
 
@@ -242,6 +252,7 @@ export type LoggersOrderByWithAggregationInput = {
   level?: Prisma.SortOrder
   logpriority?: Prisma.SortOrder
   information?: Prisma.SortOrder
+  userId?: Prisma.SortOrderInput | Prisma.SortOrder
   timestamp?: Prisma.SortOrder
   _count?: Prisma.LoggersCountOrderByAggregateInput
   _avg?: Prisma.LoggersAvgOrderByAggregateInput
@@ -258,6 +269,7 @@ export type LoggersScalarWhereWithAggregatesInput = {
   level?: Prisma.EnumLogTypeWithAggregatesFilter<"Loggers"> | $Enums.LogType
   logpriority?: Prisma.EnumlogpriorityWithAggregatesFilter<"Loggers"> | $Enums.logpriority
   information?: Prisma.StringWithAggregatesFilter<"Loggers"> | string
+  userId?: Prisma.StringNullableWithAggregatesFilter<"Loggers"> | string | null
   timestamp?: Prisma.DateTimeWithAggregatesFilter<"Loggers"> | Date | string
 }
 
@@ -265,6 +277,7 @@ export type LoggersCreateInput = {
   level: $Enums.LogType
   logpriority: $Enums.logpriority
   information: string
+  userId?: string | null
   timestamp?: Date | string
 }
 
@@ -273,6 +286,7 @@ export type LoggersUncheckedCreateInput = {
   level: $Enums.LogType
   logpriority: $Enums.logpriority
   information: string
+  userId?: string | null
   timestamp?: Date | string
 }
 
@@ -280,6 +294,7 @@ export type LoggersUpdateInput = {
   level?: Prisma.EnumLogTypeFieldUpdateOperationsInput | $Enums.LogType
   logpriority?: Prisma.EnumlogpriorityFieldUpdateOperationsInput | $Enums.logpriority
   information?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -288,6 +303,7 @@ export type LoggersUncheckedUpdateInput = {
   level?: Prisma.EnumLogTypeFieldUpdateOperationsInput | $Enums.LogType
   logpriority?: Prisma.EnumlogpriorityFieldUpdateOperationsInput | $Enums.logpriority
   information?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -296,6 +312,7 @@ export type LoggersCreateManyInput = {
   level: $Enums.LogType
   logpriority: $Enums.logpriority
   information: string
+  userId?: string | null
   timestamp?: Date | string
 }
 
@@ -303,6 +320,7 @@ export type LoggersUpdateManyMutationInput = {
   level?: Prisma.EnumLogTypeFieldUpdateOperationsInput | $Enums.LogType
   logpriority?: Prisma.EnumlogpriorityFieldUpdateOperationsInput | $Enums.logpriority
   information?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -311,6 +329,7 @@ export type LoggersUncheckedUpdateManyInput = {
   level?: Prisma.EnumLogTypeFieldUpdateOperationsInput | $Enums.LogType
   logpriority?: Prisma.EnumlogpriorityFieldUpdateOperationsInput | $Enums.logpriority
   information?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -319,6 +338,7 @@ export type LoggersCountOrderByAggregateInput = {
   level?: Prisma.SortOrder
   logpriority?: Prisma.SortOrder
   information?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   timestamp?: Prisma.SortOrder
 }
 
@@ -331,6 +351,7 @@ export type LoggersMaxOrderByAggregateInput = {
   level?: Prisma.SortOrder
   logpriority?: Prisma.SortOrder
   information?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   timestamp?: Prisma.SortOrder
 }
 
@@ -339,6 +360,7 @@ export type LoggersMinOrderByAggregateInput = {
   level?: Prisma.SortOrder
   logpriority?: Prisma.SortOrder
   information?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   timestamp?: Prisma.SortOrder
 }
 
@@ -361,6 +383,7 @@ export type LoggersSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   level?: boolean
   logpriority?: boolean
   information?: boolean
+  userId?: boolean
   timestamp?: boolean
 }, ExtArgs["result"]["loggers"]>
 
@@ -369,6 +392,7 @@ export type LoggersSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   level?: boolean
   logpriority?: boolean
   information?: boolean
+  userId?: boolean
   timestamp?: boolean
 }, ExtArgs["result"]["loggers"]>
 
@@ -377,6 +401,7 @@ export type LoggersSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   level?: boolean
   logpriority?: boolean
   information?: boolean
+  userId?: boolean
   timestamp?: boolean
 }, ExtArgs["result"]["loggers"]>
 
@@ -385,10 +410,11 @@ export type LoggersSelectScalar = {
   level?: boolean
   logpriority?: boolean
   information?: boolean
+  userId?: boolean
   timestamp?: boolean
 }
 
-export type LoggersOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "level" | "logpriority" | "information" | "timestamp", ExtArgs["result"]["loggers"]>
+export type LoggersOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "level" | "logpriority" | "information" | "userId" | "timestamp", ExtArgs["result"]["loggers"]>
 
 export type $LoggersPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Loggers"
@@ -398,6 +424,7 @@ export type $LoggersPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     level: $Enums.LogType
     logpriority: $Enums.logpriority
     information: string
+    userId: string | null
     timestamp: Date
   }, ExtArgs["result"]["loggers"]>
   composites: {}
@@ -826,6 +853,7 @@ export interface LoggersFieldRefs {
   readonly level: Prisma.FieldRef<"Loggers", 'LogType'>
   readonly logpriority: Prisma.FieldRef<"Loggers", 'logpriority'>
   readonly information: Prisma.FieldRef<"Loggers", 'String'>
+  readonly userId: Prisma.FieldRef<"Loggers", 'String'>
   readonly timestamp: Prisma.FieldRef<"Loggers", 'DateTime'>
 }
     

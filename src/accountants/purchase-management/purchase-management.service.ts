@@ -134,6 +134,7 @@ export class PurchaseManagementService {
         message: 'Purchase history fetched successfully',
         data: {
           purchases: purchases.map((purchase) => ({
+            id: purchase.id,
             supplier: purchase.companyName,
             client: user?.profile?.firstName,
             date: purchase.issueDate,

@@ -46,7 +46,7 @@ export class AuthService {
     private jwt: JwtService,
     private mail: SmtpMailService,
     private redis: RedisServiceService,
-  ) { }
+  ) {}
 
   private async setRedisValue<T>(key: string, value: T, ttl: number) {
     await this.redis.set(key, JSON.stringify(value), 'EX', ttl);
@@ -113,6 +113,7 @@ export class AuthService {
         data: { email: dto.email },
       });
     } catch (error) {
+      console.error(error);
       throw new BadRequestException(error.message || 'Failed to send OTP');
     }
   }

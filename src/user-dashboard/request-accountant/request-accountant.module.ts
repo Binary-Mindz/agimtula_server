@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { RequesteAccountantService } from './request-accountant.service';
-import { RequesteAccountantController } from './request-accountant.controller';
+import { RequestAccountantService } from './request-accountant.service';
+import { RequestAccountantController } from './request-accountant.controller';
 
 @Module({
-  controllers: [RequesteAccountantController],
-  providers: [RequesteAccountantService],
+  controllers: [RequestAccountantController],
+  providers: [RequestAccountantService],
 })
-export class RequesteAccountantModule {}
+export class RequestAccountantModule {}

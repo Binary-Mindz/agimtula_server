@@ -183,6 +183,7 @@ export class ReceiptExpenseService {
         success: true,
         data: {
           paginatedData: paginatedData.map((item) => ({
+            id: item.id,
             client: user?.profile?.firstName,
             name:
               item.type === 'receipt'

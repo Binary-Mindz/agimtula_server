@@ -5,7 +5,7 @@ import { cResponseData } from 'src/common/cResponse';
 import { ConflictAppException } from 'src/common/app-exceptions';
 
 @Injectable()
-export class RequesteAccountantService {
+export class RequestAccountantService {
   constructor(private Prisma: PrismaService) {}
 
   async requestAccountant(userId: string, dto: RequestAccountant) {

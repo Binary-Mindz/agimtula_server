@@ -76,4 +76,20 @@ export class PurchaseManagementController {
       purchaseId,
     );
   }
+
+  @Get('export-data/:userId')
+  @Roles('ACCOUNTANT')
+  @ApiOperation({ summary: 'Export purchase data ( ACCOUNTANT only )' })
+  @ApiParam({
+    name: 'userId',
+    type: String,
+  })
+  async exportData(@Param('userId') userId: string, @User() user: jwtPayload) {
+    const accountantId = user.sub;
+
+    return await this.purchaseManagementService.exportData(
+      userId,
+      accountantId,
+    );
+  }
 }

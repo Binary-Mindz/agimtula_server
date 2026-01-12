@@ -30,4 +30,27 @@ export class SalesInvoicesController {
   ) {
     return await this.salesInvoicesService.getSalesInvoices(user.sub, userId);
   }
+
+  @Get('sales-invoices/:userId/:salesId')
+  @Roles('ACCOUNTANT')
+  @ApiOperation({ summary: 'Get sales invoices ( ACCOUNTANT only )' })
+  @ApiParam({ name: 'userId', required: true })
+  @ApiParam({ name: 'salesId', required: true })
+  async getData(
+    @User() user: jwtPayload,
+    @Param('userId') userId: string,
+    @Param('salesId') salesId: string,
+  ) {
+    return await this.salesInvoicesService.getData(user.sub, userId, salesId);
+  }
+
+  @Get('export-data/:userId')
+  @Roles('ACCOUNTANT')
+  @ApiOperation({ summary: 'Export sales invoices data ( ACCOUNTANT only )' })
+  @ApiParam({ name: 'userId', required: true })
+  async exportData(@Param('userId') userId: string, @User() user: jwtPayload) {
+    const accountantId = user.sub;
+
+    return await this.salesInvoicesService.exportData(userId, accountantId);
+  }
 }

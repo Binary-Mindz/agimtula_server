@@ -107,29 +107,37 @@ export class VatOverviewService {
       return cResponseData({
         success: true,
         message: 'VAT breakdown fetched successfully',
-        data: [
-          {
-            category: 'Sales',
-            amount: Number(breakdown.sales.amount.toFixed(2)),
-            vatRate: 'Mixed',
-            calculatedVat: Number(breakdown.sales.vat.toFixed(2)),
-            notes: 'Goods & Services',
-          },
-          {
-            category: 'Purchases',
-            amount: Number(breakdown.purchases.amount.toFixed(2)),
-            vatRate: 'Mixed',
-            calculatedVat: Number(breakdown.purchases.vat.toFixed(2)),
-            notes: 'Business Expenses',
-          },
-          {
-            category: 'Intra-EU Purchases',
-            amount: Number(breakdown.intraEU.amount.toFixed(2)),
-            vatRate: '0%',
-            calculatedVat: 0,
-            notes: 'Reverse charge mechanism',
-          },
-        ],
+        data: {
+          vatOverview: [
+            {
+              category: 'Sales',
+              amount: Number(breakdown.sales.amount.toFixed(2)),
+              vatRate: 'Mixed',
+              calculatedVat: Number(breakdown.sales.vat.toFixed(2)),
+              notes: 'Goods & Services',
+            },
+            {
+              category: 'Purchases',
+              amount: Number(breakdown.purchases.amount.toFixed(2)),
+              vatRate: 'Mixed',
+              calculatedVat: Number(breakdown.purchases.vat.toFixed(2)),
+              notes: 'Business Expenses',
+            },
+            {
+              category: 'Intra-EU Purchases',
+              amount: Number(breakdown.intraEU.amount.toFixed(2)),
+              vatRate: '0%',
+              calculatedVat: 0,
+              notes: 'Reverse charge mechanism',
+            },
+          ],
+          totalVatDue: Number(
+            (
+              breakdown.sales.vat -
+              (breakdown.purchases.vat + breakdown.intraEU.vat)
+            ).toFixed(2),
+          ),
+        },
       });
     } catch (error) {
       console.error('Get VAT breakdown error:', error);

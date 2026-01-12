@@ -1,8 +1,8 @@
 import { Controller, Get, Param, Post } from '@nestjs/common';
 import { AccountantSettingsService } from './accountant-settings.service';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Roles } from 'src/decorators/roles.decorator';
 import { ManageClients } from './manage-clients.service';
-import { User } from 'src/auth/decorators/user.decorator';
+import { User } from 'src/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 import { ApiOperation, ApiParam } from '@nestjs/swagger';
 
@@ -11,7 +11,7 @@ export class AccountantSettingsController {
   constructor(
     private readonly accountantSettingsService: AccountantSettingsService,
     private readonly manageClients: ManageClients,
-  ) {}
+  ) { }
 
   @Get('manage-clients/client-without-accountant')
   @Roles('ACCOUNTANT')

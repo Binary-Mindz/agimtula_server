@@ -18,7 +18,7 @@ import { BankDataModule } from './admin-dashboard/bank-data/bank-data.module';
 import { QuotationsModule } from './user-dashboard/quotations/quotations.module';
 import { WebhookController } from './webhook/webhook.controller';
 import { PaymentsModule } from './admin-dashboard/payments/payments.module';
-import { LoggerModule } from './logger/logger.module';
+import { LoggerModule } from './common/logger/logger.module';
 import { AccountantDashboardModule } from './accountant-dashboard/accountant-dashboard.module';
 import { AccountantSettingsModule } from './accountant-dashboard/accountants/accountant-settings/accountant-settings.module';
 import { PurchaseManagementModule } from './accountant-dashboard/accountants/purchase-management/purchase-management.module';

@@ -15,8 +15,8 @@ import {
   ApiResponse,
 } from '@nestjs/swagger';
 import { PermissionService } from './permission.service';
-import { Roles } from '../decorators/roles.decorator';
-import { User } from '../decorators/user.decorator';
+import { Roles } from '../../decorators/roles.decorator';
+import { User } from '../../decorators/user.decorator';
 import { jwtPayload } from '../types/jwt-payload';
 import { AuthGuard } from '../guard/auth.guard';
 

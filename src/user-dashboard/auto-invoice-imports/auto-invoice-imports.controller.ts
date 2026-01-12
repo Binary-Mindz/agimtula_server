@@ -7,13 +7,13 @@ import {
 } from '@nestjs/common';
 import { AutoInvoiceImportsService } from './auto-invoice-imports.service';
 import { ImapEmailConnectionDto, ImapTest } from './dto/imap-email-connection.dto';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Roles } from 'src/decorators/roles.decorator';
 import { ManageConnectionService } from './manage-connection.service';
-import { User } from 'src/auth/decorators/user.decorator';
+import { User } from 'src/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 import { urlPrefix } from '../url-prefix';
 import { ImapApisService } from 'src/imap-apis/imap-apis.service';
-import { Public } from 'src/auth/decorators/public.decorator';
+import { Public } from 'src/decorators/public.decorator';
 import { Response } from 'express';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 

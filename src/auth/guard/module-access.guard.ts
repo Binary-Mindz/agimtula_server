@@ -5,7 +5,7 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { MODULE_ACCESS_KEY } from '../decorators/module-access.decorator';
+import { MODULE_ACCESS_KEY } from '../../decorators/module-access.decorator';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { jwtPayload } from '../types/jwt-payload';
 

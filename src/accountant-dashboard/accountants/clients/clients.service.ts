@@ -6,7 +6,7 @@ import { PrismaService } from 'src/config/database/prisma.service';
 export class ClientsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async clients(userId: string, accountantId: string) {
+  async clients( accountantId: string) {
     try {
       const clients = await this.prisma.user.findMany({
         where: {

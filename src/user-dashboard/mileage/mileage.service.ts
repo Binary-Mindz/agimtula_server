@@ -95,20 +95,19 @@ export class MileageService {
 
         this.prisma.mileage.findMany({
           where: { userId, user: { isDeleted: false } },
-          select: {
-            id: true,
-            startLocation: true,
-            endLocation: true,
-            date: true,
-            distance: true,
-            amount: true,
-            milage_id: true,
-          },
+
           orderBy: { date: 'desc' },
           skip,
           take: limit,
         }),
+<<<<<<< HEAD
         this.prisma.mileage.count({ where: { userId, user: { isDeleted: false } } }),
+=======
+
+        this.prisma.mileage.count({
+          where: { userId, user: { isDeleted: false } },
+        }),
+>>>>>>> 34027404c4eab4276fc23feeee39591886695a26
       ]);
 
       const totalPages = Math.ceil(totalTrips / limit);

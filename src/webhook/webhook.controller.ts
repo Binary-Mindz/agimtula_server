@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Controller, Post, Req, Res } from '@nestjs/common';
 import { Public } from 'src/decorators/public.decorator';
 import { PrismaService } from 'src/config/database/prisma.service';
@@ -20,7 +18,7 @@ export class WebhookController {
   async handleWebhook(@Req() req: any, @Res() res: any) {
     const sig = req.headers['stripe-signature'];
 
-    let event;
+    let event: Stripe.Event;
     try {
       event = this.stripe.webhooks.constructEvent(
         req.rawBody || req.body,
@@ -64,11 +62,7 @@ export class WebhookController {
           return res.json({ received: true });
         }
 
-        /**
-         * ===============================
-         * 2️⃣ SUBSCRIPTION PAYMENT (existing)
-         * ===============================
-         */
+
         const historyId = session.metadata?.historyId;
         if (!historyId) {
           console.error('No historyId in metadata');

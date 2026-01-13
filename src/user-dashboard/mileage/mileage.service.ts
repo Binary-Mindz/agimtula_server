@@ -108,7 +108,6 @@ export class MileageService {
           skip,
           take: limit,
         }),
-
         this.prisma.mileage.count({ where: { userId, user: { isDeleted: false } } }),
       ]);
 
@@ -143,7 +142,6 @@ export class MileageService {
 
   async editLoggedTrip(userId: string, tripId: string, dto: LogTripDto) {
     try {
-
 
       const userExists = await this.prisma.user.findUnique({
         where: { id: userId, isDeleted: false },

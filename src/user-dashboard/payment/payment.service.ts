@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
+
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { StripeService } from './stripe.service';
@@ -17,7 +17,7 @@ export class PaymentService {
   constructor(
     private prisma: PrismaService,
     private stripeService: StripeService,
-  ) {}
+  ) { }
 
   async buyPlan(
     userId: string,
@@ -91,8 +91,8 @@ export class PaymentService {
       let stripePrice: Stripe.Response<Stripe.Price>;
       try {
         stripePrice = await this.stripeService.getPrice(pricing.stripePriceId);
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
+
         stripePrice = await this.stripeService.createPrice({
           amount: Math.round((pricing.price + pricing.setupFee) * 100),
           currency: 'usd',
@@ -108,6 +108,9 @@ export class PaymentService {
           where: { id: pricing.id },
           data: { stripePriceId: stripePrice.id },
         });
+
+
+        console.error(error);
       }
 
       const session = await this.stripeService.createSubscriptionCheckout(
@@ -129,11 +132,11 @@ export class PaymentService {
           stripeSessionId: session.id,
         },
       });
-
       return cResponseData({
         checkoutUrl: session.url,
         data: session.url,
       });
+
     } catch (error) {
       if (
         error instanceof NotFoundAppException ||
@@ -214,19 +217,19 @@ export class PaymentService {
           subscriptionPlanPaymentStatus:
             existingHistory.subscriptionPlanPaymentStatus
               ? {
-                  update: {
-                    paymentStatus: 'PENDING',
-                    totalAmount: pricing.price + pricing.setupFee,
-                    stripeSessionId: null,
-                    stripeSubscriptionId: null,
-                  },
-                }
-              : {
-                  create: {
-                    paymentStatus: 'PENDING',
-                    totalAmount: pricing.price + pricing.setupFee,
-                  },
+                update: {
+                  paymentStatus: 'PENDING',
+                  totalAmount: pricing.price + pricing.setupFee,
+                  stripeSessionId: null,
+                  stripeSubscriptionId: null,
                 },
+              }
+              : {
+                create: {
+                  paymentStatus: 'PENDING',
+                  totalAmount: pricing.price + pricing.setupFee,
+                },
+              },
         },
         include: {
           subscriptionPlanPaymentStatus: true,

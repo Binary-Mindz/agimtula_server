@@ -18,6 +18,8 @@ import { UserRole } from 'prisma/generated/prisma/enums';
 export class BankStatementController {
   private readonly logger = new Logger(BankStatementController.name);
   constructor(private readonly bankStatementService: BankStatementService) { }
+
+
   @Post('upload')
   @Roles(UserRole.USER)
   @ApiOperation({ summary: 'Upload bank statement file ( USER )' })
@@ -27,6 +29,8 @@ export class BankStatementController {
     type: UploadBankStatementDto,
   })
   @UseInterceptors(FileInterceptor('file'))
+
+
   async uploadBankStatement(@UploadedFile() file: Express.Multer.File) {
     if (!file) {
       throw new BadRequestException('No file uploaded');

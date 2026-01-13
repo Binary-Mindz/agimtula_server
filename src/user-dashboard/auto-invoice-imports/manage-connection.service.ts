@@ -136,7 +136,7 @@ export class ManageConnectionService {
           password: dto.imap_app_password,
           host: dto.imap_server,
           port: dto.imap_port,
-          realtimeImapCheckingId: dto.realtimeImapCheckingId,
+          realtimeImapCheckingId: dto.realtimeImapCheckingId || null,
           ...imapConnectService,
         },
         create: {
@@ -144,7 +144,7 @@ export class ManageConnectionService {
           password: dto.imap_app_password,
           host: dto.imap_server,
           port: dto.imap_port,
-          realtimeImapCheckingId: dto.realtimeImapCheckingId,
+          realtimeImapCheckingId: dto.realtimeImapCheckingId || null,
           userId: userId,
           ...imapConnectService,
         },

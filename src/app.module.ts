@@ -16,7 +16,6 @@ import { ImapApisModule } from './imap-apis/imap-apis.module';
 import { BankTransactionModule } from './user-dashboard/bank-transaction/transaction.module';
 import { BankDataModule } from './admin-dashboard/bank-data/bank-data.module';
 import { QuotationsModule } from './user-dashboard/quotations/quotations.module';
-import { WebhookController } from './webhook/webhook.controller';
 import { PaymentsModule } from './admin-dashboard/payments/payments.module';
 import { LoggerModule } from './common/logger/logger.module';
 import { AccountantDashboardModule } from './accountant-dashboard/accountant-dashboard.module';
@@ -58,7 +57,6 @@ import { ReportsModule } from './accountant-dashboard/accountants/reports/report
     ClientsModule,
     ReportsModule,
   ],
-  controllers: [WebhookController],
   providers: [
     {
       provide: 'APP_GUARD',
@@ -66,4 +64,4 @@ import { ReportsModule } from './accountant-dashboard/accountants/reports/report
     },
   ],
 })
-export class AppModule { }
+export class AppModule {}

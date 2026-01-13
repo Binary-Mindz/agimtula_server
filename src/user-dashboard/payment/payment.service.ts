@@ -1,4 +1,3 @@
-
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { StripeService } from './stripe.service';
@@ -293,19 +292,5 @@ export class PaymentService {
     }
   }
 
-  // findAll() {
-  //   return `This action returns all payment`;
-  // }
 
-  // findOne(id: number) {
-  //   return `This action returns a #${id} payment`;
-  // }
-
-  // update(id: number, updatePaymentDto: UpdatePaymentDto) {
-  //   return `This action updates a #${id} payment`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} payment`;
-  // }
 }

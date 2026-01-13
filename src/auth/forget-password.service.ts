@@ -1,4 +1,9 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  Injectable,
+  HttpException,
+  HttpStatus,
+  Logger,
+} from '@nestjs/common';
 import {
   ForgetPassDto,
   ResetPass,
@@ -17,6 +22,8 @@ import {
 
 @Injectable()
 export class ForgetPasswordService {
+  private readonly logger = new Logger(ForgetPasswordService.name);
+
   constructor(
     private prisma: PrismaService,
     private mail: SmtpMailService,
@@ -35,6 +42,7 @@ export class ForgetPasswordService {
     type: 'CODE' | 'CRYPTO',
   ) {
     if (type === 'CODE') {
+      this.logger.log(`Storing OTP in redis for email: ${key}`);
       await this.redis.set(
         `${this.FORG_PREFIX}_${key}`,
         value,
@@ -42,6 +50,7 @@ export class ForgetPasswordService {
         this.OTP_EXPIRATION,
       );
     } else {
+      this.logger.log(`Storing crypto token in redis`);
       await this.redis.set(
         `${this.CRYPTO_PREFIX}_${key}`,
         value,
@@ -53,10 +62,12 @@ export class ForgetPasswordService {
 
   /* ---------------- HELPERS ---------------- */
   private generateCryptoToken(): string {
+    this.logger.debug('Generating crypto token');
     return crypto.randomUUID();
   }
 
   private generateOtp(): number {
+    this.logger.debug('Generating OTP');
     return Math.floor(100000 + Math.random() * 900000);
   }
 
@@ -64,22 +75,26 @@ export class ForgetPasswordService {
   async sendForgetPassCode(dto: ForgetPassDto) {
     try {
       const { email } = dto;
+      this.logger.log(`Forget password request received for ${email}`);
 
       const user = await this.prisma.user.findFirst({
         where: { email: { email } },
       });
 
       if (!user) {
+        this.logger.warn(`Forget password: user not found (${email})`);
         throw new NotFoundAppException('User not found');
       }
 
-      // ✅ delete old OTP if exists
+      // delete old OTP
+      this.logger.log(`Deleting old OTP if exists for ${email}`);
       await this.redis.del(`${this.FORG_PREFIX}_${email}`);
 
       const otp = this.generateOtp();
 
       await this.storeRedis(email, otp.toString(), 'CODE');
 
+      this.logger.log(`Sending forget password email to ${email}`);
       await this.mail.sendMail(
         email,
         'Forget Password Code',
@@ -91,13 +106,19 @@ export class ForgetPasswordService {
         `,
       );
 
+      this.logger.log(`Forget password OTP sent successfully to ${email}`);
+
       return cResponseData({
         message: 'Forget password code sent successfully',
       });
     } catch (error) {
       if (error instanceof NotFoundAppException) throw error;
 
-      console.error('Send forget password code error:', error);
+      this.logger.error(
+        'Send forget password code failed',
+        error.stack,
+      );
+
       throw new HttpException(
         'Failed to send forget password code',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -108,28 +129,43 @@ export class ForgetPasswordService {
   /* ---------------- VERIFY OTP ---------------- */
   async verifyForgetPassCode(data: ValidateForgetPass) {
     try {
+      this.logger.log(
+        `Verifying OTP for email: ${data.email}`,
+      );
+
       const redisCode = await this.redis.get(
         `${this.FORG_PREFIX}_${data.email}`,
       );
+
       const user = await this.prisma.user.findFirst({
         where: { email: { email: data.email } },
       });
 
       if (!user) {
+        this.logger.warn(
+          `OTP verification failed, user not found (${data.email})`,
+        );
         throw new NotFoundAppException('User not found');
       }
 
       if (!redisCode || redisCode !== data.verificationCode.toString()) {
+        this.logger.warn(
+          `Invalid or expired OTP for ${data.email}`,
+        );
         throw new ValidationException('Code invalid or expired');
       }
 
-      // ✅ delete OTP after verify
+      // delete OTP
+      this.logger.log(`OTP verified, deleting OTP for ${data.email}`);
       await this.redis.del(`${this.FORG_PREFIX}_${data.email}`);
 
       const cryptoToken = this.generateCryptoToken();
 
-      // save crypto → userId
       await this.storeRedis(cryptoToken, user.id, 'CRYPTO');
+
+      this.logger.log(
+        `OTP verification successful for ${data.email}`,
+      );
 
       return cResponseData({
         message: 'Code verified successfully',
@@ -145,7 +181,11 @@ export class ForgetPasswordService {
         throw error;
       }
 
-      console.error('Verify forget password code error:', error);
+      this.logger.error(
+        'Verify forget password code failed',
+        error.stack,
+      );
+
       throw new HttpException(
         'Failed to verify forget password code',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -156,11 +196,14 @@ export class ForgetPasswordService {
   /* ---------------- CHANGE PASSWORD ---------------- */
   async changePassword(data: ResetPass, cryptoToken: string) {
     try {
+      this.logger.log('Password reset request received');
+
       const userId = await this.redis.get(
         `${this.CRYPTO_PREFIX}_${cryptoToken}`,
       );
 
       if (!userId) {
+        this.logger.warn('Invalid or expired crypto token');
         throw new ValidationException('Invalid or expired crypto token');
       }
 
@@ -169,6 +212,9 @@ export class ForgetPasswordService {
       });
 
       if (!user) {
+        this.logger.warn(
+          `Password reset failed, user not found (ID: ${userId})`,
+        );
         throw new NotFoundAppException('User not found');
       }
 
@@ -179,8 +225,11 @@ export class ForgetPasswordService {
         data: { password: hashedPassword },
       });
 
-      // ✅ delete crypto after use
+      this.logger.log(`Password updated for userId: ${user.id}`);
+
+      // delete crypto
       await this.redis.del(`${this.CRYPTO_PREFIX}_${cryptoToken}`);
+      this.logger.log('Crypto token deleted after password reset');
 
       return cResponseData({
         message: 'Password changed successfully',
@@ -193,7 +242,11 @@ export class ForgetPasswordService {
         throw error;
       }
 
-      console.error('Change password error:', error);
+      this.logger.error(
+        'Change password failed',
+        error.stack,
+      );
+
       throw new HttpException(
         'Failed to change password',
         HttpStatus.INTERNAL_SERVER_ERROR,

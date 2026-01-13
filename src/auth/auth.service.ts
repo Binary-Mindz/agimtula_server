@@ -46,7 +46,7 @@ export class AuthService {
     private jwt: JwtService,
     private mail: SmtpMailService,
     private redis: RedisServiceService,
-  ) {}
+  ) { }
 
   private async setRedisValue<T>(key: string, value: T, ttl: number) {
     await this.redis.set(key, JSON.stringify(value), 'EX', ttl);
@@ -73,6 +73,8 @@ export class AuthService {
 
   async sendRegistrationOtp(dto: SendRegistrationOtpDto) {
     try {
+      this.logger.log(`Attempting to send registration OTP to: ${dto.email}`);
+
       const isUser = await this.prisma.user.findFirst({
         where: {
           email: {
@@ -82,6 +84,7 @@ export class AuthService {
       });
 
       if (isUser) {
+        this.logger.warn(`Registration attempt with existing email: ${dto.email}`);
         throw new ConflictException('User already exists with this email');
       }
 
@@ -96,6 +99,7 @@ export class AuthService {
       };
 
       await this.setRedisValue(redisKey, payload, 300);
+      this.logger.debug(`OTP stored in Redis for email: ${dto.email}`);
 
       await this.mail.sendMail(
         dto.email,
@@ -108,23 +112,27 @@ export class AuthService {
       `,
       );
 
+      this.logger.log(`Registration OTP sent successfully to: ${dto.email}`);
       return cResponseData({
         message: 'OTP sent successfully to your email',
         data: { email: dto.email },
       });
     } catch (error) {
-      console.error(error);
+      this.logger.error(`Failed to send registration OTP to ${dto.email}: ${error.message}`, error.stack);
       throw new BadRequestException(error.message || 'Failed to send OTP');
     }
   }
 
   async verifyRegistrationOtp(dto: VerifyRegistrationOtpDto) {
     try {
+      this.logger.log(`Verifying registration OTP for email: ${dto.email}`);
+
       const redisKey = `otp:registration:${dto.email}`;
       const payload =
         await this.getRedisValue<RegistrationOtpPayload>(redisKey);
 
       if (!payload) {
+        this.logger.warn(`OTP not found or expired for email: ${dto.email}`);
         throw new BadRequestException(
           'OTP expired or not found. Please request a new one.',
         );
@@ -132,6 +140,7 @@ export class AuthService {
 
       if (payload.attempts >= 3) {
         await this.redis.del(redisKey);
+        this.logger.warn(`Max OTP attempts exceeded for email: ${dto.email}`);
         throw new BadRequestException(
           'Too many failed attempts. Please request a new OTP.',
         );
@@ -140,6 +149,7 @@ export class AuthService {
       if (payload.code !== dto.code) {
         payload.attempts += 1;
         await this.setRedisValue(redisKey, payload, 300);
+        this.logger.warn(`Invalid OTP attempt for email: ${dto.email}. Attempts: ${payload.attempts}/3`);
         throw new BadRequestException(
           `Invalid OTP code. ${3 - payload.attempts} attempts remaining.`,
         );
@@ -151,6 +161,7 @@ export class AuthService {
       await this.setRedisValue(tokenKey, { email: dto.email }, 600);
       await this.redis.del(redisKey);
 
+      this.logger.log(`OTP verified successfully for email: ${dto.email}`);
       return cResponseData({
         message: 'OTP verified successfully',
         data: {
@@ -159,16 +170,20 @@ export class AuthService {
         },
       });
     } catch (error) {
+      this.logger.error(`OTP verification failed for ${dto.email}: ${error.message}`);
       throw new BadRequestException(error.message || 'OTP verification failed');
     }
   }
 
   async completeRegistration(dto: CompleteRegistrationDto) {
     try {
+      this.logger.log(`Completing registration for email: ${dto.email}`);
+
       const tokenKey = `otp:verified:${dto.verificationToken}`;
       const verified = await this.getRedisValue<{ email: string }>(tokenKey);
 
       if (!verified || verified.email !== dto.email) {
+        this.logger.warn(`Invalid verification token for email: ${dto.email}`);
         throw new BadRequestException('Invalid or expired verification token');
       }
 
@@ -181,6 +196,7 @@ export class AuthService {
       });
 
       if (isUser) {
+        this.logger.warn(`User already exists for email: ${dto.email}`);
         throw new ConflictException('User already exists');
       }
 
@@ -209,6 +225,7 @@ export class AuthService {
 
       await this.redis.del(tokenKey);
 
+      this.logger.log(`User registered successfully: ${user.id} - ${dto.email}`);
       return cResponseData({
         message: 'User registered successfully',
         data: {
@@ -219,6 +236,7 @@ export class AuthService {
         },
       });
     } catch (error) {
+      this.logger.error(`Registration completion failed for ${dto.email}: ${error.message}`, error.stack);
       throw new BadRequestException(
         error.message || 'Failed to complete registration',
       );
@@ -227,6 +245,8 @@ export class AuthService {
 
   async login(loginDto: LoginDto) {
     try {
+      this.logger.log(`Login attempt for email: ${loginDto.email}`);
+
       const user = await this.prisma.user.findFirst({
         where: { email: { email: loginDto.email } },
         select: {
@@ -239,11 +259,14 @@ export class AuthService {
           twoFactorEnabled: true,
         },
       });
+
       if (!user) {
+        this.logger.warn(`Login failed - User not found: ${loginDto.email}`);
         throw new UnauthorizedException('User not found');
       }
 
       if (user.isDeleted) {
+        this.logger.warn(`Login attempt on deleted account: ${loginDto.email}`);
         throw new NotFoundException('User account is deleted');
       }
 
@@ -253,15 +276,18 @@ export class AuthService {
       );
 
       if (!isPasswordValid) {
+        this.logger.warn(`Invalid password attempt for: ${loginDto.email}`);
         throw new ForbiddenException('Invalid credentials');
       }
 
       if (!user.email) {
+        this.logger.error(`User email missing for ID: ${user.id}`);
         throw new UnauthorizedException('User not valid');
       }
 
       // 2FA LOGIN FLOW
       if (user.twoFactorEnabled) {
+        this.logger.log(`2FA enabled for user: ${user.email.email}`);
         const redisKey = `2fa:login:${user.email.email}`;
 
         let payload = await this.getRedisValue<Login2FAPayload>(redisKey);
@@ -275,10 +301,10 @@ export class AuthService {
           };
 
           await this.setRedisValue(redisKey, payload, 300);
+          this.logger.debug(`2FA code generated and stored for: ${user.email.email}`);
         }
 
         await this.mail.sendMail(
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           user.email.email,
           'Your 2FA Verification Code',
           `
@@ -289,6 +315,7 @@ export class AuthService {
       `,
         );
 
+        this.logger.log(`2FA code sent to: ${user.email.email}`);
         return cResponseData({
           success: true,
           message: 'Verify your 2FA code to complete login',
@@ -306,6 +333,7 @@ export class AuthService {
         role: user.role,
       });
 
+      this.logger.log(`User logged in successfully: ${user.id} - ${user.email.email}`);
       return cResponseData({
         success: true,
         message: 'Login successful',
@@ -320,29 +348,35 @@ export class AuthService {
         },
       });
     } catch (error) {
-      console.log(error);
+      this.logger.error(`Login failed for ${loginDto.email}: ${error.message}`, error.stack);
       throw new BadRequestException(error.message || 'Login failed');
     }
   }
+
   async verifyLogin2FA(dto: VerifyTwoFADto) {
     try {
+      this.logger.log(`Verifying 2FA login for email: ${dto.email}`);
+
       const { email, code } = dto;
 
       const redisKey = `2fa:login:${email}`;
       const payload = await this.getRedisValue<Login2FAPayload>(redisKey);
 
       if (!payload) {
+        this.logger.warn(`2FA OTP expired or not found for: ${email}`);
         throw new ForbiddenException('OTP expired or invalid');
       }
 
       if (payload.attempts >= 5) {
         await this.redis.del(redisKey);
+        this.logger.warn(`Maximum 2FA attempts exceeded for: ${email}`);
         throw new ForbiddenException('Maximum attempts exceeded');
       }
 
       if (payload.code !== code) {
         payload.attempts += 1;
         await this.setRedisValue(redisKey, payload, 300);
+        this.logger.warn(`Invalid 2FA code for: ${email}. Attempts: ${payload.attempts}/5`);
         throw new ForbiddenException('Invalid OTP');
       }
 
@@ -354,6 +388,7 @@ export class AuthService {
       });
 
       if (!user || !user.email) {
+        this.logger.error(`User not found after 2FA verification: ${payload.userId}`);
         throw new UnauthorizedException('User not found');
       }
 
@@ -363,6 +398,7 @@ export class AuthService {
         role: user.role,
       });
 
+      this.logger.log(`2FA login successful for: ${user.email.email}`);
       return cResponseData({
         success: true,
         message: 'Login successful',
@@ -375,6 +411,7 @@ export class AuthService {
         },
       });
     } catch (error) {
+      this.logger.error(`2FA verification failed for ${dto.email}: ${error.message}`);
       if (
         error instanceof ForbiddenException ||
         error instanceof UnauthorizedException
@@ -391,17 +428,21 @@ export class AuthService {
     newPassword: string,
   ) {
     try {
+      this.logger.log(`Password update attempt for user: ${userId}`);
+
       const user = await this.prisma.user.findUnique({
         where: { id: userId },
       });
 
       if (!user) {
+        this.logger.warn(`User not found for password update: ${userId}`);
         throw new UnauthorizedException('User not found');
       }
 
       const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
 
       if (!isPasswordValid) {
+        this.logger.warn(`Invalid old password for user: ${userId}`);
         throw new ForbiddenException('Invalid password');
       }
 
@@ -414,11 +455,13 @@ export class AuthService {
         },
       });
 
+      this.logger.log(`Password updated successfully for user: ${userId}`);
       return cResponseData({
         success: true,
         message: 'Password updated successfully',
       });
     } catch (error) {
+      this.logger.error(`Password update failed for user ${userId}: ${error.message}`);
       if (
         error instanceof UnauthorizedException ||
         error instanceof ForbiddenException
@@ -431,6 +474,8 @@ export class AuthService {
 
   async deleteAccount(userId: string) {
     try {
+      this.logger.log(`Account deletion request for user: ${userId}`);
+
       await this.prisma.user.update({
         where: { id: userId },
         data: {
@@ -438,26 +483,31 @@ export class AuthService {
         },
       });
 
+      this.logger.log(`Account deleted successfully for user: ${userId}`);
       return cResponseData({
         success: true,
         message: 'Account deleted successfully',
       });
     } catch (error) {
+      this.logger.error(`Account deletion failed for user ${userId}: ${error.message}`, error.stack);
       throw new BadRequestException('Failed to delete account');
     }
   }
 
   async updateProfilepic(userId: string, profilePic: string) {
     try {
+      this.logger.log(`Profile picture update for user: ${userId}`);
+
       const userProfile = await this.prisma.user.findFirst({
         where: { id: userId },
         select: { profile: true },
       });
+
       if (!userProfile) {
+        this.logger.warn(`User not found for profile pic update: ${userId}`);
         throw new NotFoundException('User not found');
       }
 
-      console.log(profilePic);
       const user = await this.prisma.user.update({
         where: { id: userId },
         data: {
@@ -470,15 +520,18 @@ export class AuthService {
       });
 
       if (!user) {
+        this.logger.error(`Profile picture update failed for user: ${userId}`);
         throw new BadRequestException('User Updation Failed');
       }
 
+      this.logger.log(`Profile picture updated successfully for user: ${userId}`);
       return cResponseData({
         success: true,
         message: 'Profile picture updated successfully',
         data: user,
       });
     } catch (error) {
+      this.logger.error(`Profile picture update failed for user ${userId}: ${error.message}`, error.stack);
       if (
         error instanceof NotFoundException ||
         error instanceof BadRequestException
@@ -491,6 +544,8 @@ export class AuthService {
 
   async removeProfilePic(userId: string) {
     try {
+      this.logger.log(`Removing profile picture for user: ${userId}`);
+
       await this.prisma.user.update({
         where: { id: userId },
         data: {
@@ -503,17 +558,21 @@ export class AuthService {
         },
       });
 
+      this.logger.log(`Profile picture removed successfully for user: ${userId}`);
       return cResponseData({
         success: true,
         message: 'Profile picture removed successfully',
       });
     } catch (error) {
+      this.logger.error(`Profile picture removal failed for user ${userId}: ${error.message}`, error.stack);
       throw new BadRequestException('Failed to remove profile picture');
     }
   }
 
   async updateProfile(userId: string, data: UpdateProfileDto) {
     try {
+      this.logger.log(`Profile update for user: ${userId}`);
+
       const user = await this.prisma.user.update({
         where: { id: userId },
         data: {
@@ -528,14 +587,17 @@ export class AuthService {
       });
 
       if (!user) {
+        this.logger.error(`Profile update failed for user: ${userId}`);
         throw new BadRequestException('User Updation Failed');
       }
 
+      this.logger.log(`Profile updated successfully for user: ${userId}`);
       return cResponseData({
         success: true,
         message: 'Profile updated successfully',
       });
     } catch (error) {
+      this.logger.error(`Profile update failed for user ${userId}: ${error.message}`, error.stack);
       if (error instanceof BadRequestException) {
         throw error;
       }
@@ -545,6 +607,8 @@ export class AuthService {
 
   async getProfile(userId: string) {
     try {
+      this.logger.log(`Fetching profile for user: ${userId}`);
+
       const user = await this.prisma.user.findFirst({
         where: { id: userId },
         select: {
@@ -560,15 +624,18 @@ export class AuthService {
       });
 
       if (!user) {
+        this.logger.warn(`User not found: ${userId}`);
         throw new NotFoundException('User not found');
       }
 
+      this.logger.log(`Profile retrieved successfully for user: ${userId}`);
       return cResponseData({
         success: true,
         message: 'Profile retrieved successfully',
         data: user,
       });
     } catch (error) {
+      this.logger.error(`Failed to get profile for user ${userId}: ${error.message}`);
       if (error instanceof NotFoundException) {
         throw error;
       }
@@ -576,15 +643,9 @@ export class AuthService {
     }
   }
 
-  findAll() {
-    return 'This section returns all auth related data';
-  }
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
 
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
-  }
+
+
+
 }

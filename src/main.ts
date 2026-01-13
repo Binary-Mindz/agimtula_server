@@ -23,8 +23,8 @@ async function bootstrap() {
     app.use("/", express.static(publicDir));
     app.use("/uploads", express.static(uploadDir));
 
-    // Raw body parser for Stripe webhook BEFORE JSON parser
-    app.use('/stripe/webhook', bodyParser.raw({ type: 'application/json' }));
+
+
 
     // Then global JSON parser for everything else
     app.use(bodyParser.json());
@@ -38,7 +38,8 @@ async function bootstrap() {
 
     // Swagger
     SwaggerSetting(app);
-
+    // Raw body parser for Stripe webhook BEFORE JSON parser
+    app.use('/stripe/webhook', bodyParser.raw({ type: 'application/json' }));
     // Global filters - Order matters!
     app.useGlobalFilters(
       new PrismaExceptionFilter(),

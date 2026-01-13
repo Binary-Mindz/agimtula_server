@@ -58,7 +58,7 @@ async function bootstrap() {
 
     const port = process.env.PORT ?? 3003;
     await app.listen(port);
-    logger.log(`Application running on port ${port}`);
+    console.log(`✔ Swagger docs: http://localhost:${port}/doc`);
   } catch (error) {
     logger.error('Failed to start application:', error);
     process.exit(1);

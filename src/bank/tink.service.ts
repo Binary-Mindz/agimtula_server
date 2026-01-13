@@ -1,8 +1,6 @@
-
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
-
 export interface TransactionRow {
   date: string;
   description: string;

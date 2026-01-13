@@ -21,89 +21,82 @@ export class ForgetPasswordService {
     private prisma: PrismaService,
     private mail: SmtpMailService,
     private redis: RedisServiceService,
-  ) {}
+  ) { }
 
   private readonly FORG_PREFIX = 'forPas';
   private readonly CRYPTO_PREFIX = 'cryp';
-  private readonly EXPIRATION_TIME = 3000;
+  private readonly OTP_EXPIRATION = 300; // 5 minutes
+  private readonly CRYPTO_EXPIRATION = 300; // 5 minutes
 
-  private storeRedis = async (
+  /* ---------------- REDIS STORE ---------------- */
+  private async storeRedis(
     key: string,
     value: string,
     type: 'CODE' | 'CRYPTO',
-  ) => {
+  ) {
     if (type === 'CODE') {
       await this.redis.set(
         `${this.FORG_PREFIX}_${key}`,
         value,
         'EX',
-        this.EXPIRATION_TIME,
+        this.OTP_EXPIRATION,
       );
     } else {
       await this.redis.set(
         `${this.CRYPTO_PREFIX}_${key}`,
         value,
         'EX',
-        this.EXPIRATION_TIME,
+        this.CRYPTO_EXPIRATION,
       );
     }
-  };
+  }
 
-  private generateCrypto(): string {
+  /* ---------------- HELPERS ---------------- */
+  private generateCryptoToken(): string {
     return crypto.randomUUID();
   }
 
-  private generateRandomCode = () => {
+  private generateOtp(): number {
     return Math.floor(100000 + Math.random() * 900000);
-  };
+  }
 
+  /* ---------------- SEND OTP ---------------- */
   async sendForgetPassCode(dto: ForgetPassDto) {
     try {
       const { email } = dto;
 
       const user = await this.prisma.user.findFirst({
-        where: {
-          email: {
-            email: email,
-          },
-        },
+        where: { email: { email } },
       });
 
       if (!user) {
         throw new NotFoundAppException('User not found');
       }
 
-      const existing = await this.redis.get(`${this.FORG_PREFIX}_${email}`);
+      // ✅ delete old OTP if exists
+      await this.redis.del(`${this.FORG_PREFIX}_${email}`);
 
-      let finalCode: number;
+      const otp = this.generateOtp();
 
-      if (existing) {
-        finalCode = Number(existing);
-
-        await this.storeRedis(email, finalCode.toString(), 'CODE');
-      } else {
-        finalCode = this.generateRandomCode();
-        await this.storeRedis(email, finalCode.toString(), 'CODE');
-      }
+      await this.storeRedis(email, otp.toString(), 'CODE');
 
       await this.mail.sendMail(
-        dto.email,
+        email,
         'Forget Password Code',
         `
-        <h3>AuthSystem</h3>
-        <p>Your email verification code:</p>
-        <h2>${finalCode}</h2>
-        <p>This code is valid for 5 minutes.</p>
-      `,
+          <h3>AuthSystem</h3>
+          <p>Your email verification code:</p>
+          <h2>${otp}</h2>
+          <p>This code is valid for 5 minutes.</p>
+        `,
       );
 
       return cResponseData({
         message: 'Forget password code sent successfully',
       });
     } catch (error) {
-      if (error instanceof NotFoundAppException) {
-        throw error;
-      }
+      if (error instanceof NotFoundAppException) throw error;
+
       console.error('Send forget password code error:', error);
       throw new HttpException(
         'Failed to send forget password code',
@@ -112,36 +105,36 @@ export class ForgetPasswordService {
     }
   }
 
+  /* ---------------- VERIFY OTP ---------------- */
   async verifyForgetPassCode(data: ValidateForgetPass) {
     try {
-      const val = await this.redis.get(`${this.FORG_PREFIX}_${data.email}`);
-
+      const redisCode = await this.redis.get(
+        `${this.FORG_PREFIX}_${data.email}`,
+      );
       const user = await this.prisma.user.findFirst({
-        where: {
-          email: {
-            email: data.email,
-          },
-        },
+        where: { email: { email: data.email } },
       });
 
       if (!user) {
         throw new NotFoundAppException('User not found');
       }
 
-      if (!val || val !== data.verificationCode.toString()) {
+      if (!redisCode || redisCode !== data.verificationCode.toString()) {
         throw new ValidationException('Code invalid or expired');
       }
 
+      // ✅ delete OTP after verify
       await this.redis.del(`${this.FORG_PREFIX}_${data.email}`);
 
-      const newCrypto = this.generateCrypto();
+      const cryptoToken = this.generateCryptoToken();
 
-      await this.storeRedis(newCrypto, user.id, 'CRYPTO');
+      // save crypto → userId
+      await this.storeRedis(cryptoToken, user.id, 'CRYPTO');
 
       return cResponseData({
-        message: 'Code is verified, now you can change your password',
+        message: 'Code verified successfully',
         data: {
-          crypto: newCrypto,
+          crypto: cryptoToken,
         },
       });
     } catch (error) {
@@ -151,6 +144,7 @@ export class ForgetPasswordService {
       ) {
         throw error;
       }
+
       console.error('Verify forget password code error:', error);
       throw new HttpException(
         'Failed to verify forget password code',
@@ -159,38 +153,34 @@ export class ForgetPasswordService {
     }
   }
 
-  async changePassword(data: ResetPass, cryptoVal: string) {
+  /* ---------------- CHANGE PASSWORD ---------------- */
+  async changePassword(data: ResetPass, cryptoToken: string) {
     try {
-      const crypto = cryptoVal;
-
-      const userId = await this.redis.get(`${this.CRYPTO_PREFIX}_${crypto}`);
+      const userId = await this.redis.get(
+        `${this.CRYPTO_PREFIX}_${cryptoToken}`,
+      );
 
       if (!userId) {
-        throw new ValidationException('Invalid or expired crypto');
+        throw new ValidationException('Invalid or expired crypto token');
       }
 
       const user = await this.prisma.user.findUnique({
-        where: {
-          id: userId,
-        },
+        where: { id: userId },
       });
 
       if (!user) {
         throw new NotFoundAppException('User not found');
       }
 
-      const hashedPass = await bcrypt.hash(data.password, 10);
+      const hashedPassword = await bcrypt.hash(data.password, 10);
 
       await this.prisma.user.update({
-        where: {
-          id: user.id,
-        },
-        data: {
-          password: hashedPass,
-        },
+        where: { id: user.id },
+        data: { password: hashedPassword },
       });
 
-      await this.redis.del(`${this.CRYPTO_PREFIX}_${crypto}`);
+      // ✅ delete crypto after use
+      await this.redis.del(`${this.CRYPTO_PREFIX}_${cryptoToken}`);
 
       return cResponseData({
         message: 'Password changed successfully',
@@ -202,6 +192,7 @@ export class ForgetPasswordService {
       ) {
         throw error;
       }
+
       console.error('Change password error:', error);
       throw new HttpException(
         'Failed to change password',

@@ -80,6 +80,7 @@ export class TinkService {
 
       if (res.ok) {
         const bankData = await res.json();
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         return bankData.displayName || 'Tink Bank';
       }
     } catch (error) {
@@ -142,40 +143,7 @@ export class TinkService {
     });
   }
 
-  // async saveTransactions(
-  //   transactions: TransactionRow[],
-  // ): Promise<number> {
-  //   let savedCount = 0;
 
-  //   for (const transaction of transactions) {
-  //     try {
-  //       await this.prisma.transaction.create({
-  //         data: {
-  //           date: new Date(transaction.date),
-  //           description: transaction.description,
-  //           amount: transaction.amount,
-  //           currency: transaction.currency,
-  //           status: transaction.status,
-  //           source: 'Bank',
-  //           attachments: transaction.attachments || [],
-  //           accountId: transaction.accountId, // Store accountId from transaction
-  //         },
-  //       });
-  //       savedCount++;
-  //     } catch (error) {
-  //       // Skip duplicate transactions (unique constraint violation)
-  //       if (error.code === 'P2002') {
-  //         console.log(
-  //           `Skipping duplicate transaction: ${transaction.description}`,
-  //         );
-  //         continue;
-  //       }
-  //       throw error;
-  //     }
-  //   }
-
-  //   return savedCount;
-  // }
 
 
   async exchangeToken(code: string): Promise<TokenData> {

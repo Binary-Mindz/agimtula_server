@@ -12,7 +12,7 @@ import { join } from 'path';
 
 async function bootstrap() {
   const logger = new Logger('Bootstrap');
-  
+
   try {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
@@ -31,7 +31,7 @@ async function bootstrap() {
 
     // Enable CORS
     app.enableCors({
-      origin: '*',
+      origin: 'http://localhost:3000',
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       credentials: true,
     });
@@ -58,7 +58,7 @@ async function bootstrap() {
 
     const port = process.env.PORT ?? 3003;
     await app.listen(port);
-    logger.log(`Application running on port ${port}`);
+    console.log(`✔ Swagger docs: http://localhost:${port}/doc`);
   } catch (error) {
     logger.error('Failed to start application:', error);
     process.exit(1);

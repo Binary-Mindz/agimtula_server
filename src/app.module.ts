@@ -64,4 +64,4 @@ import { ReportsModule } from './accountant-dashboard/accountants/reports/report
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }

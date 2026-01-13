@@ -135,20 +135,7 @@ export class ReceiptsService {
           skip,
           take: limit,
           orderBy: { date: 'desc' },
-          select: {
-            id: true,
-            vendor: true,
-            date: true,
-            amount: true,
-            receipt_id: true,
-            notes: true,
-            receiptFileUrl: true,
-            category: {
-              select: {
-                name: true,
-              },
-            },
-          },
+        
         }),
         this.prisma.receipt.count({ 
           where: {

@@ -5,10 +5,20 @@ import { cResponseData } from 'src/common/cResponse';
 
 @Injectable()
 export class MileageService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async logTrip(userId: string, dto: LogTripDto) {
     try {
+      const userExists = await this.prisma.user.findUnique({
+        where: { id: userId, isDeleted: false },
+      });
+
+      if (!userExists) {
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      }
+
+
+
       const trip = await this.prisma.mileage.create({
         data: {
           name: dto.name,
@@ -133,9 +143,27 @@ export class MileageService {
 
   async editLoggedTrip(userId: string, tripId: string, dto: LogTripDto) {
     try {
+
+
+      const userExists = await this.prisma.user.findUnique({
+        where: { id: userId, isDeleted: false },
+      });
+
+      if (!userExists) {
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      }
+      const tripExists = await this.prisma.mileage.findUnique({
+        where: { id: tripId, userId, user: { isDeleted: false } },
+      });
+
+      if (!tripExists) {
+        throw new HttpException('Trip not found', HttpStatus.NOT_FOUND);
+      }
+
+
       const updatedTrip = await this.prisma.mileage.update({
-        where: { 
-          userId, 
+        where: {
+          userId,
           id: tripId,
           user: { isDeleted: false },
         },
@@ -168,9 +196,23 @@ export class MileageService {
 
   async deleteLoggedTrip(userId: string, tripId: string) {
     try {
+      const userExists = await this.prisma.user.findUnique({
+        where: { id: userId, isDeleted: false },
+      });
+
+      if (!userExists) {
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      }
+      const tripExists = await this.prisma.mileage.findUnique({
+        where: { id: tripId, userId, user: { isDeleted: false } },
+      });
+
+      if (!tripExists) {
+        throw new HttpException('Trip not found', HttpStatus.NOT_FOUND);
+      }
       const deletedTrip = await this.prisma.mileage.delete({
-        where: { 
-          userId, 
+        where: {
+          userId,
           id: tripId,
           user: { isDeleted: false },
         },

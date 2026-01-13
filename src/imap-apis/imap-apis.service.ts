@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import {
   ConflictException,
+  HttpException,
+  HttpStatus,
   Injectable,
   OnModuleDestroy,
   OnModuleInit,
@@ -201,152 +203,31 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
   //   };
   // }
 
-  // Read email transactions
-  async readEmailTransactions(userId: string): Promise<Invoice[]> {
-    const imapConfig = await this.prisma.imapConfiguration.findFirst({
-      where: { userId },
-    });
+  private looksLikeInvoice(subject?: string): boolean {
+    if (!subject) return false;
+    return /invoice|factuur|rechnung|receipt|billing/i.test(subject);
+  }
 
-    if (!imapConfig) return [];
+  private toNumber(val: any): number {
+    if (val === null || val === undefined) return 0;
+    if (typeof val === 'number') return val;
 
-    const connection = await this.imapClient({
-      host: imapConfig.host || 'imap.gmail.com',
-      port: Number(process.env.MAIL_PORT || 993),
-      username: imapConfig.username,
-      password: imapConfig.password,
-    });
-
-    await connection.openBox('INBOX');
-
-    const allTransactions: Invoice[] = [];
-
-    for (const domain of INVOICE_SENDERS) {
-      for (const keyword of INVOICE_SUBJECT_KEYWORDS) {
-        const messages = await connection.search(
-          [
-            ['FROM', domain],
-            ['SUBJECT', keyword],
-          ],
-          { bodies: '', markSeen: false },
-        );
-
-        for (const message of messages) {
-          const parsed = await simpleParser(message.parts[0].body);
-          const fromAddress =
-            parsed.from?.value?.[0]?.address?.toLowerCase() || '';
-          if (!fromAddress.includes(domain)) continue;
-
-          const hasAttachments = parsed.attachments?.length > 0;
-          let invoiceCreated = false;
-
-          if (hasAttachments) {
-            for (const attachment of parsed.attachments) {
-              if (!attachment.filename?.toLowerCase().endsWith('.pdf')) continue;
-
-              const formData = new FormData();
-              formData.append('userID', userId);
-              formData.append('file', attachment.content, {
-                filename: attachment.filename,
-                contentType: attachment.contentType || 'application/pdf',
-              });
-
-              try {
-                console.log(
-                  `Attempting PDF extraction for: ${attachment.filename}`,
-                );
-                console.log(`File size: ${attachment.content.length} bytes`);
-
-                const { data } = await axios.post(
-                  'https://pdf-extractor-gsoh.onrender.com/extract',
-                  formData,
-                  {
-                    headers: formData.getHeaders(),
-                    timeout: 60_000,
-                    maxContentLength: 50 * 1024 * 1024, // 50MB
-                  },
-                );
-
-                console.log('PDF extraction response:', data);
-
-                if (data?.invoice) {
-                  const created = await this.createInvoiceFromExtractedData({
-                    userID: userId,
-                    invoice: { ...data.invoice, haveAttachment: true },
-                  });
-                  allTransactions.push(created);
-                  console.log(
-                    `Successfully created invoice: ${data.invoice.invoiceNo}`,
-                  );
-                  invoiceCreated = true;
-                }
-              } catch (apiErr: any) {
-                console.error(
-                  `PDF extraction failed for ${attachment.filename}:`,
-                  {
-                    message: apiErr.message,
-                    status: apiErr.response?.status,
-                    statusText: apiErr.response?.statusText,
-                    data: JSON.stringify(apiErr.response?.data, null, 2),
-                    code: apiErr.code,
-                  },
-                );
-              }
-            }
-          }
-
-          // Create invoice without attachment if no PDF was processed
-          if (!invoiceCreated) {
-            try {
-              const fallbackInvoice = {
-                invoiceNo: `EMAIL-${Date.now()}`,
-                companyName: fromAddress.split('@')[1] || 'Unknown',
-                email: fromAddress,
-                issueDate: new Date().toISOString(),
-                type: 'BUSINESS' as const,
-                currency: 'EUR',
-                vatCurrency: 'EUR',
-                subTotalCurrency: 'EUR',
-                totalAmountCurrency: 'EUR',
-                totalAmount: 0,
-                subTotal: 0,
-                vat: 0,
-                serviceAndItems: [{
-                  name: parsed.subject || 'Email Invoice',
-                  quantity: 1,
-                  unitPrice: 0,
-                  unitPriceCurrency: 'EUR',
-                  total: 0,
-                  totalCurrency: 'EUR'
-                }],
-                haveAttachment: false
-              };
-
-              const created = await this.createInvoiceFromExtractedData({
-                userID: userId,
-                invoice: fallbackInvoice,
-              });
-              allTransactions.push(created);
-              console.log(`Created invoice without attachment: ${fallbackInvoice.invoiceNo}`);
-            } catch (fallbackErr) {
-              console.error('Failed to create fallback invoice:', fallbackErr);
-            }
-          }
-        }
-      }
-    }
-
-    connection.end();
-    return allTransactions;
+    return (
+      Number(
+        String(val)
+          .replace(/\s/g, '')
+          .replace(',', '.')
+          .replace(/[^\d.]/g, ''),
+      ) || 0
+    );
   }
 
   private parseEuropeanDate(dateStr?: string | null): Date | null {
     if (!dateStr) return null;
 
-    // Normalize separators
-    const normalized = dateStr.replace(/[./]/g, '-');
+    const cleaned = dateStr.replace(/[./]/g, '-').replace(/\s+/g, ' ').trim();
 
-    // Match: DD-MM-YYYY HH:mm(:ss)?
-    const match = normalized.match(
+    const match = cleaned.match(
       /^(\d{2})-(\d{2})-(\d{4})(?:\s+(\d{2}):(\d{2})(?::(\d{2}))?)?$/,
     );
 
@@ -364,70 +245,211 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
     );
   }
 
-  // --- Core: Store invoice in DB ---
+  // Read email transactions
+  async readEmailTransactions(userId: string): Promise<Invoice[]> {
+    try {
+      const imapConfig = await this.prisma.imapConfiguration.findFirst({
+        where: { userId },
+      });
+      if (!imapConfig) return [];
+
+      const connection = await this.imapClient({
+        host: imapConfig.host || 'imap.gmail.com',
+        port: Number(process.env.MAIL_PORT || 993),
+        username: imapConfig.username,
+        password: imapConfig.password,
+      });
+
+      await connection.openBox('INBOX');
+
+      const createdInvoices: Invoice[] = [];
+
+      for (const domain of INVOICE_SENDERS) {
+        for (const keyword of INVOICE_SUBJECT_KEYWORDS) {
+          const messages = await connection.search(
+            [
+              ['FROM', domain],
+              ['SUBJECT', keyword],
+            ],
+            { bodies: '', markSeen: false },
+          );
+
+          for (const msg of messages) {
+            const parsed = await simpleParser(msg.parts[0].body);
+
+            const from = parsed.from?.value?.[0]?.address?.toLowerCase() || '';
+            if (!from.includes(domain)) continue;
+
+            const emailId = `${from}-${parsed.subject}-${parsed.date?.toISOString()}`;
+
+            const exists = await this.prisma.invoice.findFirst({
+              where: { additionalNote: { contains: emailId } },
+            });
+            if (exists) continue;
+
+            const pdfAttachments =
+              parsed.attachments?.filter((a) =>
+                a.filename?.toLowerCase().endsWith('.pdf'),
+              ) || [];
+
+            let invoiceCreated = false;
+
+            // ----------- PDF FLOW (ONLY REAL INVOICES) -----------
+            for (const pdf of pdfAttachments) {
+              const form = new FormData();
+              form.append('userID', userId);
+              form.append('file', pdf.content, {
+                filename: pdf.filename,
+                contentType: pdf.contentType || 'application/pdf',
+              });
+
+              try {
+                const { data } = await axios.post(
+                  'https://pdf-extractor-gsoh.onrender.com/extract',
+                  form,
+                  {
+                    headers: form.getHeaders(),
+                    timeout: 60_000,
+                  },
+                );
+
+                if (!data?.invoice) continue;
+
+                const created = await this.createInvoiceFromExtractedData({
+                  userID: userId,
+                  invoice: {
+                    ...data.invoice,
+                    haveAttachment: true,
+                    additionalNote: `${
+                      data.invoice.additionalNote || ''
+                    } | Email ID: ${emailId}`,
+                  },
+                });
+
+                createdInvoices.push(created);
+                invoiceCreated = true;
+                break;
+              } catch (err) {
+                console.error(`PDF extraction failed: ${pdf.filename}`);
+                console.error(err);
+              }
+            }
+
+            // ----------- FALLBACK (NO PDF, SUBJECT MUST MATCH) -----------
+            if (
+              !invoiceCreated &&
+              pdfAttachments.length === 0 &&
+              this.looksLikeInvoice(parsed.subject)
+            ) {
+              const fallbackInvoice = {
+                invoiceNo: `EMAIL-${Date.now()}-${Math.random()
+                  .toString(36)
+                  .slice(2, 9)}`,
+                issueDate: new Date().toISOString(),
+                type: 'BUSINESS' as const,
+                currency: 'EUR',
+                companyName: from.split('@')[1] || 'Unknown',
+                email: from,
+                vat: 0,
+                vatCurrency: 'EUR',
+                subTotal: 0,
+                subTotalCurrency: 'EUR',
+                totalAmount: 0,
+                totalAmountCurrency: 'EUR',
+                serviceAndItems: [],
+                haveAttachment: false,
+                additionalNote: `Email ID: ${emailId}`,
+              };
+
+              const created = await this.createInvoiceFromExtractedData({
+                userID: userId,
+                invoice: fallbackInvoice,
+              });
+
+              createdInvoices.push(created);
+            }
+          }
+        }
+      }
+
+      connection.end();
+      return createdInvoices;
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'Failed to read email transactions',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  // ---------------- SAVE TO DB ----------------
   async createInvoiceFromExtractedData(
     payload: ExtractedInvoicePayload,
   ): Promise<Invoice> {
     const { userID, invoice } = payload;
 
-    // ✅ Guard 1: invoice number
-    if (!invoice?.invoiceNo) {
-      throw new ConflictException('Invoice number missing – skipping this PDF');
+    // 🔐 HARD GUARDS
+    if (
+      !invoice?.invoiceNo &&
+      !invoice?.totalAmount &&
+      !invoice?.serviceAndItems?.length
+    ) {
+      throw new ConflictException('Empty invoice extraction – skipped');
+    }
+
+    if (!invoice.invoiceNo) {
+      invoice.invoiceNo = `AI-${Date.now()}-${Math.random()
+        .toString(36)
+        .slice(2, 8)}`;
     }
 
     const existing = await this.prisma.invoice.findUnique({
       where: { invoiceNo: invoice.invoiceNo },
     });
-
-    if (existing) {
+    if (existing)
       throw new ConflictException(`Invoice ${invoice.invoiceNo} exists`);
-    }
 
-    return this.prisma.$transaction(async (tx) => {
-      return tx.invoice.create({
-        data: {
-          userId: userID,
-          invoiceNo: invoice.invoiceNo,
+    return this.prisma.invoice.create({
+      data: {
+        userId: userID,
+        invoiceNo: invoice.invoiceNo,
 
-          issueDate: this.parseEuropeanDate(invoice.issueDate) ?? new Date(),
+        issueDate: this.parseEuropeanDate(invoice.issueDate) ?? new Date(),
+        dueDate: this.parseEuropeanDate(invoice.dueDate),
 
-          dueDate: this.parseEuropeanDate(invoice.dueDate),
+        type: invoice.type ?? 'BUSINESS',
+        companyName: invoice.companyName ?? 'Unknown',
+        email: invoice.email ?? '',
 
-          type: invoice.type ?? 'BUSINESS',
+        AddressAndContactInfo: invoice.AddressAndContactInfo ?? null,
+        projectInformation: invoice.projectInformation ?? null,
+        projectDescription: invoice.projectDescription ?? null,
 
-          companyName: invoice.companyName ?? 'Unknown Supplier',
-          email: invoice.email ?? '',
+        vat: this.toNumber(invoice.vat),
+        subTotal: this.toNumber(invoice.subTotal),
+        totalAmount: this.toNumber(invoice.totalAmount),
 
-          AddressAndContactInfo: invoice.AddressAndContactInfo ?? null,
-          projectInformation: invoice.projectInformation ?? null,
-          projectDescription: invoice.projectDescription ?? null,
+        isPaid: invoice.isPaid ?? false,
+        paidAt: this.parseEuropeanDate(invoice.paidAt),
 
-          vat: Number(invoice.vat) || 0,
-          subTotal: Number(invoice.subTotal) || 0,
-          totalAmount: Number(invoice.totalAmount) || 0,
+        additionalNote: invoice.additionalNote ?? null,
+        invoiceSource: 'EMAIL',
+        haveAttachment: Boolean(invoice.haveAttachment),
+        attachmentUrl: invoice.attachmentUrl ?? null,
 
-          isPaid: invoice.isPaid ?? false,
-          paidAt: this.parseEuropeanDate(invoice.paidAt),
-
-          additionalNote: invoice.additionalNote ?? null,
-
-          invoiceSource: 'EMAIL',
-          haveAttachment: Boolean(invoice.haveAttachment),
-          attachmentUrl: invoice.attachmentUrl ?? null,
-
-          serviceAndItems: {
-            create: invoice.serviceAndItems.map((item) => ({
+        serviceAndItems: {
+          create:
+            invoice.serviceAndItems?.map((item) => ({
               description: item.name,
               qty: item.quantity || 1,
-              rate: Number(item.unitPrice),
-              totalAmount: Number(item.total),
-            })),
-          },
+              rate: this.toNumber(item.unitPrice),
+              totalAmount: this.toNumber(item.total),
+            })) || [],
         },
-      });
+      },
     });
   }
-
   // Match Tink + email transactions
   matchTransactions(
     tinkRows: TransactionRow[],

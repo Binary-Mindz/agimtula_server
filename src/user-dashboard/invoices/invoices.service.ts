@@ -256,9 +256,9 @@ export class InvoicesService {
     try {
       const [invoices, totalRecords] = await Promise.all([
         this.prisma.invoice.findMany({
-          where: { 
-            ...query, 
-            isDrafted: false, 
+          where: {
+            ...query,
+            isDrafted: false,
             userId,
           },
           skip,
@@ -266,9 +266,9 @@ export class InvoicesService {
           orderBy: { createdAt: 'desc' },
         }),
         this.prisma.invoice.count({
-          where: { 
-            ...query, 
-            isDrafted: false, 
+          where: {
+            ...query,
+            isDrafted: false,
             userId,
           },
         }),
@@ -280,11 +280,8 @@ export class InvoicesService {
         message: 'Invoices fetched successfully',
         data: {
           invoices: invoices.map((inv) => ({
-            id: inv.id,
-            invoiceNo: inv.invoiceNo,
-            client: inv.companyName,
-            date: inv.issueDate,
-            amount: inv.totalAmount,
+            ...inv,
+
             status:
               inv.dueDate && inv.dueDate < new Date()
                 ? 'Overdue'

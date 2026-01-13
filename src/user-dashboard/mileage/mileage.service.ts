@@ -85,21 +85,15 @@ export class MileageService {
 
         this.prisma.mileage.findMany({
           where: { userId, user: { isDeleted: false } },
-          select: {
-            id: true,
-            startLocation: true,
-            endLocation: true,
-            date: true,
-            distance: true,
-            amount: true,
-            milage_id: true,
-          },
+
           orderBy: { date: 'desc' },
           skip,
           take: limit,
         }),
 
-        this.prisma.mileage.count({ where: { userId, user: { isDeleted: false } } }),
+        this.prisma.mileage.count({
+          where: { userId, user: { isDeleted: false } },
+        }),
       ]);
 
       const totalPages = Math.ceil(totalTrips / limit);
@@ -134,8 +128,8 @@ export class MileageService {
   async editLoggedTrip(userId: string, tripId: string, dto: LogTripDto) {
     try {
       const updatedTrip = await this.prisma.mileage.update({
-        where: { 
-          userId, 
+        where: {
+          userId,
           id: tripId,
           user: { isDeleted: false },
         },
@@ -169,8 +163,8 @@ export class MileageService {
   async deleteLoggedTrip(userId: string, tripId: string) {
     try {
       const deletedTrip = await this.prisma.mileage.delete({
-        where: { 
-          userId, 
+        where: {
+          userId,
           id: tripId,
           user: { isDeleted: false },
         },

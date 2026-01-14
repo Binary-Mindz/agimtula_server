@@ -22,7 +22,6 @@ import { SendRegistrationOtpDto } from './dto/send-registration-otp.dto';
 import { VerifyRegistrationOtpDto } from './dto/verify-registration-otp.dto';
 import { CompleteRegistrationDto } from './dto/complete-registration.dto';
 import * as crypto from 'crypto';
-import { profile } from 'console';
 
 interface Login2FAPayload {
   userId: string;

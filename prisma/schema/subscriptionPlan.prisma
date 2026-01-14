@@ -29,6 +29,7 @@ model invoiceAutoSyncInterval {
   id                String             @id @unique @default(uuid())
   title             String
   description       String
+  interval          SyncInterval       @default(DAILY)
   cronTime          String
   imapConfiguration imapConfiguration?
 }
@@ -36,4 +37,10 @@ model invoiceAutoSyncInterval {
 enum BillingPeriod {
   MONTHLY
   YEARLY
+}
+
+enum SyncInterval {
+  DAILY
+  HOURLY
+  EVERY_15_MINUTES
 }

@@ -32,9 +32,7 @@ export class ReportsService {
           where: {
             userId,
             invoiceSource: 'MANUAL',
-            dueDate: {
-              lt: new Date(),
-            },
+           
             createdAt: { gte: sixMonthsAgo },
           },
           select: { totalAmount: true, createdAt: true },
@@ -43,9 +41,7 @@ export class ReportsService {
           where: {
             userId,
             invoiceSource: 'MANUAL',
-            dueDate: {
-              lt: new Date(),
-            },
+          
           },
           _sum: { totalAmount: true },
         }),
@@ -54,9 +50,7 @@ export class ReportsService {
             userId,
             invoiceSource: 'MANUAL',
             isPaid: true,
-            dueDate: {
-              lt: new Date(),
-            },
+          
           },
           _sum: { totalAmount: true },
         }),
@@ -65,9 +59,7 @@ export class ReportsService {
             userId,
             invoiceSource: 'MANUAL',
             isPaid: false,
-            dueDate: {
-              lt: new Date(),
-            },
+          
           },
           _sum: { totalAmount: true },
         }),

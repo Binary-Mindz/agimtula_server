@@ -44,9 +44,14 @@ export class CronConfigService implements OnModuleInit {
     }
 
     const imapConfig = await this.prisma.imapConfiguration.findUnique({
-      where: { userId },
+      where: { userId, connect: true },
       include: { realtimeImapChecking: true },
     });
+
+    if (!imapConfig) {
+      console.log(`No connected IMAP configuration for user ${userId}`);
+      return;
+    }
 
     if (!imapConfig?.sync || !imapConfig.realtimeImapChecking) {
       console.log(`Sync disabled or no interval set for user ${userId}`);

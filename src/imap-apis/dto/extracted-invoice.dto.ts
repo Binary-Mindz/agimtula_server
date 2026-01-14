@@ -43,5 +43,6 @@ export interface ExtractedInvoicePayload {
       label: string;
       value: string;
     }[];
+    vendor: string;
   };
 }

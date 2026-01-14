@@ -25,11 +25,43 @@ export class ImapSyncService {
         );
       }
 
+      // Check invoice limit
+      if (subscription.isLimitedInvoicePerMonth) {
+        const currentMonth = new Date();
+        const startOfMonth = new Date(
+          currentMonth.getFullYear(),
+          currentMonth.getMonth(),
+          1,
+        );
+        const endOfMonth = new Date(
+          currentMonth.getFullYear(),
+          currentMonth.getMonth() + 1,
+          0,
+        );
+
+        const invoiceCount = await this.prisma.invoice.count({
+          where: {
+            userId,
+            createdAt: {
+              gte: startOfMonth,
+              lte: endOfMonth,
+            },
+          },
+        });
+
+        if (invoiceCount >= subscription.perMonthInvoiceCount) {
+          throw new HttpException(
+            `Monthly invoice limit reached (${subscription.perMonthInvoiceCount}). Upgrade your plan to sync more invoices.`,
+            HttpStatus.FORBIDDEN,
+          );
+        }
+      }
+
       const imapConfig = await this.prisma.imapConfiguration.findUnique({
         where: { userId },
         include: { realtimeImapChecking: true },
       });
-      
+
       if (!imapConfig) {
         throw new HttpException(
           'IMAP configuration not found',
@@ -141,7 +173,7 @@ export class ImapSyncService {
         where: { userId },
         data: { lastSync: null },
       });
-      
+
       return { message: 'Last sync reset' };
     } catch (error) {
       if (error instanceof HttpException) {
@@ -162,7 +194,10 @@ export class ImapSyncService {
         include: { subscriptionPlanPaymentStatus: true },
       });
 
-      if (!subscription || subscription.subscriptionPlanPaymentStatus.paymentStatus !== 'PAID') {
+      if (
+        !subscription ||
+        subscription.subscriptionPlanPaymentStatus.paymentStatus !== 'PAID'
+      ) {
         throw new HttpException(
           'No active paid subscription found',
           HttpStatus.FORBIDDEN,
@@ -225,7 +260,7 @@ export class ImapSyncService {
 
       await this.prisma.imapConfiguration.update({
         where: { userId },
-        data: { 
+        data: {
           realtimeImapCheckingId: syncInterval.id,
           sync: true,
         },

@@ -31,8 +31,8 @@ import { PermissionManagementController } from './permission-management/permissi
     PermissionService,
     ModuleAccessGuard,
     PermissionGuard,
-    AuthGuard
+    AuthGuard,
   ],
   exports: [PermissionService, ModuleAccessGuard, PermissionGuard, AuthGuard],
 })
-export class AuthModule { }
+export class AuthModule {}

@@ -58,6 +58,7 @@ export type InvoiceMinAggregateOutputType = {
   stripeSessionId: string | null
   stripePaymentIntentId: string | null
   additionalNote: string | null
+  vendor: string | null
   invoiceSource: $Enums.InvoiceSource | null
   haveAttachment: boolean | null
   attachmentUrl: string | null
@@ -86,6 +87,7 @@ export type InvoiceMaxAggregateOutputType = {
   stripeSessionId: string | null
   stripePaymentIntentId: string | null
   additionalNote: string | null
+  vendor: string | null
   invoiceSource: $Enums.InvoiceSource | null
   haveAttachment: boolean | null
   attachmentUrl: string | null
@@ -114,6 +116,7 @@ export type InvoiceCountAggregateOutputType = {
   stripeSessionId: number
   stripePaymentIntentId: number
   additionalNote: number
+  vendor: number
   invoiceSource: number
   haveAttachment: number
   attachmentUrl: number
@@ -156,6 +159,7 @@ export type InvoiceMinAggregateInputType = {
   stripeSessionId?: true
   stripePaymentIntentId?: true
   additionalNote?: true
+  vendor?: true
   invoiceSource?: true
   haveAttachment?: true
   attachmentUrl?: true
@@ -184,6 +188,7 @@ export type InvoiceMaxAggregateInputType = {
   stripeSessionId?: true
   stripePaymentIntentId?: true
   additionalNote?: true
+  vendor?: true
   invoiceSource?: true
   haveAttachment?: true
   attachmentUrl?: true
@@ -212,6 +217,7 @@ export type InvoiceCountAggregateInputType = {
   stripeSessionId?: true
   stripePaymentIntentId?: true
   additionalNote?: true
+  vendor?: true
   invoiceSource?: true
   haveAttachment?: true
   attachmentUrl?: true
@@ -327,6 +333,7 @@ export type InvoiceGroupByOutputType = {
   stripeSessionId: string | null
   stripePaymentIntentId: string | null
   additionalNote: string | null
+  vendor: string | null
   invoiceSource: $Enums.InvoiceSource
   haveAttachment: boolean
   attachmentUrl: string | null
@@ -378,6 +385,7 @@ export type InvoiceWhereInput = {
   stripeSessionId?: Prisma.StringNullableFilter<"Invoice"> | string | null
   stripePaymentIntentId?: Prisma.StringNullableFilter<"Invoice"> | string | null
   additionalNote?: Prisma.StringNullableFilter<"Invoice"> | string | null
+  vendor?: Prisma.StringNullableFilter<"Invoice"> | string | null
   invoiceSource?: Prisma.EnumInvoiceSourceFilter<"Invoice"> | $Enums.InvoiceSource
   haveAttachment?: Prisma.BoolFilter<"Invoice"> | boolean
   attachmentUrl?: Prisma.StringNullableFilter<"Invoice"> | string | null
@@ -408,6 +416,7 @@ export type InvoiceOrderByWithRelationInput = {
   stripeSessionId?: Prisma.SortOrderInput | Prisma.SortOrder
   stripePaymentIntentId?: Prisma.SortOrderInput | Prisma.SortOrder
   additionalNote?: Prisma.SortOrderInput | Prisma.SortOrder
+  vendor?: Prisma.SortOrderInput | Prisma.SortOrder
   invoiceSource?: Prisma.SortOrder
   haveAttachment?: Prisma.SortOrder
   attachmentUrl?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -441,6 +450,7 @@ export type InvoiceWhereUniqueInput = Prisma.AtLeast<{
   stripeSessionId?: Prisma.StringNullableFilter<"Invoice"> | string | null
   stripePaymentIntentId?: Prisma.StringNullableFilter<"Invoice"> | string | null
   additionalNote?: Prisma.StringNullableFilter<"Invoice"> | string | null
+  vendor?: Prisma.StringNullableFilter<"Invoice"> | string | null
   invoiceSource?: Prisma.EnumInvoiceSourceFilter<"Invoice"> | $Enums.InvoiceSource
   haveAttachment?: Prisma.BoolFilter<"Invoice"> | boolean
   attachmentUrl?: Prisma.StringNullableFilter<"Invoice"> | string | null
@@ -471,6 +481,7 @@ export type InvoiceOrderByWithAggregationInput = {
   stripeSessionId?: Prisma.SortOrderInput | Prisma.SortOrder
   stripePaymentIntentId?: Prisma.SortOrderInput | Prisma.SortOrder
   additionalNote?: Prisma.SortOrderInput | Prisma.SortOrder
+  vendor?: Prisma.SortOrderInput | Prisma.SortOrder
   invoiceSource?: Prisma.SortOrder
   haveAttachment?: Prisma.SortOrder
   attachmentUrl?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -507,6 +518,7 @@ export type InvoiceScalarWhereWithAggregatesInput = {
   stripeSessionId?: Prisma.StringNullableWithAggregatesFilter<"Invoice"> | string | null
   stripePaymentIntentId?: Prisma.StringNullableWithAggregatesFilter<"Invoice"> | string | null
   additionalNote?: Prisma.StringNullableWithAggregatesFilter<"Invoice"> | string | null
+  vendor?: Prisma.StringNullableWithAggregatesFilter<"Invoice"> | string | null
   invoiceSource?: Prisma.EnumInvoiceSourceWithAggregatesFilter<"Invoice"> | $Enums.InvoiceSource
   haveAttachment?: Prisma.BoolWithAggregatesFilter<"Invoice"> | boolean
   attachmentUrl?: Prisma.StringNullableWithAggregatesFilter<"Invoice"> | string | null
@@ -535,6 +547,7 @@ export type InvoiceCreateInput = {
   stripeSessionId?: string | null
   stripePaymentIntentId?: string | null
   additionalNote?: string | null
+  vendor?: string | null
   invoiceSource?: $Enums.InvoiceSource
   haveAttachment?: boolean
   attachmentUrl?: string | null
@@ -565,6 +578,7 @@ export type InvoiceUncheckedCreateInput = {
   stripeSessionId?: string | null
   stripePaymentIntentId?: string | null
   additionalNote?: string | null
+  vendor?: string | null
   invoiceSource?: $Enums.InvoiceSource
   haveAttachment?: boolean
   attachmentUrl?: string | null
@@ -595,6 +609,7 @@ export type InvoiceUpdateInput = {
   stripeSessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   invoiceSource?: Prisma.EnumInvoiceSourceFieldUpdateOperationsInput | $Enums.InvoiceSource
   haveAttachment?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -625,6 +640,7 @@ export type InvoiceUncheckedUpdateInput = {
   stripeSessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   invoiceSource?: Prisma.EnumInvoiceSourceFieldUpdateOperationsInput | $Enums.InvoiceSource
   haveAttachment?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -655,6 +671,7 @@ export type InvoiceCreateManyInput = {
   stripeSessionId?: string | null
   stripePaymentIntentId?: string | null
   additionalNote?: string | null
+  vendor?: string | null
   invoiceSource?: $Enums.InvoiceSource
   haveAttachment?: boolean
   attachmentUrl?: string | null
@@ -683,6 +700,7 @@ export type InvoiceUpdateManyMutationInput = {
   stripeSessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   invoiceSource?: Prisma.EnumInvoiceSourceFieldUpdateOperationsInput | $Enums.InvoiceSource
   haveAttachment?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -711,6 +729,7 @@ export type InvoiceUncheckedUpdateManyInput = {
   stripeSessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   invoiceSource?: Prisma.EnumInvoiceSourceFieldUpdateOperationsInput | $Enums.InvoiceSource
   haveAttachment?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -739,6 +758,7 @@ export type InvoiceCountOrderByAggregateInput = {
   stripeSessionId?: Prisma.SortOrder
   stripePaymentIntentId?: Prisma.SortOrder
   additionalNote?: Prisma.SortOrder
+  vendor?: Prisma.SortOrder
   invoiceSource?: Prisma.SortOrder
   haveAttachment?: Prisma.SortOrder
   attachmentUrl?: Prisma.SortOrder
@@ -773,6 +793,7 @@ export type InvoiceMaxOrderByAggregateInput = {
   stripeSessionId?: Prisma.SortOrder
   stripePaymentIntentId?: Prisma.SortOrder
   additionalNote?: Prisma.SortOrder
+  vendor?: Prisma.SortOrder
   invoiceSource?: Prisma.SortOrder
   haveAttachment?: Prisma.SortOrder
   attachmentUrl?: Prisma.SortOrder
@@ -801,6 +822,7 @@ export type InvoiceMinOrderByAggregateInput = {
   stripeSessionId?: Prisma.SortOrder
   stripePaymentIntentId?: Prisma.SortOrder
   additionalNote?: Prisma.SortOrder
+  vendor?: Prisma.SortOrder
   invoiceSource?: Prisma.SortOrder
   haveAttachment?: Prisma.SortOrder
   attachmentUrl?: Prisma.SortOrder
@@ -876,6 +898,7 @@ export type InvoiceCreateWithoutBusinessDatasInput = {
   stripeSessionId?: string | null
   stripePaymentIntentId?: string | null
   additionalNote?: string | null
+  vendor?: string | null
   invoiceSource?: $Enums.InvoiceSource
   haveAttachment?: boolean
   attachmentUrl?: string | null
@@ -905,6 +928,7 @@ export type InvoiceUncheckedCreateWithoutBusinessDatasInput = {
   stripeSessionId?: string | null
   stripePaymentIntentId?: string | null
   additionalNote?: string | null
+  vendor?: string | null
   invoiceSource?: $Enums.InvoiceSource
   haveAttachment?: boolean
   attachmentUrl?: string | null
@@ -950,6 +974,7 @@ export type InvoiceUpdateWithoutBusinessDatasInput = {
   stripeSessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   invoiceSource?: Prisma.EnumInvoiceSourceFieldUpdateOperationsInput | $Enums.InvoiceSource
   haveAttachment?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -979,6 +1004,7 @@ export type InvoiceUncheckedUpdateWithoutBusinessDatasInput = {
   stripeSessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   invoiceSource?: Prisma.EnumInvoiceSourceFieldUpdateOperationsInput | $Enums.InvoiceSource
   haveAttachment?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1008,6 +1034,7 @@ export type InvoiceCreateWithoutServiceAndItemsInput = {
   stripeSessionId?: string | null
   stripePaymentIntentId?: string | null
   additionalNote?: string | null
+  vendor?: string | null
   invoiceSource?: $Enums.InvoiceSource
   haveAttachment?: boolean
   attachmentUrl?: string | null
@@ -1037,6 +1064,7 @@ export type InvoiceUncheckedCreateWithoutServiceAndItemsInput = {
   stripeSessionId?: string | null
   stripePaymentIntentId?: string | null
   additionalNote?: string | null
+  vendor?: string | null
   invoiceSource?: $Enums.InvoiceSource
   haveAttachment?: boolean
   attachmentUrl?: string | null
@@ -1082,6 +1110,7 @@ export type InvoiceUpdateWithoutServiceAndItemsInput = {
   stripeSessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   invoiceSource?: Prisma.EnumInvoiceSourceFieldUpdateOperationsInput | $Enums.InvoiceSource
   haveAttachment?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1111,6 +1140,7 @@ export type InvoiceUncheckedUpdateWithoutServiceAndItemsInput = {
   stripeSessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   invoiceSource?: Prisma.EnumInvoiceSourceFieldUpdateOperationsInput | $Enums.InvoiceSource
   haveAttachment?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1180,6 +1210,7 @@ export type InvoiceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   stripeSessionId?: boolean
   stripePaymentIntentId?: boolean
   additionalNote?: boolean
+  vendor?: boolean
   invoiceSource?: boolean
   haveAttachment?: boolean
   attachmentUrl?: boolean
@@ -1211,6 +1242,7 @@ export type InvoiceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   stripeSessionId?: boolean
   stripePaymentIntentId?: boolean
   additionalNote?: boolean
+  vendor?: boolean
   invoiceSource?: boolean
   haveAttachment?: boolean
   attachmentUrl?: boolean
@@ -1239,6 +1271,7 @@ export type InvoiceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   stripeSessionId?: boolean
   stripePaymentIntentId?: boolean
   additionalNote?: boolean
+  vendor?: boolean
   invoiceSource?: boolean
   haveAttachment?: boolean
   attachmentUrl?: boolean
@@ -1267,6 +1300,7 @@ export type InvoiceSelectScalar = {
   stripeSessionId?: boolean
   stripePaymentIntentId?: boolean
   additionalNote?: boolean
+  vendor?: boolean
   invoiceSource?: boolean
   haveAttachment?: boolean
   attachmentUrl?: boolean
@@ -1275,7 +1309,7 @@ export type InvoiceSelectScalar = {
   createdAt?: boolean
 }
 
-export type InvoiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "invoiceNo" | "userId" | "issueDate" | "dueDate" | "type" | "companyName" | "email" | "AddressAndContactInfo" | "projectInformation" | "projectDescription" | "vat" | "subTotal" | "totalAmount" | "isPaid" | "paidAt" | "stripeSessionId" | "stripePaymentIntentId" | "additionalNote" | "invoiceSource" | "haveAttachment" | "attachmentUrl" | "isDrafted" | "previewedByAccountant" | "createdAt", ExtArgs["result"]["invoice"]>
+export type InvoiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "invoiceNo" | "userId" | "issueDate" | "dueDate" | "type" | "companyName" | "email" | "AddressAndContactInfo" | "projectInformation" | "projectDescription" | "vat" | "subTotal" | "totalAmount" | "isPaid" | "paidAt" | "stripeSessionId" | "stripePaymentIntentId" | "additionalNote" | "vendor" | "invoiceSource" | "haveAttachment" | "attachmentUrl" | "isDrafted" | "previewedByAccountant" | "createdAt", ExtArgs["result"]["invoice"]>
 export type InvoiceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   serviceAndItems?: boolean | Prisma.Invoice$serviceAndItemsArgs<ExtArgs>
   businessDatas?: boolean | Prisma.Invoice$businessDatasArgs<ExtArgs>
@@ -1310,6 +1344,7 @@ export type $InvoicePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     stripeSessionId: string | null
     stripePaymentIntentId: string | null
     additionalNote: string | null
+    vendor: string | null
     invoiceSource: $Enums.InvoiceSource
     haveAttachment: boolean
     attachmentUrl: string | null
@@ -1760,6 +1795,7 @@ export interface InvoiceFieldRefs {
   readonly stripeSessionId: Prisma.FieldRef<"Invoice", 'String'>
   readonly stripePaymentIntentId: Prisma.FieldRef<"Invoice", 'String'>
   readonly additionalNote: Prisma.FieldRef<"Invoice", 'String'>
+  readonly vendor: Prisma.FieldRef<"Invoice", 'String'>
   readonly invoiceSource: Prisma.FieldRef<"Invoice", 'InvoiceSource'>
   readonly haveAttachment: Prisma.FieldRef<"Invoice", 'Boolean'>
   readonly attachmentUrl: Prisma.FieldRef<"Invoice", 'String'>

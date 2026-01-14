@@ -247,6 +247,34 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
         );
       }
 
+      // Check invoice limit
+      const subscription = await this.prisma.userSubscriptionPlan.findFirst({
+        where: { UserId: userId, isActive: true },
+      });
+
+      if (subscription && subscription.isLimitedInvoicePerMonth) {
+        const currentMonth = new Date();
+        const startOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
+        const endOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
+
+        const invoiceCount = await this.prisma.invoice.count({
+          where: {
+            userId,
+            createdAt: {
+              gte: startOfMonth,
+              lte: endOfMonth,
+            },
+          },
+        });
+
+        if (invoiceCount >= subscription.perMonthInvoiceCount) {
+          throw new HttpException(
+            `Monthly invoice limit reached (${subscription.perMonthInvoiceCount}). Upgrade your plan.`,
+            HttpStatus.FORBIDDEN,
+          );
+        }
+      }
+
       const imapConfig = await this.prisma.imapConfiguration.findFirst({
         where: { userId },
       });
@@ -325,6 +353,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
                     ...data.invoice,
                     haveAttachment: true,
                     additionalNote: `Email ID: ${emailId}`,
+                    
                   },
                 });
 

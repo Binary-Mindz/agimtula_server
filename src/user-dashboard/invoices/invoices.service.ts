@@ -24,6 +24,42 @@ export class InvoicesService {
 
   async create(createInvoiceDto: CreateInvoiceDto, userId: string) {
     try {
+      // Check subscription and invoice limit
+      const subscription = await this.prisma.userSubscriptionPlan.findFirst({
+        where: { UserId: userId, isActive: true },
+      });
+
+      if (subscription && subscription.isLimitedInvoicePerMonth) {
+        const currentMonth = new Date();
+        const startOfMonth = new Date(
+          currentMonth.getFullYear(),
+          currentMonth.getMonth(),
+          1,
+        );
+        const endOfMonth = new Date(
+          currentMonth.getFullYear(),
+          currentMonth.getMonth() + 1,
+          0,
+        );
+
+        const invoiceCount = await this.prisma.invoice.count({
+          where: {
+            userId,
+            createdAt: {
+              gte: startOfMonth,
+              lte: endOfMonth,
+            },
+          },
+        });
+
+        if (invoiceCount >= subscription.perMonthInvoiceCount) {
+          throw new HttpException(
+            `Monthly invoice limit reached (${subscription.perMonthInvoiceCount}). Upgrade your plan to create more invoices.`,
+            HttpStatus.FORBIDDEN,
+          );
+        }
+      }
+      
       const {
         serviceAndItems,
         businessDatas,

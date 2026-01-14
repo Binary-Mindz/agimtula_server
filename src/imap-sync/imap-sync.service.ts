@@ -80,6 +80,7 @@ export class ImapSyncService {
       throw new Error('No active subscription found');
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     if (!subscription.realtimeImapChecking.includes(interval)) {
       throw new Error('Selected interval not available in your subscription plan');
     }

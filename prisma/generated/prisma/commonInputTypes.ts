@@ -548,6 +548,23 @@ export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedFloatNullableFilter<$PrismaModel>
 }
 
+export type EnumSyncIntervalFilter<$PrismaModel = never> = {
+  equals?: $Enums.SyncInterval | Prisma.EnumSyncIntervalFieldRefInput<$PrismaModel>
+  in?: $Enums.SyncInterval[] | Prisma.ListEnumSyncIntervalFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SyncInterval[] | Prisma.ListEnumSyncIntervalFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSyncIntervalFilter<$PrismaModel> | $Enums.SyncInterval
+}
+
+export type EnumSyncIntervalWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SyncInterval | Prisma.EnumSyncIntervalFieldRefInput<$PrismaModel>
+  in?: $Enums.SyncInterval[] | Prisma.ListEnumSyncIntervalFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SyncInterval[] | Prisma.ListEnumSyncIntervalFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSyncIntervalWithAggregatesFilter<$PrismaModel> | $Enums.SyncInterval
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSyncIntervalFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSyncIntervalFilter<$PrismaModel>
+}
+
 export type EnumSupportTicketStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.SupportTicketStatus | Prisma.EnumSupportTicketStatusFieldRefInput<$PrismaModel>
   in?: $Enums.SupportTicketStatus[] | Prisma.ListEnumSupportTicketStatusFieldRefInput<$PrismaModel>
@@ -1078,6 +1095,23 @@ export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
   _sum?: Prisma.NestedFloatNullableFilter<$PrismaModel>
   _min?: Prisma.NestedFloatNullableFilter<$PrismaModel>
   _max?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumSyncIntervalFilter<$PrismaModel = never> = {
+  equals?: $Enums.SyncInterval | Prisma.EnumSyncIntervalFieldRefInput<$PrismaModel>
+  in?: $Enums.SyncInterval[] | Prisma.ListEnumSyncIntervalFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SyncInterval[] | Prisma.ListEnumSyncIntervalFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSyncIntervalFilter<$PrismaModel> | $Enums.SyncInterval
+}
+
+export type NestedEnumSyncIntervalWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SyncInterval | Prisma.EnumSyncIntervalFieldRefInput<$PrismaModel>
+  in?: $Enums.SyncInterval[] | Prisma.ListEnumSyncIntervalFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SyncInterval[] | Prisma.ListEnumSyncIntervalFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSyncIntervalWithAggregatesFilter<$PrismaModel> | $Enums.SyncInterval
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSyncIntervalFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSyncIntervalFilter<$PrismaModel>
 }
 
 export type NestedEnumSupportTicketStatusFilter<$PrismaModel = never> = {

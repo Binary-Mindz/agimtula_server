@@ -113,6 +113,7 @@ export class WebhookController {
             setupFee: history.setupFee,
             isLimitedInvoicePerMonth: history.isLimitedInvoicePerMonth,
             perMonthInvoiceCount: history.perMonthInvoiceCount,
+            realtimeImapChecking: history.realtimeImapChecking,
             expiredAt: expirationDate,
             isActive: true,
             subscriptionPlanPaymentStatusId:

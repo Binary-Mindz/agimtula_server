@@ -62,7 +62,6 @@ export class WebhookController {
           return res.json({ received: true });
         }
 
-
         const historyId = session.metadata?.historyId;
         if (!historyId) {
           console.error('No historyId in metadata');

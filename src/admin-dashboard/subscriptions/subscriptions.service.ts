@@ -249,7 +249,10 @@ export class SubscriptionsService {
   async getSubscriptionPlan(id: string) {
     try {
       if (!id) {
-        throw new HttpException('Subscription plan ID is required', HttpStatus.BAD_REQUEST);
+        throw new HttpException(
+          'Subscription plan ID is required',
+          HttpStatus.BAD_REQUEST,
+        );
       }
 
       const plan = await this.prisma.subscriptionPlan.findUnique({
@@ -304,7 +307,10 @@ export class SubscriptionsService {
   async deleteSubscription(id: string) {
     try {
       if (!id) {
-        throw new HttpException('Subscription plan ID is required', HttpStatus.BAD_REQUEST);
+        throw new HttpException(
+          'Subscription plan ID is required',
+          HttpStatus.BAD_REQUEST,
+        );
       }
 
       const existing = await this.prisma.subscriptionPlan.findUnique({
@@ -312,7 +318,10 @@ export class SubscriptionsService {
       });
 
       if (!existing) {
-        throw new HttpException('Subscription plan not found', HttpStatus.NOT_FOUND);
+        throw new HttpException(
+          'Subscription plan not found',
+          HttpStatus.NOT_FOUND,
+        );
       }
 
       const plan = await this.prisma.subscriptionPlan.delete({

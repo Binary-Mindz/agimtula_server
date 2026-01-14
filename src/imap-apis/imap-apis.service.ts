@@ -171,37 +171,6 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
     }
     return;
   }
-  // private extractInvoiceData(
-  //   body: string,
-  //   from: string,
-  //   attachments: string[],
-  // ): TransactionRow | null {
-  //   const getValue = (label: string) => {
-  //     const match = body.match(new RegExp(`${label}:\\s*(.*)`));
-  //     return match ? match[1].trim() : '';
-  //   };
-
-  //   const invoiceId = getValue('Invoice ID') || getValue('Transaction ID');
-  //   if (!invoiceId) return null;
-
-  //   const amountStr = getValue('Amount')
-  //     .replace(/[^\d.,]/g, '')
-  //     .replace(',', '.');
-  //   const amount = parseFloat(amountStr) || 0;
-  //   const currency = getValue('Amount').includes('€') ? 'EUR' : 'SEK';
-
-  //   return {
-  //     date: getValue('Transaction Date') || new Date().toISOString(),
-  //     description: invoiceId,
-  //     category: getValue('Transaction Type') || 'Not categorized',
-  //     amount,
-  //     currency,
-  //     status: 'UNMATCHED',
-  //     linkedInvoiceId: invoiceId,
-  //     attachments,
-  //     from,
-  //   };
-  // }
 
   private looksLikeInvoice(subject?: string): boolean {
     if (!subject) return false;
@@ -245,9 +214,28 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
     );
   }
 
-  // Read email transactions
-  async readEmailTransactions(userId: string): Promise<Invoice[]> {
+  // Read email transactions since a specific date
+  async readEmailTransactionsSince(userId: string, sinceDate: Date): Promise<Invoice[]> {
     try {
+      const user = await this.prisma.user.findFirst({
+        where: {
+          id: userId,
+          userSubscriptionPlan: {
+            subscriptionPlanPaymentStatus: {
+              paymentStatus: 'PAID',
+            },
+            expiredAt: { gt: new Date() },
+          },
+        },
+      });
+
+      if (!user) {
+        throw new HttpException(
+          'User not found or expired subscription',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
       const imapConfig = await this.prisma.imapConfiguration.findFirst({
         where: { userId },
       });
@@ -270,6 +258,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
             [
               ['FROM', domain],
               ['SUBJECT', keyword],
+              ['SINCE', sinceDate.toISOString().split('T')[0]],
             ],
             { bodies: '', markSeen: false },
           );
@@ -280,8 +269,12 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
             const from = parsed.from?.value?.[0]?.address?.toLowerCase() || '';
             if (!from.includes(domain)) continue;
 
+            // Skip emails older than since date
+            if (parsed.date && parsed.date < sinceDate) continue;
+
             const emailId = `${from}-${parsed.subject}-${parsed.date?.toISOString()}`;
 
+            // Check if already processed
             const exists = await this.prisma.invoice.findFirst({
               where: { additionalNote: { contains: emailId } },
             });
@@ -294,7 +287,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
 
             let invoiceCreated = false;
 
-            // ----------- PDF FLOW (ONLY REAL INVOICES) -----------
+            // Process PDF attachments
             for (const pdf of pdfAttachments) {
               const form = new FormData();
               form.append('userID', userId);
@@ -309,7 +302,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
                   form,
                   {
                     headers: form.getHeaders(),
-                    timeout: 60_000,
+                    timeout: 100_000,
                   },
                 );
 
@@ -320,9 +313,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
                   invoice: {
                     ...data.invoice,
                     haveAttachment: true,
-                    additionalNote: `${
-                      data.invoice.additionalNote || ''
-                    } | Email ID: ${emailId}`,
+                    additionalNote: `Email ID: ${emailId}`,
                   },
                 });
 
@@ -330,21 +321,14 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
                 invoiceCreated = true;
                 break;
               } catch (err) {
-                console.error(`PDF extraction failed: ${pdf.filename}`);
-                console.error(err);
+                console.error(`PDF extraction failed: ${err}`);
               }
             }
 
-            // ----------- FALLBACK (NO PDF, SUBJECT MUST MATCH) -----------
-            if (
-              !invoiceCreated &&
-              pdfAttachments.length === 0 &&
-              this.looksLikeInvoice(parsed.subject)
-            ) {
+            // Fallback for emails without PDF
+            if (!invoiceCreated && this.looksLikeInvoice(parsed.subject)) {
               const fallbackInvoice = {
-                invoiceNo: `EMAIL-${Date.now()}-${Math.random()
-                  .toString(36)
-                  .slice(2, 9)}`,
+                invoiceNo: `EMAIL-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
                 issueDate: new Date().toISOString(),
                 type: 'BUSINESS' as const,
                 currency: 'EUR',
@@ -383,61 +367,54 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
     }
   }
 
-  // ---------------- SAVE TO DB ----------------
+  // Read email transactions (uses config creation date)
+  async readEmailTransactions(userId: string): Promise<Invoice[]> {
+    const imapConfig = await this.prisma.imapConfiguration.findFirst({
+      where: { userId },
+    });
+    if (!imapConfig) return [];
+    
+    return this.readEmailTransactionsSince(userId, imapConfig.created_at);
+  }
+
+  // Create invoice from extracted data
   async createInvoiceFromExtractedData(
     payload: ExtractedInvoicePayload,
   ): Promise<Invoice> {
     const { userID, invoice } = payload;
 
-    // 🔐 HARD GUARDS
-    if (
-      !invoice?.invoiceNo &&
-      !invoice?.totalAmount &&
-      !invoice?.serviceAndItems?.length
-    ) {
-      throw new ConflictException('Empty invoice extraction – skipped');
-    }
-
     if (!invoice.invoiceNo) {
-      invoice.invoiceNo = `AI-${Date.now()}-${Math.random()
-        .toString(36)
-        .slice(2, 8)}`;
+      invoice.invoiceNo = `AI-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
     }
 
     const existing = await this.prisma.invoice.findUnique({
       where: { invoiceNo: invoice.invoiceNo },
     });
-    if (existing)
+    if (existing) {
       throw new ConflictException(`Invoice ${invoice.invoiceNo} exists`);
+    }
 
     return this.prisma.invoice.create({
       data: {
         userId: userID,
         invoiceNo: invoice.invoiceNo,
-
         issueDate: this.parseEuropeanDate(invoice.issueDate) ?? new Date(),
         dueDate: this.parseEuropeanDate(invoice.dueDate),
-
         type: invoice.type ?? 'BUSINESS',
         companyName: invoice.companyName ?? 'Unknown',
         email: invoice.email ?? '',
-
         AddressAndContactInfo: invoice.AddressAndContactInfo ?? null,
         projectInformation: invoice.projectInformation ?? null,
         projectDescription: invoice.projectDescription ?? null,
-
         vat: this.toNumber(invoice.vat),
         subTotal: this.toNumber(invoice.subTotal),
         totalAmount: this.toNumber(invoice.totalAmount),
-
         isPaid: invoice.isPaid ?? false,
         paidAt: this.parseEuropeanDate(invoice.paidAt),
-
         additionalNote: invoice.additionalNote ?? null,
         invoiceSource: 'EMAIL',
         haveAttachment: Boolean(invoice.haveAttachment),
         attachmentUrl: invoice.attachmentUrl ?? null,
-
         serviceAndItems: {
           create:
             invoice.serviceAndItems?.map((item) => ({
@@ -450,6 +427,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
       },
     });
   }
+
   // Match Tink + email transactions
   matchTransactions(
     tinkRows: TransactionRow[],

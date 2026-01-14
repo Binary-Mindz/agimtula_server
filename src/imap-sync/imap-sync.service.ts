@@ -80,11 +80,6 @@ export class ImapSyncService {
       throw new Error('No active subscription found');
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    if (!subscription.realtimeImapChecking.includes(interval)) {
-      throw new Error('Selected interval not available in your subscription plan');
-    }
-
     const cronMap = {
       [SyncInterval.DAILY]: '0 0 * * *',
       [SyncInterval.HOURLY]: '0 * * * *',
@@ -111,6 +106,10 @@ export class ImapSyncService {
         cronTime: cronMap[interval],
       },
     });
+
+    if (!subscription.realtimeImapChecking.includes(syncInterval.id)) {
+      throw new Error('Selected interval not available in your subscription plan');
+    }
 
     await this.prisma.imapConfiguration.update({
       where: { userId },

@@ -53,13 +53,12 @@ export class CronConfigService implements OnModuleInit {
       return;
     }
 
-    const allowedIntervals = subscription.realtimeImapChecking;
-    const selectedInterval = imapConfig.realtimeImapChecking.interval;
+    const allowedIntervalIds = subscription.realtimeImapChecking;
+    const selectedIntervalId = imapConfig.realtimeImapCheckingId;
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    if (!allowedIntervals.includes(selectedInterval)) {
+    if (!selectedIntervalId || !allowedIntervalIds.includes(selectedIntervalId)) {
       console.log(
-        `Interval ${selectedInterval} not allowed in subscription plan`,
+        `Interval not allowed in subscription plan for user ${userId}`,
       );
       return;
     }

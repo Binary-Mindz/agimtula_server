@@ -19,6 +19,9 @@ export class InvoiceLayoutService {
         data: invoiceLayout,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Find invoice layout error:', error);
       throw new HttpException(
         'Failed to fetch invoice layout',
@@ -64,6 +67,9 @@ export class InvoiceLayoutService {
         });
       }
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Update invoice layout error:', error);
       throw new HttpException(
         'Failed to update invoice layout',

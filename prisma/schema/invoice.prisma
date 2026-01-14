@@ -23,6 +23,7 @@ model Invoice {
 
     additionalNote String?
     businessDatas  BusinessData[]
+    vendor         String?
 
     invoiceSource  InvoiceSource @default(MANUAL)
     haveAttachment Boolean       @default(false)

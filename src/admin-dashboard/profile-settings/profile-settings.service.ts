@@ -8,6 +8,18 @@ export class ProfileSettingsService {
 
   async adminEditProfileSetting(dto: ProfileSettingsDto, userId: string) {
     try {
+      if (!userId) {
+        throw new HttpException('User ID is required', HttpStatus.BAD_REQUEST);
+      }
+
+      const user = await this.prisma.user.findUnique({
+        where: { id: userId },
+      });
+
+      if (!user) {
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      }
+
       const updatedData = await this.prisma.user.update({
         where: {
           id: userId,

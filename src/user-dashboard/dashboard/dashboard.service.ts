@@ -8,6 +8,10 @@ export class DashboardService {
 
   async dashboardData(userId: string) {
     try {
+      if (!userId) {
+        throw new HttpException('User ID is required', HttpStatus.BAD_REQUEST);
+      }
+
       const now = new Date();
       const startDateOfLastMonth = new Date(
         now.getFullYear(),
@@ -158,6 +162,9 @@ export class DashboardService {
         },
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Dashboard data error:', error);
       throw new HttpException(
         'Failed to fetch dashboard data',

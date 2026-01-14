@@ -61,6 +61,18 @@ export class ManageClients {
 
   async addClient(clientId: string, accountantId: string) {
     try {
+      if (!clientId || !accountantId) {
+        throw new HttpException('Client ID and accountant ID are required', HttpStatus.BAD_REQUEST);
+      }
+
+      const client = await this.prisma.user.findUnique({
+        where: { id: clientId },
+      });
+
+      if (!client) {
+        throw new NotFoundAppException('Client not found');
+      }
+
       const hasAcc = await this.prisma.user.findFirst({
         where: {
           id: clientId,
@@ -111,6 +123,10 @@ export class ManageClients {
 
   async usersWithMe(accId: string) {
     try {
+      if (!accId) {
+        throw new HttpException('Accountant ID is required', HttpStatus.BAD_REQUEST);
+      }
+
       const users = await this.prisma.user.findMany({
         where: {
           haveAccountant: true,
@@ -162,7 +178,10 @@ export class ManageClients {
 
   async removeFromMe(userId: string, accId: string) {
     try {
-      // Find the user and ensure this user is linked to the current accountant
+      if (!userId || !accId) {
+        throw new HttpException('User ID and accountant ID are required', HttpStatus.BAD_REQUEST);
+      }
+
       const user = await this.prisma.user.findFirst({
         where: {
           id: userId,

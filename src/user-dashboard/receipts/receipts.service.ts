@@ -24,6 +24,9 @@ export class ReceiptsService {
         data: rec,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Create receipt category error:', error);
       throw new HttpException('Failed to create receipt category', HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -39,6 +42,9 @@ export class ReceiptsService {
         data: categories,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Get receipt categories error:', error);
       throw new HttpException('Failed to retrieve receipt categories', HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -46,7 +52,19 @@ export class ReceiptsService {
 
   async deleteCategory(id: string) {
     try {
-      const category = await this.prisma.receiptCategory.delete({
+      if (!id) {
+        throw new HttpException('Category ID is required', HttpStatus.BAD_REQUEST);
+      }
+
+      const category = await this.prisma.receiptCategory.findUnique({
+        where: { id },
+      });
+
+      if (!category) {
+        throw new HttpException('Category not found', HttpStatus.NOT_FOUND);
+      }
+
+      await this.prisma.receiptCategory.delete({
         where: { id },
       });
 
@@ -56,6 +74,9 @@ export class ReceiptsService {
         data: category,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Delete receipt category error:', error);
       throw new HttpException('Failed to delete receipt category', HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -163,6 +184,9 @@ export class ReceiptsService {
         },
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Get receipts data error:', error);
       throw new HttpException('Failed to retrieve receipts', HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -170,6 +194,18 @@ export class ReceiptsService {
 
   async updateReceiptsData(id: string, dto: UpdateReceiptDto) {
     try {
+      if (!id) {
+        throw new HttpException('Receipt ID is required', HttpStatus.BAD_REQUEST);
+      }
+
+      const existing = await this.prisma.receipt.findUnique({
+        where: { id },
+      });
+
+      if (!existing) {
+        throw new HttpException('Receipt not found', HttpStatus.NOT_FOUND);
+      }
+
       const { vendor, amount, date, category } = dto;
       const updatedReceipt = await this.prisma.receipt.update({
         where: { id },
@@ -188,6 +224,9 @@ export class ReceiptsService {
         data: updatedReceipt,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Update receipt error:', error);
       throw new HttpException('Failed to update receipt', HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -195,16 +234,31 @@ export class ReceiptsService {
 
   async deleteReceiptsData(id: string) {
     try {
-      const deletedReceipt = await this.prisma.receipt.delete({
+      if (!id) {
+        throw new HttpException('Receipt ID is required', HttpStatus.BAD_REQUEST);
+      }
+
+      const existing = await this.prisma.receipt.findUnique({
+        where: { id },
+      });
+
+      if (!existing) {
+        throw new HttpException('Receipt not found', HttpStatus.NOT_FOUND);
+      }
+
+      await this.prisma.receipt.delete({
         where: { id },
       });
 
       return cResponseData({
         success: true,
         message: 'Receipt deleted successfully',
-        data: deletedReceipt,
+        data: existing,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Delete receipt error:', error);
       throw new HttpException('Failed to delete receipt', HttpStatus.INTERNAL_SERVER_ERROR);
     }

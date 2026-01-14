@@ -313,6 +313,7 @@ export const InvoiceScalarFieldEnum = {
   stripeSessionId: 'stripeSessionId',
   stripePaymentIntentId: 'stripePaymentIntentId',
   additionalNote: 'additionalNote',
+  vendor: 'vendor',
   invoiceSource: 'invoiceSource',
   haveAttachment: 'haveAttachment',
   attachmentUrl: 'attachmentUrl',

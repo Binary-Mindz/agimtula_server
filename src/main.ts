@@ -17,14 +17,11 @@ async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
     // Static folders
-    const publicDir = join(process.cwd(), "public");
-    const uploadDir = join(process.cwd(), "uploads");
+    const publicDir = join(process.cwd(), 'public');
+    const uploadDir = join(process.cwd(), 'uploads');
 
-    app.use("/", express.static(publicDir));
-    app.use("/uploads", express.static(uploadDir));
-
-
-
+    app.use('/', express.static(publicDir));
+    app.use('/uploads', express.static(uploadDir));
 
     // Then global JSON parser for everything else
     app.use(bodyParser.json());

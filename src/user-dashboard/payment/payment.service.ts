@@ -16,7 +16,7 @@ export class PaymentService {
   constructor(
     private prisma: PrismaService,
     private stripeService: StripeService,
-  ) { }
+  ) {}
 
   async buyPlan(
     userId: string,
@@ -25,6 +25,12 @@ export class PaymentService {
     user: jwtPayload,
   ) {
     try {
+      if (!userId || !subscriptionPlanId) {
+        throw new ValidationException(
+          'User ID and subscription plan ID are required',
+        );
+      }
+
       const plan = await this.prisma.subscriptionPlan.findUnique({
         where: { id: subscriptionPlanId },
         include: {
@@ -88,10 +94,12 @@ export class PaymentService {
       });
 
       let stripePrice: Stripe.Response<Stripe.Price>;
-      try {
-        stripePrice = await this.stripeService.getPrice(pricing.stripePriceId);
-      } catch (error) {
 
+      // Check if price ID is a placeholder or doesn't exist in Stripe
+      const isPlaceholder = pricing.stripePriceId?.startsWith('PLACEHOLDER_');
+
+      if (isPlaceholder) {
+        // Create new Stripe price for placeholder IDs
         stripePrice = await this.stripeService.createPrice({
           amount: Math.round((pricing.price + pricing.setupFee) * 100),
           currency: 'usd',
@@ -107,9 +115,36 @@ export class PaymentService {
           where: { id: pricing.id },
           data: { stripePriceId: stripePrice.id },
         });
+      } else {
+        // Try to retrieve existing price, create if it doesn't exist
+        try {
+          stripePrice = await this.stripeService.getPrice(
+            pricing.stripePriceId,
+          );
+        } catch (error) {
+          console.error(error);
 
+          // Price doesn't exist in Stripe, create a new one
+          stripePrice = await this.stripeService.createPrice({
+            amount: Math.round((pricing.price + pricing.setupFee) * 100),
+            currency: 'usd',
+            recurring: {
+              interval: billingPeriod === 'MONTHLY' ? 'month' : 'year',
+            },
+            product_data: {
+              name: plan.planName,
+            },
+          });
 
-        console.error(error);
+          await this.prisma.packagePricing.update({
+            where: { id: pricing.id },
+            data: { stripePriceId: stripePrice.id },
+          });
+
+          console.log(
+            `Created new Stripe price ${stripePrice.id} for pricing ${pricing.id}`,
+          );
+        }
       }
 
       const session = await this.stripeService.createSubscriptionCheckout(
@@ -135,7 +170,6 @@ export class PaymentService {
         checkoutUrl: session.url,
         data: session.url,
       });
-
     } catch (error) {
       if (
         error instanceof NotFoundAppException ||
@@ -155,6 +189,12 @@ export class PaymentService {
     user: jwtPayload,
   ) {
     try {
+      if (!userId || !subscriptionPlanId) {
+        throw new ValidationException(
+          'User ID and subscription plan ID are required',
+        );
+      }
+
       const plan = await this.prisma.subscriptionPlan.findUnique({
         where: { id: subscriptionPlanId },
         include: {
@@ -216,19 +256,19 @@ export class PaymentService {
           subscriptionPlanPaymentStatus:
             existingHistory.subscriptionPlanPaymentStatus
               ? {
-                update: {
-                  paymentStatus: 'PENDING',
-                  totalAmount: pricing.price + pricing.setupFee,
-                  stripeSessionId: null,
-                  stripeSubscriptionId: null,
-                },
-              }
+                  update: {
+                    paymentStatus: 'PENDING',
+                    totalAmount: pricing.price + pricing.setupFee,
+                    stripeSessionId: null,
+                    stripeSubscriptionId: null,
+                  },
+                }
               : {
-                create: {
-                  paymentStatus: 'PENDING',
-                  totalAmount: pricing.price + pricing.setupFee,
+                  create: {
+                    paymentStatus: 'PENDING',
+                    totalAmount: pricing.price + pricing.setupFee,
+                  },
                 },
-              },
         },
         include: {
           subscriptionPlanPaymentStatus: true,
@@ -236,10 +276,12 @@ export class PaymentService {
       });
 
       let stripePrice: Stripe.Response<Stripe.Price>;
-      try {
-        stripePrice = await this.stripeService.getPrice(pricing.stripePriceId);
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      } catch (error) {
+
+      // Check if price ID is a placeholder or doesn't exist in Stripe
+      const isPlaceholder = pricing.stripePriceId?.startsWith('PLACEHOLDER_');
+
+      if (isPlaceholder) {
+        // Create new Stripe price for placeholder IDs
         stripePrice = await this.stripeService.createPrice({
           amount: Math.round((pricing.price + pricing.setupFee) * 100),
           currency: 'usd',
@@ -255,6 +297,35 @@ export class PaymentService {
           where: { id: pricing.id },
           data: { stripePriceId: stripePrice.id },
         });
+      } else {
+        // Try to retrieve existing price, create if it doesn't exist
+        try {
+          stripePrice = await this.stripeService.getPrice(
+            pricing.stripePriceId,
+          );
+        } catch (error) {
+          console.error(error);
+          // Price doesn't exist in Stripe, create a new one
+          stripePrice = await this.stripeService.createPrice({
+            amount: Math.round((pricing.price + pricing.setupFee) * 100),
+            currency: 'usd',
+            recurring: {
+              interval: billingPeriod === 'MONTHLY' ? 'month' : 'year',
+            },
+            product_data: {
+              name: plan.planName,
+            },
+          });
+
+          await this.prisma.packagePricing.update({
+            where: { id: pricing.id },
+            data: { stripePriceId: stripePrice.id },
+          });
+
+          console.log(
+            `Created new Stripe price ${stripePrice.id} for pricing ${pricing.id}`,
+          );
+        }
       }
 
       const session = await this.stripeService.createSubscriptionCheckout(
@@ -291,6 +362,4 @@ export class PaymentService {
       throw new PaymentException('Plan upgrade failed');
     }
   }
-
-
 }

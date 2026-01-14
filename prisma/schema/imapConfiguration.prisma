@@ -10,6 +10,7 @@ model imapConfiguration {
   sync                   Boolean                  @default(false)
   emailNotifications     Boolean                  @default(false)
   realtimeImapCheckingId String?                  @unique
+  lastSync               DateTime?
   created_at             DateTime                 @default(now())
   updated_at             DateTime                 @updatedAt
   realtimeImapChecking   invoiceAutoSyncInterval? @relation(fields: [realtimeImapCheckingId], references: [id])

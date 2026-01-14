@@ -1,18 +1,49 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
-import { InvoiceAutoSyncDto } from './dto/invoiceAutoSyncDto';
+import { CreateInvoiceAutoSyncDto } from './dto/create-invoice-auto-sync.dto';
 import { UpdateAutoSyncDto } from './dto/update-auto-sync.dto';
 import { cResponseData } from 'src/common/cResponse';
+import { SyncInterval } from 'prisma/generated/prisma/client';
 
 @Injectable()
 export class InvoiceAutoSyncIntervalService {
   constructor(private prisma: PrismaService) {}
 
-  async createInvoiceAutoSyncInterval(data: InvoiceAutoSyncDto) {
+  private getCronExpression(interval: SyncInterval): string {
+    const cronMap = {
+      [SyncInterval.DAILY]: '0 0 * * *',
+      [SyncInterval.HOURLY]: '0 * * * *',
+      [SyncInterval.EVERY_15_MINUTES]: '*/15 * * * *',
+    };
+    return cronMap[interval];
+  }
+
+  getAvailableIntervals() {
+    return cResponseData({
+      data: [
+        { value: SyncInterval.DAILY, label: 'Daily', cron: '0 0 * * *' },
+        { value: SyncInterval.HOURLY, label: 'Every Hour', cron: '0 * * * *' },
+        {
+          value: SyncInterval.EVERY_15_MINUTES,
+          label: 'Every 15 Minutes',
+          cron: '*/15 * * * *',
+        },
+      ],
+      message: 'Available sync intervals retrieved successfully',
+    });
+  }
+
+  async createInvoiceAutoSyncInterval(data: CreateInvoiceAutoSyncDto) {
     try {
+      const cronTime = this.getCronExpression(data.interval);
       const invoiceAutoSyncInterval =
         await this.prisma.invoiceAutoSyncInterval.create({
-          data,
+          data: {
+            title: data.title,
+            description: data.description,
+            interval: data.interval,
+            cronTime,
+          },
         });
 
       return cResponseData({
@@ -46,6 +77,18 @@ export class InvoiceAutoSyncIntervalService {
 
   async updateInvoiceAutoSyncIntervals(id: string, dto: UpdateAutoSyncDto) {
     try {
+      const isInvoiceAutoSyncInterval =
+        await this.prisma.invoiceAutoSyncInterval.findUnique({
+          where: { id },
+        });
+
+      if (!isInvoiceAutoSyncInterval) {
+        throw new HttpException(
+          'Invoice auto sync interval not found',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
       const invoiceAutoSyncInterval =
         await this.prisma.invoiceAutoSyncInterval.update({
           where: { id },
@@ -67,6 +110,19 @@ export class InvoiceAutoSyncIntervalService {
 
   async deleteAutoSyncIntervals(id: string) {
     try {
+
+          const isInvoiceAutoSyncInterval =
+        await this.prisma.invoiceAutoSyncInterval.findUnique({
+          where: { id },
+        });
+
+      if (!isInvoiceAutoSyncInterval) {
+        throw new HttpException(
+          'Invoice auto sync interval not found',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
       const invoiceAutoSyncInterval =
         await this.prisma.invoiceAutoSyncInterval.delete({
           where: { id },

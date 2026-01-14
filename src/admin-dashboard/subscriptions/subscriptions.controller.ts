@@ -1,15 +1,8 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { SubscriptionsService } from './subscriptions.service';
 import { CreateSubscriptionPlanDto } from './dto/create-subscription.dto';
 import { Roles } from 'src/decorators/roles.decorator';
-import { InvoiceAutoSyncDto } from './dto/invoiceAutoSyncDto';
+import { CreateInvoiceAutoSyncDto } from './dto/create-invoice-auto-sync.dto';
 import { InvoiceAutoSyncIntervalService } from './invoiceAutoSyncInterval.service';
 import { urlPrefix } from '../url-prefix';
 import { ApiOperation } from '@nestjs/swagger';
@@ -19,7 +12,7 @@ export class AdminSubscriptionsController {
   constructor(
     private readonly subscriptionsService: SubscriptionsService,
     private readonly invoiceAutoSyncIntervalService: InvoiceAutoSyncIntervalService,
-  ) { }
+  ) {}
 
   @Get()
   @Roles('ADMIN')
@@ -57,10 +50,17 @@ export class AdminSubscriptionsController {
   }
 
   //  here are invoice auto-sync interval endpoints
+  @Get('invoice-auto-sync-intervals/available')
+  @Roles('ADMIN')
+  @ApiOperation({ summary: 'Get available sync intervals ( ADMIN only )' })
+  getAvailableSyncIntervals() {
+    return this.invoiceAutoSyncIntervalService.getAvailableIntervals();
+  }
+
   @Post('invoice-auto-sync-interval')
   @Roles('ADMIN')
   @ApiOperation({ summary: 'Create invoice auto sync interval ( ADMIN only )' })
-  createInvoiceAutoSyncInterval(@Body() dto: InvoiceAutoSyncDto) {
+  createInvoiceAutoSyncInterval(@Body() dto: CreateInvoiceAutoSyncDto) {
     return this.invoiceAutoSyncIntervalService.createInvoiceAutoSyncInterval(
       dto,
     );
@@ -68,7 +68,9 @@ export class AdminSubscriptionsController {
 
   @Get('invoice-auto-sync-intervals')
   @Roles('ADMIN')
-  @ApiOperation({ summary: 'Get all invoice auto sync intervals ( ADMIN only )' })
+  @ApiOperation({
+    summary: 'Get all invoice auto sync intervals ( ADMIN only )',
+  })
   getAllInvoiceAutoSyncIntervals() {
     return this.invoiceAutoSyncIntervalService.getAllInvoiceAutoSyncIntervals();
   }

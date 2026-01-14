@@ -230,6 +230,7 @@ export const ImapConfigurationScalarFieldEnum = {
   sync: 'sync',
   emailNotifications: 'emailNotifications',
   realtimeImapCheckingId: 'realtimeImapCheckingId',
+  lastSync: 'lastSync',
   created_at: 'created_at',
   updated_at: 'updated_at'
 } as const
@@ -578,6 +579,7 @@ export const InvoiceAutoSyncIntervalScalarFieldEnum = {
   id: 'id',
   title: 'title',
   description: 'description',
+  interval: 'interval',
   cronTime: 'cronTime'
 } as const
 

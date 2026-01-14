@@ -215,8 +215,19 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
   }
 
   // Read email transactions since a specific date
-  async readEmailTransactionsSince(userId: string, sinceDate: Date): Promise<Invoice[]> {
+  async readEmailTransactionsSince(
+    userId: string,
+    sinceDate: Date,
+  ): Promise<Invoice[]> {
     try {
+      if (!userId) {
+        throw new HttpException('User ID is required', HttpStatus.BAD_REQUEST);
+      }
+
+      if (!sinceDate) {
+        throw new HttpException('Since date is required', HttpStatus.BAD_REQUEST);
+      }
+
       const user = await this.prisma.user.findFirst({
         where: {
           id: userId,
@@ -234,6 +245,34 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
           'User not found or expired subscription',
           HttpStatus.BAD_REQUEST,
         );
+      }
+
+      // Check invoice limit
+      const subscription = await this.prisma.userSubscriptionPlan.findFirst({
+        where: { UserId: userId, isActive: true },
+      });
+
+      if (subscription && subscription.isLimitedInvoicePerMonth) {
+        const currentMonth = new Date();
+        const startOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
+        const endOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
+
+        const invoiceCount = await this.prisma.invoice.count({
+          where: {
+            userId,
+            createdAt: {
+              gte: startOfMonth,
+              lte: endOfMonth,
+            },
+          },
+        });
+
+        if (invoiceCount >= subscription.perMonthInvoiceCount) {
+          throw new HttpException(
+            `Monthly invoice limit reached (${subscription.perMonthInvoiceCount}). Upgrade your plan.`,
+            HttpStatus.FORBIDDEN,
+          );
+        }
       }
 
       const imapConfig = await this.prisma.imapConfiguration.findFirst({
@@ -314,6 +353,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
                     ...data.invoice,
                     haveAttachment: true,
                     additionalNote: `Email ID: ${emailId}`,
+                    
                   },
                 });
 
@@ -369,6 +409,10 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
 
   // Read email transactions (uses config creation date)
   async readEmailTransactions(userId: string): Promise<Invoice[]> {
+    if (!userId) {
+      throw new HttpException('User ID is required', HttpStatus.BAD_REQUEST);
+    }
+
     const imapConfig = await this.prisma.imapConfiguration.findFirst({
       where: { userId },
     });
@@ -381,6 +425,14 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
   async createInvoiceFromExtractedData(
     payload: ExtractedInvoicePayload,
   ): Promise<Invoice> {
+    if (!payload || !payload.userID) {
+      throw new HttpException('User ID is required', HttpStatus.BAD_REQUEST);
+    }
+
+    if (!payload.invoice) {
+      throw new HttpException('Invoice data is required', HttpStatus.BAD_REQUEST);
+    }
+
     const { userID, invoice } = payload;
 
     if (!invoice.invoiceNo) {

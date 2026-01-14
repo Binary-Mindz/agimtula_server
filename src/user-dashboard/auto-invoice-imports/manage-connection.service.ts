@@ -7,10 +7,14 @@ import {
   ImapConfiguration,
 } from './types/getInvoiceTime.type';
 import { ValidationException } from 'src/common/app-exceptions';
+import { CronConfigService } from 'src/imap-apis/cronConfig.service';
 
 @Injectable()
 export class ManageConnectionService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private cronConfigService: CronConfigService,
+  ) {}
 
   private async selectedInvoiceTimeSyncData(userId: string) {
     const selTime = await this.prisma.userSubscriptionPlan.findFirst({
@@ -83,6 +87,9 @@ export class ManageConnectionService {
         data: { ...plan, syncFrequency },
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Get IMAP configuration error:', error);
       throw new HttpException(
         'Failed to retrieve IMAP configuration',
@@ -160,11 +167,22 @@ export class ManageConnectionService {
             emailNotifications: dto.emailNotifications,
           },
         });
+        
+        // Setup cron job if sync is enabled
+        if (dto.automatic_Sync && dto.realtimeImapCheckingId) {
+          await this.cronConfigService.setupCronForUser(userId);
+        }
+        
         return cResponseData({
           success: true,
           message: 'IMAP configuration updated successfully',
           data: cUp,
         });
+      }
+
+      // Setup cron job if sync is enabled on create/update
+      if (c.sync && c.realtimeImapCheckingId) {
+        await this.cronConfigService.setupCronForUser(userId);
       }
 
       return cResponseData({
@@ -186,10 +204,19 @@ export class ManageConnectionService {
 
   async imap_DisConnect(userId: string) {
     try {
+      const config = await this.prisma.imapConfiguration.findUnique({
+        where: { userId },
+      });
+
+      if (!config) {
+        throw new HttpException(
+          'IMAP configuration not found',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
       const disconnect = await this.prisma.imapConfiguration.update({
-        where: {
-          userId: userId,
-        },
+        where: { userId },
         data: {
           connect: false,
           sync: false,
@@ -197,12 +224,17 @@ export class ManageConnectionService {
         },
       });
 
+      await this.cronConfigService.stopCronForUser(userId);
+
       return cResponseData({
         success: true,
         message: 'IMAP disconnected successfully',
         data: disconnect,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('IMAP disconnect error:', error);
       throw new HttpException(
         'Failed to disconnect IMAP',

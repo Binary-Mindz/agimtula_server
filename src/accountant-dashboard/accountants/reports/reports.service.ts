@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { ValidateAccountantAccess } from '../validate-accountant-access';
 import { cResponseData } from 'src/common/cResponse';
@@ -42,8 +42,14 @@ export class ReportsService {
         data: salesReports,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Get sales reports error:', error);
-      throw new HttpException('Failed to fetch sales reports', 500);
+      throw new HttpException(
+        'Failed to fetch sales reports',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
     }
     
@@ -79,8 +85,14 @@ export class ReportsService {
           data: purchaseReports,
         });
       } catch (error) {
+        if (error instanceof HttpException) {
+          throw error;
+        }
         console.error('Get purchase reports error:', error);
-        throw new HttpException('Failed to fetch purchase reports', 500);
+        throw new HttpException(
+          'Failed to fetch purchase reports',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
       }
     }
     async vatSummarry(userId: string, accountantId: string) {
@@ -89,8 +101,14 @@ export class ReportsService {
 
         
       } catch (error) {
+        if (error instanceof HttpException) {
+          throw error;
+        }
         console.error('Get VAT summary error:', error);
-        throw new HttpException('Failed to fetch VAT summary', 500);
+        throw new HttpException(
+          'Failed to fetch VAT summary',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
       }
     }
 
@@ -99,8 +117,14 @@ export class ReportsService {
         await this.validateAcc.validate(userId, accountantId);
 
       } catch (error) {
+        if (error instanceof HttpException) {
+          throw error;
+        }
         console.error('Get client overview error:', error);
-        throw new HttpException('Failed to fetch client overview', 500);
+        throw new HttpException(
+          'Failed to fetch client overview',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
       }
     }
 }

@@ -60,6 +60,9 @@ export class PaymentMethodService {
         data: paymentMethod,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Create payment method error:', error);
       throw new HttpException(
         'Failed to create payment method',
@@ -116,6 +119,9 @@ export class PaymentMethodService {
         data: payment,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Update payment method error:', error);
       throw new HttpException(
         'Failed to update payment method',
@@ -166,6 +172,9 @@ export class PaymentMethodService {
         data: { isDefault },
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Make payment default error:', error);
       throw new HttpException(
         'Failed to update payment method',
@@ -186,6 +195,9 @@ export class PaymentMethodService {
         data: paymentMethods,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Get payment methods error:', error);
       throw new HttpException(
         'Failed to retrieve payment methods',
@@ -216,6 +228,9 @@ export class PaymentMethodService {
         message: 'Payment method deleted successfully',
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Delete payment method error:', error);
       throw new HttpException(
         'Failed to delete payment method',

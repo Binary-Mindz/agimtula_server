@@ -56,7 +56,10 @@ export class CronConfigService implements OnModuleInit {
     const allowedIntervalIds = subscription.realtimeImapChecking;
     const selectedIntervalId = imapConfig.realtimeImapCheckingId;
 
-    if (!selectedIntervalId || !allowedIntervalIds.includes(selectedIntervalId)) {
+    if (
+      !selectedIntervalId ||
+      !allowedIntervalIds.includes(selectedIntervalId)
+    ) {
       console.log(
         `Interval not allowed in subscription plan for user ${userId}`,
       );
@@ -97,7 +100,7 @@ export class CronConfigService implements OnModuleInit {
       const lastSyncDate = imapConfig.lastSync || imapConfig.created_at;
       await this.imapApisService.readEmailTransactionsSince(
         userId,
-        lastSyncDate as Date,
+        lastSyncDate,
       );
 
       await this.prisma.imapConfiguration.update({

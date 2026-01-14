@@ -70,6 +70,18 @@ export class SystemSettingsService {
 
   async update(id: string, dto: Partial<CreateEmailTemplateDto>) {
     try {
+      if (!id) {
+        throw new HttpException('Template ID is required', HttpStatus.BAD_REQUEST);
+      }
+
+      const existing = await this.prisma.emailTemplate.findUnique({
+        where: { id },
+      });
+
+      if (!existing) {
+        throw new HttpException('Email template not found', HttpStatus.NOT_FOUND);
+      }
+
       const updated = await this.prisma.emailTemplate.update({
         where: { id },
         data: {
@@ -96,6 +108,18 @@ export class SystemSettingsService {
 
   async remove(id: string) {
     try {
+      if (!id) {
+        throw new HttpException('Template ID is required', HttpStatus.BAD_REQUEST);
+      }
+
+      const existing = await this.prisma.emailTemplate.findUnique({
+        where: { id },
+      });
+
+      if (!existing) {
+        throw new HttpException('Email template not found', HttpStatus.NOT_FOUND);
+      }
+
       await this.prisma.emailTemplate.delete({
         where: { id },
       });

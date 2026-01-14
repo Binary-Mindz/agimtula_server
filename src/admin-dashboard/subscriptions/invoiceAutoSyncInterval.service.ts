@@ -77,6 +77,10 @@ export class InvoiceAutoSyncIntervalService {
 
   async updateInvoiceAutoSyncIntervals(id: string, dto: UpdateAutoSyncDto) {
     try {
+      if (!id) {
+        throw new HttpException('ID is required', HttpStatus.BAD_REQUEST);
+      }
+
       const isInvoiceAutoSyncInterval =
         await this.prisma.invoiceAutoSyncInterval.findUnique({
           where: { id },
@@ -110,8 +114,11 @@ export class InvoiceAutoSyncIntervalService {
 
   async deleteAutoSyncIntervals(id: string) {
     try {
+      if (!id) {
+        throw new HttpException('ID is required', HttpStatus.BAD_REQUEST);
+      }
 
-          const isInvoiceAutoSyncInterval =
+      const isInvoiceAutoSyncInterval =
         await this.prisma.invoiceAutoSyncInterval.findUnique({
           where: { id },
         });

@@ -302,6 +302,10 @@ export class PaymentsService {
 
   async viewPaymentDetails(paymentId: string) {
     try {
+      if (!paymentId) {
+        throw new HttpException('Payment ID is required', HttpStatus.BAD_REQUEST);
+      }
+
       const paymentDetails =
         await this.prisma.userSubscriptionPlanHistory.findFirst({
           where: {

@@ -59,6 +59,10 @@ export class TwoFAService {
 
   async sendTwoFACode(userId: string, dto: EnableTwoFADto) {
     try {
+      if (!userId) {
+        throw new ValidationException('User ID is required');
+      }
+
       const { email } = dto;
       this.logger.log(`Send enable-2FA code request for ${email}`);
 
@@ -99,6 +103,10 @@ export class TwoFAService {
 
   async verifyAndEnableTwoFA(userId: string, dto: VerifyTwoFADto) {
     try {
+      if (!userId) {
+        throw new ValidationException('User ID is required');
+      }
+
       const { email, code } = dto;
       this.logger.log(`Verify enable-2FA request for ${email}`);
       await this.getUserOrFail(userId, email);
@@ -138,6 +146,10 @@ export class TwoFAService {
 
   async sendDisableTwoFACode(userId: string, dto: EnableTwoFADto) {
     try {
+      if (!userId) {
+        throw new ValidationException('User ID is required');
+      }
+
       const { email } = dto;
       this.logger.log(`Send disable-2FA code request for ${email}`);
 
@@ -176,6 +188,10 @@ export class TwoFAService {
 
   async verifyAndDisableTwoFA(userId: string, dto: VerifyTwoFADto) {
     try {
+      if (!userId) {
+        throw new ValidationException('User ID is required');
+      }
+
       const { email, code } = dto;
       this.logger.log(`Verify disable-2FA request for ${email}`);
       await this.getUserOrFail(userId, email);

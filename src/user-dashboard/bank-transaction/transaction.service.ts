@@ -20,38 +20,61 @@ export class TransactionService {
   constructor(private prisma: PrismaService) { }
 
   async storeTransactions(transactions: TransactionRow[]) {
-    for (const trx of transactions) {
-      const existing = await this.prisma.transaction.findFirst({
-        where: {
-          date: new Date(trx.date),
-          amount: new Decimal(trx.amount),
-          description: trx.description,
-          source: trx.from || 'Unknown',
-        },
-      });
+    try {
+      if (!transactions || transactions.length === 0) {
+        throw new HttpException('No transactions provided', HttpStatus.BAD_REQUEST);
+      }
 
-      if (!existing) {
-        await this.prisma.transaction.create({
-          data: {
+      for (const trx of transactions) {
+        const existing = await this.prisma.transaction.findFirst({
+          where: {
             date: new Date(trx.date),
-            description: trx.description,
             amount: new Decimal(trx.amount),
-            currency: trx.currency,
-            status: trx.status,
+            description: trx.description,
             source: trx.from || 'Unknown',
-            attachments: trx.attachments || [],
-            accountId: trx.accountId,
           },
         });
+
+        if (!existing) {
+          await this.prisma.transaction.create({
+            data: {
+              date: new Date(trx.date),
+              description: trx.description,
+              amount: new Decimal(trx.amount),
+              currency: trx.currency,
+              status: trx.status,
+              source: trx.from || 'Unknown',
+              attachments: trx.attachments || [],
+              accountId: trx.accountId,
+            },
+          });
+        }
       }
+      return cResponseData({ message: 'Transactions stored successfully' });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      console.error('Store transactions error:', error);
+      throw new HttpException(
+        'Failed to store transactions',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
-    return cResponseData({ message: 'Transactions stored successfully' });
   }
 
   async getAllTransactions() {
-    return await this.prisma.transaction.findMany({
-      orderBy: { date: 'desc' },
-    });
+    try {
+      return await this.prisma.transaction.findMany({
+        orderBy: { date: 'desc' },
+      });
+    } catch (error) {
+      console.error('Get all transactions error:', error);
+      throw new HttpException(
+        'Failed to retrieve transactions',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
   async getAllUserTransactions(userId: string) {
     try {
@@ -84,44 +107,65 @@ export class TransactionService {
   }
 
   async getTransactionsBySource(source: string) {
-    return await this.prisma.transaction.findMany({
-      where: { source },
-      orderBy: { date: 'desc' },
-    });
+    try {
+      if (!source) {
+        throw new HttpException('Source is required', HttpStatus.BAD_REQUEST);
+      }
+
+      return await this.prisma.transaction.findMany({
+        where: { source },
+        orderBy: { date: 'desc' },
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      console.error('Get transactions by source error:', error);
+      throw new HttpException(
+        'Failed to retrieve transactions',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   async matchTransactions(): Promise<number> {
-    const transactions = await this.prisma.transaction.findMany({
-      where: { status: 'UNMATCHED' },
-      orderBy: { date: 'desc' },
-    });
+    try {
+      const transactions = await this.prisma.transaction.findMany({
+        where: { status: 'UNMATCHED' },
+        orderBy: { date: 'desc' },
+      });
 
-    let matchedCount = 0;
-    // amazonq-ignore-next-line
+      let matchedCount = 0;
 
-    for (let i = 0; i < transactions.length; i++) {
-      for (let j = i + 1; j < transactions.length; j++) {
-        const trx1 = transactions[i];
-        const trx2 = transactions[j];
+      for (let i = 0; i < transactions.length; i++) {
+        for (let j = i + 1; j < transactions.length; j++) {
+          const trx1 = transactions[i];
+          const trx2 = transactions[j];
 
-        // Match if same amount, currency, and within 1 Hours
-        if (
-          trx1.currency === trx2.currency &&
-          trx1.amount.equals(trx2.amount) &&
-          Math.abs(
-            new Date(trx1.date).getTime() - new Date(trx2.date).getTime(),
-          ) <=
-          60 * 60 * 1000
-        ) {
-          await this.prisma.transaction.updateMany({
-            where: { id: { in: [trx1.id, trx2.id] } },
-            data: { status: 'MATCHED' },
-          });
-          matchedCount += 2;
+          if (
+            trx1.currency === trx2.currency &&
+            trx1.amount.equals(trx2.amount) &&
+            Math.abs(
+              new Date(trx1.date).getTime() - new Date(trx2.date).getTime(),
+            ) <=
+            60 * 60 * 1000
+          ) {
+            await this.prisma.transaction.updateMany({
+              where: { id: { in: [trx1.id, trx2.id] } },
+              data: { status: 'MATCHED' },
+            });
+            matchedCount += 2;
+          }
         }
       }
-    }
 
-    return matchedCount;
+      return matchedCount;
+    } catch (error) {
+      console.error('Match transactions error:', error);
+      throw new HttpException(
+        'Failed to match transactions',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

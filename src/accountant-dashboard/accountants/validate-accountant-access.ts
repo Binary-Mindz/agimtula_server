@@ -5,6 +5,16 @@ import { PrismaService } from 'src/config/database/prisma.service';
 export class ValidateAccountantAccess {
   constructor(private readonly prisma: PrismaService) {}
   async validate(userId: string, accId: string) {
+    const isUser = await this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!isUser) {
+      throw new ForbiddenException('User not found');
+    }
+
     const user = await this.prisma.user.findFirst({
       where: {
         id: userId,

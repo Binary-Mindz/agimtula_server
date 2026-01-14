@@ -3045,6 +3045,7 @@ export const ImapConfigurationScalarFieldEnum = {
   sync: 'sync',
   emailNotifications: 'emailNotifications',
   realtimeImapCheckingId: 'realtimeImapCheckingId',
+  lastSync: 'lastSync',
   created_at: 'created_at',
   updated_at: 'updated_at'
 } as const
@@ -3393,6 +3394,7 @@ export const InvoiceAutoSyncIntervalScalarFieldEnum = {
   id: 'id',
   title: 'title',
   description: 'description',
+  interval: 'interval',
   cronTime: 'cronTime'
 } as const
 
@@ -3730,6 +3732,20 @@ export type EnumdeliveryStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$P
  * Reference to a field of type 'deliveryStatus[]'
  */
 export type ListEnumdeliveryStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'deliveryStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'SyncInterval'
+ */
+export type EnumSyncIntervalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SyncInterval'>
+    
+
+
+/**
+ * Reference to a field of type 'SyncInterval[]'
+ */
+export type ListEnumSyncIntervalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SyncInterval[]'>
     
 
 

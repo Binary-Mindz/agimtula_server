@@ -98,6 +98,15 @@ export const BillingPeriod = {
 export type BillingPeriod = (typeof BillingPeriod)[keyof typeof BillingPeriod]
 
 
+export const SyncInterval = {
+  DAILY: 'DAILY',
+  HOURLY: 'HOURLY',
+  EVERY_15_MINUTES: 'EVERY_15_MINUTES'
+} as const
+
+export type SyncInterval = (typeof SyncInterval)[keyof typeof SyncInterval]
+
+
 export const SupportTicketStatus = {
   OPEN: 'OPEN',
   IN_PROGRESS: 'IN_PROGRESS',

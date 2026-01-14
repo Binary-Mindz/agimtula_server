@@ -9,6 +9,6 @@ import { TransactionService } from 'src/user-dashboard/bank-transaction/transact
   imports: [ScheduleModule.forRoot()],
   controllers: [ImapApisController],
   providers: [ImapApisService, CronConfigService, TransactionService],
-  exports: [ImapApisService],
+  exports: [ImapApisService, CronConfigService],
 })
 export class ImapApisModule {}

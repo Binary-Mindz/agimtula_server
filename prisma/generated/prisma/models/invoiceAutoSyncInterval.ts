@@ -28,6 +28,7 @@ export type InvoiceAutoSyncIntervalMinAggregateOutputType = {
   id: string | null
   title: string | null
   description: string | null
+  interval: $Enums.SyncInterval | null
   cronTime: string | null
 }
 
@@ -35,6 +36,7 @@ export type InvoiceAutoSyncIntervalMaxAggregateOutputType = {
   id: string | null
   title: string | null
   description: string | null
+  interval: $Enums.SyncInterval | null
   cronTime: string | null
 }
 
@@ -42,6 +44,7 @@ export type InvoiceAutoSyncIntervalCountAggregateOutputType = {
   id: number
   title: number
   description: number
+  interval: number
   cronTime: number
   _all: number
 }
@@ -51,6 +54,7 @@ export type InvoiceAutoSyncIntervalMinAggregateInputType = {
   id?: true
   title?: true
   description?: true
+  interval?: true
   cronTime?: true
 }
 
@@ -58,6 +62,7 @@ export type InvoiceAutoSyncIntervalMaxAggregateInputType = {
   id?: true
   title?: true
   description?: true
+  interval?: true
   cronTime?: true
 }
 
@@ -65,6 +70,7 @@ export type InvoiceAutoSyncIntervalCountAggregateInputType = {
   id?: true
   title?: true
   description?: true
+  interval?: true
   cronTime?: true
   _all?: true
 }
@@ -145,6 +151,7 @@ export type InvoiceAutoSyncIntervalGroupByOutputType = {
   id: string
   title: string
   description: string
+  interval: $Enums.SyncInterval
   cronTime: string
   _count: InvoiceAutoSyncIntervalCountAggregateOutputType | null
   _min: InvoiceAutoSyncIntervalMinAggregateOutputType | null
@@ -173,6 +180,7 @@ export type invoiceAutoSyncIntervalWhereInput = {
   id?: Prisma.StringFilter<"invoiceAutoSyncInterval"> | string
   title?: Prisma.StringFilter<"invoiceAutoSyncInterval"> | string
   description?: Prisma.StringFilter<"invoiceAutoSyncInterval"> | string
+  interval?: Prisma.EnumSyncIntervalFilter<"invoiceAutoSyncInterval"> | $Enums.SyncInterval
   cronTime?: Prisma.StringFilter<"invoiceAutoSyncInterval"> | string
   imapConfiguration?: Prisma.XOR<Prisma.ImapConfigurationNullableScalarRelationFilter, Prisma.imapConfigurationWhereInput> | null
 }
@@ -181,6 +189,7 @@ export type invoiceAutoSyncIntervalOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  interval?: Prisma.SortOrder
   cronTime?: Prisma.SortOrder
   imapConfiguration?: Prisma.imapConfigurationOrderByWithRelationInput
 }
@@ -192,6 +201,7 @@ export type invoiceAutoSyncIntervalWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.invoiceAutoSyncIntervalWhereInput | Prisma.invoiceAutoSyncIntervalWhereInput[]
   title?: Prisma.StringFilter<"invoiceAutoSyncInterval"> | string
   description?: Prisma.StringFilter<"invoiceAutoSyncInterval"> | string
+  interval?: Prisma.EnumSyncIntervalFilter<"invoiceAutoSyncInterval"> | $Enums.SyncInterval
   cronTime?: Prisma.StringFilter<"invoiceAutoSyncInterval"> | string
   imapConfiguration?: Prisma.XOR<Prisma.ImapConfigurationNullableScalarRelationFilter, Prisma.imapConfigurationWhereInput> | null
 }, "id" | "id">
@@ -200,6 +210,7 @@ export type invoiceAutoSyncIntervalOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  interval?: Prisma.SortOrder
   cronTime?: Prisma.SortOrder
   _count?: Prisma.invoiceAutoSyncIntervalCountOrderByAggregateInput
   _max?: Prisma.invoiceAutoSyncIntervalMaxOrderByAggregateInput
@@ -213,6 +224,7 @@ export type invoiceAutoSyncIntervalScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"invoiceAutoSyncInterval"> | string
   title?: Prisma.StringWithAggregatesFilter<"invoiceAutoSyncInterval"> | string
   description?: Prisma.StringWithAggregatesFilter<"invoiceAutoSyncInterval"> | string
+  interval?: Prisma.EnumSyncIntervalWithAggregatesFilter<"invoiceAutoSyncInterval"> | $Enums.SyncInterval
   cronTime?: Prisma.StringWithAggregatesFilter<"invoiceAutoSyncInterval"> | string
 }
 
@@ -220,6 +232,7 @@ export type invoiceAutoSyncIntervalCreateInput = {
   id?: string
   title: string
   description: string
+  interval?: $Enums.SyncInterval
   cronTime: string
   imapConfiguration?: Prisma.imapConfigurationCreateNestedOneWithoutRealtimeImapCheckingInput
 }
@@ -228,6 +241,7 @@ export type invoiceAutoSyncIntervalUncheckedCreateInput = {
   id?: string
   title: string
   description: string
+  interval?: $Enums.SyncInterval
   cronTime: string
   imapConfiguration?: Prisma.imapConfigurationUncheckedCreateNestedOneWithoutRealtimeImapCheckingInput
 }
@@ -236,6 +250,7 @@ export type invoiceAutoSyncIntervalUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  interval?: Prisma.EnumSyncIntervalFieldUpdateOperationsInput | $Enums.SyncInterval
   cronTime?: Prisma.StringFieldUpdateOperationsInput | string
   imapConfiguration?: Prisma.imapConfigurationUpdateOneWithoutRealtimeImapCheckingNestedInput
 }
@@ -244,6 +259,7 @@ export type invoiceAutoSyncIntervalUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  interval?: Prisma.EnumSyncIntervalFieldUpdateOperationsInput | $Enums.SyncInterval
   cronTime?: Prisma.StringFieldUpdateOperationsInput | string
   imapConfiguration?: Prisma.imapConfigurationUncheckedUpdateOneWithoutRealtimeImapCheckingNestedInput
 }
@@ -252,6 +268,7 @@ export type invoiceAutoSyncIntervalCreateManyInput = {
   id?: string
   title: string
   description: string
+  interval?: $Enums.SyncInterval
   cronTime: string
 }
 
@@ -259,6 +276,7 @@ export type invoiceAutoSyncIntervalUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  interval?: Prisma.EnumSyncIntervalFieldUpdateOperationsInput | $Enums.SyncInterval
   cronTime?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -266,6 +284,7 @@ export type invoiceAutoSyncIntervalUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  interval?: Prisma.EnumSyncIntervalFieldUpdateOperationsInput | $Enums.SyncInterval
   cronTime?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -278,6 +297,7 @@ export type invoiceAutoSyncIntervalCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  interval?: Prisma.SortOrder
   cronTime?: Prisma.SortOrder
 }
 
@@ -285,6 +305,7 @@ export type invoiceAutoSyncIntervalMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  interval?: Prisma.SortOrder
   cronTime?: Prisma.SortOrder
 }
 
@@ -292,6 +313,7 @@ export type invoiceAutoSyncIntervalMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  interval?: Prisma.SortOrder
   cronTime?: Prisma.SortOrder
 }
 
@@ -311,10 +333,15 @@ export type invoiceAutoSyncIntervalUpdateOneWithoutImapConfigurationNestedInput 
   update?: Prisma.XOR<Prisma.XOR<Prisma.invoiceAutoSyncIntervalUpdateToOneWithWhereWithoutImapConfigurationInput, Prisma.invoiceAutoSyncIntervalUpdateWithoutImapConfigurationInput>, Prisma.invoiceAutoSyncIntervalUncheckedUpdateWithoutImapConfigurationInput>
 }
 
+export type EnumSyncIntervalFieldUpdateOperationsInput = {
+  set?: $Enums.SyncInterval
+}
+
 export type invoiceAutoSyncIntervalCreateWithoutImapConfigurationInput = {
   id?: string
   title: string
   description: string
+  interval?: $Enums.SyncInterval
   cronTime: string
 }
 
@@ -322,6 +349,7 @@ export type invoiceAutoSyncIntervalUncheckedCreateWithoutImapConfigurationInput 
   id?: string
   title: string
   description: string
+  interval?: $Enums.SyncInterval
   cronTime: string
 }
 
@@ -345,6 +373,7 @@ export type invoiceAutoSyncIntervalUpdateWithoutImapConfigurationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  interval?: Prisma.EnumSyncIntervalFieldUpdateOperationsInput | $Enums.SyncInterval
   cronTime?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -352,6 +381,7 @@ export type invoiceAutoSyncIntervalUncheckedUpdateWithoutImapConfigurationInput 
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  interval?: Prisma.EnumSyncIntervalFieldUpdateOperationsInput | $Enums.SyncInterval
   cronTime?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -361,6 +391,7 @@ export type invoiceAutoSyncIntervalSelect<ExtArgs extends runtime.Types.Extensio
   id?: boolean
   title?: boolean
   description?: boolean
+  interval?: boolean
   cronTime?: boolean
   imapConfiguration?: boolean | Prisma.invoiceAutoSyncInterval$imapConfigurationArgs<ExtArgs>
 }, ExtArgs["result"]["invoiceAutoSyncInterval"]>
@@ -369,6 +400,7 @@ export type invoiceAutoSyncIntervalSelectCreateManyAndReturn<ExtArgs extends run
   id?: boolean
   title?: boolean
   description?: boolean
+  interval?: boolean
   cronTime?: boolean
 }, ExtArgs["result"]["invoiceAutoSyncInterval"]>
 
@@ -376,6 +408,7 @@ export type invoiceAutoSyncIntervalSelectUpdateManyAndReturn<ExtArgs extends run
   id?: boolean
   title?: boolean
   description?: boolean
+  interval?: boolean
   cronTime?: boolean
 }, ExtArgs["result"]["invoiceAutoSyncInterval"]>
 
@@ -383,10 +416,11 @@ export type invoiceAutoSyncIntervalSelectScalar = {
   id?: boolean
   title?: boolean
   description?: boolean
+  interval?: boolean
   cronTime?: boolean
 }
 
-export type invoiceAutoSyncIntervalOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "cronTime", ExtArgs["result"]["invoiceAutoSyncInterval"]>
+export type invoiceAutoSyncIntervalOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "interval" | "cronTime", ExtArgs["result"]["invoiceAutoSyncInterval"]>
 export type invoiceAutoSyncIntervalInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   imapConfiguration?: boolean | Prisma.invoiceAutoSyncInterval$imapConfigurationArgs<ExtArgs>
 }
@@ -402,6 +436,7 @@ export type $invoiceAutoSyncIntervalPayload<ExtArgs extends runtime.Types.Extens
     id: string
     title: string
     description: string
+    interval: $Enums.SyncInterval
     cronTime: string
   }, ExtArgs["result"]["invoiceAutoSyncInterval"]>
   composites: {}
@@ -830,6 +865,7 @@ export interface invoiceAutoSyncIntervalFieldRefs {
   readonly id: Prisma.FieldRef<"invoiceAutoSyncInterval", 'String'>
   readonly title: Prisma.FieldRef<"invoiceAutoSyncInterval", 'String'>
   readonly description: Prisma.FieldRef<"invoiceAutoSyncInterval", 'String'>
+  readonly interval: Prisma.FieldRef<"invoiceAutoSyncInterval", 'SyncInterval'>
   readonly cronTime: Prisma.FieldRef<"invoiceAutoSyncInterval", 'String'>
 }
     

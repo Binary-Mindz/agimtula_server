@@ -33,9 +33,6 @@ export class SalesInvoicesService {
                   0,
                 ),
               },
-              dueDate: {
-                lt: new Date(),
-              },
             },
             _sum: {
               totalAmount: true,
@@ -47,9 +44,7 @@ export class SalesInvoicesService {
               userId,
               isPaid: true,
               invoiceSource: 'MANUAL',
-              dueDate: {
-                lt: new Date(),
-              },
+             
             },
           }),
 
@@ -58,9 +53,7 @@ export class SalesInvoicesService {
               userId,
               isPaid: false,
               invoiceSource: 'MANUAL',
-              dueDate: {
-                lt: new Date(),
-              },
+              
             },
           }),
 

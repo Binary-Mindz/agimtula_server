@@ -45,7 +45,7 @@ export class BusinessInfoDto {
   @IsOptional()
   @IsString()
   @MaxLength(200)
-  address1?: string;
+  address?: string;
 
   @ApiPropertyOptional({
     description: 'Address line 2 (apartment, suite, etc.)',
@@ -55,7 +55,7 @@ export class BusinessInfoDto {
   @IsOptional()
   @IsString()
   @MaxLength(100)
-  address2?: string;
+  city?: string;
 
   @ApiPropertyOptional({
     description: 'Address line 3 (area, suburb, or postal town)',
@@ -65,7 +65,7 @@ export class BusinessInfoDto {
   @IsOptional()
   @IsString()
   @MaxLength(100)
-  address3?: string;
+  postalCode?: string;
 
   @ApiProperty({
     description: 'Country name',
@@ -89,7 +89,8 @@ export class UpdateLogoDto {
   @ApiPropertyOptional({
     type: 'string',
     description: 'Base64 encoded company logo image (PNG, JPG, JPEG)',
-    example: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==',
+    example:
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==',
   })
   @IsOptional()
   @IsString()

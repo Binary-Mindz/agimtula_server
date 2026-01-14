@@ -34,7 +34,7 @@ export class ImapEmailConnectionDto {
     required: true,
     type: String,
     description: 'I-map server name of the user',
-    example: 'user@example.com',
+    example: 'imap.gmail.com',
   })
   @IsNotEmpty({ message: 'I-map server name should not be empty' })
   @IsString({ message: 'Invalid I-map server name format' })
@@ -73,7 +73,7 @@ export class ImapEmailConnectionDto {
   @ApiProperty({
     required: false,
     type: Boolean,
-    description: ' I-map app service connect',
+    description: 'I-map app service connect',
     example: true,
   })
   @IsOptional()

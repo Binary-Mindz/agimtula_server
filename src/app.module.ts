@@ -27,7 +27,6 @@ import { ReceiptExpenseModule } from './accountant-dashboard/accountants/receipt
 import { VatOverviewModule } from './accountant-dashboard/accountants/vat-overview/vat-overview.module';
 import { ClientsModule } from './accountant-dashboard/accountants/clients/clients.module';
 import { ReportsModule } from './accountant-dashboard/accountants/reports/reports.module';
-import { ImapSyncModule } from './imap-sync/imap-sync.module';
 
 @Module({
   imports: [
@@ -57,7 +56,6 @@ import { ImapSyncModule } from './imap-sync/imap-sync.module';
     VatOverviewModule,
     ClientsModule,
     ReportsModule,
-    ImapSyncModule,
   ],
   providers: [
     {

@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
-import { ImapApisService } from '../imap-apis/imap-apis.service';
+import { ImapApisService } from '../../imap-apis/imap-apis.service';
 import { Invoice, SyncInterval } from 'prisma/generated/prisma/client';
-import { CronConfigService } from '../imap-apis/cronConfig.service';
+import { CronConfigService } from '../../imap-apis/cronConfig.service';
 
 @Injectable()
 export class ImapSyncService {
@@ -67,6 +67,10 @@ export class ImapSyncService {
           'IMAP configuration not found',
           HttpStatus.NOT_FOUND,
         );
+      }
+
+      if (!imapConfig.connect) {
+        throw new HttpException('IMAP not connected', HttpStatus.BAD_REQUEST);
       }
 
       if (!imapConfig.sync || !imapConfig.realtimeImapChecking) {

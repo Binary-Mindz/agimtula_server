@@ -1,21 +1,15 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Patch,
-  Res,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { AutoInvoiceImportsService } from './auto-invoice-imports.service';
-import { ImapEmailConnectionDto, ImapTest } from './dto/imap-email-connection.dto';
+import { ImapEmailConnectionDto } from './dto/imap-email-connection.dto';
 import { Roles } from 'src/decorators/roles.decorator';
 import { ManageConnectionService } from './manage-connection.service';
 import { User } from 'src/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 import { urlPrefix } from '../url-prefix';
 import { ImapApisService } from 'src/imap-apis/imap-apis.service';
-import { Public } from 'src/decorators/public.decorator';
-import { Response } from 'express';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { ImapSyncService } from './imap-sync.service';
+import { cResponseData } from 'src/common/cResponse';
 
 @Controller(`${urlPrefix}/auto-invoice-imports`)
 export class UserAutoInvoiceImportsController {
@@ -23,13 +17,17 @@ export class UserAutoInvoiceImportsController {
     private readonly autoInvoiceImportsService: AutoInvoiceImportsService,
     private readonly manageConnectionService: ManageConnectionService,
     private readonly imapApisService: ImapApisService,
-  ) { }
+    private readonly imapSyncService: ImapSyncService,
+  ) {}
 
   // get invoice Auto Sync Interval data
   @Get('get-imap-configuration')
   @Roles('USER')
   @ApiOperation({ summary: 'Get IMAP configuration ( USER only )' })
-  @ApiResponse({ status: 200, description: 'IMAP configuration retrieved successfully' })
+  @ApiResponse({
+    status: 200,
+    description: 'IMAP configuration retrieved successfully',
+  })
   async getImapConfiguration(@User() user: jwtPayload) {
     return await this.manageConnectionService.getImapConfiguration(user.sub);
   }
@@ -38,13 +36,22 @@ export class UserAutoInvoiceImportsController {
   @Patch('set-imap-configuration')
   @Roles('USER')
   @ApiOperation({ summary: 'Set IMAP configuration ( USER only )' })
-  @ApiResponse({ status: 200, description: 'IMAP configuration saved successfully' })
-  @ApiResponse({ status: 400, description: 'Invalid configuration or subscription required' })
+  @ApiResponse({
+    status: 200,
+    description: 'IMAP configuration saved successfully',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid configuration or subscription required',
+  })
   async setImapConfiguration(
     @Body() data: ImapEmailConnectionDto,
     @User() user: jwtPayload,
   ) {
-    return await this.manageConnectionService.setImapConfiguration(user.sub, data);
+    return await this.manageConnectionService.setImapConfiguration(
+      user.sub,
+      data,
+    );
   }
 
   // Disconnect Imap
@@ -56,21 +63,67 @@ export class UserAutoInvoiceImportsController {
     return await this.manageConnectionService.imap_DisConnect(user.sub);
   }
 
-  // imap test
-  @Public()
-  @Patch('imap-test')
-  @ApiOperation({ summary: 'Test IMAP connection ( PUBLIC )' })
-  @ApiResponse({ status: 200, description: 'IMAP connection test successful' })
-  @ApiResponse({ status: 400, description: 'IMAP connection test failed' })
-  async imapTest(@Body() data: ImapTest, @Res() res: Response) {
-    return await this.imapApisService.testConnection(data, res);
+  // get method dashboard
+
+  @Get('auto-invoice-retrival-dashboard')
+  @Roles('USER')
+  @ApiOperation({ summary: 'Auto invoice retrival dashboard ( USER only )' })
+  @ApiResponse({
+    status: 200,
+    description: 'Auto invoice retrival dashboard data retrieved successfully',
+  })
+  async autoInvoiceRetrivalDashboard(@User() user: jwtPayload) {
+    return await this.autoInvoiceImportsService.autoInvoiceRetrivalDashboard(
+      user.sub,
+    );
   }
 
-  @Public()
-  @Get('imap-Connection-Test')
-  @ApiOperation({ summary: 'IMAP connection test ( PUBLIC )' })
-  @ApiResponse({ status: 200, description: 'IMAP connection test completed' })
-  async imapConnectionTest() {
-    return await this.imapApisService.imapConnectionTest();
+  @Get('view-or-download/:invoiceId')
+  @Roles('USER')
+  @ApiParam({ name: 'invoiceId', description: 'Invoice ID' })
+  @ApiOperation({ summary: 'View or download invoice ( USER only )' })
+  @ApiResponse({ status: 200, description: 'Invoice fetched successfully' })
+  async viewOrDownload(
+    @Param('invoiceId') invoiceId: string,
+    @User() user: jwtPayload,
+  ) {
+    return this.autoInvoiceImportsService.viewOrDownload(invoiceId, user.sub);
+  }
+
+  // syncing
+  @Post('sync')
+  @Roles('USER')
+  @ApiOperation({ summary: 'Sync emails ( USER only )' })
+  @ApiResponse({ status: 200, description: 'Email sync completed' })
+  async syncEmails(@User() user: jwtPayload) {
+    const invoices = await this.imapSyncService.syncEmails(user.sub);
+    return cResponseData({
+      message: 'Email sync completed',
+      data: invoices,
+    });
+  }
+
+  @Get('status')
+  @Roles('USER')
+  @ApiOperation({ summary: 'Get sync status ( USER only )' })
+  @ApiResponse({ status: 200, description: 'Sync status retrieved' })
+  async getSyncStatus(@User() user: jwtPayload) {
+    const status = await this.imapSyncService.getLastSyncInfo(user.sub);
+    return cResponseData({
+      message: 'Sync status retrieved',
+      data: status,
+    });
+  }
+
+  @Post('reset')
+  @Roles('USER')
+  @ApiOperation({ summary: 'Reset last sync ( USER only )' })
+  @ApiResponse({ status: 200, description: 'Last sync reset successfully' })
+  async resetLastSync(@User() user: jwtPayload) {
+    const result = await this.imapSyncService.resetLastSync(user.sub);
+    return cResponseData({
+      message: 'Last sync reset successfully',
+      data: result,
+    });
   }
 }

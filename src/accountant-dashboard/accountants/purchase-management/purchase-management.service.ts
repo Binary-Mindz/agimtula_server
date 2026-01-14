@@ -79,6 +79,9 @@ export class PurchaseManagementService {
         },
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Get purchase data error:', error);
       throw new HttpException(
         'Failed to fetch purchase data',
@@ -145,6 +148,9 @@ export class PurchaseManagementService {
         },
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Get purchase history error:', error);
       throw new HttpException(
         'Failed to fetch purchase history',
@@ -155,6 +161,10 @@ export class PurchaseManagementService {
 
   async getPurchaseDetailedReport(userId: string, accId: string, id: string) {
     try {
+      if (!id) {
+        throw new HttpException('Purchase ID is required', HttpStatus.BAD_REQUEST);
+      }
+
       await this.validateAccountantAccess.validate(userId, accId);
       const isPurchaseInInvoiceDoc = await this.prisma.invoice.findFirst({
         where: {
@@ -182,6 +192,9 @@ export class PurchaseManagementService {
         data: isPurchaseInInvoiceDoc,
       });
     } catch (error) {
+      if (error instanceof NotFoundAppException || error instanceof HttpException) {
+        throw error;
+      }
       console.error('Get purchase detailed report error:', error);
       throw new HttpException(
         'Failed to fetch purchase detailed report',

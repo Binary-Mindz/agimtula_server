@@ -143,6 +143,9 @@ export class UserManagementService {
         },
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Find all users error:', error);
       throw new HttpException(
         'Failed to fetch users',
@@ -232,7 +235,10 @@ export class UserManagementService {
         },
       });
     } catch (error) {
-      console.error(error);
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      console.error('Create user error:', error);
       throw new HttpException(
         'Failed to create user',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -242,6 +248,10 @@ export class UserManagementService {
 
   async updateStatus(userId: string, status: boolean) {
     try {
+      if (!userId) {
+        throw new HttpException('User ID is required', HttpStatus.BAD_REQUEST);
+      }
+
       const user = await this.prisma.user.findUnique({
         where: { id: userId, isDeleted: false },
         select: { status: true },
@@ -265,7 +275,10 @@ export class UserManagementService {
         },
       });
     } catch (error) {
-      console.error(error);
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      console.error('Update status error:', error);
       throw new HttpException(
         'Failed to update user status',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -275,6 +288,10 @@ export class UserManagementService {
 
   async updateRole(userId: string, role: 'USER' | 'ACCOUNTANT') {
     try {
+      if (!userId) {
+        throw new HttpException('User ID is required', HttpStatus.BAD_REQUEST);
+      }
+
       const user = await this.prisma.user.findUnique({
         where: { id: userId, isDeleted: false },
       });
@@ -297,7 +314,10 @@ export class UserManagementService {
         },
       });
     } catch (error) {
-      console.error(error);
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      console.error('Update role error:', error);
       throw new HttpException(
         'Failed to update user role',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -320,12 +340,23 @@ export class UserManagementService {
         data: plans,
       });
     } catch (error) {
-      console.error(error);
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      console.error('Get plans error:', error);
+      throw new HttpException(
+        'Failed to fetch plans',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async deleteAccount(userId: string) {
     try {
+      if (!userId) {
+        throw new HttpException('User ID is required', HttpStatus.BAD_REQUEST);
+      }
+
       const user = await this.prisma.user.findUnique({
         where: { id: userId, isDeleted: false },
       });
@@ -346,7 +377,10 @@ export class UserManagementService {
         message: 'User deleted successfully',
       });
     } catch (error) {
-      console.error(error);
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      console.error('Delete account error:', error);
       throw new HttpException(
         'Failed to delete user',
         HttpStatus.INTERNAL_SERVER_ERROR,

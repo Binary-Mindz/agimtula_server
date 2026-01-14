@@ -25,6 +25,10 @@ export class PaymentService {
     user: jwtPayload,
   ) {
     try {
+      if (!userId || !subscriptionPlanId) {
+        throw new ValidationException('User ID and subscription plan ID are required');
+      }
+
       const plan = await this.prisma.subscriptionPlan.findUnique({
         where: { id: subscriptionPlanId },
         include: {
@@ -155,6 +159,10 @@ export class PaymentService {
     user: jwtPayload,
   ) {
     try {
+      if (!userId || !subscriptionPlanId) {
+        throw new ValidationException('User ID and subscription plan ID are required');
+      }
+
       const plan = await this.prisma.subscriptionPlan.findUnique({
         where: { id: subscriptionPlanId },
         include: {

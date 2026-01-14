@@ -27,6 +27,9 @@ export class AccountantRequestsService {
         message: 'Accountant requests fetched successfully',
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Get accountant requests error:', error);
       throw new HttpException(
         'Failed to fetch accountant requests',
@@ -37,19 +40,25 @@ export class AccountantRequestsService {
 
   async approveAccountantRequest(accountantId: string, requestId: string) {
     try {
+      if (!accountantId || !requestId) {
+        throw new HttpException('Accountant ID and request ID are required', HttpStatus.BAD_REQUEST);
+      }
+
+      const request = await this.prisma.accountantRequest.findUnique({
+        where: { id: requestId },
+      });
+
+      if (!request) {
+        throw new HttpException('Request not found', HttpStatus.NOT_FOUND);
+      }
+
       const approved = await this.prisma.accountantRequest.update({
-        where: {
-          id: requestId,
-        },
-        data: {
-          status: 'APPROVED',
-        },
+        where: { id: requestId },
+        data: { status: 'APPROVED' },
       });
 
       await this.prisma.user.update({
-        where: {
-          id: approved.userId,
-        },
+        where: { id: approved.userId },
         data: {
           haveAccountant: true,
           accountantId: accountantId,
@@ -61,6 +70,9 @@ export class AccountantRequestsService {
         message: 'Accountant request approved successfully',
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Approve accountant request error:', error);
       throw new HttpException(
         'Failed to approve accountant request',
@@ -71,13 +83,21 @@ export class AccountantRequestsService {
 
   async rejectAccountantRequest(requestId: string) {
     try {
+      if (!requestId) {
+        throw new HttpException('Request ID is required', HttpStatus.BAD_REQUEST);
+      }
+
+      const request = await this.prisma.accountantRequest.findUnique({
+        where: { id: requestId },
+      });
+
+      if (!request) {
+        throw new HttpException('Request not found', HttpStatus.NOT_FOUND);
+      }
+
       const rejected = await this.prisma.accountantRequest.update({
-        where: {
-          id: requestId,
-        },
-        data: {
-          status: 'REJECTED',
-        },
+        where: { id: requestId },
+        data: { status: 'REJECTED' },
       });
 
       return cResponseData({
@@ -85,6 +105,9 @@ export class AccountantRequestsService {
         data: rejected,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Reject accountant request error:', error);
       throw new HttpException(
         'Failed to reject accountant request',

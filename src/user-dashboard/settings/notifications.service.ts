@@ -20,6 +20,9 @@ export class NotificationsService {
         data: notification,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Get notification preferences error:', error);
       throw new HttpException(
         'Failed to get notification settings',
@@ -49,6 +52,9 @@ export class NotificationsService {
         data: notifications,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Update notification preferences error:', error);
       throw new HttpException(
         'Failed to update notification settings',

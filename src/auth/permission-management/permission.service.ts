@@ -13,6 +13,10 @@ export class PermissionService {
     grantedBy: string,
   ) {
     try {
+      if (!role || !moduleName || !grantedBy) {
+        throw ExceptionFactory.custom('VALIDATION_ERROR', 'Role, module name, and grantedBy are required');
+      }
+
       const module = await this.prisma.module.findUnique({
         where: { name: moduleName },
       });
@@ -58,6 +62,10 @@ export class PermissionService {
 
   async revokeRolePermission(role: string, moduleName: string) {
     try {
+      if (!role || !moduleName) {
+        throw ExceptionFactory.custom('VALIDATION_ERROR', 'Role and module name are required');
+      }
+
       const module = await this.prisma.module.findUnique({
         where: { name: moduleName },
       });
@@ -93,6 +101,10 @@ export class PermissionService {
 
   async getRolePermissions(role: string) {
     try {
+      if (!role) {
+        throw ExceptionFactory.custom('VALIDATION_ERROR', 'Role is required');
+      }
+
       const permissions = await this.prisma.roleModulePermission.findMany({
         where: { role: role as any, isEnabled: true },
         include: {
@@ -167,6 +179,10 @@ export class PermissionService {
 
   async hasRolePermission(role: string, moduleName: string): Promise<boolean> {
     try {
+      if (!role || !moduleName) {
+        return false;
+      }
+
       const module = await this.prisma.module.findUnique({
         where: { name: moduleName },
       });

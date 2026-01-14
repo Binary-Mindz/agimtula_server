@@ -41,6 +41,9 @@ export class MileageService {
         data: trip,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Log trip error:', error);
       throw new HttpException(
         'Failed to log trip',
@@ -124,6 +127,9 @@ export class MileageService {
         },
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Get mileage track error:', error);
       throw new HttpException(
         'Failed to retrieve mileage data',
@@ -176,6 +182,9 @@ export class MileageService {
         data: updatedTrip,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Edit trip error:', error);
       throw new HttpException(
         'Failed to update trip',
@@ -214,6 +223,9 @@ export class MileageService {
         data: deletedTrip,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Delete trip error:', error);
       throw new HttpException(
         'Failed to delete trip',

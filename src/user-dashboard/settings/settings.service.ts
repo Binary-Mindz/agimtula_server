@@ -30,6 +30,9 @@ export class SettingsService {
         data: businessInfo,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Update business info error:', error);
       throw new HttpException(
         'Failed to update business info',
@@ -75,6 +78,9 @@ export class SettingsService {
         data: logoBase64,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Update business logo error:', error);
       throw new HttpException(
         'Failed to update business logo',
@@ -113,6 +119,9 @@ export class SettingsService {
         data: null,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Remove business logo error:', error);
       throw new HttpException(
         'Failed to remove business logo',
@@ -136,6 +145,9 @@ export class SettingsService {
         data: businessInfo,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Get business info error:', error);
       throw new HttpException(
         'Failed to retrieve business info',

@@ -59,6 +59,9 @@ export class ReceiptExpenseService {
         },
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Get total expense error:', error);
       throw new HttpException(
         'Failed to fetch receipt and mileage data',
@@ -208,6 +211,9 @@ export class ReceiptExpenseService {
         },
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Get receipt and mileage error:', error);
       throw new HttpException(
         'Failed to fetch receipt and mileage data',
@@ -218,6 +224,10 @@ export class ReceiptExpenseService {
 
   async getData(userId: string, accId: string, expenseId: string) {
     try {
+      if (!expenseId) {
+        throw new HttpException('Expense ID is required', HttpStatus.BAD_REQUEST);
+      }
+
       await this.validateAccAccess.validate(userId, accId);
 
       const receipt = await this.prisma.receipt.findFirst({
@@ -236,7 +246,7 @@ export class ReceiptExpenseService {
         },
       });
 
-      if (!receipt || !mileage) {
+      if (!receipt && !mileage) {
         throw new NotFoundAppException('Receipt or mileage not found');
       }
 
@@ -326,6 +336,9 @@ export class ReceiptExpenseService {
         },
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Export data error:', error);
       throw new HttpException(
         'Failed to export receipt and mileage data',

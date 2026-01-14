@@ -25,34 +25,54 @@ export class BankService {
     'account-verification-reports:read',
   ];
 
+  constructor() {
+    this.logger.log('BankService initialized');
+    this.logger.debug(`Client ID configured: ${this.clientId.substring(0, 8)}...`);
+    this.logger.debug(`Redirect URI: ${this.redirectUri}`);
+  }
+
   // 1️⃣ Get App Token (client_credentials)
   async getAppToken(): Promise<any> {
-    const body = new URLSearchParams({
-      grant_type: 'client_credentials',
-      client_id: this.clientId,
-      client_secret: this.clientSecret,
-      scope: this.appScopes.join(' '),
-    }).toString();
+    try {
+      this.logger.log('Requesting app token from Tink API');
+      this.logger.debug(`Scopes requested: ${this.appScopes.join(', ')}`);
 
-    const res = await axios.post(
-      'https://api.tink.com/api/v1/oauth/token',
-      body,
-      {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      },
-    );
+      const body = new URLSearchParams({
+        grant_type: 'client_credentials',
+        client_id: this.clientId,
+        client_secret: this.clientSecret,
+        scope: this.appScopes.join(' '),
+      }).toString();
 
-    return res.data;
+      const res = await axios.post(
+        'https://api.tink.com/api/v1/oauth/token',
+        body,
+        {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        },
+      );
+
+      this.logger.log('App token obtained successfully');
+      this.logger.debug(`Token expires in: ${res.data.expires_in} seconds`);
+
+      return res.data;
+    } catch (error) {
+      this.logger.error('Failed to get app token from Tink API', error.stack);
+      throw new BadRequestException('Failed to authenticate with Tink API');
+    }
   }
 
   // 2️⃣ Create User + Authorization Grant + build consent (Link) URL
   async createUser() {
     try {
+      this.logger.log('Starting Tink user creation process');
+
       // a) App token
       const appTokenResp = await this.getAppToken();
       const appToken = appTokenResp.access_token;
 
       // b) Create Tink user (use NL locale for Netherlands)
+      this.logger.log('Creating Tink user with NL market and locale');
       const userRes = await axios.post(
         'https://api.tink.com/api/v1/user/create',
         { market: 'NL', locale: 'nl_NL' },
@@ -65,9 +85,12 @@ export class BankService {
       );
 
       const userId = userRes.data.user_id;
-      this.logger.log('✅ Tink user created: ' + userId);
+      this.logger.log(`Tink user created successfully: ${userId}`);
 
-      // c) Create authorization-grant (this returns a grant code you must include in Link)
+      // c) Create authorization-grant
+      this.logger.log('Creating authorization grant for user');
+      this.logger.debug(`Consent scopes: ${this.consentScopes.join(', ')}`);
+
       const grantBody = new URLSearchParams({
         user_id: userId,
         scope: this.consentScopes.join(' '),
@@ -84,25 +107,28 @@ export class BankService {
           },
         },
       );
-      console.log({ consentRes });
+
       const grantData = consentRes.data;
-      this.logger.debug(
-        'authorization-grant response: ' + JSON.stringify(grantData),
-      );
+      this.logger.debug(`Authorization grant response: ${JSON.stringify(grantData)}`);
 
       const grantCode = grantData?.code;
       if (!grantCode) {
-        // Some responses may provide a ready-made URL instead — handle that case if needed
+        this.logger.warn('No grant code received, checking for provided URL');
+
         const providedUrl =
           grantData?.url ||
           grantData?.redirect_url ||
           grantData?.link_url ||
           null;
+
         if (providedUrl) {
-          // create state and return providedUrl
           const state = crypto.randomBytes(16).toString('hex');
+          this.logger.log('Using provided consent URL from Tink');
+          this.logger.debug(`State generated: ${state}`);
           return { userId, consentUrl: providedUrl, state, grantData };
         }
+
+        this.logger.error('Authorization grant did not return grant code or link URL');
         throw new Error(
           'authorization-grant did not return a grant code or link URL',
         );
@@ -111,16 +137,19 @@ export class BankService {
       const state = crypto.randomBytes(16).toString('hex');
       const consentUrl = `https://link.tink.com/1.0/account-check/?client_id=${encodeURIComponent(
         this.clientId,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       )}&redirect_uri=${encodeURIComponent(`${this.redirectUri}?code=${encodeURIComponent(grantCode)}`)}&code=${encodeURIComponent(grantCode)}&market=NL&locale=nl_NL&state=${encodeURIComponent(
         state,
       )}`;
-      this.logger.log('🔗 Consent URL constructed');
+
+      this.logger.log('Consent URL constructed successfully');
+      this.logger.debug(`Consent URL: ${consentUrl.substring(0, 100)}...`);
+      this.logger.debug(`State: ${state}`);
+
       return { userId, consentUrl, state, grantData };
     } catch (error: any) {
-      console.error('Error creating Tink user or consent session:', error);
       this.logger.error(
-        '❌ Error creating Tink user or consent session'
+        `Error creating Tink user or consent session: ${error.message}`,
+        error.stack,
       );
       throw new BadRequestException(
         'Error creating Tink user or consent session',
@@ -129,39 +158,66 @@ export class BankService {
   }
 
   async getUserAccessToken(authCode: string): Promise<any> {
-    const body = new URLSearchParams({
-      client_id: this.clientId,
-      client_secret: this.clientSecret,
-      grant_type: 'authorization_code',
-      code: authCode,
-      redirect_uri: this.redirectUri,
-    }).toString();
+    try {
+      this.logger.log('Exchanging authorization code for user access token');
+      this.logger.debug(`Auth code: ${authCode.substring(0, 10)}...`);
 
-    const res = await axios.post(
-      'https://api.tink.com/api/v1/oauth/token',
-      body,
-      {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      },
-    );
-    console.log({ res });
-    return res.data;
+      const body = new URLSearchParams({
+        client_id: this.clientId,
+        client_secret: this.clientSecret,
+        grant_type: 'authorization_code',
+        code: authCode,
+        redirect_uri: this.redirectUri,
+      }).toString();
+
+      const res = await axios.post(
+        'https://api.tink.com/api/v1/oauth/token',
+        body,
+        {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        },
+      );
+
+      this.logger.log('User access token obtained successfully');
+      this.logger.debug(`Token type: ${res.data.token_type}`);
+      this.logger.debug(`Expires in: ${res.data.expires_in} seconds`);
+
+      return res.data;
+    } catch (error) {
+      this.logger.error(
+        `Failed to exchange authorization code: ${error.message}`,
+        error.stack,
+      );
+      throw new BadRequestException('Failed to obtain user access token');
+    }
   }
+
   async getUserAccountsWithToken(userAccessToken: string) {
     const url = 'https://api.tink.com/data/v2/transactions';
+
     try {
+      this.logger.log('Fetching user transactions from Tink API');
+      this.logger.debug(`API endpoint: ${url}`);
+
       const res = await axios.get(url, {
         headers: { Authorization: `Bearer ${userAccessToken}` },
       });
-      console.log(res);
-      // res.data likely contains an array or object with accounts; inspect in dev
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+
+      this.logger.log('Transactions fetched successfully');
+      this.logger.debug(`Response data keys: ${Object.keys(res.data).join(', ')}`);
+
+      if (Array.isArray(res.data.transactions)) {
+        this.logger.log(`Total transactions retrieved: ${res.data.transactions.length}`);
+      }
+
       return cResponseData(res.data);
     } catch (err: any) {
+      const errorMessage = err.response?.data || err.message;
       this.logger.error(
-        'getUserAccounts failed: ' + (err.response?.data || err.message),
+        `Failed to fetch user transactions: ${errorMessage}`,
+        err.stack,
       );
-      throw err;
+      throw new BadRequestException('Failed to fetch user accounts and transactions');
     }
   }
 }

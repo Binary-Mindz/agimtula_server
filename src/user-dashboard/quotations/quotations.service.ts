@@ -29,6 +29,9 @@ export class QuotationsService {
         data: quotation,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Create quotation error:', error);
       throw new HttpException(
         'Failed to create quotation',
@@ -68,6 +71,9 @@ export class QuotationsService {
         data,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Find all quotations error:', error);
       throw new HttpException(
         'Failed to retrieve quotations',
@@ -78,6 +84,10 @@ export class QuotationsService {
 
   async findOne(id: number) {
     try {
+      if (!id) {
+        throw new HttpException('Quotation ID is required', HttpStatus.BAD_REQUEST);
+      }
+
       const data = await this.prisma.quotation.findUnique({
         where: { id },
       });
@@ -92,6 +102,9 @@ export class QuotationsService {
         data,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Find one quotation error:', error);
       throw new HttpException(
         'Failed to retrieve quotation',
@@ -102,6 +115,10 @@ export class QuotationsService {
 
   async update(id: number, updateQuotationDto: UpdateQuotationDto) {
     try {
+      if (!id) {
+        throw new HttpException('Quotation ID is required', HttpStatus.BAD_REQUEST);
+      }
+
       const quotationExists = await this.prisma.quotation.findUnique({
         where: { id },
       });
@@ -130,6 +147,9 @@ export class QuotationsService {
         data: updatedQuotation,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Update quotation error:', error);
       throw new HttpException(
         'Failed to update quotation',
@@ -140,6 +160,10 @@ export class QuotationsService {
 
   async remove(id: number) {
     try {
+      if (!id) {
+        throw new HttpException('Quotation ID is required', HttpStatus.BAD_REQUEST);
+      }
+
       const quotationExists = await this.prisma.quotation.findUnique({
         where: { id },
       });
@@ -158,6 +182,9 @@ export class QuotationsService {
         data: quotationExists,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Delete quotation error:', error);
       throw new HttpException(
         'Failed to delete quotation',

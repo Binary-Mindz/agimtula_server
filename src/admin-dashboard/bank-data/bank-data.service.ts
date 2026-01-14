@@ -35,6 +35,10 @@ export class BankDataService {
 
   async getBankById(id: string) {
     try {
+      if (!id) {
+        throw new HttpException('Bank ID is required', HttpStatus.BAD_REQUEST);
+      }
+
       const bank = await this.prisma.bank.findUnique({
         where: { id },
       });
@@ -69,6 +73,10 @@ export class BankDataService {
 
   async getBankTransactions(bankId: string) {
     try {
+      if (!bankId) {
+        throw new HttpException('Bank ID is required', HttpStatus.BAD_REQUEST);
+      }
+
       const bank = await this.prisma.bank.findUnique({
         where: { id: bankId },
       });
@@ -103,6 +111,10 @@ export class BankDataService {
 
   async matchAccountIdWithNumber(accountId: string, accountNumber: string) {
     try {
+      if (!accountId || !accountNumber) {
+        throw new HttpException('Account ID and account number are required', HttpStatus.BAD_REQUEST);
+      }
+
       const result = await this.prisma.bank.updateMany({
         where: {
           OR: [{ accountId }, { accountNumber: { contains: accountNumber } }],

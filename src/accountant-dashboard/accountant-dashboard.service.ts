@@ -11,7 +11,10 @@ export class AccountantDashboardService {
 
   async fetchAccountantDashboardData(accId: string) {
     try {
-      // Get all clients under this accountant
+      if (!accId) {
+        throw new HttpException('Accountant ID is required', HttpStatus.BAD_REQUEST);
+      }
+
       const clients = await this.prisma.user.findMany({
         where: {
           accountantId: accId,

@@ -215,8 +215,19 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
   }
 
   // Read email transactions since a specific date
-  async readEmailTransactionsSince(userId: string, sinceDate: Date): Promise<Invoice[]> {
+  async readEmailTransactionsSince(
+    userId: string,
+    sinceDate: Date,
+  ): Promise<Invoice[]> {
     try {
+      if (!userId) {
+        throw new HttpException('User ID is required', HttpStatus.BAD_REQUEST);
+      }
+
+      if (!sinceDate) {
+        throw new HttpException('Since date is required', HttpStatus.BAD_REQUEST);
+      }
+
       const user = await this.prisma.user.findFirst({
         where: {
           id: userId,
@@ -369,11 +380,15 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
 
   // Read email transactions (uses config creation date)
   async readEmailTransactions(userId: string): Promise<Invoice[]> {
+    if (!userId) {
+      throw new HttpException('User ID is required', HttpStatus.BAD_REQUEST);
+    }
+
     const imapConfig = await this.prisma.imapConfiguration.findFirst({
       where: { userId },
     });
     if (!imapConfig) return [];
-    
+
     return this.readEmailTransactionsSince(userId, imapConfig.created_at);
   }
 
@@ -381,6 +396,14 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
   async createInvoiceFromExtractedData(
     payload: ExtractedInvoicePayload,
   ): Promise<Invoice> {
+    if (!payload || !payload.userID) {
+      throw new HttpException('User ID is required', HttpStatus.BAD_REQUEST);
+    }
+
+    if (!payload.invoice) {
+      throw new HttpException('Invoice data is required', HttpStatus.BAD_REQUEST);
+    }
+
     const { userID, invoice } = payload;
 
     if (!invoice.invoiceNo) {

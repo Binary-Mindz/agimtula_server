@@ -55,6 +55,9 @@ export class VatOverviewService {
         },
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Get VAT summary error:', error);
       throw new HttpException(
         'Failed to fetch VAT summary',
@@ -140,6 +143,9 @@ export class VatOverviewService {
         },
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Get VAT breakdown error:', error);
       throw new HttpException(
         'Failed to fetch VAT breakdown',
@@ -164,6 +170,9 @@ export class VatOverviewService {
         },
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Get all VAT data error:', error);
       throw new HttpException(
         'Failed to fetch VAT data',

@@ -88,6 +88,9 @@ export class SalesInvoicesService {
         message: 'Sales invoices data fetched successfully',
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Get sales invoices data error:', error);
       throw new HttpException(
         'Failed to fetch sales invoices data',
@@ -141,6 +144,9 @@ export class SalesInvoicesService {
         },
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Get sales invoices error:', error);
       throw new HttpException(
         'Failed to fetch sales invoices',
@@ -151,6 +157,10 @@ export class SalesInvoicesService {
 
   async getData(userId: string, accountantId: string, salesId: string) {
     try {
+      if (!salesId) {
+        throw new HttpException('Sales ID is required', HttpStatus.BAD_REQUEST);
+      }
+
       await this.validateAccountant.validate(userId, accountantId);
 
       const salesInvoice = await this.prisma.invoice.findFirst({
@@ -176,6 +186,9 @@ export class SalesInvoicesService {
         },
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Get sales invoice data error:', error);
       throw new HttpException(
         'Failed to fetch sales invoice data',

@@ -145,6 +145,9 @@ export class InvoicesService {
         data: newInvoice,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Create invoice error:', error);
       throw new HttpException(
         'Failed to create invoice',
@@ -220,6 +223,9 @@ export class InvoicesService {
         data: newInvoice,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Save to draft error:', error);
       throw new HttpException(
         'Failed to save invoice to draft',
@@ -300,6 +306,9 @@ export class InvoicesService {
         },
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Find all invoices error:', error);
       throw new HttpException(
         'Failed to fetch invoices',
@@ -321,6 +330,9 @@ export class InvoicesService {
         data: drafts,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Get drafts error:', error);
       throw new HttpException(
         'Failed to fetch drafts',
@@ -418,6 +430,9 @@ export class InvoicesService {
         },
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Draft to invoice error:', error);
       throw new HttpException(
         'Failed to convert draft to invoice',
@@ -452,6 +467,9 @@ export class InvoicesService {
         data: invoice,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Delete from draft error:', error);
       throw new HttpException(
         'Failed to delete invoice',
@@ -486,6 +504,9 @@ export class InvoicesService {
         data: invoice,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Find one invoice error:', error);
       throw new HttpException(
         'Failed to fetch invoice',
@@ -557,6 +578,9 @@ export class InvoicesService {
         data: updatedInvoice,
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Update invoice error:', error);
       throw new HttpException(
         'Failed to update invoice',
@@ -601,6 +625,9 @@ export class InvoicesService {
         data: { id },
       });
     } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
       console.error('Delete invoice error:', error);
       throw new HttpException(
         'Failed to delete invoice',

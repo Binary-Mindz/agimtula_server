@@ -8,6 +8,10 @@ export class ReportsService {
 
   async getReportData(userId: string) {
     try {
+      if (!userId) {
+        throw new HttpException('User ID is required', HttpStatus.BAD_REQUEST);
+      }
+
       const sixMonthsAgo = new Date(
         new Date().getFullYear(),
         new Date().getMonth() - 5,
@@ -158,6 +162,10 @@ export class ReportsService {
 
   async exportIncomeData(userId: string) {
     try {
+      if (!userId) {
+        throw new HttpException('User ID is required', HttpStatus.BAD_REQUEST);
+      }
+
       const invoices = await this.prisma.invoice.findMany({
         where: {
           userId,
@@ -189,6 +197,10 @@ export class ReportsService {
 
   async exportExpenseData(userId: string) {
     try {
+      if (!userId) {
+        throw new HttpException('User ID is required', HttpStatus.BAD_REQUEST);
+      }
+
       const receipts = await this.prisma.receipt.findMany({
         where: { userId },
       });

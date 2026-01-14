@@ -16,7 +16,11 @@ export class RequestAccountantService {
         },
       });
 
-      if (user?.haveAccountant) {
+      if (!user) {
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      }
+
+      if (user.haveAccountant) {
         throw new ConflictAppException('You already have an accountant');
       }
 
@@ -33,7 +37,7 @@ export class RequestAccountantService {
         data: request,
       });
     } catch (error) {
-      if (error instanceof ConflictAppException) {
+      if (error instanceof ConflictAppException || error instanceof HttpException) {
         throw error;
       }
       console.error('Request accountant error:', error);

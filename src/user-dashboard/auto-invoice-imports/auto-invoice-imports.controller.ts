@@ -87,7 +87,7 @@ export class UserAutoInvoiceImportsController {
     @Param('invoiceId') invoiceId: string,
     @User() user: jwtPayload,
   ) {
-    return this.autoInvoiceImportsService.viewOrDownload(invoiceId, user.sub);
+    return await this.autoInvoiceImportsService.viewOrDownload(invoiceId, user.sub);
   }
 
   // syncing

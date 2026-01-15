@@ -47,6 +47,7 @@ export type ImapConfigurationMinAggregateOutputType = {
   emailNotifications: boolean | null
   realtimeImapCheckingId: string | null
   lastSync: Date | null
+  connectionStatus: $Enums.ConnectionStatus | null
   created_at: Date | null
   updated_at: Date | null
 }
@@ -64,6 +65,7 @@ export type ImapConfigurationMaxAggregateOutputType = {
   emailNotifications: boolean | null
   realtimeImapCheckingId: string | null
   lastSync: Date | null
+  connectionStatus: $Enums.ConnectionStatus | null
   created_at: Date | null
   updated_at: Date | null
 }
@@ -81,6 +83,7 @@ export type ImapConfigurationCountAggregateOutputType = {
   emailNotifications: number
   realtimeImapCheckingId: number
   lastSync: number
+  connectionStatus: number
   created_at: number
   updated_at: number
   _all: number
@@ -108,6 +111,7 @@ export type ImapConfigurationMinAggregateInputType = {
   emailNotifications?: true
   realtimeImapCheckingId?: true
   lastSync?: true
+  connectionStatus?: true
   created_at?: true
   updated_at?: true
 }
@@ -125,6 +129,7 @@ export type ImapConfigurationMaxAggregateInputType = {
   emailNotifications?: true
   realtimeImapCheckingId?: true
   lastSync?: true
+  connectionStatus?: true
   created_at?: true
   updated_at?: true
 }
@@ -142,6 +147,7 @@ export type ImapConfigurationCountAggregateInputType = {
   emailNotifications?: true
   realtimeImapCheckingId?: true
   lastSync?: true
+  connectionStatus?: true
   created_at?: true
   updated_at?: true
   _all?: true
@@ -246,6 +252,7 @@ export type ImapConfigurationGroupByOutputType = {
   emailNotifications: boolean
   realtimeImapCheckingId: string | null
   lastSync: Date | null
+  connectionStatus: $Enums.ConnectionStatus
   created_at: Date
   updated_at: Date
   _count: ImapConfigurationCountAggregateOutputType | null
@@ -286,6 +293,7 @@ export type imapConfigurationWhereInput = {
   emailNotifications?: Prisma.BoolFilter<"imapConfiguration"> | boolean
   realtimeImapCheckingId?: Prisma.StringNullableFilter<"imapConfiguration"> | string | null
   lastSync?: Prisma.DateTimeNullableFilter<"imapConfiguration"> | Date | string | null
+  connectionStatus?: Prisma.EnumConnectionStatusFilter<"imapConfiguration"> | $Enums.ConnectionStatus
   created_at?: Prisma.DateTimeFilter<"imapConfiguration"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"imapConfiguration"> | Date | string
   realtimeImapChecking?: Prisma.XOR<Prisma.InvoiceAutoSyncIntervalNullableScalarRelationFilter, Prisma.invoiceAutoSyncIntervalWhereInput> | null
@@ -306,6 +314,7 @@ export type imapConfigurationOrderByWithRelationInput = {
   emailNotifications?: Prisma.SortOrder
   realtimeImapCheckingId?: Prisma.SortOrderInput | Prisma.SortOrder
   lastSync?: Prisma.SortOrderInput | Prisma.SortOrder
+  connectionStatus?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   realtimeImapChecking?: Prisma.invoiceAutoSyncIntervalOrderByWithRelationInput
@@ -316,7 +325,6 @@ export type imapConfigurationOrderByWithRelationInput = {
 export type imapConfigurationWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   userId?: string
-  realtimeImapCheckingId?: string
   AND?: Prisma.imapConfigurationWhereInput | Prisma.imapConfigurationWhereInput[]
   OR?: Prisma.imapConfigurationWhereInput[]
   NOT?: Prisma.imapConfigurationWhereInput | Prisma.imapConfigurationWhereInput[]
@@ -328,13 +336,15 @@ export type imapConfigurationWhereUniqueInput = Prisma.AtLeast<{
   connect?: Prisma.BoolFilter<"imapConfiguration"> | boolean
   sync?: Prisma.BoolFilter<"imapConfiguration"> | boolean
   emailNotifications?: Prisma.BoolFilter<"imapConfiguration"> | boolean
+  realtimeImapCheckingId?: Prisma.StringNullableFilter<"imapConfiguration"> | string | null
   lastSync?: Prisma.DateTimeNullableFilter<"imapConfiguration"> | Date | string | null
+  connectionStatus?: Prisma.EnumConnectionStatusFilter<"imapConfiguration"> | $Enums.ConnectionStatus
   created_at?: Prisma.DateTimeFilter<"imapConfiguration"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"imapConfiguration"> | Date | string
   realtimeImapChecking?: Prisma.XOR<Prisma.InvoiceAutoSyncIntervalNullableScalarRelationFilter, Prisma.invoiceAutoSyncIntervalWhereInput> | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   syncHistory?: Prisma.ImapSyncHistoryListRelationFilter
-}, "id" | "id" | "userId" | "realtimeImapCheckingId">
+}, "id" | "id" | "userId">
 
 export type imapConfigurationOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -349,6 +359,7 @@ export type imapConfigurationOrderByWithAggregationInput = {
   emailNotifications?: Prisma.SortOrder
   realtimeImapCheckingId?: Prisma.SortOrderInput | Prisma.SortOrder
   lastSync?: Prisma.SortOrderInput | Prisma.SortOrder
+  connectionStatus?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   _count?: Prisma.imapConfigurationCountOrderByAggregateInput
@@ -374,6 +385,7 @@ export type imapConfigurationScalarWhereWithAggregatesInput = {
   emailNotifications?: Prisma.BoolWithAggregatesFilter<"imapConfiguration"> | boolean
   realtimeImapCheckingId?: Prisma.StringNullableWithAggregatesFilter<"imapConfiguration"> | string | null
   lastSync?: Prisma.DateTimeNullableWithAggregatesFilter<"imapConfiguration"> | Date | string | null
+  connectionStatus?: Prisma.EnumConnectionStatusWithAggregatesFilter<"imapConfiguration"> | $Enums.ConnectionStatus
   created_at?: Prisma.DateTimeWithAggregatesFilter<"imapConfiguration"> | Date | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"imapConfiguration"> | Date | string
 }
@@ -389,6 +401,7 @@ export type imapConfigurationCreateInput = {
   sync?: boolean
   emailNotifications?: boolean
   lastSync?: Date | string | null
+  connectionStatus?: $Enums.ConnectionStatus
   created_at?: Date | string
   updated_at?: Date | string
   realtimeImapChecking?: Prisma.invoiceAutoSyncIntervalCreateNestedOneWithoutImapConfigurationInput
@@ -409,6 +422,7 @@ export type imapConfigurationUncheckedCreateInput = {
   emailNotifications?: boolean
   realtimeImapCheckingId?: string | null
   lastSync?: Date | string | null
+  connectionStatus?: $Enums.ConnectionStatus
   created_at?: Date | string
   updated_at?: Date | string
   syncHistory?: Prisma.imapSyncHistoryUncheckedCreateNestedManyWithoutImapConfigurationInput
@@ -425,6 +439,7 @@ export type imapConfigurationUpdateInput = {
   sync?: Prisma.BoolFieldUpdateOperationsInput | boolean
   emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastSync?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  connectionStatus?: Prisma.EnumConnectionStatusFieldUpdateOperationsInput | $Enums.ConnectionStatus
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   realtimeImapChecking?: Prisma.invoiceAutoSyncIntervalUpdateOneWithoutImapConfigurationNestedInput
@@ -445,6 +460,7 @@ export type imapConfigurationUncheckedUpdateInput = {
   emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
   realtimeImapCheckingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastSync?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  connectionStatus?: Prisma.EnumConnectionStatusFieldUpdateOperationsInput | $Enums.ConnectionStatus
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   syncHistory?: Prisma.imapSyncHistoryUncheckedUpdateManyWithoutImapConfigurationNestedInput
@@ -463,6 +479,7 @@ export type imapConfigurationCreateManyInput = {
   emailNotifications?: boolean
   realtimeImapCheckingId?: string | null
   lastSync?: Date | string | null
+  connectionStatus?: $Enums.ConnectionStatus
   created_at?: Date | string
   updated_at?: Date | string
 }
@@ -478,6 +495,7 @@ export type imapConfigurationUpdateManyMutationInput = {
   sync?: Prisma.BoolFieldUpdateOperationsInput | boolean
   emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastSync?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  connectionStatus?: Prisma.EnumConnectionStatusFieldUpdateOperationsInput | $Enums.ConnectionStatus
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -495,6 +513,7 @@ export type imapConfigurationUncheckedUpdateManyInput = {
   emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
   realtimeImapCheckingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastSync?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  connectionStatus?: Prisma.EnumConnectionStatusFieldUpdateOperationsInput | $Enums.ConnectionStatus
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -512,6 +531,7 @@ export type imapConfigurationCountOrderByAggregateInput = {
   emailNotifications?: Prisma.SortOrder
   realtimeImapCheckingId?: Prisma.SortOrder
   lastSync?: Prisma.SortOrder
+  connectionStatus?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
 }
@@ -533,6 +553,7 @@ export type imapConfigurationMaxOrderByAggregateInput = {
   emailNotifications?: Prisma.SortOrder
   realtimeImapCheckingId?: Prisma.SortOrder
   lastSync?: Prisma.SortOrder
+  connectionStatus?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
 }
@@ -550,6 +571,7 @@ export type imapConfigurationMinOrderByAggregateInput = {
   emailNotifications?: Prisma.SortOrder
   realtimeImapCheckingId?: Prisma.SortOrder
   lastSync?: Prisma.SortOrder
+  connectionStatus?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
 }
@@ -563,9 +585,23 @@ export type ImapConfigurationScalarRelationFilter = {
   isNot?: Prisma.imapConfigurationWhereInput
 }
 
+export type ImapConfigurationListRelationFilter = {
+  every?: Prisma.imapConfigurationWhereInput
+  some?: Prisma.imapConfigurationWhereInput
+  none?: Prisma.imapConfigurationWhereInput
+}
+
+export type imapConfigurationOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
 export type ImapConfigurationNullableScalarRelationFilter = {
   is?: Prisma.imapConfigurationWhereInput | null
   isNot?: Prisma.imapConfigurationWhereInput | null
+}
+
+export type EnumConnectionStatusFieldUpdateOperationsInput = {
+  set?: $Enums.ConnectionStatus
 }
 
 export type imapConfigurationCreateNestedOneWithoutSyncHistoryInput = {
@@ -582,36 +618,46 @@ export type imapConfigurationUpdateOneRequiredWithoutSyncHistoryNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.imapConfigurationUpdateToOneWithWhereWithoutSyncHistoryInput, Prisma.imapConfigurationUpdateWithoutSyncHistoryInput>, Prisma.imapConfigurationUncheckedUpdateWithoutSyncHistoryInput>
 }
 
-export type imapConfigurationCreateNestedOneWithoutRealtimeImapCheckingInput = {
-  create?: Prisma.XOR<Prisma.imapConfigurationCreateWithoutRealtimeImapCheckingInput, Prisma.imapConfigurationUncheckedCreateWithoutRealtimeImapCheckingInput>
-  connectOrCreate?: Prisma.imapConfigurationCreateOrConnectWithoutRealtimeImapCheckingInput
-  connect?: Prisma.imapConfigurationWhereUniqueInput
+export type imapConfigurationCreateNestedManyWithoutRealtimeImapCheckingInput = {
+  create?: Prisma.XOR<Prisma.imapConfigurationCreateWithoutRealtimeImapCheckingInput, Prisma.imapConfigurationUncheckedCreateWithoutRealtimeImapCheckingInput> | Prisma.imapConfigurationCreateWithoutRealtimeImapCheckingInput[] | Prisma.imapConfigurationUncheckedCreateWithoutRealtimeImapCheckingInput[]
+  connectOrCreate?: Prisma.imapConfigurationCreateOrConnectWithoutRealtimeImapCheckingInput | Prisma.imapConfigurationCreateOrConnectWithoutRealtimeImapCheckingInput[]
+  createMany?: Prisma.imapConfigurationCreateManyRealtimeImapCheckingInputEnvelope
+  connect?: Prisma.imapConfigurationWhereUniqueInput | Prisma.imapConfigurationWhereUniqueInput[]
 }
 
-export type imapConfigurationUncheckedCreateNestedOneWithoutRealtimeImapCheckingInput = {
-  create?: Prisma.XOR<Prisma.imapConfigurationCreateWithoutRealtimeImapCheckingInput, Prisma.imapConfigurationUncheckedCreateWithoutRealtimeImapCheckingInput>
-  connectOrCreate?: Prisma.imapConfigurationCreateOrConnectWithoutRealtimeImapCheckingInput
-  connect?: Prisma.imapConfigurationWhereUniqueInput
+export type imapConfigurationUncheckedCreateNestedManyWithoutRealtimeImapCheckingInput = {
+  create?: Prisma.XOR<Prisma.imapConfigurationCreateWithoutRealtimeImapCheckingInput, Prisma.imapConfigurationUncheckedCreateWithoutRealtimeImapCheckingInput> | Prisma.imapConfigurationCreateWithoutRealtimeImapCheckingInput[] | Prisma.imapConfigurationUncheckedCreateWithoutRealtimeImapCheckingInput[]
+  connectOrCreate?: Prisma.imapConfigurationCreateOrConnectWithoutRealtimeImapCheckingInput | Prisma.imapConfigurationCreateOrConnectWithoutRealtimeImapCheckingInput[]
+  createMany?: Prisma.imapConfigurationCreateManyRealtimeImapCheckingInputEnvelope
+  connect?: Prisma.imapConfigurationWhereUniqueInput | Prisma.imapConfigurationWhereUniqueInput[]
 }
 
-export type imapConfigurationUpdateOneWithoutRealtimeImapCheckingNestedInput = {
-  create?: Prisma.XOR<Prisma.imapConfigurationCreateWithoutRealtimeImapCheckingInput, Prisma.imapConfigurationUncheckedCreateWithoutRealtimeImapCheckingInput>
-  connectOrCreate?: Prisma.imapConfigurationCreateOrConnectWithoutRealtimeImapCheckingInput
-  upsert?: Prisma.imapConfigurationUpsertWithoutRealtimeImapCheckingInput
-  disconnect?: Prisma.imapConfigurationWhereInput | boolean
-  delete?: Prisma.imapConfigurationWhereInput | boolean
-  connect?: Prisma.imapConfigurationWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.imapConfigurationUpdateToOneWithWhereWithoutRealtimeImapCheckingInput, Prisma.imapConfigurationUpdateWithoutRealtimeImapCheckingInput>, Prisma.imapConfigurationUncheckedUpdateWithoutRealtimeImapCheckingInput>
+export type imapConfigurationUpdateManyWithoutRealtimeImapCheckingNestedInput = {
+  create?: Prisma.XOR<Prisma.imapConfigurationCreateWithoutRealtimeImapCheckingInput, Prisma.imapConfigurationUncheckedCreateWithoutRealtimeImapCheckingInput> | Prisma.imapConfigurationCreateWithoutRealtimeImapCheckingInput[] | Prisma.imapConfigurationUncheckedCreateWithoutRealtimeImapCheckingInput[]
+  connectOrCreate?: Prisma.imapConfigurationCreateOrConnectWithoutRealtimeImapCheckingInput | Prisma.imapConfigurationCreateOrConnectWithoutRealtimeImapCheckingInput[]
+  upsert?: Prisma.imapConfigurationUpsertWithWhereUniqueWithoutRealtimeImapCheckingInput | Prisma.imapConfigurationUpsertWithWhereUniqueWithoutRealtimeImapCheckingInput[]
+  createMany?: Prisma.imapConfigurationCreateManyRealtimeImapCheckingInputEnvelope
+  set?: Prisma.imapConfigurationWhereUniqueInput | Prisma.imapConfigurationWhereUniqueInput[]
+  disconnect?: Prisma.imapConfigurationWhereUniqueInput | Prisma.imapConfigurationWhereUniqueInput[]
+  delete?: Prisma.imapConfigurationWhereUniqueInput | Prisma.imapConfigurationWhereUniqueInput[]
+  connect?: Prisma.imapConfigurationWhereUniqueInput | Prisma.imapConfigurationWhereUniqueInput[]
+  update?: Prisma.imapConfigurationUpdateWithWhereUniqueWithoutRealtimeImapCheckingInput | Prisma.imapConfigurationUpdateWithWhereUniqueWithoutRealtimeImapCheckingInput[]
+  updateMany?: Prisma.imapConfigurationUpdateManyWithWhereWithoutRealtimeImapCheckingInput | Prisma.imapConfigurationUpdateManyWithWhereWithoutRealtimeImapCheckingInput[]
+  deleteMany?: Prisma.imapConfigurationScalarWhereInput | Prisma.imapConfigurationScalarWhereInput[]
 }
 
-export type imapConfigurationUncheckedUpdateOneWithoutRealtimeImapCheckingNestedInput = {
-  create?: Prisma.XOR<Prisma.imapConfigurationCreateWithoutRealtimeImapCheckingInput, Prisma.imapConfigurationUncheckedCreateWithoutRealtimeImapCheckingInput>
-  connectOrCreate?: Prisma.imapConfigurationCreateOrConnectWithoutRealtimeImapCheckingInput
-  upsert?: Prisma.imapConfigurationUpsertWithoutRealtimeImapCheckingInput
-  disconnect?: Prisma.imapConfigurationWhereInput | boolean
-  delete?: Prisma.imapConfigurationWhereInput | boolean
-  connect?: Prisma.imapConfigurationWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.imapConfigurationUpdateToOneWithWhereWithoutRealtimeImapCheckingInput, Prisma.imapConfigurationUpdateWithoutRealtimeImapCheckingInput>, Prisma.imapConfigurationUncheckedUpdateWithoutRealtimeImapCheckingInput>
+export type imapConfigurationUncheckedUpdateManyWithoutRealtimeImapCheckingNestedInput = {
+  create?: Prisma.XOR<Prisma.imapConfigurationCreateWithoutRealtimeImapCheckingInput, Prisma.imapConfigurationUncheckedCreateWithoutRealtimeImapCheckingInput> | Prisma.imapConfigurationCreateWithoutRealtimeImapCheckingInput[] | Prisma.imapConfigurationUncheckedCreateWithoutRealtimeImapCheckingInput[]
+  connectOrCreate?: Prisma.imapConfigurationCreateOrConnectWithoutRealtimeImapCheckingInput | Prisma.imapConfigurationCreateOrConnectWithoutRealtimeImapCheckingInput[]
+  upsert?: Prisma.imapConfigurationUpsertWithWhereUniqueWithoutRealtimeImapCheckingInput | Prisma.imapConfigurationUpsertWithWhereUniqueWithoutRealtimeImapCheckingInput[]
+  createMany?: Prisma.imapConfigurationCreateManyRealtimeImapCheckingInputEnvelope
+  set?: Prisma.imapConfigurationWhereUniqueInput | Prisma.imapConfigurationWhereUniqueInput[]
+  disconnect?: Prisma.imapConfigurationWhereUniqueInput | Prisma.imapConfigurationWhereUniqueInput[]
+  delete?: Prisma.imapConfigurationWhereUniqueInput | Prisma.imapConfigurationWhereUniqueInput[]
+  connect?: Prisma.imapConfigurationWhereUniqueInput | Prisma.imapConfigurationWhereUniqueInput[]
+  update?: Prisma.imapConfigurationUpdateWithWhereUniqueWithoutRealtimeImapCheckingInput | Prisma.imapConfigurationUpdateWithWhereUniqueWithoutRealtimeImapCheckingInput[]
+  updateMany?: Prisma.imapConfigurationUpdateManyWithWhereWithoutRealtimeImapCheckingInput | Prisma.imapConfigurationUpdateManyWithWhereWithoutRealtimeImapCheckingInput[]
+  deleteMany?: Prisma.imapConfigurationScalarWhereInput | Prisma.imapConfigurationScalarWhereInput[]
 }
 
 export type imapConfigurationCreateNestedOneWithoutUserInput = {
@@ -657,6 +703,7 @@ export type imapConfigurationCreateWithoutSyncHistoryInput = {
   sync?: boolean
   emailNotifications?: boolean
   lastSync?: Date | string | null
+  connectionStatus?: $Enums.ConnectionStatus
   created_at?: Date | string
   updated_at?: Date | string
   realtimeImapChecking?: Prisma.invoiceAutoSyncIntervalCreateNestedOneWithoutImapConfigurationInput
@@ -676,6 +723,7 @@ export type imapConfigurationUncheckedCreateWithoutSyncHistoryInput = {
   emailNotifications?: boolean
   realtimeImapCheckingId?: string | null
   lastSync?: Date | string | null
+  connectionStatus?: $Enums.ConnectionStatus
   created_at?: Date | string
   updated_at?: Date | string
 }
@@ -707,6 +755,7 @@ export type imapConfigurationUpdateWithoutSyncHistoryInput = {
   sync?: Prisma.BoolFieldUpdateOperationsInput | boolean
   emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastSync?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  connectionStatus?: Prisma.EnumConnectionStatusFieldUpdateOperationsInput | $Enums.ConnectionStatus
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   realtimeImapChecking?: Prisma.invoiceAutoSyncIntervalUpdateOneWithoutImapConfigurationNestedInput
@@ -726,6 +775,7 @@ export type imapConfigurationUncheckedUpdateWithoutSyncHistoryInput = {
   emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
   realtimeImapCheckingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastSync?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  connectionStatus?: Prisma.EnumConnectionStatusFieldUpdateOperationsInput | $Enums.ConnectionStatus
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -741,6 +791,7 @@ export type imapConfigurationCreateWithoutRealtimeImapCheckingInput = {
   sync?: boolean
   emailNotifications?: boolean
   lastSync?: Date | string | null
+  connectionStatus?: $Enums.ConnectionStatus
   created_at?: Date | string
   updated_at?: Date | string
   user: Prisma.UserCreateNestedOneWithoutImapConfigurationsInput
@@ -759,6 +810,7 @@ export type imapConfigurationUncheckedCreateWithoutRealtimeImapCheckingInput = {
   sync?: boolean
   emailNotifications?: boolean
   lastSync?: Date | string | null
+  connectionStatus?: $Enums.ConnectionStatus
   created_at?: Date | string
   updated_at?: Date | string
   syncHistory?: Prisma.imapSyncHistoryUncheckedCreateNestedManyWithoutImapConfigurationInput
@@ -769,49 +821,46 @@ export type imapConfigurationCreateOrConnectWithoutRealtimeImapCheckingInput = {
   create: Prisma.XOR<Prisma.imapConfigurationCreateWithoutRealtimeImapCheckingInput, Prisma.imapConfigurationUncheckedCreateWithoutRealtimeImapCheckingInput>
 }
 
-export type imapConfigurationUpsertWithoutRealtimeImapCheckingInput = {
-  update: Prisma.XOR<Prisma.imapConfigurationUpdateWithoutRealtimeImapCheckingInput, Prisma.imapConfigurationUncheckedUpdateWithoutRealtimeImapCheckingInput>
-  create: Prisma.XOR<Prisma.imapConfigurationCreateWithoutRealtimeImapCheckingInput, Prisma.imapConfigurationUncheckedCreateWithoutRealtimeImapCheckingInput>
-  where?: Prisma.imapConfigurationWhereInput
+export type imapConfigurationCreateManyRealtimeImapCheckingInputEnvelope = {
+  data: Prisma.imapConfigurationCreateManyRealtimeImapCheckingInput | Prisma.imapConfigurationCreateManyRealtimeImapCheckingInput[]
+  skipDuplicates?: boolean
 }
 
-export type imapConfigurationUpdateToOneWithWhereWithoutRealtimeImapCheckingInput = {
-  where?: Prisma.imapConfigurationWhereInput
+export type imapConfigurationUpsertWithWhereUniqueWithoutRealtimeImapCheckingInput = {
+  where: Prisma.imapConfigurationWhereUniqueInput
+  update: Prisma.XOR<Prisma.imapConfigurationUpdateWithoutRealtimeImapCheckingInput, Prisma.imapConfigurationUncheckedUpdateWithoutRealtimeImapCheckingInput>
+  create: Prisma.XOR<Prisma.imapConfigurationCreateWithoutRealtimeImapCheckingInput, Prisma.imapConfigurationUncheckedCreateWithoutRealtimeImapCheckingInput>
+}
+
+export type imapConfigurationUpdateWithWhereUniqueWithoutRealtimeImapCheckingInput = {
+  where: Prisma.imapConfigurationWhereUniqueInput
   data: Prisma.XOR<Prisma.imapConfigurationUpdateWithoutRealtimeImapCheckingInput, Prisma.imapConfigurationUncheckedUpdateWithoutRealtimeImapCheckingInput>
 }
 
-export type imapConfigurationUpdateWithoutRealtimeImapCheckingInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  host?: Prisma.StringFieldUpdateOperationsInput | string
-  port?: Prisma.IntFieldUpdateOperationsInput | number
-  username?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  secure?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  connect?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  sync?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  lastSync?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutImapConfigurationsNestedInput
-  syncHistory?: Prisma.imapSyncHistoryUpdateManyWithoutImapConfigurationNestedInput
+export type imapConfigurationUpdateManyWithWhereWithoutRealtimeImapCheckingInput = {
+  where: Prisma.imapConfigurationScalarWhereInput
+  data: Prisma.XOR<Prisma.imapConfigurationUpdateManyMutationInput, Prisma.imapConfigurationUncheckedUpdateManyWithoutRealtimeImapCheckingInput>
 }
 
-export type imapConfigurationUncheckedUpdateWithoutRealtimeImapCheckingInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  host?: Prisma.StringFieldUpdateOperationsInput | string
-  port?: Prisma.IntFieldUpdateOperationsInput | number
-  username?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  secure?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  connect?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  sync?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  lastSync?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  syncHistory?: Prisma.imapSyncHistoryUncheckedUpdateManyWithoutImapConfigurationNestedInput
+export type imapConfigurationScalarWhereInput = {
+  AND?: Prisma.imapConfigurationScalarWhereInput | Prisma.imapConfigurationScalarWhereInput[]
+  OR?: Prisma.imapConfigurationScalarWhereInput[]
+  NOT?: Prisma.imapConfigurationScalarWhereInput | Prisma.imapConfigurationScalarWhereInput[]
+  id?: Prisma.StringFilter<"imapConfiguration"> | string
+  host?: Prisma.StringFilter<"imapConfiguration"> | string
+  port?: Prisma.IntFilter<"imapConfiguration"> | number
+  username?: Prisma.StringFilter<"imapConfiguration"> | string
+  password?: Prisma.StringFilter<"imapConfiguration"> | string
+  secure?: Prisma.BoolFilter<"imapConfiguration"> | boolean
+  userId?: Prisma.StringFilter<"imapConfiguration"> | string
+  connect?: Prisma.BoolFilter<"imapConfiguration"> | boolean
+  sync?: Prisma.BoolFilter<"imapConfiguration"> | boolean
+  emailNotifications?: Prisma.BoolFilter<"imapConfiguration"> | boolean
+  realtimeImapCheckingId?: Prisma.StringNullableFilter<"imapConfiguration"> | string | null
+  lastSync?: Prisma.DateTimeNullableFilter<"imapConfiguration"> | Date | string | null
+  connectionStatus?: Prisma.EnumConnectionStatusFilter<"imapConfiguration"> | $Enums.ConnectionStatus
+  created_at?: Prisma.DateTimeFilter<"imapConfiguration"> | Date | string
+  updated_at?: Prisma.DateTimeFilter<"imapConfiguration"> | Date | string
 }
 
 export type imapConfigurationCreateWithoutUserInput = {
@@ -825,6 +874,7 @@ export type imapConfigurationCreateWithoutUserInput = {
   sync?: boolean
   emailNotifications?: boolean
   lastSync?: Date | string | null
+  connectionStatus?: $Enums.ConnectionStatus
   created_at?: Date | string
   updated_at?: Date | string
   realtimeImapChecking?: Prisma.invoiceAutoSyncIntervalCreateNestedOneWithoutImapConfigurationInput
@@ -843,6 +893,7 @@ export type imapConfigurationUncheckedCreateWithoutUserInput = {
   emailNotifications?: boolean
   realtimeImapCheckingId?: string | null
   lastSync?: Date | string | null
+  connectionStatus?: $Enums.ConnectionStatus
   created_at?: Date | string
   updated_at?: Date | string
   syncHistory?: Prisma.imapSyncHistoryUncheckedCreateNestedManyWithoutImapConfigurationInput
@@ -875,6 +926,7 @@ export type imapConfigurationUpdateWithoutUserInput = {
   sync?: Prisma.BoolFieldUpdateOperationsInput | boolean
   emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastSync?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  connectionStatus?: Prisma.EnumConnectionStatusFieldUpdateOperationsInput | $Enums.ConnectionStatus
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   realtimeImapChecking?: Prisma.invoiceAutoSyncIntervalUpdateOneWithoutImapConfigurationNestedInput
@@ -893,9 +945,80 @@ export type imapConfigurationUncheckedUpdateWithoutUserInput = {
   emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
   realtimeImapCheckingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastSync?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  connectionStatus?: Prisma.EnumConnectionStatusFieldUpdateOperationsInput | $Enums.ConnectionStatus
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   syncHistory?: Prisma.imapSyncHistoryUncheckedUpdateManyWithoutImapConfigurationNestedInput
+}
+
+export type imapConfigurationCreateManyRealtimeImapCheckingInput = {
+  id?: string
+  host: string
+  port: number
+  username: string
+  password: string
+  secure?: boolean
+  userId: string
+  connect?: boolean
+  sync?: boolean
+  emailNotifications?: boolean
+  lastSync?: Date | string | null
+  connectionStatus?: $Enums.ConnectionStatus
+  created_at?: Date | string
+  updated_at?: Date | string
+}
+
+export type imapConfigurationUpdateWithoutRealtimeImapCheckingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  host?: Prisma.StringFieldUpdateOperationsInput | string
+  port?: Prisma.IntFieldUpdateOperationsInput | number
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  secure?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  connect?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sync?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastSync?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  connectionStatus?: Prisma.EnumConnectionStatusFieldUpdateOperationsInput | $Enums.ConnectionStatus
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutImapConfigurationsNestedInput
+  syncHistory?: Prisma.imapSyncHistoryUpdateManyWithoutImapConfigurationNestedInput
+}
+
+export type imapConfigurationUncheckedUpdateWithoutRealtimeImapCheckingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  host?: Prisma.StringFieldUpdateOperationsInput | string
+  port?: Prisma.IntFieldUpdateOperationsInput | number
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  secure?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  connect?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sync?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastSync?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  connectionStatus?: Prisma.EnumConnectionStatusFieldUpdateOperationsInput | $Enums.ConnectionStatus
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  syncHistory?: Prisma.imapSyncHistoryUncheckedUpdateManyWithoutImapConfigurationNestedInput
+}
+
+export type imapConfigurationUncheckedUpdateManyWithoutRealtimeImapCheckingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  host?: Prisma.StringFieldUpdateOperationsInput | string
+  port?: Prisma.IntFieldUpdateOperationsInput | number
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  secure?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  connect?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sync?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastSync?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  connectionStatus?: Prisma.EnumConnectionStatusFieldUpdateOperationsInput | $Enums.ConnectionStatus
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -942,6 +1065,7 @@ export type imapConfigurationSelect<ExtArgs extends runtime.Types.Extensions.Int
   emailNotifications?: boolean
   realtimeImapCheckingId?: boolean
   lastSync?: boolean
+  connectionStatus?: boolean
   created_at?: boolean
   updated_at?: boolean
   realtimeImapChecking?: boolean | Prisma.imapConfiguration$realtimeImapCheckingArgs<ExtArgs>
@@ -963,6 +1087,7 @@ export type imapConfigurationSelectCreateManyAndReturn<ExtArgs extends runtime.T
   emailNotifications?: boolean
   realtimeImapCheckingId?: boolean
   lastSync?: boolean
+  connectionStatus?: boolean
   created_at?: boolean
   updated_at?: boolean
   realtimeImapChecking?: boolean | Prisma.imapConfiguration$realtimeImapCheckingArgs<ExtArgs>
@@ -982,6 +1107,7 @@ export type imapConfigurationSelectUpdateManyAndReturn<ExtArgs extends runtime.T
   emailNotifications?: boolean
   realtimeImapCheckingId?: boolean
   lastSync?: boolean
+  connectionStatus?: boolean
   created_at?: boolean
   updated_at?: boolean
   realtimeImapChecking?: boolean | Prisma.imapConfiguration$realtimeImapCheckingArgs<ExtArgs>
@@ -1001,11 +1127,12 @@ export type imapConfigurationSelectScalar = {
   emailNotifications?: boolean
   realtimeImapCheckingId?: boolean
   lastSync?: boolean
+  connectionStatus?: boolean
   created_at?: boolean
   updated_at?: boolean
 }
 
-export type imapConfigurationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "host" | "port" | "username" | "password" | "secure" | "userId" | "connect" | "sync" | "emailNotifications" | "realtimeImapCheckingId" | "lastSync" | "created_at" | "updated_at", ExtArgs["result"]["imapConfiguration"]>
+export type imapConfigurationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "host" | "port" | "username" | "password" | "secure" | "userId" | "connect" | "sync" | "emailNotifications" | "realtimeImapCheckingId" | "lastSync" | "connectionStatus" | "created_at" | "updated_at", ExtArgs["result"]["imapConfiguration"]>
 export type imapConfigurationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   realtimeImapChecking?: boolean | Prisma.imapConfiguration$realtimeImapCheckingArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1041,6 +1168,7 @@ export type $imapConfigurationPayload<ExtArgs extends runtime.Types.Extensions.I
     emailNotifications: boolean
     realtimeImapCheckingId: string | null
     lastSync: Date | null
+    connectionStatus: $Enums.ConnectionStatus
     created_at: Date
     updated_at: Date
   }, ExtArgs["result"]["imapConfiguration"]>
@@ -1481,6 +1609,7 @@ export interface imapConfigurationFieldRefs {
   readonly emailNotifications: Prisma.FieldRef<"imapConfiguration", 'Boolean'>
   readonly realtimeImapCheckingId: Prisma.FieldRef<"imapConfiguration", 'String'>
   readonly lastSync: Prisma.FieldRef<"imapConfiguration", 'DateTime'>
+  readonly connectionStatus: Prisma.FieldRef<"imapConfiguration", 'ConnectionStatus'>
   readonly created_at: Prisma.FieldRef<"imapConfiguration", 'DateTime'>
   readonly updated_at: Prisma.FieldRef<"imapConfiguration", 'DateTime'>
 }

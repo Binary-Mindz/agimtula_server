@@ -341,6 +341,23 @@ export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
   _max?: Prisma.NestedJsonFilter<$PrismaModel>
 }
 
+export type EnumConnectionStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ConnectionStatus | Prisma.EnumConnectionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ConnectionStatus[] | Prisma.ListEnumConnectionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ConnectionStatus[] | Prisma.ListEnumConnectionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumConnectionStatusFilter<$PrismaModel> | $Enums.ConnectionStatus
+}
+
+export type EnumConnectionStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ConnectionStatus | Prisma.EnumConnectionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ConnectionStatus[] | Prisma.ListEnumConnectionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ConnectionStatus[] | Prisma.ListEnumConnectionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumConnectionStatusWithAggregatesFilter<$PrismaModel> | $Enums.ConnectionStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumConnectionStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumConnectionStatusFilter<$PrismaModel>
+}
+
 export type EnumSyncStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.SyncStatus | Prisma.EnumSyncStatusFieldRefInput<$PrismaModel>
   in?: $Enums.SyncStatus[] | Prisma.ListEnumSyncStatusFieldRefInput<$PrismaModel>
@@ -933,6 +950,23 @@ export type NestedJsonFilterBase<$PrismaModel = never> = {
   gt?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel>
   gte?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel>
   not?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel> | Prisma.JsonNullValueFilter
+}
+
+export type NestedEnumConnectionStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ConnectionStatus | Prisma.EnumConnectionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ConnectionStatus[] | Prisma.ListEnumConnectionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ConnectionStatus[] | Prisma.ListEnumConnectionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumConnectionStatusFilter<$PrismaModel> | $Enums.ConnectionStatus
+}
+
+export type NestedEnumConnectionStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ConnectionStatus | Prisma.EnumConnectionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ConnectionStatus[] | Prisma.ListEnumConnectionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ConnectionStatus[] | Prisma.ListEnumConnectionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumConnectionStatusWithAggregatesFilter<$PrismaModel> | $Enums.ConnectionStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumConnectionStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumConnectionStatusFilter<$PrismaModel>
 }
 
 export type NestedEnumSyncStatusFilter<$PrismaModel = never> = {

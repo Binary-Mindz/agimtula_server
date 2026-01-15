@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { formatDistanceToNow } from 'date-fns';
 import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
@@ -76,6 +76,15 @@ export class ImapSystemMonitorService {
 
   async getConnections() {
     try {
+      const connections = await this.prisma.imapConfiguration.findMany({});
+
+      // const data = connections.map({
+      //             user:
+      //         })
+      return cResponseData({
+        message: 'Connections are fetched successfully',
+        // data,
+      });
     } catch (error) {
       if (error instanceof HttpException) {
         throw error;

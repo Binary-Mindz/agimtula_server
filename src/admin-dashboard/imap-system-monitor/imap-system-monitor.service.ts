@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { formatDistanceToNow } from 'date-fns';
 import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
@@ -76,14 +76,71 @@ export class ImapSystemMonitorService {
 
   async getConnections() {
     try {
-      const connections = await this.prisma.imapConfiguration.findMany({});
+      const connections = await this.prisma.imapConfiguration.findMany({
+        select: {
+          id: true,
+          user: {
+            select: {
+              profile: {
+                select: {
+                  firstName: true,
+                  lastName: true,
+                },
+              },
+              email: {
+                select: { email: true },
+              },
+            },
+          },
+          connectionStatus: true,
+          syncHistory: {
+            select: {
+              syncCompletedAt: true,
+            },
+            take: 1,
+            orderBy: {
+              createdAt: 'desc',
+            },
+          },
+        },
+      });
 
-      // const data = connections.map({
-      //             user:
-      //         })
+      const data = await Promise.all(
+        connections.map(async (con) => {
+          const [invoiceCount, errorCount] = await Promise.all([
+            this.prisma.invoice.count({
+              where: { invoiceSource: 'EMAIL', imapConfigurationId: con.id },
+            }),
+            this.prisma.invoice.count({
+              where: {
+                invoiceSource: 'EMAIL',
+                imapConfigurationId: con.id,
+                haveAttachment: false,
+              },
+            }),
+          ]);
+
+          return {
+            username:
+              con.user.profile?.firstName + ' ' + con.user.profile?.lastName,
+            email: con.user.email?.email,
+            status: con.connectionStatus,
+            lastSync:
+              con.connectionStatus === 'FAILED'
+                ? 'never'
+                : formatDistanceToNow(
+                    new Date(con.syncHistory[0].syncCompletedAt as Date),
+                    { addSuffix: true },
+                  ),
+            invoiceCount:
+              con.connectionStatus === 'FAILED' ? '0' : invoiceCount,
+            errorCount: con.connectionStatus === 'FAILED' ? '-' : errorCount,
+          };
+        }),
+      );
       return cResponseData({
         message: 'Connections are fetched successfully',
-        // data,
+        data,
       });
     } catch (error) {
       if (error instanceof HttpException) {

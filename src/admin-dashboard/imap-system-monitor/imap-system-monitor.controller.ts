@@ -15,4 +15,11 @@ export class ImapSystemMonitorController {
   async getImapSystemMonitorData() {
     return await this.imapSystemMonitorService.getImapConnectionData();
   }
+
+  @Get('getConnections')
+  @Roles('ADMIN')
+  @ApiOperation({ summary: 'Admin only' })
+  async getAllConnections() {
+    return await this.imapSystemMonitorService.getConnections();
+  }
 }

@@ -1,13 +1,11 @@
-import { Injectable, HttpException, HttpStatus, Logger } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InvoiceLayoutDto } from './dto/invoice-layout.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
-import { cResponseData } from 'src/common/cResponse'; 
+import { cResponseData } from 'src/common/cResponse';
+
 @Injectable()
 export class InvoiceLayoutService {
-  private readonly logger = new Logger(InvoiceLayoutService.name)
-  constructor(private readonly prisma: PrismaService,
-      
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async findByUser(userId: string) {
     try {
@@ -32,19 +30,11 @@ export class InvoiceLayoutService {
     }
   }
 
-async updateLayout(userId: string, dto: InvoiceLayoutDto) {
-  try {
-    const layout = await this.prisma.invoiceLayout.upsert({
-      where: { userId },
-      update: { ...dto },
-      create: {
-        userId,
-        ...dto,
-        lastInvoiceNumber: dto.lastInvoiceNumber
-          ? String(dto.lastInvoiceNumber)
-          : '0',
-      },
-    });
+  async updateLayout(userId: string, dto: InvoiceLayoutDto) {
+    try {
+      const existing = await this.prisma.invoiceLayout.findUnique({
+        where: { userId },
+      });
 
       const updateData: {
         [key: string]: string | number | boolean | undefined;
@@ -87,8 +77,10 @@ async updateLayout(userId: string, dto: InvoiceLayoutDto) {
           }
         }
 
-  } catch (error) {
-    this.logger.error('Invoice layout upsert failed', error);
+        const invoiceLayout = await this.prisma.invoiceLayout.update({
+          where: { userId },
+          data: updateData,
+        });
 
         return cResponseData({
           success: true,

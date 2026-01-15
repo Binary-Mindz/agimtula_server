@@ -526,6 +526,7 @@ export type PaymentMethodScalarFieldEnum = (typeof PaymentMethodScalarFieldEnum)
 export const InvoiceLayoutScalarFieldEnum = {
   id: 'id',
   invoice_prefix: 'invoice_prefix',
+  lastInvoiceNumber: 'lastInvoiceNumber',
   quote_prefix: 'quote_prefix',
   year_format: 'year_format',
   default_vat_rate: 'default_vat_rate',

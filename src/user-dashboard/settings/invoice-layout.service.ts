@@ -1,11 +1,13 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, Logger } from '@nestjs/common';
 import { InvoiceLayoutDto } from './dto/invoice-layout.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
-import { cResponseData } from 'src/common/cResponse';
-
+import { cResponseData } from 'src/common/cResponse'; 
 @Injectable()
 export class InvoiceLayoutService {
-  constructor(private readonly prisma: PrismaService) {}
+  private readonly logger = new Logger(InvoiceLayoutService.name)
+  constructor(private readonly prisma: PrismaService,
+      
+  ) {}
 
   async findByUser(userId: string) {
     try {
@@ -30,51 +32,32 @@ export class InvoiceLayoutService {
     }
   }
 
-  async updateLayout(userId: string, dto: InvoiceLayoutDto) {
-    try {
-      const existing = await this.prisma.invoiceLayout.findUnique({
-        where: { userId },
-      });
+async updateLayout(userId: string, dto: InvoiceLayoutDto) {
+  try {
+    const layout = await this.prisma.invoiceLayout.upsert({
+      where: { userId },
+      update: { ...dto },
+      create: {
+        userId,
+        ...dto,
+        lastInvoiceNumber: dto.lastInvoiceNumber
+          ? String(dto.lastInvoiceNumber)
+          : '0',
+      },
+    });
 
-      const updateData: any = { ...dto };
-      if (existing) {
-        if (dto.vat_breakdown !== undefined)
-          updateData.vat_breakdown = !existing.vat_breakdown;
-        if (dto.prices_include_vat !== undefined)
-          updateData.prices_include_vat = !existing.prices_include_vat;
-        if (dto.show_company_logo !== undefined)
-          updateData.show_company_logo = !existing.show_company_logo;
+    return cResponseData({
+      success: true,
+      message: 'Invoice layout saved successfully',
+      data: layout,
+    });
 
-        const invoiceLayout = await this.prisma.invoiceLayout.update({
-          where: { userId },
-          data: updateData,
-        });
+  } catch (error) {
+    this.logger.error('Invoice layout upsert failed', error);
 
-        return cResponseData({
-          success: true,
-          message: 'Invoice layout updated successfully',
-          data: invoiceLayout,
-        });
-      } else {
-        const invoiceLayout = await this.prisma.invoiceLayout.create({
-          data: { ...dto, userId },
-        });
-
-        return cResponseData({
-          success: true,
-          message: 'Invoice layout created successfully',
-          data: invoiceLayout,
-        });
-      }
-    } catch (error) {
-      if (error instanceof HttpException) {
-        throw error;
-      }
-      console.error('Update invoice layout error:', error);
-      throw new HttpException(
-        'Failed to update invoice layout',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    throw new HttpException(
+      'Failed to save invoice layout',
+      HttpStatus.INTERNAL_SERVER_ERROR,
+    );
   }
-}
+}}

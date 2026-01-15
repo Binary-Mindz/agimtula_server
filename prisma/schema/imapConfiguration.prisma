@@ -15,8 +15,39 @@ model imapConfiguration {
   updated_at             DateTime                 @updatedAt
   realtimeImapChecking   invoiceAutoSyncInterval? @relation(fields: [realtimeImapCheckingId], references: [id])
   user                   User                     @relation(fields: [userId], references: [id])
+  syncHistory            imapSyncHistory[]
 
   @@map("imap_configuration")
+}
+
+model imapSyncHistory {
+  id                  String            @id @unique @default(uuid())
+  imapConfigurationId String
+  imapConfiguration   imapConfiguration @relation(fields: [imapConfigurationId], references: [id], onDelete: Cascade)
+  syncStartedAt       DateTime          @default(now())
+  syncCompletedAt     DateTime?
+  status              SyncStatus        @default(SUCCESS)
+  invoicesFound       Int               @default(0)
+  invoicesCreated     Int               @default(0)
+  errorMessage        String?
+  syncType            SyncType          @default(MANUAL)
+  createdAt           DateTime          @default(now())
+
+  @@index([imapConfigurationId])
+  @@index([syncStartedAt])
+  @@map("imap_sync_history")
+}
+
+enum SyncStatus {
+  SUCCESS
+  FAILED
+  PARTIAL
+}
+
+enum SyncType {
+  MANUAL
+  AUTOMATIC
+  CRON
 }
 
 model userSubscriptionPlan {

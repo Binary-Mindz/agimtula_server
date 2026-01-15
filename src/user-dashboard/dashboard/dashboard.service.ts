@@ -25,52 +25,67 @@ export class DashboardService {
         thisMonthsTotalInvoices,
         pendingInvoicesTotal,
         perdingInvoicesCount,
+        overdueInvoicesTotal,
+        overdueInvoicesCount,
         mileageExpenseFromLastMonths,
         totalMileage,
         mileageExpenseThisMonths,
         lastMonthsReceiptExpense,
         thisMonthsReceiptExpense,
       ] = await Promise.all([
+        // Last month's total invoices (created last month)
         this.prisma.invoice.count({
           where: {
             userId,
-            dueDate: {
-              lt: new Date(),
-            },
             createdAt: {
               lte: endDateOfLastMonth,
               gte: startDateOfLastMonth,
             },
           },
         }),
+        // This month's total invoices (created this month - no dueDate filter)
         this.prisma.invoice.count({
           where: {
             userId,
-            dueDate: {
-              lt: new Date(),
-            },
             createdAt: {
-              lte: now,
               gte: new Date(now.getFullYear(), now.getMonth(), 1),
+              lte: now,
             },
           },
         }),
+        // All pending invoices (unpaid, regardless of due date)
+        this.prisma.invoice.aggregate({
+          where: {
+            userId,
+            isPaid: false,
+          },
+          _sum: { totalAmount: true },
+        }),
+        // Count of all pending invoices (unpaid, regardless of due date)
+        this.prisma.invoice.count({
+          where: {
+            userId,
+            isPaid: false,
+          },
+        }),
+        // Overdue invoices total (unpaid + past due date)
         this.prisma.invoice.aggregate({
           where: {
             userId,
             isPaid: false,
             dueDate: {
-              lt: new Date(),
+              lt: new Date(), // Past due date
             },
           },
           _sum: { totalAmount: true },
         }),
+        // Count of overdue invoices (unpaid + past due date)
         this.prisma.invoice.count({
           where: {
             userId,
             isPaid: false,
             dueDate: {
-              lt: new Date(),
+              lt: new Date(), // Past due date
             },
           },
         }),
@@ -155,6 +170,8 @@ export class DashboardService {
           invoiceComparedToLastMonth,
           pendingInvoicesTotal: pendingInvoicesTotal._sum.totalAmount || 0,
           perdingInvoicesCount,
+          overdueInvoicesTotal: overdueInvoicesTotal._sum.totalAmount || 0,
+          overdueInvoicesCount,
           totalMileage: totalMileage._sum.distance,
           mileageRegenueThanLastMonths,
           expenseComparedToLastMonth,

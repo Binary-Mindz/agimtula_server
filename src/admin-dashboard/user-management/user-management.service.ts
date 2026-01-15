@@ -194,7 +194,7 @@ export class UserManagementService {
           },
           businessInfo: {
             create: {
-              address1: dto.address,
+              address: dto.address,
               companyName: dto.company,
             },
           },

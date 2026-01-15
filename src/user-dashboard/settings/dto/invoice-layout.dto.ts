@@ -17,6 +17,11 @@ export class InvoiceLayoutDto {
   @MaxLength(10)
   invoice_prefix?: string;
 
+  @ApiPropertyOptional({ example: '09898' })
+  @IsOptional()
+  @IsString()
+  lastInvoiceNumber?: string;
+
   @ApiPropertyOptional({ example: 'Q-' })
   @IsOptional()
   @IsString()

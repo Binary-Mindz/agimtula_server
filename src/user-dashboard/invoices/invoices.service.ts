@@ -25,6 +25,25 @@ export class InvoicesService {
   async create(createInvoiceDto: CreateInvoiceDto, userId: string) {
     try {
       // Check subscription and invoice limit
+
+      const invoicePrefix = await this.prisma.invoiceLayout.findFirst({
+        where: {
+          userId,
+        },
+        select: {
+          invoice_prefix: true,
+        },
+      });
+
+      let prefix: string;
+
+      let invoiceNumber = createInvoiceDto.invoiceNo;
+
+      if (invoicePrefix) {
+        prefix = invoicePrefix.invoice_prefix as string;
+        invoiceNumber = prefix + '-' + invoiceNumber;
+      }
+
       const subscription = await this.prisma.userSubscriptionPlan.findFirst({
         where: { UserId: userId, isActive: true },
       });
@@ -59,7 +78,7 @@ export class InvoicesService {
           );
         }
       }
-      
+
       const {
         serviceAndItems,
         businessDatas,
@@ -75,7 +94,7 @@ export class InvoicesService {
       const invoice = await this.prisma.invoice.findFirst({
         where: {
           invoiceNo: {
-            equals: createInvoiceDto.invoiceNo,
+            equals: invoiceNumber,
             mode: 'insensitive',
           },
         },
@@ -108,6 +127,7 @@ export class InvoicesService {
         data: {
           userId,
           ...invoiceData,
+          invoiceNo: invoiceNumber,
           issueDate: issueDateObj,
           dueDate: dueDateObj,
           AddressAndContactInfo: addressAndContactInfo,
@@ -204,10 +224,28 @@ export class InvoicesService {
         ...invoiceData
       } = dto;
 
+      const invoicePrefix = await this.prisma.invoiceLayout.findFirst({
+        where: {
+          userId,
+        },
+        select: {
+          invoice_prefix: true,
+        },
+      });
+
+      let prefix: string;
+
+      let invoiceNumber = dto.invoiceNo;
+
+      if (invoicePrefix) {
+        prefix = invoicePrefix.invoice_prefix as string;
+        invoiceNumber = prefix + '-' + invoiceNumber;
+      }
+
       const invoice = await this.prisma.invoice.findFirst({
         where: {
           invoiceNo: {
-            equals: dto.invoiceNo,
+            equals: invoiceNumber,
             mode: 'insensitive',
           },
         },
@@ -229,6 +267,7 @@ export class InvoicesService {
         data: {
           userId,
           ...invoiceData,
+          invoiceNo: invoiceNumber,
           issueDate: issueDateObj,
           dueDate: dueDateObj,
           AddressAndContactInfo: addressAndContactInfo,

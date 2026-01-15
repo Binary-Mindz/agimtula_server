@@ -108,7 +108,7 @@ export class AutoInvoiceImportsService {
           take: limit,
         }),
 
-        this.prisma.invoice.count({
+          this.prisma.invoice.count({
           where: {
             userId,
             invoiceSource: 'EMAIL',

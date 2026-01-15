@@ -38,7 +38,10 @@ export class NotificationsService {
     try {
       const notifications = await this.prisma.notificationSetting.upsert({
         where: { userId: user.sub },
-        update: dto,
+        update: {
+          ...dto,
+          notificationEmail: dto.notificationEmail ?? user.email,
+        },
         create: {
           userId: user.sub,
           notificationEmail: dto.notificationEmail ?? user.email,

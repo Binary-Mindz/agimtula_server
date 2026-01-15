@@ -3204,6 +3204,7 @@ export const InvoiceScalarFieldEnum = {
   id: 'id',
   invoiceNo: 'invoiceNo',
   userId: 'userId',
+  imapConfigurationId: 'imapConfigurationId',
   issueDate: 'issueDate',
   dueDate: 'dueDate',
   type: 'type',

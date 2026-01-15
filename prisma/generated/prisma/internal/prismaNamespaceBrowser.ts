@@ -232,6 +232,7 @@ export const ImapConfigurationScalarFieldEnum = {
   emailNotifications: 'emailNotifications',
   realtimeImapCheckingId: 'realtimeImapCheckingId',
   lastSync: 'lastSync',
+  connectionStatus: 'connectionStatus',
   created_at: 'created_at',
   updated_at: 'updated_at'
 } as const

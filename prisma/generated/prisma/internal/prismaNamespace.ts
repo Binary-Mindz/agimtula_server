@@ -3121,6 +3121,7 @@ export const ImapConfigurationScalarFieldEnum = {
   emailNotifications: 'emailNotifications',
   realtimeImapCheckingId: 'realtimeImapCheckingId',
   lastSync: 'lastSync',
+  connectionStatus: 'connectionStatus',
   created_at: 'created_at',
   updated_at: 'updated_at'
 } as const
@@ -3699,6 +3700,20 @@ export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'J
  * Reference to a field of type 'QueryMode'
  */
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'ConnectionStatus'
+ */
+export type EnumConnectionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ConnectionStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ConnectionStatus[]'
+ */
+export type ListEnumConnectionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ConnectionStatus[]'>
     
 
 

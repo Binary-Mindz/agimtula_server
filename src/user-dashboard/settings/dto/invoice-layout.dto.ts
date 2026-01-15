@@ -11,7 +11,7 @@ import { Type } from 'class-transformer';
 
 export class InvoiceLayoutDto {
   // Invoice numbering
-  @ApiPropertyOptional({ example: 'INV-' })
+  @ApiPropertyOptional({ example: 'INV' })
   @IsOptional()
   @IsString()
   @MaxLength(10)

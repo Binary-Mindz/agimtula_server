@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { ImapEmailConnectionDto } from './dto/imap-email-connection.dto';
 import { cResponseData } from 'src/common/cResponse';
+import * as Imap from 'imap';
 import {
   GetIntervalTimes,
   ImapConfiguration,
@@ -15,6 +16,32 @@ export class ManageConnectionService {
     private prisma: PrismaService,
     private cronConfigService: CronConfigService,
   ) {}
+
+  private async testConnection(dto: ImapEmailConnectionDto) {
+    return new Promise((resolve, reject) => {
+      const imap = new Imap({
+        user: dto.imap_username,
+        password: dto.imap_app_password,
+        host: dto.imap_server,
+        port: dto.imap_port,
+        tls: true,
+        tlsOptions: { rejectUnauthorized: false },
+        connTimeout: 10_000,
+        authTimeout: 10_000,
+      });
+      imap.once('ready', () => {
+        imap.end();
+        resolve(true);
+      });
+
+      imap.once('error', (err) => {
+        // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
+        reject(err);
+      });
+
+      imap.connect();
+    });
+  }
 
   private async selectedInvoiceTimeSyncData(userId: string) {
     const selTime = await this.prisma.userSubscriptionPlan.findFirst({
@@ -121,6 +148,35 @@ export class ManageConnectionService {
         throw new ValidationException('Subscription expired');
       }
 
+      let isConnected = false;
+
+      if (dto.connect === true) {
+        try {
+          await this.testConnection(dto);
+          isConnected = true;
+        } catch (err: any) {
+          console.error('IMAP test failed:', err?.message);
+          isConnected = false;
+        }
+      }
+
+      let validRealtimeId: string | null = null;
+      if (dto.realtimeImapCheckingId) {
+        const exists = await this.prisma.invoiceAutoSyncInterval.findUnique({
+          where: { id: dto.realtimeImapCheckingId },
+        });
+
+        if (!exists) {
+          // ❌ FK invalid → throw, do NOT save
+          throw new HttpException(
+            'Invalid realtimeImapCheckingId: must be a valid ID',
+            HttpStatus.BAD_REQUEST,
+          );
+        }
+
+        validRealtimeId = dto.realtimeImapCheckingId;
+      }
+
       const imapConnectService = {};
       if (dto.connect === false) {
         imapConnectService['connect'] = false;
@@ -143,7 +199,8 @@ export class ManageConnectionService {
           password: dto.imap_app_password,
           host: dto.imap_server,
           port: dto.imap_port,
-          realtimeImapCheckingId: dto.realtimeImapCheckingId || null,
+          realtimeImapCheckingId: validRealtimeId || null,
+          connectionStatus: isConnected ? 'CONNECTED' : 'FAILED',
           ...imapConnectService,
         },
         create: {
@@ -151,7 +208,8 @@ export class ManageConnectionService {
           password: dto.imap_app_password,
           host: dto.imap_server,
           port: dto.imap_port,
-          realtimeImapCheckingId: dto.realtimeImapCheckingId || null,
+          realtimeImapCheckingId: validRealtimeId || null,
+          connectionStatus: isConnected ? 'CONNECTED' : 'FAILED',
           userId: userId,
           ...imapConnectService,
         },
@@ -167,12 +225,12 @@ export class ManageConnectionService {
             emailNotifications: dto.emailNotifications,
           },
         });
-        
+
         // Setup cron job if sync is enabled
         if (dto.automatic_Sync && dto.realtimeImapCheckingId) {
           await this.cronConfigService.setupCronForUser(userId);
         }
-        
+
         return cResponseData({
           success: true,
           message: 'IMAP configuration updated successfully',
@@ -192,8 +250,12 @@ export class ManageConnectionService {
       });
     } catch (error) {
       if (error instanceof ValidationException) {
-        throw error;
+        throw error; // keep 400-level errors
       }
+      if (error instanceof HttpException) {
+        throw error; // your explicit HttpExceptions
+      }
+
       console.error('Set IMAP configuration error:', error);
       throw new HttpException(
         'Failed to save IMAP configuration',

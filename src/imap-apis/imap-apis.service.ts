@@ -225,7 +225,10 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
       }
 
       if (!sinceDate) {
-        throw new HttpException('Since date is required', HttpStatus.BAD_REQUEST);
+        throw new HttpException(
+          'Since date is required',
+          HttpStatus.BAD_REQUEST,
+        );
       }
 
       const user = await this.prisma.user.findFirst({
@@ -254,8 +257,16 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
 
       if (subscription && subscription.isLimitedInvoicePerMonth) {
         const currentMonth = new Date();
-        const startOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
-        const endOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
+        const startOfMonth = new Date(
+          currentMonth.getFullYear(),
+          currentMonth.getMonth(),
+          1,
+        );
+        const endOfMonth = new Date(
+          currentMonth.getFullYear(),
+          currentMonth.getMonth() + 1,
+          0,
+        );
 
         const invoiceCount = await this.prisma.invoice.count({
           where: {
@@ -353,7 +364,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
                     ...data.invoice,
                     haveAttachment: true,
                     additionalNote: `Email ID: ${emailId}`,
-                    
+                    vendor: domain,
                   },
                 });
 
@@ -383,6 +394,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
                 serviceAndItems: [],
                 haveAttachment: false,
                 additionalNote: `Email ID: ${emailId}`,
+                vendor: domain,
               };
 
               const created = await this.createInvoiceFromExtractedData({
@@ -430,7 +442,10 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
     }
 
     if (!payload.invoice) {
-      throw new HttpException('Invoice data is required', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'Invoice data is required',
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     const { userID, invoice } = payload;
@@ -476,6 +491,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
               totalAmount: this.toNumber(item.total),
             })) || [],
         },
+        vendor: invoice.vendor,
       },
     });
   }

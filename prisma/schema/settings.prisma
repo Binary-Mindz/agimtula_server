@@ -3,9 +3,9 @@ model BusinessInfo {
   companyName String?
   jobTitle    String?
   vatNumber   String?
-  address1    String?
-  address2    String?
-  address3    String?
+  address     String?
+  city        String?
+  postalCode  String?
   country     String?
   website     String?
   logo        String?

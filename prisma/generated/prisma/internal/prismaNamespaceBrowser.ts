@@ -58,6 +58,7 @@ export const ModelName = {
   EmailTemplate: 'EmailTemplate',
   FinancialDocument: 'FinancialDocument',
   imapConfiguration: 'imapConfiguration',
+  imapSyncHistory: 'imapSyncHistory',
   userSubscriptionPlan: 'userSubscriptionPlan',
   userSubscriptionPlanHistory: 'userSubscriptionPlanHistory',
   subscriptionPlanPaymentStatus: 'subscriptionPlanPaymentStatus',
@@ -236,6 +237,22 @@ export const ImapConfigurationScalarFieldEnum = {
 } as const
 
 export type ImapConfigurationScalarFieldEnum = (typeof ImapConfigurationScalarFieldEnum)[keyof typeof ImapConfigurationScalarFieldEnum]
+
+
+export const ImapSyncHistoryScalarFieldEnum = {
+  id: 'id',
+  imapConfigurationId: 'imapConfigurationId',
+  syncStartedAt: 'syncStartedAt',
+  syncCompletedAt: 'syncCompletedAt',
+  status: 'status',
+  invoicesFound: 'invoicesFound',
+  invoicesCreated: 'invoicesCreated',
+  errorMessage: 'errorMessage',
+  syncType: 'syncType',
+  createdAt: 'createdAt'
+} as const
+
+export type ImapSyncHistoryScalarFieldEnum = (typeof ImapSyncHistoryScalarFieldEnum)[keyof typeof ImapSyncHistoryScalarFieldEnum]
 
 
 export const UserSubscriptionPlanScalarFieldEnum = {
@@ -476,9 +493,9 @@ export const BusinessInfoScalarFieldEnum = {
   companyName: 'companyName',
   jobTitle: 'jobTitle',
   vatNumber: 'vatNumber',
-  address1: 'address1',
-  address2: 'address2',
-  address3: 'address3',
+  address: 'address',
+  city: 'city',
+  postalCode: 'postalCode',
   country: 'country',
   website: 'website',
   logo: 'logo',

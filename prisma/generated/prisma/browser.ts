@@ -53,6 +53,11 @@ export type FinancialDocument = Prisma.FinancialDocumentModel
  */
 export type imapConfiguration = Prisma.imapConfigurationModel
 /**
+ * Model imapSyncHistory
+ * 
+ */
+export type imapSyncHistory = Prisma.imapSyncHistoryModel
+/**
  * Model userSubscriptionPlan
  * 
  */

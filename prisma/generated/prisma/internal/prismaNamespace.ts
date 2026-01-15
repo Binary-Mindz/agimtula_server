@@ -391,6 +391,7 @@ export const ModelName = {
   EmailTemplate: 'EmailTemplate',
   FinancialDocument: 'FinancialDocument',
   imapConfiguration: 'imapConfiguration',
+  imapSyncHistory: 'imapSyncHistory',
   userSubscriptionPlan: 'userSubscriptionPlan',
   userSubscriptionPlanHistory: 'userSubscriptionPlanHistory',
   subscriptionPlanPaymentStatus: 'subscriptionPlanPaymentStatus',
@@ -432,7 +433,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "bank" | "mileage" | "transaction" | "accountantRequest" | "emailTemplate" | "financialDocument" | "imapConfiguration" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "invoice" | "businessData" | "serviceAndItem" | "loggers" | "module" | "roleModulePermission" | "profile" | "forgetPass" | "twoFA" | "language" | "quotation" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "supportTicket" | "user" | "email"
+    modelProps: "bank" | "mileage" | "transaction" | "accountantRequest" | "emailTemplate" | "financialDocument" | "imapConfiguration" | "imapSyncHistory" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "invoice" | "businessData" | "serviceAndItem" | "loggers" | "module" | "roleModulePermission" | "profile" | "forgetPass" | "twoFA" | "language" | "quotation" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "supportTicket" | "user" | "email"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -951,6 +952,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.imapConfigurationCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.ImapConfigurationCountAggregateOutputType> | number
+        }
+      }
+    }
+    imapSyncHistory: {
+      payload: Prisma.$imapSyncHistoryPayload<ExtArgs>
+      fields: Prisma.imapSyncHistoryFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.imapSyncHistoryFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$imapSyncHistoryPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.imapSyncHistoryFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$imapSyncHistoryPayload>
+        }
+        findFirst: {
+          args: Prisma.imapSyncHistoryFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$imapSyncHistoryPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.imapSyncHistoryFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$imapSyncHistoryPayload>
+        }
+        findMany: {
+          args: Prisma.imapSyncHistoryFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$imapSyncHistoryPayload>[]
+        }
+        create: {
+          args: Prisma.imapSyncHistoryCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$imapSyncHistoryPayload>
+        }
+        createMany: {
+          args: Prisma.imapSyncHistoryCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.imapSyncHistoryCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$imapSyncHistoryPayload>[]
+        }
+        delete: {
+          args: Prisma.imapSyncHistoryDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$imapSyncHistoryPayload>
+        }
+        update: {
+          args: Prisma.imapSyncHistoryUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$imapSyncHistoryPayload>
+        }
+        deleteMany: {
+          args: Prisma.imapSyncHistoryDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.imapSyncHistoryUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.imapSyncHistoryUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$imapSyncHistoryPayload>[]
+        }
+        upsert: {
+          args: Prisma.imapSyncHistoryUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$imapSyncHistoryPayload>
+        }
+        aggregate: {
+          args: Prisma.ImapSyncHistoryAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateImapSyncHistory>
+        }
+        groupBy: {
+          args: Prisma.imapSyncHistoryGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ImapSyncHistoryGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.imapSyncHistoryCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ImapSyncHistoryCountAggregateOutputType> | number
         }
       }
     }
@@ -3053,6 +3128,22 @@ export const ImapConfigurationScalarFieldEnum = {
 export type ImapConfigurationScalarFieldEnum = (typeof ImapConfigurationScalarFieldEnum)[keyof typeof ImapConfigurationScalarFieldEnum]
 
 
+export const ImapSyncHistoryScalarFieldEnum = {
+  id: 'id',
+  imapConfigurationId: 'imapConfigurationId',
+  syncStartedAt: 'syncStartedAt',
+  syncCompletedAt: 'syncCompletedAt',
+  status: 'status',
+  invoicesFound: 'invoicesFound',
+  invoicesCreated: 'invoicesCreated',
+  errorMessage: 'errorMessage',
+  syncType: 'syncType',
+  createdAt: 'createdAt'
+} as const
+
+export type ImapSyncHistoryScalarFieldEnum = (typeof ImapSyncHistoryScalarFieldEnum)[keyof typeof ImapSyncHistoryScalarFieldEnum]
+
+
 export const UserSubscriptionPlanScalarFieldEnum = {
   id: 'id',
   planName: 'planName',
@@ -3291,9 +3382,9 @@ export const BusinessInfoScalarFieldEnum = {
   companyName: 'companyName',
   jobTitle: 'jobTitle',
   vatNumber: 'vatNumber',
-  address1: 'address1',
-  address2: 'address2',
-  address3: 'address3',
+  address: 'address',
+  city: 'city',
+  postalCode: 'postalCode',
   country: 'country',
   website: 'website',
   logo: 'logo',
@@ -3611,6 +3702,34 @@ export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
 
 
 /**
+ * Reference to a field of type 'SyncStatus'
+ */
+export type EnumSyncStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SyncStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'SyncStatus[]'
+ */
+export type ListEnumSyncStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SyncStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'SyncType'
+ */
+export type EnumSyncTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SyncType'>
+    
+
+
+/**
+ * Reference to a field of type 'SyncType[]'
+ */
+export type ListEnumSyncTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SyncType[]'>
+    
+
+
+/**
  * Reference to a field of type 'BillingPeriod'
  */
 export type EnumBillingPeriodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BillingPeriod'>
@@ -3879,6 +3998,7 @@ export type GlobalOmitConfig = {
   emailTemplate?: Prisma.EmailTemplateOmit
   financialDocument?: Prisma.FinancialDocumentOmit
   imapConfiguration?: Prisma.imapConfigurationOmit
+  imapSyncHistory?: Prisma.imapSyncHistoryOmit
   userSubscriptionPlan?: Prisma.userSubscriptionPlanOmit
   userSubscriptionPlanHistory?: Prisma.userSubscriptionPlanHistoryOmit
   subscriptionPlanPaymentStatus?: Prisma.subscriptionPlanPaymentStatusOmit

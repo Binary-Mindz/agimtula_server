@@ -26,6 +26,14 @@ export const Status = {
 export type Status = (typeof Status)[keyof typeof Status]
 
 
+export const ConnectionStatus = {
+  CONNECTED: 'CONNECTED',
+  FAILED: 'FAILED'
+} as const
+
+export type ConnectionStatus = (typeof ConnectionStatus)[keyof typeof ConnectionStatus]
+
+
 export const SyncStatus = {
   SUCCESS: 'SUCCESS',
   FAILED: 'FAILED',

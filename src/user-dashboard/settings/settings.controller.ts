@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { SettingsService } from './settings.service';
 import { BusinessInfoDto, UpdateLogoDto } from './dto/business-info.dto';
-import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { CreatePaymentMethodDto } from './dto/create-payment-method.dto';
 import { InvoiceLayoutDto } from './dto/invoice-layout.dto';
 import { Roles } from 'src/decorators/roles.decorator';
@@ -29,13 +29,16 @@ export class UserSettingsController {
     private readonly paymentMethodService: PaymentMethodService,
     private readonly invoiceLayoutService: InvoiceLayoutService,
     private readonly notificationService: NotificationsService,
-  ) { }
+  ) {}
 
   // business infos
   @Get('business-info')
   @Roles('USER', 'ADMIN')
   @ApiOperation({ summary: 'Get business info ( USER, ADMIN )' })
-  @ApiResponse({ status: 200, description: 'Business info retrieved successfully' })
+  @ApiResponse({
+    status: 200,
+    description: 'Business info retrieved successfully',
+  })
   async getBusinessInfo(@User() user: jwtPayload) {
     return await this.settingsService.getBusinessInfo(user.sub);
   }
@@ -43,7 +46,10 @@ export class UserSettingsController {
   @Patch('update-business-info')
   @Roles('USER', 'ADMIN')
   @ApiOperation({ summary: 'Update business info ( USER, ADMIN )' })
-  @ApiResponse({ status: 200, description: 'Business info updated successfully' })
+  @ApiResponse({
+    status: 200,
+    description: 'Business info updated successfully',
+  })
   @ApiResponse({ status: 400, description: 'Invalid business info data' })
   async updateBusinessInfo(
     @Body() dto: BusinessInfoDto,
@@ -57,7 +63,10 @@ export class UserSettingsController {
   @Roles('USER', 'ADMIN')
   @ApiOperation({ summary: 'Update business logo ( USER, ADMIN )' })
   @ApiBody({ type: UpdateLogoDto })
-  @ApiResponse({ status: 200, description: 'Business logo updated successfully' })
+  @ApiResponse({
+    status: 200,
+    description: 'Business logo updated successfully',
+  })
   @ApiResponse({ status: 400, description: 'Invalid logo data' })
   async updateBusinessLogo(
     @User() user: jwtPayload,
@@ -69,7 +78,10 @@ export class UserSettingsController {
   @Patch('remove-business-logo')
   @Roles('USER', 'ADMIN')
   @ApiOperation({ summary: 'Remove business logo ( USER, ADMIN )' })
-  @ApiResponse({ status: 200, description: 'Business logo removed successfully' })
+  @ApiResponse({
+    status: 200,
+    description: 'Business logo removed successfully',
+  })
   async removeBusinessLogo(@User() user: jwtPayload) {
     return await this.settingsService.removeBusinessLogo(user.sub);
   }
@@ -78,7 +90,10 @@ export class UserSettingsController {
   @Post('create-payment-method')
   @Roles('USER', 'ADMIN')
   @ApiOperation({ summary: 'Create payment method ( USER, ADMIN )' })
-  @ApiResponse({ status: 201, description: 'Payment method created successfully' })
+  @ApiResponse({
+    status: 201,
+    description: 'Payment method created successfully',
+  })
   @ApiResponse({ status: 400, description: 'Invalid payment method data' })
   async createPaymentMethod(
     @Body() dto: CreatePaymentMethodDto,
@@ -95,7 +110,10 @@ export class UserSettingsController {
   @Patch('update-payment-method/:id')
   @Roles('USER', 'ADMIN')
   @ApiOperation({ summary: 'Update payment method ( USER, ADMIN )' })
-  @ApiResponse({ status: 200, description: 'Payment method updated successfully' })
+  @ApiResponse({
+    status: 200,
+    description: 'Payment method updated successfully',
+  })
   @ApiResponse({ status: 404, description: 'Payment method not found' })
   async updatePaymentMethod(
     @Param('id') id: string,
@@ -107,7 +125,10 @@ export class UserSettingsController {
   @Get('payment-methods')
   @Roles('USER', 'ADMIN')
   @ApiOperation({ summary: 'Get payment methods ( USER, ADMIN )' })
-  @ApiResponse({ status: 200, description: 'Payment methods retrieved successfully' })
+  @ApiResponse({
+    status: 200,
+    description: 'Payment methods retrieved successfully',
+  })
   async getPaymentMethods(@User() user: jwtPayload) {
     return await this.paymentMethodService.getPaymentMethods(user.sub);
   }
@@ -126,7 +147,14 @@ export class UserSettingsController {
       },
     },
   })
-  @ApiResponse({ status: 200, description: 'Payment method set as default successfully' })
+  @ApiParam({
+    name: 'id',
+    description: 'update method need payment method id',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Payment method set as default successfully',
+  })
   @ApiResponse({ status: 404, description: 'Payment method not found' })
   async makePaymentDefault(
     @Param('id') id: string,
@@ -143,11 +171,18 @@ export class UserSettingsController {
     );
   }
 
-  @Delete('delete-payment-method')
+  @Delete('delete-payment-method/:paymentMethodId')
   @Roles('USER', 'ADMIN')
   @ApiOperation({ summary: 'Delete payment method ( USER, ADMIN )' })
-  @ApiResponse({ status: 204, description: 'Payment method deleted successfully' })
+  @ApiResponse({
+    status: 204,
+    description: 'Payment method deleted successfully',
+  })
   @ApiResponse({ status: 404, description: 'Payment method not found' })
+  @ApiParam({
+    name: 'paymentMethodId',
+    description: 'delete method need payment method id',
+  })
   async deletePaymentMethods(
     @User() user: jwtPayload,
     @Param('paymentMethodId') dto: { paymentMethodId: string },
@@ -162,7 +197,10 @@ export class UserSettingsController {
   @Get('invoice-layout')
   @Roles('USER', 'ADMIN')
   @ApiOperation({ summary: 'Get invoice layout ( USER, ADMIN )' })
-  @ApiResponse({ status: 200, description: 'Invoice layout retrieved successfully' })
+  @ApiResponse({
+    status: 200,
+    description: 'Invoice layout retrieved successfully',
+  })
   async getInvoiceLayout(@User() user: jwtPayload) {
     return await this.invoiceLayoutService.findByUser(user.sub);
   }
@@ -170,7 +208,10 @@ export class UserSettingsController {
   @Patch('update-invoice-layout')
   @Roles('USER', 'ADMIN')
   @ApiOperation({ summary: 'Update invoice layout ( USER, ADMIN )' })
-  @ApiResponse({ status: 200, description: 'Invoice layout updated successfully' })
+  @ApiResponse({
+    status: 200,
+    description: 'Invoice layout updated successfully',
+  })
   @ApiResponse({ status: 400, description: 'Invalid layout data' })
   async invoiceLayout(@Body() dto: InvoiceLayoutDto, @User() user: jwtPayload) {
     return await this.invoiceLayoutService.updateLayout(user.sub, dto);
@@ -180,7 +221,10 @@ export class UserSettingsController {
   @Get('notification-settings')
   @Roles('USER', 'ADMIN')
   @ApiOperation({ summary: 'Get notification settings ( USER, ADMIN )' })
-  @ApiResponse({ status: 200, description: 'Notification settings retrieved successfully' })
+  @ApiResponse({
+    status: 200,
+    description: 'Notification settings retrieved successfully',
+  })
   async getNotificationSettings(@User() user: jwtPayload) {
     return await this.notificationService.getPreferences(user.sub);
   }
@@ -188,7 +232,10 @@ export class UserSettingsController {
   @Patch('update-notification-settings')
   @Roles('USER', 'ADMIN')
   @ApiOperation({ summary: 'Update notification settings ( USER, ADMIN )' })
-  @ApiResponse({ status: 200, description: 'Notification settings updated successfully' })
+  @ApiResponse({
+    status: 200,
+    description: 'Notification settings updated successfully',
+  })
   @ApiResponse({ status: 400, description: 'Invalid notification settings' })
   async updateNotificationSettings(
     @User() user: jwtPayload,

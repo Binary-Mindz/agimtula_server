@@ -16,6 +16,9 @@ async function bootstrap() {
   try {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
+    // Raw body parser for Stripe webhook BEFORE JSON parser
+    app.use('/stripe/webhook', bodyParser.raw({ type: 'application/json' }));
+
     // Static folders
     const publicDir = join(process.cwd(), 'public');
     const uploadDir = join(process.cwd(), 'uploads');
@@ -35,8 +38,7 @@ async function bootstrap() {
 
     // Swagger
     SwaggerSetting(app);
-    // Raw body parser for Stripe webhook BEFORE JSON parser
-    app.use('/stripe/webhook', bodyParser.raw({ type: 'application/json' }));
+
     // Global filters - Order matters!
     app.useGlobalFilters(
       new PrismaExceptionFilter(),

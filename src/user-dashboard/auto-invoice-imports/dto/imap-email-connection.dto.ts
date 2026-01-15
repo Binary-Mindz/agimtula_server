@@ -6,6 +6,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  Max,
 } from 'class-validator';
 
 export class ImapEmailConnectionDto {
@@ -44,8 +45,9 @@ export class ImapEmailConnectionDto {
     required: true,
     type: Number,
     description: 'I-map port of the user',
-    example: 83478,
+    example: 63478,
   })
+  @Max(65535)
   @IsNotEmpty({ message: 'I-map port should not be empty' })
   @IsNumber({}, { message: 'Invalid I-map port format' })
   imap_port: number;

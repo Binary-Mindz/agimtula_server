@@ -36,6 +36,7 @@ model PaymentMethod {
 model InvoiceLayout {
   id                   String  @id @default(uuid())
   invoice_prefix       String?
+  lastInvoiceNumber    String?
   quote_prefix         String?
   year_format          String?
   default_vat_rate     Float?

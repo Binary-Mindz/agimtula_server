@@ -202,6 +202,7 @@ export class ManageConnectionService {
           realtimeImapCheckingId: validRealtimeId || null,
           connectionStatus: isConnected ? 'CONNECTED' : 'FAILED',
           ...imapConnectService,
+          connect: isConnected ? true : false,
         },
         create: {
           username: dto.imap_username,
@@ -212,6 +213,7 @@ export class ManageConnectionService {
           connectionStatus: isConnected ? 'CONNECTED' : 'FAILED',
           userId: userId,
           ...imapConnectService,
+          connect: isConnected ? true : false,
         },
       });
 

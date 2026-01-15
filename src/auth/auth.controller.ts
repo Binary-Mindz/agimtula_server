@@ -41,7 +41,7 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly forgetPasswordService: ForgetPasswordService,
     private readonly twoFAService: TwoFAService,
-  ) { }
+  ) {}
 
   @HttpCode(200)
   @ApiOperation({ summary: 'Send registration OTP ( PUBLIC )' })
@@ -52,7 +52,9 @@ export class AuthController {
   })
   @Public()
   @Post('registration/send-otp')
-  async sendRegistrationOtp(@Body(new ValidationPipe()) dto: SendRegistrationOtpDto) {
+  async sendRegistrationOtp(
+    @Body(new ValidationPipe()) dto: SendRegistrationOtpDto,
+  ) {
     return await this.authService.sendRegistrationOtp(dto);
   }
 
@@ -65,7 +67,9 @@ export class AuthController {
   })
   @Public()
   @Post('registration/verify-otp')
-  async verifyRegistrationOtp(@Body(new ValidationPipe()) dto: VerifyRegistrationOtpDto) {
+  async verifyRegistrationOtp(
+    @Body(new ValidationPipe()) dto: VerifyRegistrationOtpDto,
+  ) {
     return await this.authService.verifyRegistrationOtp(dto);
   }
 
@@ -76,10 +80,11 @@ export class AuthController {
     status: 400,
     description: 'Invalid verification token or user exists',
   })
-
   @Public()
   @Post('registration/complete')
-  async completeRegistration(@Body(new ValidationPipe()) dto: CompleteRegistrationDto) {
+  async completeRegistration(
+    @Body(new ValidationPipe()) dto: CompleteRegistrationDto,
+  ) {
     return await this.authService.completeRegistration(dto);
   }
 
@@ -235,10 +240,10 @@ export class AuthController {
   // 2fa features
 
   @HttpCode(200)
-  @ApiOperation({ summary: 'Enable 2FA ( USER, ADMIN, ACCOUNTANT )' })
+  @ApiOperation({ summary: 'Enable/Disable 2FA ( USER, ADMIN, ACCOUNTANT )' })
   @ApiResponse({ status: 200, description: '2FA code sent successfully' })
   @ApiResponse({ status: 400, description: 'Invalid request data' })
-  @Post('2fa/enable')
+  @Post('2fa')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
   async enable2FA(@User() user: jwtPayload, @Body() dto: EnableTwoFADto) {
     return await this.twoFAService.sendTwoFACode(user.sub, dto);
@@ -251,34 +256,47 @@ export class AuthController {
   @Post('2fa/verify')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
   async verify2FA(@User() user: jwtPayload, @Body() dto: VerifyTwoFADto) {
-    return await this.twoFAService.verifyAndEnableTwoFA(user.sub, dto);
+    return await this.twoFAService.verifyTwoFA(user.sub, dto);
   }
 
-  @HttpCode(200)
-  @ApiOperation({ summary: 'Disable 2FA ( USER, ADMIN, ACCOUNTANT )' })
+  @Get('is-two-fa-enabled')
+  @Roles('USER', 'ADMIN', 'ACCOUNTANT')
+  @ApiOperation({
+    summary: 'Check if 2FA is enabled (USER, ADMIN, ACCOUNTANT)',
+  })
   @ApiResponse({
     status: 200,
-    description: '2FA disable code sent successfully',
+    description: '2FA status retrieved successfully',
   })
-  @ApiResponse({ status: 400, description: 'Invalid request data' })
-  @Post('2fa/disable')
-  @Roles('USER', 'ADMIN', 'ACCOUNTANT')
-  async disable2FA(@User() user: jwtPayload, @Body() dto: EnableTwoFADto) {
-    return await this.twoFAService.sendDisableTwoFACode(user.sub, dto);
+  async isTwoFAEnabled(@User() user: jwtPayload) {
+    return await this.twoFAService.isTwoFAEnabled(user.sub);
   }
 
-  @HttpCode(200)
-  @ApiOperation({ summary: 'Verify disable 2FA ( USER, ADMIN, ACCOUNTANT )' })
-  @ApiResponse({ status: 200, description: '2FA disabled successfully' })
-  @ApiResponse({ status: 400, description: 'Invalid 2FA code' })
-  @Post('2fa/disable-verify')
-  @Roles('USER', 'ADMIN', 'ACCOUNTANT')
-  async verifyDisable2FA(
-    @User() user: jwtPayload,
-    @Body() dto: VerifyTwoFADto,
-  ) {
-    return await this.twoFAService.verifyAndDisableTwoFA(user.sub, dto);
-  }
+  // @HttpCode(200)
+  // @ApiOperation({ summary: 'Disable 2FA ( USER, ADMIN, ACCOUNTANT )' })
+  // @ApiResponse({
+  //   status: 200,
+  //   description: '2FA disable code sent successfully',
+  // })
+  // @ApiResponse({ status: 400, description: 'Invalid request data' })
+  // @Post('2fa/disable')
+  // @Roles('USER', 'ADMIN', 'ACCOUNTANT')
+  // async disable2FA(@User() user: jwtPayload, @Body() dto: EnableTwoFADto) {
+  //   return await this.twoFAService.sendDisableTwoFACode(user.sub, dto);
+  // }
+
+  // @HttpCode(200)
+  // @ApiOperation({ summary: 'Verify disable 2FA ( USER, ADMIN, ACCOUNTANT )' })
+  // @ApiResponse({ status: 200, description: '2FA disabled successfully' })
+  // @ApiResponse({ status: 400, description: 'Invalid 2FA code' })
+  // @Post('2fa/disable-verify')
+  // @Roles('USER', 'ADMIN', 'ACCOUNTANT')
+  // async verifyDisable2FA(
+  //   @User() user: jwtPayload,
+  //   @Body() dto: VerifyTwoFADto,
+  // ) {
+  //   return await this.twoFAService.verifyAndDisableTwoFA(user.sub, dto);
+  // }
 
   @Post('upload-images')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')

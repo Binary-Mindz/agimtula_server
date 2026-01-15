@@ -42,6 +42,7 @@ export type InvoiceMinAggregateOutputType = {
   id: string | null
   invoiceNo: string | null
   userId: string | null
+  imapConfigurationId: string | null
   issueDate: Date | null
   dueDate: Date | null
   type: $Enums.InvoiceClientType | null
@@ -71,6 +72,7 @@ export type InvoiceMaxAggregateOutputType = {
   id: string | null
   invoiceNo: string | null
   userId: string | null
+  imapConfigurationId: string | null
   issueDate: Date | null
   dueDate: Date | null
   type: $Enums.InvoiceClientType | null
@@ -100,6 +102,7 @@ export type InvoiceCountAggregateOutputType = {
   id: number
   invoiceNo: number
   userId: number
+  imapConfigurationId: number
   issueDate: number
   dueDate: number
   type: number
@@ -143,6 +146,7 @@ export type InvoiceMinAggregateInputType = {
   id?: true
   invoiceNo?: true
   userId?: true
+  imapConfigurationId?: true
   issueDate?: true
   dueDate?: true
   type?: true
@@ -172,6 +176,7 @@ export type InvoiceMaxAggregateInputType = {
   id?: true
   invoiceNo?: true
   userId?: true
+  imapConfigurationId?: true
   issueDate?: true
   dueDate?: true
   type?: true
@@ -201,6 +206,7 @@ export type InvoiceCountAggregateInputType = {
   id?: true
   invoiceNo?: true
   userId?: true
+  imapConfigurationId?: true
   issueDate?: true
   dueDate?: true
   type?: true
@@ -317,6 +323,7 @@ export type InvoiceGroupByOutputType = {
   id: string
   invoiceNo: string
   userId: string
+  imapConfigurationId: string | null
   issueDate: Date
   dueDate: Date | null
   type: $Enums.InvoiceClientType
@@ -369,6 +376,7 @@ export type InvoiceWhereInput = {
   id?: Prisma.StringFilter<"Invoice"> | string
   invoiceNo?: Prisma.StringFilter<"Invoice"> | string
   userId?: Prisma.StringFilter<"Invoice"> | string
+  imapConfigurationId?: Prisma.StringNullableFilter<"Invoice"> | string | null
   issueDate?: Prisma.DateTimeFilter<"Invoice"> | Date | string
   dueDate?: Prisma.DateTimeNullableFilter<"Invoice"> | Date | string | null
   type?: Prisma.EnumInvoiceClientTypeFilter<"Invoice"> | $Enums.InvoiceClientType
@@ -400,6 +408,7 @@ export type InvoiceOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   invoiceNo?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  imapConfigurationId?: Prisma.SortOrderInput | Prisma.SortOrder
   issueDate?: Prisma.SortOrder
   dueDate?: Prisma.SortOrderInput | Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -434,6 +443,7 @@ export type InvoiceWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.InvoiceWhereInput[]
   NOT?: Prisma.InvoiceWhereInput | Prisma.InvoiceWhereInput[]
   userId?: Prisma.StringFilter<"Invoice"> | string
+  imapConfigurationId?: Prisma.StringNullableFilter<"Invoice"> | string | null
   issueDate?: Prisma.DateTimeFilter<"Invoice"> | Date | string
   dueDate?: Prisma.DateTimeNullableFilter<"Invoice"> | Date | string | null
   type?: Prisma.EnumInvoiceClientTypeFilter<"Invoice"> | $Enums.InvoiceClientType
@@ -465,6 +475,7 @@ export type InvoiceOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   invoiceNo?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  imapConfigurationId?: Prisma.SortOrderInput | Prisma.SortOrder
   issueDate?: Prisma.SortOrder
   dueDate?: Prisma.SortOrderInput | Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -502,6 +513,7 @@ export type InvoiceScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Invoice"> | string
   invoiceNo?: Prisma.StringWithAggregatesFilter<"Invoice"> | string
   userId?: Prisma.StringWithAggregatesFilter<"Invoice"> | string
+  imapConfigurationId?: Prisma.StringNullableWithAggregatesFilter<"Invoice"> | string | null
   issueDate?: Prisma.DateTimeWithAggregatesFilter<"Invoice"> | Date | string
   dueDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Invoice"> | Date | string | null
   type?: Prisma.EnumInvoiceClientTypeWithAggregatesFilter<"Invoice"> | $Enums.InvoiceClientType
@@ -531,6 +543,7 @@ export type InvoiceCreateInput = {
   id?: string
   invoiceNo: string
   userId: string
+  imapConfigurationId?: string | null
   issueDate: Date | string
   dueDate?: Date | string | null
   type: $Enums.InvoiceClientType
@@ -562,6 +575,7 @@ export type InvoiceUncheckedCreateInput = {
   id?: string
   invoiceNo: string
   userId: string
+  imapConfigurationId?: string | null
   issueDate: Date | string
   dueDate?: Date | string | null
   type: $Enums.InvoiceClientType
@@ -593,6 +607,7 @@ export type InvoiceUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   invoiceNo?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  imapConfigurationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   type?: Prisma.EnumInvoiceClientTypeFieldUpdateOperationsInput | $Enums.InvoiceClientType
@@ -624,6 +639,7 @@ export type InvoiceUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   invoiceNo?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  imapConfigurationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   type?: Prisma.EnumInvoiceClientTypeFieldUpdateOperationsInput | $Enums.InvoiceClientType
@@ -655,6 +671,7 @@ export type InvoiceCreateManyInput = {
   id?: string
   invoiceNo: string
   userId: string
+  imapConfigurationId?: string | null
   issueDate: Date | string
   dueDate?: Date | string | null
   type: $Enums.InvoiceClientType
@@ -684,6 +701,7 @@ export type InvoiceUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   invoiceNo?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  imapConfigurationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   type?: Prisma.EnumInvoiceClientTypeFieldUpdateOperationsInput | $Enums.InvoiceClientType
@@ -713,6 +731,7 @@ export type InvoiceUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   invoiceNo?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  imapConfigurationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   type?: Prisma.EnumInvoiceClientTypeFieldUpdateOperationsInput | $Enums.InvoiceClientType
@@ -742,6 +761,7 @@ export type InvoiceCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   invoiceNo?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  imapConfigurationId?: Prisma.SortOrder
   issueDate?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -777,6 +797,7 @@ export type InvoiceMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   invoiceNo?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  imapConfigurationId?: Prisma.SortOrder
   issueDate?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -806,6 +827,7 @@ export type InvoiceMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   invoiceNo?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  imapConfigurationId?: Prisma.SortOrder
   issueDate?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -882,6 +904,7 @@ export type InvoiceCreateWithoutBusinessDatasInput = {
   id?: string
   invoiceNo: string
   userId: string
+  imapConfigurationId?: string | null
   issueDate: Date | string
   dueDate?: Date | string | null
   type: $Enums.InvoiceClientType
@@ -912,6 +935,7 @@ export type InvoiceUncheckedCreateWithoutBusinessDatasInput = {
   id?: string
   invoiceNo: string
   userId: string
+  imapConfigurationId?: string | null
   issueDate: Date | string
   dueDate?: Date | string | null
   type: $Enums.InvoiceClientType
@@ -958,6 +982,7 @@ export type InvoiceUpdateWithoutBusinessDatasInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   invoiceNo?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  imapConfigurationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   type?: Prisma.EnumInvoiceClientTypeFieldUpdateOperationsInput | $Enums.InvoiceClientType
@@ -988,6 +1013,7 @@ export type InvoiceUncheckedUpdateWithoutBusinessDatasInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   invoiceNo?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  imapConfigurationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   type?: Prisma.EnumInvoiceClientTypeFieldUpdateOperationsInput | $Enums.InvoiceClientType
@@ -1018,6 +1044,7 @@ export type InvoiceCreateWithoutServiceAndItemsInput = {
   id?: string
   invoiceNo: string
   userId: string
+  imapConfigurationId?: string | null
   issueDate: Date | string
   dueDate?: Date | string | null
   type: $Enums.InvoiceClientType
@@ -1048,6 +1075,7 @@ export type InvoiceUncheckedCreateWithoutServiceAndItemsInput = {
   id?: string
   invoiceNo: string
   userId: string
+  imapConfigurationId?: string | null
   issueDate: Date | string
   dueDate?: Date | string | null
   type: $Enums.InvoiceClientType
@@ -1094,6 +1122,7 @@ export type InvoiceUpdateWithoutServiceAndItemsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   invoiceNo?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  imapConfigurationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   type?: Prisma.EnumInvoiceClientTypeFieldUpdateOperationsInput | $Enums.InvoiceClientType
@@ -1124,6 +1153,7 @@ export type InvoiceUncheckedUpdateWithoutServiceAndItemsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   invoiceNo?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  imapConfigurationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   type?: Prisma.EnumInvoiceClientTypeFieldUpdateOperationsInput | $Enums.InvoiceClientType
@@ -1194,6 +1224,7 @@ export type InvoiceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   id?: boolean
   invoiceNo?: boolean
   userId?: boolean
+  imapConfigurationId?: boolean
   issueDate?: boolean
   dueDate?: boolean
   type?: boolean
@@ -1226,6 +1257,7 @@ export type InvoiceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   invoiceNo?: boolean
   userId?: boolean
+  imapConfigurationId?: boolean
   issueDate?: boolean
   dueDate?: boolean
   type?: boolean
@@ -1255,6 +1287,7 @@ export type InvoiceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   invoiceNo?: boolean
   userId?: boolean
+  imapConfigurationId?: boolean
   issueDate?: boolean
   dueDate?: boolean
   type?: boolean
@@ -1284,6 +1317,7 @@ export type InvoiceSelectScalar = {
   id?: boolean
   invoiceNo?: boolean
   userId?: boolean
+  imapConfigurationId?: boolean
   issueDate?: boolean
   dueDate?: boolean
   type?: boolean
@@ -1309,7 +1343,7 @@ export type InvoiceSelectScalar = {
   createdAt?: boolean
 }
 
-export type InvoiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "invoiceNo" | "userId" | "issueDate" | "dueDate" | "type" | "companyName" | "email" | "AddressAndContactInfo" | "projectInformation" | "projectDescription" | "vat" | "subTotal" | "totalAmount" | "isPaid" | "paidAt" | "stripeSessionId" | "stripePaymentIntentId" | "additionalNote" | "vendor" | "invoiceSource" | "haveAttachment" | "attachmentUrl" | "isDrafted" | "previewedByAccountant" | "createdAt", ExtArgs["result"]["invoice"]>
+export type InvoiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "invoiceNo" | "userId" | "imapConfigurationId" | "issueDate" | "dueDate" | "type" | "companyName" | "email" | "AddressAndContactInfo" | "projectInformation" | "projectDescription" | "vat" | "subTotal" | "totalAmount" | "isPaid" | "paidAt" | "stripeSessionId" | "stripePaymentIntentId" | "additionalNote" | "vendor" | "invoiceSource" | "haveAttachment" | "attachmentUrl" | "isDrafted" | "previewedByAccountant" | "createdAt", ExtArgs["result"]["invoice"]>
 export type InvoiceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   serviceAndItems?: boolean | Prisma.Invoice$serviceAndItemsArgs<ExtArgs>
   businessDatas?: boolean | Prisma.Invoice$businessDatasArgs<ExtArgs>
@@ -1328,6 +1362,7 @@ export type $InvoicePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     id: string
     invoiceNo: string
     userId: string
+    imapConfigurationId: string | null
     issueDate: Date
     dueDate: Date | null
     type: $Enums.InvoiceClientType
@@ -1779,6 +1814,7 @@ export interface InvoiceFieldRefs {
   readonly id: Prisma.FieldRef<"Invoice", 'String'>
   readonly invoiceNo: Prisma.FieldRef<"Invoice", 'String'>
   readonly userId: Prisma.FieldRef<"Invoice", 'String'>
+  readonly imapConfigurationId: Prisma.FieldRef<"Invoice", 'String'>
   readonly issueDate: Prisma.FieldRef<"Invoice", 'DateTime'>
   readonly dueDate: Prisma.FieldRef<"Invoice", 'DateTime'>
   readonly type: Prisma.FieldRef<"Invoice", 'InvoiceClientType'>

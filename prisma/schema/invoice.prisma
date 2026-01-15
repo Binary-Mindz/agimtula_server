@@ -2,6 +2,7 @@ model Invoice {
     id                    String            @id @unique() @default(uuid())
     invoiceNo             String            @unique()
     userId                String
+    imapConfigurationId   String?
     issueDate             DateTime
     dueDate               DateTime?
     type                  InvoiceClientType

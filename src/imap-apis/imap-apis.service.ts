@@ -204,7 +204,6 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
     );
   }
 
-  // Read email transactions since a specific date
   async readEmailTransactionsSince(
     userId: string,
     sinceDate: Date,
@@ -347,6 +346,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
 
               const created = await this.createInvoiceFromExtractedData({
                 userID: userId,
+                imapConfigurationId: imapConfig.id,
                 invoice: {
                   ...data.invoice,
                   haveAttachment: true,
@@ -386,6 +386,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
 
             const created = await this.createInvoiceFromExtractedData({
               userID: userId,
+              imapConfigurationId: imapConfig.id,
               invoice: fallbackInvoice,
             });
 
@@ -421,7 +422,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
 
   // Create invoice from extracted data
   async createInvoiceFromExtractedData(
-    payload: ExtractedInvoicePayload,
+    payload: ExtractedInvoicePayload & { imapConfigurationId?: string },
   ): Promise<Invoice> {
     if (!payload || !payload.userID) {
       throw new HttpException('User ID is required', HttpStatus.BAD_REQUEST);
@@ -434,7 +435,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
       );
     }
 
-    const { userID, invoice } = payload;
+    const { userID, imapConfigurationId, invoice } = payload;
 
     if (!invoice.invoiceNo) {
       invoice.invoiceNo = `AI-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
@@ -450,6 +451,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
     return this.prisma.invoice.create({
       data: {
         userId: userID,
+        imapConfigurationId,
         invoiceNo: invoice.invoiceNo,
         issueDate: this.parseEuropeanDate(invoice.issueDate) ?? new Date(),
         dueDate: this.parseEuropeanDate(invoice.dueDate),

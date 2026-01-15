@@ -203,7 +203,7 @@ export class AutoInvoiceImportsService {
         message: 'Recent 5 data fetched',
         data: recentFiveData.map((data) => ({
           invoiceCount: data.invoicesFound,
-          timeAgo: formatDistanceToNow(new Date(data.createdAt as Date), {
+          timeAgo: formatDistanceToNow(new Date(data.createdAt ), {
             addSuffix: true,
           }),
         })),

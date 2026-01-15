@@ -10,8 +10,9 @@ import { AccountantRequestsModule } from './accountant-requests/accountant-reque
 import { AccountantsModule } from './accountants/accountants.module';
 import { SupportTicketsModule } from './support-tickets/support-tickets.module';
 import { ProfileSettingsModule } from './profile-settings/profile-settings.module';
+import { ImapSystemMonitorModule } from './imap-system-monitor/imap-system-monitor.module';
 
 @Module({
-  imports: [SubscriptionsModule, DashboardModule, UserManagementModule, ReportsAndAnalyticsModule, SystemSettingsModule, SupplierImportsModule, BankDataModule, AccountantRequestsModule, AccountantsModule, SupportTicketsModule, ProfileSettingsModule],
+  imports: [SubscriptionsModule, DashboardModule, UserManagementModule, ReportsAndAnalyticsModule, SystemSettingsModule, SupplierImportsModule, BankDataModule, AccountantRequestsModule, AccountantsModule, SupportTicketsModule, ProfileSettingsModule, ImapSystemMonitorModule],
 })
 export class AdminDashboardModule { }

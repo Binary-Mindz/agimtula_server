@@ -1,4 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
+import { formatDistanceToNow } from 'date-fns';
 import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
 
@@ -29,25 +30,13 @@ export class ImapSystemMonitorService {
           },
         }),
 
-        this.prisma.imapConfiguration.findFirst({
-          where: {
-            connect: true,
-            syncHistory: {
-              some: {
-                syncType: 'CRON',
-              },
-            },
-          },
+        this.prisma.imapSyncHistory.findFirst({
           select: {
-            sync: true,
-            syncHistory: {
-              select: {
-                syncType: true,
-              },
-            },
+            syncCompletedAt: true,
           },
+
           orderBy: {
-            created_at: 'desc',
+            createdAt: 'desc',
           },
         }),
         this.prisma.invoice.count({
@@ -58,11 +47,22 @@ export class ImapSystemMonitorService {
         }),
       ]);
 
+      if (!lastInvoiceSynced?.syncCompletedAt) {
+        return { syncCompletedAt: null };
+      }
+
+      const lastSyncedAgo = formatDistanceToNow(
+        new Date(lastInvoiceSynced.syncCompletedAt),
+        {
+          addSuffix: true,
+        },
+      );
+
       return cResponseData({
         data: {
           totalConnectionCount,
           totalActiveSyncCount,
-          lastInvoiceSynced,
+          lastSynced: lastSyncedAgo,
           errorCount,
         },
       });
@@ -71,6 +71,16 @@ export class ImapSystemMonitorService {
         throw error;
       }
       throw new HttpException('Data fetching failed', 400);
+    }
+  }
+
+  async getConnections() {
+    try {
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException('Failed to get connection data', 400);
     }
   }
 }

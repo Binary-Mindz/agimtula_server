@@ -232,6 +232,7 @@ export const ImapConfigurationScalarFieldEnum = {
   emailNotifications: 'emailNotifications',
   realtimeImapCheckingId: 'realtimeImapCheckingId',
   lastSync: 'lastSync',
+  connectionStatus: 'connectionStatus',
   created_at: 'created_at',
   updated_at: 'updated_at'
 } as const
@@ -526,6 +527,7 @@ export type PaymentMethodScalarFieldEnum = (typeof PaymentMethodScalarFieldEnum)
 export const InvoiceLayoutScalarFieldEnum = {
   id: 'id',
   invoice_prefix: 'invoice_prefix',
+  lastInvoiceNumber: 'lastInvoiceNumber',
   quote_prefix: 'quote_prefix',
   year_format: 'year_format',
   default_vat_rate: 'default_vat_rate',

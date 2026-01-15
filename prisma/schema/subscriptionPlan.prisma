@@ -26,12 +26,12 @@ model PackagePricing {
 }
 
 model invoiceAutoSyncInterval {
-  id                String             @id @unique @default(uuid())
+  id                String              @id @unique @default(uuid())
   title             String
   description       String
-  interval          SyncInterval       @default(DAILY)
+  interval          SyncInterval        @default(DAILY)
   cronTime          String
-  imapConfiguration imapConfiguration?
+  imapConfiguration imapConfiguration[]
 }
 
 enum BillingPeriod {

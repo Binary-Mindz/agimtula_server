@@ -37,6 +37,7 @@ export type InvoiceLayoutSumAggregateOutputType = {
 export type InvoiceLayoutMinAggregateOutputType = {
   id: string | null
   invoice_prefix: string | null
+  lastInvoiceNumber: string | null
   quote_prefix: string | null
   year_format: string | null
   default_vat_rate: number | null
@@ -53,6 +54,7 @@ export type InvoiceLayoutMinAggregateOutputType = {
 export type InvoiceLayoutMaxAggregateOutputType = {
   id: string | null
   invoice_prefix: string | null
+  lastInvoiceNumber: string | null
   quote_prefix: string | null
   year_format: string | null
   default_vat_rate: number | null
@@ -69,6 +71,7 @@ export type InvoiceLayoutMaxAggregateOutputType = {
 export type InvoiceLayoutCountAggregateOutputType = {
   id: number
   invoice_prefix: number
+  lastInvoiceNumber: number
   quote_prefix: number
   year_format: number
   default_vat_rate: number
@@ -95,6 +98,7 @@ export type InvoiceLayoutSumAggregateInputType = {
 export type InvoiceLayoutMinAggregateInputType = {
   id?: true
   invoice_prefix?: true
+  lastInvoiceNumber?: true
   quote_prefix?: true
   year_format?: true
   default_vat_rate?: true
@@ -111,6 +115,7 @@ export type InvoiceLayoutMinAggregateInputType = {
 export type InvoiceLayoutMaxAggregateInputType = {
   id?: true
   invoice_prefix?: true
+  lastInvoiceNumber?: true
   quote_prefix?: true
   year_format?: true
   default_vat_rate?: true
@@ -127,6 +132,7 @@ export type InvoiceLayoutMaxAggregateInputType = {
 export type InvoiceLayoutCountAggregateInputType = {
   id?: true
   invoice_prefix?: true
+  lastInvoiceNumber?: true
   quote_prefix?: true
   year_format?: true
   default_vat_rate?: true
@@ -230,6 +236,7 @@ export type InvoiceLayoutGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 export type InvoiceLayoutGroupByOutputType = {
   id: string
   invoice_prefix: string | null
+  lastInvoiceNumber: string | null
   quote_prefix: string | null
   year_format: string | null
   default_vat_rate: number | null
@@ -269,6 +276,7 @@ export type InvoiceLayoutWhereInput = {
   NOT?: Prisma.InvoiceLayoutWhereInput | Prisma.InvoiceLayoutWhereInput[]
   id?: Prisma.StringFilter<"InvoiceLayout"> | string
   invoice_prefix?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
+  lastInvoiceNumber?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
   quote_prefix?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
   year_format?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
   default_vat_rate?: Prisma.FloatNullableFilter<"InvoiceLayout"> | number | null
@@ -286,6 +294,7 @@ export type InvoiceLayoutWhereInput = {
 export type InvoiceLayoutOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   invoice_prefix?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastInvoiceNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   quote_prefix?: Prisma.SortOrderInput | Prisma.SortOrder
   year_format?: Prisma.SortOrderInput | Prisma.SortOrder
   default_vat_rate?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -307,6 +316,7 @@ export type InvoiceLayoutWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.InvoiceLayoutWhereInput[]
   NOT?: Prisma.InvoiceLayoutWhereInput | Prisma.InvoiceLayoutWhereInput[]
   invoice_prefix?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
+  lastInvoiceNumber?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
   quote_prefix?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
   year_format?: Prisma.StringNullableFilter<"InvoiceLayout"> | string | null
   default_vat_rate?: Prisma.FloatNullableFilter<"InvoiceLayout"> | number | null
@@ -323,6 +333,7 @@ export type InvoiceLayoutWhereUniqueInput = Prisma.AtLeast<{
 export type InvoiceLayoutOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   invoice_prefix?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastInvoiceNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   quote_prefix?: Prisma.SortOrderInput | Prisma.SortOrder
   year_format?: Prisma.SortOrderInput | Prisma.SortOrder
   default_vat_rate?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -347,6 +358,7 @@ export type InvoiceLayoutScalarWhereWithAggregatesInput = {
   NOT?: Prisma.InvoiceLayoutScalarWhereWithAggregatesInput | Prisma.InvoiceLayoutScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"InvoiceLayout"> | string
   invoice_prefix?: Prisma.StringNullableWithAggregatesFilter<"InvoiceLayout"> | string | null
+  lastInvoiceNumber?: Prisma.StringNullableWithAggregatesFilter<"InvoiceLayout"> | string | null
   quote_prefix?: Prisma.StringNullableWithAggregatesFilter<"InvoiceLayout"> | string | null
   year_format?: Prisma.StringNullableWithAggregatesFilter<"InvoiceLayout"> | string | null
   default_vat_rate?: Prisma.FloatNullableWithAggregatesFilter<"InvoiceLayout"> | number | null
@@ -363,6 +375,7 @@ export type InvoiceLayoutScalarWhereWithAggregatesInput = {
 export type InvoiceLayoutCreateInput = {
   id?: string
   invoice_prefix?: string | null
+  lastInvoiceNumber?: string | null
   quote_prefix?: string | null
   year_format?: string | null
   default_vat_rate?: number | null
@@ -379,6 +392,7 @@ export type InvoiceLayoutCreateInput = {
 export type InvoiceLayoutUncheckedCreateInput = {
   id?: string
   invoice_prefix?: string | null
+  lastInvoiceNumber?: string | null
   quote_prefix?: string | null
   year_format?: string | null
   default_vat_rate?: number | null
@@ -395,6 +409,7 @@ export type InvoiceLayoutUncheckedCreateInput = {
 export type InvoiceLayoutUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   invoice_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastInvoiceNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quote_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   default_vat_rate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -411,6 +426,7 @@ export type InvoiceLayoutUpdateInput = {
 export type InvoiceLayoutUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   invoice_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastInvoiceNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quote_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   default_vat_rate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -427,6 +443,7 @@ export type InvoiceLayoutUncheckedUpdateInput = {
 export type InvoiceLayoutCreateManyInput = {
   id?: string
   invoice_prefix?: string | null
+  lastInvoiceNumber?: string | null
   quote_prefix?: string | null
   year_format?: string | null
   default_vat_rate?: number | null
@@ -443,6 +460,7 @@ export type InvoiceLayoutCreateManyInput = {
 export type InvoiceLayoutUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   invoice_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastInvoiceNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quote_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   default_vat_rate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -458,6 +476,7 @@ export type InvoiceLayoutUpdateManyMutationInput = {
 export type InvoiceLayoutUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   invoice_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastInvoiceNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quote_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   default_vat_rate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -474,6 +493,7 @@ export type InvoiceLayoutUncheckedUpdateManyInput = {
 export type InvoiceLayoutCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   invoice_prefix?: Prisma.SortOrder
+  lastInvoiceNumber?: Prisma.SortOrder
   quote_prefix?: Prisma.SortOrder
   year_format?: Prisma.SortOrder
   default_vat_rate?: Prisma.SortOrder
@@ -494,6 +514,7 @@ export type InvoiceLayoutAvgOrderByAggregateInput = {
 export type InvoiceLayoutMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   invoice_prefix?: Prisma.SortOrder
+  lastInvoiceNumber?: Prisma.SortOrder
   quote_prefix?: Prisma.SortOrder
   year_format?: Prisma.SortOrder
   default_vat_rate?: Prisma.SortOrder
@@ -510,6 +531,7 @@ export type InvoiceLayoutMaxOrderByAggregateInput = {
 export type InvoiceLayoutMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   invoice_prefix?: Prisma.SortOrder
+  lastInvoiceNumber?: Prisma.SortOrder
   quote_prefix?: Prisma.SortOrder
   year_format?: Prisma.SortOrder
   default_vat_rate?: Prisma.SortOrder
@@ -575,6 +597,7 @@ export type InvoiceLayoutUncheckedUpdateOneWithoutUserNestedInput = {
 export type InvoiceLayoutCreateWithoutUserInput = {
   id?: string
   invoice_prefix?: string | null
+  lastInvoiceNumber?: string | null
   quote_prefix?: string | null
   year_format?: string | null
   default_vat_rate?: number | null
@@ -590,6 +613,7 @@ export type InvoiceLayoutCreateWithoutUserInput = {
 export type InvoiceLayoutUncheckedCreateWithoutUserInput = {
   id?: string
   invoice_prefix?: string | null
+  lastInvoiceNumber?: string | null
   quote_prefix?: string | null
   year_format?: string | null
   default_vat_rate?: number | null
@@ -621,6 +645,7 @@ export type InvoiceLayoutUpdateToOneWithWhereWithoutUserInput = {
 export type InvoiceLayoutUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   invoice_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastInvoiceNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quote_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   default_vat_rate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -636,6 +661,7 @@ export type InvoiceLayoutUpdateWithoutUserInput = {
 export type InvoiceLayoutUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   invoice_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastInvoiceNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quote_prefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   default_vat_rate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -653,6 +679,7 @@ export type InvoiceLayoutUncheckedUpdateWithoutUserInput = {
 export type InvoiceLayoutSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   invoice_prefix?: boolean
+  lastInvoiceNumber?: boolean
   quote_prefix?: boolean
   year_format?: boolean
   default_vat_rate?: boolean
@@ -670,6 +697,7 @@ export type InvoiceLayoutSelect<ExtArgs extends runtime.Types.Extensions.Interna
 export type InvoiceLayoutSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   invoice_prefix?: boolean
+  lastInvoiceNumber?: boolean
   quote_prefix?: boolean
   year_format?: boolean
   default_vat_rate?: boolean
@@ -687,6 +715,7 @@ export type InvoiceLayoutSelectCreateManyAndReturn<ExtArgs extends runtime.Types
 export type InvoiceLayoutSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   invoice_prefix?: boolean
+  lastInvoiceNumber?: boolean
   quote_prefix?: boolean
   year_format?: boolean
   default_vat_rate?: boolean
@@ -704,6 +733,7 @@ export type InvoiceLayoutSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
 export type InvoiceLayoutSelectScalar = {
   id?: boolean
   invoice_prefix?: boolean
+  lastInvoiceNumber?: boolean
   quote_prefix?: boolean
   year_format?: boolean
   default_vat_rate?: boolean
@@ -717,7 +747,7 @@ export type InvoiceLayoutSelectScalar = {
   userId?: boolean
 }
 
-export type InvoiceLayoutOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "invoice_prefix" | "quote_prefix" | "year_format" | "default_vat_rate" | "vat_breakdown" | "prices_include_vat" | "template_title" | "footer_text" | "show_company_logo" | "invoice_notes" | "terms_and_conditions" | "userId", ExtArgs["result"]["invoiceLayout"]>
+export type InvoiceLayoutOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "invoice_prefix" | "lastInvoiceNumber" | "quote_prefix" | "year_format" | "default_vat_rate" | "vat_breakdown" | "prices_include_vat" | "template_title" | "footer_text" | "show_company_logo" | "invoice_notes" | "terms_and_conditions" | "userId", ExtArgs["result"]["invoiceLayout"]>
 export type InvoiceLayoutInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -736,6 +766,7 @@ export type $InvoiceLayoutPayload<ExtArgs extends runtime.Types.Extensions.Inter
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     invoice_prefix: string | null
+    lastInvoiceNumber: string | null
     quote_prefix: string | null
     year_format: string | null
     default_vat_rate: number | null
@@ -1173,6 +1204,7 @@ export interface Prisma__InvoiceLayoutClient<T, Null = never, ExtArgs extends ru
 export interface InvoiceLayoutFieldRefs {
   readonly id: Prisma.FieldRef<"InvoiceLayout", 'String'>
   readonly invoice_prefix: Prisma.FieldRef<"InvoiceLayout", 'String'>
+  readonly lastInvoiceNumber: Prisma.FieldRef<"InvoiceLayout", 'String'>
   readonly quote_prefix: Prisma.FieldRef<"InvoiceLayout", 'String'>
   readonly year_format: Prisma.FieldRef<"InvoiceLayout", 'String'>
   readonly default_vat_rate: Prisma.FieldRef<"InvoiceLayout", 'Float'>

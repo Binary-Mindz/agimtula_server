@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { AutoInvoiceImportsService } from './auto-invoice-imports.service';
 import { ImapEmailConnectionDto } from './dto/imap-email-connection.dto';
 import { Roles } from 'src/decorators/roles.decorator';
@@ -7,7 +15,7 @@ import { User } from 'src/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 import { urlPrefix } from '../url-prefix';
 import { ImapApisService } from 'src/imap-apis/imap-apis.service';
-import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { ImapSyncService } from './imap-sync.service';
 import { cResponseData } from 'src/common/cResponse';
 
@@ -78,6 +86,24 @@ export class UserAutoInvoiceImportsController {
     );
   }
 
+  @Get('auto-imported-invoices')
+  @Roles('USER')
+  @ApiOperation({ summary: 'Get auto imported invoices with pagination' })
+  @ApiResponse({ status: 200, description: 'Invoices fetched successfully' })
+  @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })
+  @ApiQuery({ name: 'limit', required: false, type: Number, example: 10 })
+  async autoImportedInvoices(
+    @User() user: jwtPayload,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
+  ) {
+    return this.autoInvoiceImportsService.autoImportedInvoices(
+      user.sub,
+      page ? Number(page) : 1,
+      limit ? Number(limit) : 10,
+    );
+  }
+
   @Get('view-or-download/:invoiceId')
   @Roles('USER')
   @ApiParam({ name: 'invoiceId', description: 'Invoice ID' })
@@ -87,7 +113,10 @@ export class UserAutoInvoiceImportsController {
     @Param('invoiceId') invoiceId: string,
     @User() user: jwtPayload,
   ) {
-    return await this.autoInvoiceImportsService.viewOrDownload(invoiceId, user.sub);
+    return await this.autoInvoiceImportsService.viewOrDownload(
+      invoiceId,
+      user.sub,
+    );
   }
 
   // syncing
@@ -123,6 +152,23 @@ export class UserAutoInvoiceImportsController {
     const result = await this.imapSyncService.resetLastSync(user.sub);
     return cResponseData({
       message: 'Last sync reset successfully',
+      data: result,
+    });
+  }
+
+  @Get('sync-history')
+  @Roles('USER')
+  @ApiOperation({ summary: 'Get IMAP sync history ( USER only )' })
+  @ApiResponse({
+    status: 200,
+    description: 'Sync history retrieved successfully',
+  })
+  async getSyncHistory(@User() user: jwtPayload) {
+    const result = await this.autoInvoiceImportsService.recentFiveData(
+      user.sub,
+    );
+    return cResponseData({
+      message: 'Sync history retrieved successfully',
       data: result,
     });
   }

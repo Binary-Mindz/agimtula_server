@@ -26,6 +26,24 @@ export const Status = {
 export type Status = (typeof Status)[keyof typeof Status]
 
 
+export const SyncStatus = {
+  SUCCESS: 'SUCCESS',
+  FAILED: 'FAILED',
+  PARTIAL: 'PARTIAL'
+} as const
+
+export type SyncStatus = (typeof SyncStatus)[keyof typeof SyncStatus]
+
+
+export const SyncType = {
+  MANUAL: 'MANUAL',
+  AUTOMATIC: 'AUTOMATIC',
+  CRON: 'CRON'
+} as const
+
+export type SyncType = (typeof SyncType)[keyof typeof SyncType]
+
+
 export const PaymentStatus = {
   PAID: 'PAID',
   PENDING: 'PENDING',

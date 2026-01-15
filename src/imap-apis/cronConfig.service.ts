@@ -94,6 +94,9 @@ export class CronConfigService implements OnModuleInit {
   }
 
   async runSyncJob(userId: string) {
+    const syncStartedAt = new Date();
+    let syncHistoryId: string | null = null;
+
     try {
       console.log(`Running sync job for user ${userId}`);
       const imapConfig = await this.prisma.imapConfiguration.findUnique({
@@ -102,17 +105,57 @@ export class CronConfigService implements OnModuleInit {
 
       if (!imapConfig) return;
 
+      // Create sync history record
+      const syncHistory = await this.prisma.imapSyncHistory.create({
+        data: {
+          imapConfigurationId: imapConfig.id,
+          syncStartedAt,
+          status: 'SUCCESS',
+          syncType: 'CRON',
+          invoicesFound: 0,
+          invoicesCreated: 0,
+        },
+      });
+      syncHistoryId = syncHistory.id;
+
       const lastSyncDate = imapConfig.lastSync || imapConfig.created_at;
-      await this.imapApisService.readEmailTransactionsSince(
+      const newInvoices = await this.imapApisService.readEmailTransactionsSince(
         userId,
         lastSyncDate,
       );
 
-      await this.prisma.imapConfiguration.update({
-        where: { userId },
-        data: { lastSync: new Date() },
+      const syncCompletedAt = new Date();
+
+      // Update sync history with results
+      await this.prisma.imapSyncHistory.update({
+        where: { id: syncHistoryId },
+        data: {
+          syncCompletedAt,
+          status: 'SUCCESS',
+          invoicesFound: newInvoices.length,
+          invoicesCreated: newInvoices.length,
+        },
       });
+
+      // Update lastSync if invoices were found
+      if (newInvoices.length > 0) {
+        await this.prisma.imapConfiguration.update({
+          where: { userId },
+          data: { lastSync: syncCompletedAt },
+        });
+      }
     } catch (error) {
+      // Update sync history with error
+      if (syncHistoryId) {
+        await this.prisma.imapSyncHistory.update({
+          where: { id: syncHistoryId },
+          data: {
+            syncCompletedAt: new Date(),
+            status: 'FAILED',
+            errorMessage: error instanceof Error ? error.message : 'Unknown error occurred',
+          },
+        });
+      }
       console.error(`Sync job failed for user ${userId}:`, error);
     }
   }

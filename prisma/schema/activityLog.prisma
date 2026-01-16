@@ -1,0 +1,32 @@
+model ActivityLog {
+  id          String   @id @default(uuid())
+  
+  // Who & What
+  userId      String?
+  userName    String?
+  userEmail   String?
+  
+  // Activity Details
+  type        String
+  title       String
+  description String?
+  
+  // For amounts (payments, subscriptions)
+  amount      Float?
+  currency    String?
+  
+  // Categorization
+  category    String   // USER, ADMIN, SYSTEM
+  level       String   @default("INFO") // INFO, WARNING, ERROR
+  
+  // Optional metadata
+  metadata    Json?
+  
+  createdAt   DateTime @default(now())
+  
+  @@index([userId])
+  @@index([category])
+  @@index([level])
+  @@index([createdAt])
+  @@map("activity_logs")
+}

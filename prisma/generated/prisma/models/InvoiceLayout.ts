@@ -554,14 +554,6 @@ export type InvoiceLayoutNullableScalarRelationFilter = {
   isNot?: Prisma.InvoiceLayoutWhereInput | null
 }
 
-export type NullableFloatFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type InvoiceLayoutCreateNestedOneWithoutUserInput = {
   create?: Prisma.XOR<Prisma.InvoiceLayoutCreateWithoutUserInput, Prisma.InvoiceLayoutUncheckedCreateWithoutUserInput>
   connectOrCreate?: Prisma.InvoiceLayoutCreateOrConnectWithoutUserInput

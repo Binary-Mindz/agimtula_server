@@ -1,12 +1,18 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
+import { ActivityLogService } from 'src/common/activity-log/activity-log.service';
+import { formatDistanceToNow } from 'date-fns';
 
 @Injectable()
 export class DashboardService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly activityLog: ActivityLogService,
+  ) {}
 
-  async dashboardData(userId: string) {
+  async dashboardData(userId: string): Promise<ReturnType<typeof cResponseData>> {
     try {
       if (!userId) {
         throw new HttpException('User ID is required', HttpStatus.BAD_REQUEST);
@@ -185,6 +191,38 @@ export class DashboardService {
       console.error('Dashboard data error:', error);
       throw new HttpException(
         'Failed to fetch dashboard data',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async getRecentActivities(userId: string, limit = 5): Promise<ReturnType<typeof cResponseData>> {
+    try {
+      if (!userId) {
+        throw new HttpException('User ID is required', HttpStatus.BAD_REQUEST);
+      }
+
+      const activities = await this.activityLog.getUserActivities(userId, limit);
+
+      const formattedActivities = activities.map((activity) => ({
+        ...activity,
+        timeAgo: formatDistanceToNow(new Date(activity.createdAt as string | number | Date), {
+          addSuffix: true,
+        }),
+      }));
+
+      return cResponseData({
+        success: true,
+        message: 'Recent activities fetched successfully',
+        data: formattedActivities,
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      console.error('Get recent activities error:', error);
+      throw new HttpException(
+        'Failed to fetch recent activities',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

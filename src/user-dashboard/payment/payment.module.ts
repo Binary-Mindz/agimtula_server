@@ -5,9 +5,10 @@ import { StripeService } from './stripe.service';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { SubscriptionExpiryCron } from 'src/jobs/subscription-expiry.cron';
 import { WebhookController } from './webhook.controller';
-// import { WebhookController } from 'src/webhook/webhook.controller';
+import { ActivityLogModule } from 'src/common/activity-log/activity-log.module';
 
 @Module({
+  imports: [ActivityLogModule],
   controllers: [UserPaymentController, WebhookController],
   providers: [
     PaymentService,

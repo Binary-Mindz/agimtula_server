@@ -21,6 +21,7 @@ import { SendRegistrationOtpDto } from './dto/send-registration-otp.dto';
 import { VerifyRegistrationOtpDto } from './dto/verify-registration-otp.dto';
 import { CompleteRegistrationDto } from './dto/complete-registration.dto';
 import * as crypto from 'crypto';
+import { ActivityLogService } from 'src/common/activity-log/activity-log.service';
 
 interface Login2FAPayload {
   userId: string;
@@ -44,6 +45,7 @@ export class AuthService {
     private jwt: JwtService,
     private mail: SmtpMailService,
     private redis: RedisServiceService,
+    private activityLog: ActivityLogService,
   ) {}
 
   private async setRedisValue<T>(key: string, value: T, ttl: number) {
@@ -231,6 +233,24 @@ export class AuthService {
       });
 
       await this.redis.del(tokenKey);
+
+      // Log user registration for admin
+      await this.activityLog.log({
+        userName: `${dto.firstName} ${dto.lastName}`,
+        userEmail: dto.email,
+        type: 'USER_REGISTERED',
+        title: `${dto.firstName} ${dto.lastName} - New user registered`,
+        category: 'ADMIN',
+      });
+
+      // Log to system logs
+      await this.activityLog.log({
+        userEmail: dto.email,
+        type: 'USER_REGISTERED',
+        title: `New user registered: ${dto.email}`,
+        category: 'SYSTEM',
+        level: 'INFO',
+      });
 
       this.logger.log(
         `User registered successfully: ${user.id} - ${dto.email}`,

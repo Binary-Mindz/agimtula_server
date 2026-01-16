@@ -4,6 +4,8 @@ import { ImapApisService } from '../../imap-apis/imap-apis.service';
 import { Invoice, SyncInterval } from 'prisma/generated/prisma/client';
 import { CronConfigService } from '../../imap-apis/cronConfig.service';
 import { ActivityLogService } from 'src/common/activity-log/activity-log.service';
+import { ImapSystemMonitorService } from 'src/admin-dashboard/imap-system-monitor/imap-system-monitor.service';
+import { formatDistanceToNow } from 'date-fns';
 
 @Injectable()
 export class ImapSyncService {
@@ -12,6 +14,7 @@ export class ImapSyncService {
     private imapApisService: ImapApisService,
     private cronConfigService: CronConfigService,
     private activityLog: ActivityLogService,
+    private imapMonitor: ImapSystemMonitorService,
   ) {}
 
   async syncEmails(userId: string): Promise<Invoice[]> {
@@ -143,6 +146,30 @@ export class ImapSyncService {
           data: { lastSync: syncCompletedAt },
         });
 
+        // Get user info for notifications
+        const user = await this.prisma.user.findUnique({
+          where: { id: userId },
+          include: { profile: true, email: true },
+        });
+
+        // Notify via WebSocket for each invoice
+        console.log('Notifying WebSocket for', newInvoices.length, 'invoices');
+        for (const invoice of newInvoices) {
+          const notificationData = {
+            id: invoice.id,
+            userName: user?.profile
+              ? `${user.profile.firstName} ${user.profile.lastName}`
+              : 'Unknown',
+            userEmail: user?.email?.email || 'Unknown',
+            status: invoice.haveAttachment ? 'success' : 'error',
+            timestamp: formatDistanceToNow(new Date(invoice.createdAt), {
+              addSuffix: true,
+            }),
+          };
+          console.log('Sending notification:', notificationData);
+          this.imapMonitor.notifyInvoiceImport(notificationData);
+        }
+
         // Log successful sync
         await this.activityLog.log({
           userId,
@@ -173,7 +200,8 @@ export class ImapSyncService {
           userEmail: user.email.email,
           type: 'IMAP_SYNC_FAILED',
           title: `IMAP sync failed for user ${user.email.email}`,
-          description: error instanceof HttpException ? error.message : 'Unknown error',
+          description:
+            error instanceof HttpException ? error.message : 'Unknown error',
           category: 'SYSTEM',
           level: 'ERROR',
         });
@@ -238,8 +266,6 @@ export class ImapSyncService {
       );
     }
   }
-
-
 
   async resetLastSync(userId: string) {
     try {

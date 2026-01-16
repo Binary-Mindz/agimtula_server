@@ -3,12 +3,14 @@ import { formatDistanceToNow } from 'date-fns';
 import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { ActivityLogService } from 'src/common/activity-log/activity-log.service';
+import { ImapSystemMonitorGateway } from './imap-system-monitor.gateway';
 
 @Injectable()
 export class ImapSystemMonitorService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly activityLog: ActivityLogService,
+    private readonly gateway: ImapSystemMonitorGateway,
   ) {}
 
   async getImapConnectionData() {
@@ -291,6 +293,61 @@ export class ImapSystemMonitorService {
           throw error;
         }
         throw new HttpException('Failed to disconnect user', 400);
+      }
+    }
+
+    async getRecentImports() {
+      try {
+        const imports = await this.prisma.invoice.findMany({
+          where: { invoiceSource: 'EMAIL' },
+          orderBy: { createdAt: 'desc' },
+          take: 10,
+          select: {
+            id: true,
+            userId: true,
+            createdAt: true,
+            haveAttachment: true,
+          },
+        });
+
+        const userIds = [...new Set(imports.map((inv) => inv.userId))];
+        const users = await this.prisma.user.findMany({
+          where: { id: { in: userIds } },
+          select: {
+            id: true,
+            profile: { select: { firstName: true, lastName: true } },
+            email: { select: { email: true } },
+          },
+        });
+
+        const userMap = new Map(users.map((u) => [u.id, u]));
+
+        const data = imports.map((inv) => {
+          const user = userMap.get(inv.userId);
+          return {
+            id: inv.id,
+            userName: user?.profile
+              ? `${user.profile.firstName} ${user.profile.lastName}`
+              : 'Unknown',
+            userEmail: user?.email?.email || 'Unknown',
+            status: inv.haveAttachment ? 'success' : 'error',
+            timestamp: formatDistanceToNow(new Date(inv.createdAt), {
+              addSuffix: true,
+            }),
+          };
+        });
+
+        return cResponseData({ data });
+      } catch {
+        throw new HttpException('Failed to fetch recent imports', 400);
+      }
+    }
+
+    notifyInvoiceImport(invoiceData: any) {
+      if (this.gateway) {
+        this.gateway.emitInvoiceImport(invoiceData);
+      } else {
+        console.error('Gateway instance is null!');
       }
     }
 }

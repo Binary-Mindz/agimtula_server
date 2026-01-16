@@ -14,8 +14,7 @@ export class ReportsAndAnalyticsService {
         1,
       );
 
-      const [lastSixMonthsUsers, lastSixMonthsActiveUsers] = await Promise.all([
-        this.prisma.user.findMany({
+      const lastSixMonthsUsers = await this.prisma.user.findMany({
           where: {
             created_at: {
               gte: lastSixMonths,
@@ -24,24 +23,11 @@ export class ReportsAndAnalyticsService {
             isDeleted: false,
           },
           select: { created_at: true },
-        }),
-        this.prisma.user.findMany({
-          where: {
-            created_at: {
-              gte: lastSixMonths,
-            },
-            isDeleted: false,
-            role: 'USER',
-            status: true,
-          },
-          select: { created_at: true },
-        }),
-      ]);
-
-      const userActivity: {
+        })
+       
+      const usersActivity: {
         month: string;
         totalUsers: number;
-        activeUsers: number;
       }[] = [];
 
       // Process total users
@@ -50,40 +36,20 @@ export class ReportsAndAnalyticsService {
         const year = item.created_at.getFullYear();
         const monthYear = `${year}-${month}`;
 
-        const existingMonth = userActivity.find((m) => m.month === monthYear);
+        const existingMonth = usersActivity.find((m) => m.month === monthYear);
 
         if (existingMonth) {
           existingMonth.totalUsers += 1;
         } else {
-          userActivity.push({
+          usersActivity.push({
             month: monthYear,
-            totalUsers: 1,
-            activeUsers: 0,
-          });
-        }
-      });
-
-      // Process active users
-      lastSixMonthsActiveUsers.forEach((item) => {
-        const month = item.created_at.getMonth() + 1;
-        const year = item.created_at.getFullYear();
-        const monthYear = `${year}-${month}`;
-
-        const existingMonth = userActivity.find((m) => m.month === monthYear);
-
-        if (existingMonth) {
-          existingMonth.activeUsers += 1;
-        } else {
-          userActivity.push({
-            month: monthYear,
-            totalUsers: 0,
-            activeUsers: 1,
+            totalUsers: 1
           });
         }
       });
 
       return cResponseData({
-        data: userActivity,
+        data: usersActivity,
       });
     } catch (error) {
       console.error('User activity error:', error);

@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -122,7 +123,7 @@ export class AdminUserManagementController {
     return this.userManagementService.getPlans();
   }
 
-  @Patch('deleteAccount/:userId')
+  @Delete('deleteAccount/:userId')
   @Roles('ADMIN')
   @ApiParam({
     name: 'userId',

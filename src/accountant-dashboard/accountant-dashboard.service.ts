@@ -9,10 +9,71 @@ import { NotFoundAppException } from 'src/common/app-exceptions';
 export class AccountantDashboardService {
   constructor(private readonly prisma: PrismaService) {}
 
+  async getActivityFeed(accountantId: string) {
+    try {
+      const clients = await this.prisma.user.findMany({
+        where: { accountantId, isDeleted: false, role: 'USER' },
+        select: {
+          id: true,
+          email: { select: { email: true } },
+          profile: { select: { firstName: true, lastName: true } },
+        },
+      });
+
+      const clientIds = clients.map((c) => c.id);
+      const userMap = new Map(
+        clients.map((c) => [
+          c.id,
+          {
+            name: c.profile
+              ? `${c.profile.firstName} ${c.profile.lastName}`
+              : null,
+            email: c.email?.email || null,
+          },
+        ]),
+      );
+
+      const activities = await this.prisma.activityLog.findMany({
+        where: {
+          userId: { in: clientIds },
+          category: 'USER',
+        },
+        orderBy: { createdAt: 'desc' },
+        take: 20,
+      });
+
+      const enrichedActivities = activities.map((activity) => {
+        const userInfo = activity.userId
+          ? userMap.get(activity.userId as string)
+          : null;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        return {
+          ...activity,
+          userName: activity.userName || userInfo?.name || null,
+          userEmail: activity.userEmail || userInfo?.email || null,
+        };
+      });
+
+      return cResponseData({
+        message: 'Activity feed fetched successfully',
+        data: enrichedActivities,
+      });
+    } catch (error) {
+      console.error('Get activity feed error:', error);
+      throw new HttpException(
+        'Failed to fetch activity feed',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   async fetchAccountantDashboardData(accId: string) {
     try {
       if (!accId) {
-        throw new HttpException('Accountant ID is required', HttpStatus.BAD_REQUEST);
+        throw new HttpException(
+          'Accountant ID is required',
+          HttpStatus.BAD_REQUEST,
+        );
       }
 
       const clients = await this.prisma.user.findMany({
@@ -45,7 +106,7 @@ export class AccountantDashboardService {
           where: {
             userId: { in: clientIds },
             invoiceSource: 'EMAIL',
-            haveAttachment: false,
+            haveAttachment: true,
             createdAt: {
               gte: new Date(new Date().setDate(new Date().getDate() - 7)),
             },

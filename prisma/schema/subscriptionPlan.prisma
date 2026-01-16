@@ -1,6 +1,6 @@
 model SubscriptionPlan {
   id             String           @id @unique @default(uuid())
-  planName       String
+  planName       String           @unique
   isActive       Boolean          @default(false)
   description    String?
   createdAt      DateTime         @default(now())

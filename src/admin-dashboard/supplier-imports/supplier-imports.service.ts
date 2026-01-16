@@ -8,15 +8,28 @@ export class SupplierImportsService {
 
   async getActivity() {
     try {
-      const [totalUser, totalImapConnection] = await Promise.all([
-        this.prisma.user.count({ where: { role: 'USER', isDeleted: false } }),
-        this.prisma.imapConfiguration.count(),
-      ]);
+      const [totalUser, totalImapConnection, failedImapImports] =
+        await Promise.all([
+          this.prisma.user.count({ where: { role: 'USER', isDeleted: false } }),
+          this.prisma.imapConfiguration.count({
+            where: {
+              connect: true,
+              connectionStatus: 'CONNECTED',
+            },
+          }),
+          this.prisma.invoice.count({
+            where: {
+              invoiceSource: 'EMAIL',
+              haveAttachment: false,
+            },
+          }),
+        ]);
 
       return cResponseData({
         data: {
           totalUser: totalUser || 0,
           totalImapConnection: totalImapConnection || 0,
+          failedImapImports: failedImapImports || 0,
         },
         message: 'Supplier import activity data fetched successfully',
       });
@@ -44,8 +57,16 @@ export class SupplierImportsService {
         orderBy: { created_at: 'desc' },
       });
 
+      const data = recentUsers.map((recentUser) => ({
+        id: recentUser.id,
+        name: `${recentUser.profile?.firstName || ''} ${recentUser.profile?.lastName || ''}`,
+        role: recentUser.role,
+        email: recentUser.email,
+        createdAt: recentUser.created_at,
+      }));
+
       return cResponseData({
-        data: recentUsers,
+        data: data,
         message: 'Recent users fetched successfully',
       });
     } catch (error) {

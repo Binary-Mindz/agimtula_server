@@ -10,7 +10,7 @@ import { ApiOperation } from '@nestjs/swagger';
 export class AccountantDashboardController {
   constructor(
     private readonly accountantDashboardService: AccountantDashboardService,
-  ) { }
+  ) {}
 
   @Get()
   @Roles('ACCOUNTANT')
@@ -18,6 +18,13 @@ export class AccountantDashboardController {
     return await this.accountantDashboardService.fetchAccountantDashboardData(
       user.sub,
     );
+  }
+
+  @Get('recent-activities')
+  @Roles('ACCOUNTANT')
+  @ApiOperation({ summary: 'Get recent activities ( ACCOUNTANT )' })
+  async getRecentActivities(@User() user: jwtPayload) {
+    return await this.accountantDashboardService.getRecentActivities(user.sub);
   }
 
   @Get(':userId')

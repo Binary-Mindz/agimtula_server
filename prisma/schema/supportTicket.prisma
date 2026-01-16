@@ -1,15 +1,15 @@
 model SupportTicket {
-  id           String                 @id @default(uuid())
-  ticketNumber Int                    @unique @default(autoincrement())
-  ticketCode   String?                @unique
+  id           String                @id @default(uuid())
+  ticketNumber Int                   @unique @default(autoincrement())
+  ticketCode   String?               @unique
   userId       String
-  user         User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
   subject      String
   description  String?
-  status       SupportTicketStatus    @default(OPEN)
-  priority     SupportTicketPriority  @default(MEDIUM)
-  createdAt    DateTime               @default(now())
-  updatedAt    DateTime               @updatedAt
+  status       SupportTicketStatus   @default(OPEN)
+  priority     SupportTicketPriority @default(MEDIUM)
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
   resolvedAt   DateTime?
 
   @@map("support_ticket")

@@ -22,11 +22,11 @@ import { AccountantDashboardModule } from './accountant-dashboard/accountant-das
 import { AccountantSettingsModule } from './accountant-dashboard/accountants/accountant-settings/accountant-settings.module';
 import { PurchaseManagementModule } from './accountant-dashboard/accountants/purchase-management/purchase-management.module';
 import { SalesInvoicesModule } from './accountant-dashboard/accountants/sales-invoices/sales-invoices.module';
-import { DashboardModule } from './user-dashboard/user-dashboard/dashboard.module';
 import { ReceiptExpenseModule } from './accountant-dashboard/accountants/receipt-expense/receipt-expense.module';
 import { VatOverviewModule } from './accountant-dashboard/accountants/vat-overview/vat-overview.module';
 import { ClientsModule } from './accountant-dashboard/accountants/clients/clients.module';
 import { ReportsModule } from './accountant-dashboard/accountants/reports/reports.module';
+import { DashboardModule } from './admin-dashboard/dashboard/dashboard.module';
 
 @Module({
   imports: [

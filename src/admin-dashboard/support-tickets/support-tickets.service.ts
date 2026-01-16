@@ -1,15 +1,19 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { SupportTicketPriority, SupportTicketStatus } from 'prisma/generated/prisma/enums';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { SupportTicketStatus } from 'prisma/generated/prisma/enums';
 import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { CreateSupportTicketDto } from './dto/create-support-ticket.dto';
 import { SupportTicketQueryDto } from './dto/support-ticket-query.dto';
-import { UpdateSupportTicketDto } from './dto/update-support-ticket.dto';
+// import { UpdateSupportTicketDto } from './dto/update-support-ticket.dto';
 import { UpdateSupportTicketStatusDto } from './dto/update-support-ticket-status.dto';
 
 @Injectable()
 export class SupportTicketsService {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   private ticketInclude = {
     user: {
@@ -30,6 +34,7 @@ export class SupportTicketsService {
       },
       where: {
         isDeleted: false,
+        status: true,
       },
     },
   } as const;
@@ -48,14 +53,11 @@ export class SupportTicketsService {
         throw new NotFoundException('User not found');
       }
 
-
-
       const createdTicket = await this.prisma.supportTicket.create({
         data: {
           userId: userExists.id,
           subject: dto.subject,
           description: dto.description,
-          priority: dto.priority ?? SupportTicketPriority.MEDIUM,
         },
       });
 
@@ -79,7 +81,16 @@ export class SupportTicketsService {
 
   async getTickets(query: SupportTicketQueryDto) {
     try {
-      const { status, priority, search, userId, from, to, page = 1, limit = 10 } = query;
+      const {
+        status,
+        priority,
+        search,
+        userId,
+        from,
+        to,
+        page = 1,
+        limit = 10,
+      } = query;
       const where: any = {};
 
       if (status) where.status = status;
@@ -137,41 +148,51 @@ export class SupportTicketsService {
         throw new NotFoundException('Support ticket not found');
       }
 
-      return cResponseData({ data: ticket, message: 'Support ticket fetched successfully' });
+      return cResponseData({
+        data: ticket,
+        message: 'Support ticket fetched successfully',
+      });
     } catch (error) {
       console.error(error);
       throw new BadRequestException('Failed to fetch support ticket');
     }
   }
 
-  async updateTicket(id: string, dto: UpdateSupportTicketDto) {
-    try {
-      const ticket = await this.prisma.supportTicket.findUnique({ where: { id } });
+  // async updateTicket(id: string, dto: UpdateSupportTicketDto) {
+  //   try {
+  //     const ticket = await this.prisma.supportTicket.findUnique({
+  //       where: { id },
+  //     });
 
-      if (!ticket) {
-        throw new NotFoundException('Support ticket not found');
-      }
+  //     if (!ticket) {
+  //       throw new NotFoundException('Support ticket not found');
+  //     }
 
-      const updated = await this.prisma.supportTicket.update({
-        where: { id },
-        data: {
-          subject: dto.subject ?? ticket.subject,
-          description: dto.description ?? ticket.description,
-          priority: dto.priority ?? ticket.priority,
-        },
-        include: this.ticketInclude,
-      });
+  //     const updated = await this.prisma.supportTicket.update({
+  //       where: { id },
+  //       data: {
+  //         subject: dto.subject ?? ticket.subject,
+  //         description: dto.description ?? ticket.description,
+  //         priority: dto.priority ?? ticket.priority,
+  //       },
+  //       include: this.ticketInclude,
+  //     });
 
-      return cResponseData({ data: updated, message: 'Support ticket updated successfully' });
-    } catch (error) {
-      console.error(error);
-      throw new BadRequestException('Failed to update support ticket');
-    }
-  }
+  //     return cResponseData({
+  //       data: updated,
+  //       message: 'Support ticket updated successfully',
+  //     });
+  //   } catch (error) {
+  //     console.error(error);
+  //     throw new BadRequestException('Failed to update support ticket');
+  //   }
+  // }
 
   async updateStatus(id: string, dto: UpdateSupportTicketStatusDto) {
     try {
-      const ticket = await this.prisma.supportTicket.findUnique({ where: { id } });
+      const ticket = await this.prisma.supportTicket.findUnique({
+        where: { id },
+      });
 
       if (!ticket) {
         throw new NotFoundException('Support ticket not found');
@@ -192,7 +213,10 @@ export class SupportTicketsService {
         include: this.ticketInclude,
       });
 
-      return cResponseData({ data: updated, message: 'Support ticket status updated successfully' });
+      return cResponseData({
+        data: updated,
+        message: 'Support ticket status updated successfully',
+      });
     } catch (error) {
       console.error(error);
       throw new BadRequestException('Failed to update support ticket status');

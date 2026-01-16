@@ -1,10 +1,18 @@
-import { Body, Controller, Get, Param, Patch, Post, Query, } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/roles.decorator';
 import { CreateSupportTicketDto } from './dto/create-support-ticket.dto';
 import { SupportTicketQueryDto } from './dto/support-ticket-query.dto';
 import { UpdateSupportTicketStatusDto } from './dto/update-support-ticket-status.dto';
-import { UpdateSupportTicketDto } from './dto/update-support-ticket.dto';
+// import { UpdateSupportTicketDto } from './dto/update-support-ticket.dto';
 import { SupportTicketsService } from './support-tickets.service';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 import { User } from 'src/decorators/user.decorator';
@@ -12,7 +20,7 @@ import { User } from 'src/decorators/user.decorator';
 @ApiTags('Support Tickets')
 @Controller('support-tickets')
 export class SupportTicketsController {
-  constructor(private readonly supportTicketsService: SupportTicketsService) { }
+  constructor(private readonly supportTicketsService: SupportTicketsService) {}
 
   @Post()
   @Roles('ADMIN', 'USER', 'ACCOUNTANT')
@@ -36,13 +44,13 @@ export class SupportTicketsController {
     return await this.supportTicketsService.getTicketById(id);
   }
 
-  @Patch(':id')
-  @Roles('ADMIN')
-  @ApiOperation({ summary: 'Update ticket details (ADMIN only)' })
-  @ApiParam({ name: 'id', required: true })
-  async updateTicket(@Param('id') id: string, @Body() dto: UpdateSupportTicketDto) {
-    return await this.supportTicketsService.updateTicket(id, dto);
-  }
+  // @Patch(':id')
+  // @Roles('ADMIN')
+  // @ApiOperation({ summary: 'Update ticket details (ADMIN only)' })
+  // @ApiParam({ name: 'id', required: true })
+  // async updateTicket(@Param('id') id: string, @Body() dto: UpdateSupportTicketDto) {
+  //   return await this.supportTicketsService.updateTicket(id, dto);
+  // }
 
   @Patch(':id/status')
   @Roles('ADMIN')

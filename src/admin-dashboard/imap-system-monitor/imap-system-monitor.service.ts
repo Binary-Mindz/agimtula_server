@@ -2,10 +2,14 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { formatDistanceToNow } from 'date-fns';
 import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
+import { ActivityLogService } from 'src/common/activity-log/activity-log.service';
 
 @Injectable()
 export class ImapSystemMonitorService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly activityLog: ActivityLogService,
+  ) {}
 
   async getImapConnectionData() {
     try {
@@ -246,6 +250,14 @@ export class ImapSystemMonitorService {
       try {
         const connection = await this.prisma.imapConfiguration.findUnique({
           where: { id },
+          include: {
+            user: {
+              include: {
+                profile: true,
+                email: true,
+              },
+            },
+          },
         });
 
         if (!connection) {
@@ -257,7 +269,18 @@ export class ImapSystemMonitorService {
           data: {
             connect: false,
             sync: false,
+            connectionStatus: 'FAILED',
           },
+        });
+
+        // Log admin action
+        const userName = `${connection.user.profile?.firstName} ${connection.user.profile?.lastName}`;
+        await this.activityLog.log({
+          userName,
+          userEmail: connection.user.email?.email,
+          type: 'IMAP_DISCONNECTED',
+          title: `Admin disconnected IMAP for ${userName}`,
+          category: 'ADMIN',
         });
 
         return cResponseData({

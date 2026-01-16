@@ -4,10 +4,14 @@ import { PrismaService } from 'src/config/database/prisma.service';
 import { cResponseData } from 'src/common/cResponse';
 import { UpdateReceiptDto } from './dto/update-receipt-dto';
 import { NotFoundAppException } from 'src/common/app-exceptions';
+import { ActivityLogService } from 'src/common/activity-log/activity-log.service';
 
 @Injectable()
 export class ReceiptsService {
-  constructor(private prisma: PrismaService) { }
+  constructor(
+    private prisma: PrismaService,
+    private activityLog: ActivityLogService,
+  ) {}
 
   async createReceiptCategory(name: string) {
     try {
@@ -86,6 +90,7 @@ export class ReceiptsService {
     try {
       const userExits = await this.prisma.user.findUnique({
         where: { id: userId, isDeleted: false },
+        include: { profile: true, email: true },
       });
 
       if (!userExits) {
@@ -112,6 +117,19 @@ export class ReceiptsService {
           userId,
           notes: notes,
         },
+      });
+
+      // Log receipt upload activity
+      await this.activityLog.log({
+        userId,
+        userName: `${userExits.profile?.firstName || ''} ${userExits.profile?.lastName || ''}`.trim(),
+        userEmail: userExits.email?.email,
+        type: 'RECEIPT_UPLOADED',
+        title: `Receipt uploaded: ${vendor}`,
+        description: `Category: ${categoryExits.name}`,
+        amount,
+        currency: 'EUR',
+        category: 'USER',
       });
 
       return cResponseData({

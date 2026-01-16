@@ -4,12 +4,14 @@ import { PrismaService } from 'src/config/database/prisma.service';
 import { CreateUserManagementDto } from './dto/create-user-management.dto';
 import * as bcrypt from 'bcrypt';
 import { SmtpMailService } from 'src/config/smtp-mail/smtp-mail.service';
+import { ActivityLogService } from 'src/common/activity-log/activity-log.service';
 
 @Injectable()
 export class UserManagementService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly mailer: SmtpMailService,
+    private readonly activityLog: ActivityLogService,
   ) {}
 
   async findAllUsers(
@@ -226,6 +228,16 @@ export class UserManagementService {
         `,
       );
 
+      // Log admin action
+      const userName = `${user.profile?.firstName} ${user.profile?.lastName}`;
+      await this.activityLog.log({
+        userName,
+        userEmail: dto.email,
+        type: 'USER_CREATED_BY_ADMIN',
+        title: `Admin created user: ${userName}`,
+        category: 'ADMIN',
+      });
+
       return cResponseData({
         success: true,
         message: 'User created successfully',
@@ -371,6 +383,23 @@ export class UserManagementService {
           isDeleted: true,
         },
       });
+
+      // Log admin action
+      const deletedUser = await this.prisma.user.findUnique({
+        where: { id: userId },
+        include: { profile: true, email: true },
+      });
+
+      if (deletedUser?.profile) {
+        const userName = `${deletedUser.profile.firstName} ${deletedUser.profile.lastName}`;
+        await this.activityLog.log({
+          userName,
+          userEmail: deletedUser.email?.email,
+          type: 'USER_DELETED_BY_ADMIN',
+          title: `Admin deleted user: ${userName}`,
+          category: 'ADMIN',
+        });
+      }
 
       return cResponseData({
         success: true,

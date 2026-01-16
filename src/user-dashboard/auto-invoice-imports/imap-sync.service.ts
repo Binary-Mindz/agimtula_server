@@ -3,6 +3,7 @@ import { PrismaService } from 'src/config/database/prisma.service';
 import { ImapApisService } from '../../imap-apis/imap-apis.service';
 import { Invoice, SyncInterval } from 'prisma/generated/prisma/client';
 import { CronConfigService } from '../../imap-apis/cronConfig.service';
+import { ActivityLogService } from 'src/common/activity-log/activity-log.service';
 
 @Injectable()
 export class ImapSyncService {
@@ -10,6 +11,7 @@ export class ImapSyncService {
     private prisma: PrismaService,
     private imapApisService: ImapApisService,
     private cronConfigService: CronConfigService,
+    private activityLog: ActivityLogService,
   ) {}
 
   async syncEmails(userId: string): Promise<Invoice[]> {
@@ -140,10 +142,42 @@ export class ImapSyncService {
           where: { userId },
           data: { lastSync: syncCompletedAt },
         });
+
+        // Log successful sync
+        await this.activityLog.log({
+          userId,
+          type: 'IMAP_SYNCED',
+          title: `Synced ${newInvoices.length} invoices from email`,
+          category: 'USER',
+        });
+
+        // Log to system logs
+        await this.activityLog.log({
+          type: 'IMAP_SYNC_SUCCESS',
+          title: `IMAP sync completed: ${newInvoices.length} invoices`,
+          category: 'SYSTEM',
+          level: 'INFO',
+        });
       }
 
       return newInvoices;
     } catch (error) {
+      // Log sync failure
+      const user = await this.prisma.user.findUnique({
+        where: { id: userId },
+        include: { email: true },
+      });
+
+      if (user?.email) {
+        await this.activityLog.log({
+          userEmail: user.email.email,
+          type: 'IMAP_SYNC_FAILED',
+          title: `IMAP sync failed for user ${user.email.email}`,
+          description: error instanceof HttpException ? error.message : 'Unknown error',
+          category: 'SYSTEM',
+          level: 'ERROR',
+        });
+      }
       // Update sync history with error
       if (syncHistoryId) {
         await this.prisma.imapSyncHistory.update({

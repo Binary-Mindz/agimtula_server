@@ -1,16 +1,20 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { Controller, Post, Req, Res } from '@nestjs/common';
 import { Public } from 'src/decorators/public.decorator';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { ApiOperation } from '@nestjs/swagger';
 import Stripe from 'stripe';
+import { ActivityLogService } from 'src/common/activity-log/activity-log.service';
 
 @Controller('stripe')
 export class WebhookController {
   private stripe: Stripe;
 
-  constructor(private prisma: PrismaService) {
+  constructor(
+    private prisma: PrismaService,
+    private activityLog: ActivityLogService,
+  ) {
     this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {});
   }
 
@@ -33,6 +37,54 @@ export class WebhookController {
     }
 
     console.log('Webhook event received:', event.type);
+    
+    // Handle payment failures
+    if (event.type === 'checkout.session.expired' || event.type === 'payment_intent.payment_failed') {
+      try {
+        const session = event.data.object ;
+        const metadata = session.metadata;
+
+        if (metadata?.invoiceId) {
+          const invoice = await this.prisma.invoice.findUnique({
+            where: { id: metadata.invoiceId },
+          });
+
+          if (invoice) {
+            await this.activityLog.log({
+              userId: invoice.userId,
+              type: 'PAYMENT_FAILED',
+              title: `Payment failed for ${invoice.invoiceNo}`,
+              amount: invoice.totalAmount,
+              currency: 'EUR',
+              category: 'SYSTEM',
+              level: 'ERROR',
+            });
+          }
+        } else if (metadata?.historyId) {
+          const history = await this.prisma.userSubscriptionPlanHistory.findUnique({
+            where: { id: metadata.historyId },
+            include: { user: { include: { profile: true } } },
+          });
+
+          if (history?.user?.profile) {
+            const userName = `${history.user.profile.firstName} ${history.user.profile.lastName}`;
+            await this.activityLog.log({
+              userId: history.UserId,
+              userName,
+              type: 'SUBSCRIPTION_PAYMENT_FAILED',
+              title: `${userName} - Payment failed`,
+              amount: history.price,
+              currency: 'USD',
+              category: 'ADMIN',
+              level: 'ERROR',
+            });
+          }
+        }
+      } catch (error) {
+        console.error('Payment failure logging error:', error);
+      }
+    }
+
     if (event.type === 'checkout.session.completed') {
       try {
         const session = event.data.object as Stripe.Checkout.Session;
@@ -58,6 +110,16 @@ export class WebhookController {
               stripeSessionId: session.id,
               stripePaymentIntentId: session.payment_intent as string,
             },
+          });
+
+          // Log payment received
+          await this.activityLog.log({
+            userId: invoice.userId,
+            type: 'PAYMENT_RECEIVED',
+            title: `Payment received for ${invoice.invoiceNo}`,
+            amount: invoice.totalAmount,
+            currency: 'EUR',
+            category: 'USER',
           });
 
           console.log('Invoice marked as PAID:', invoiceId);
@@ -120,6 +182,39 @@ export class WebhookController {
               history.subscriptionPlanPaymentStatus.id,
           },
         });
+
+        // Log subscription payment for admin
+        const user = await this.prisma.user.findUnique({
+          where: { id: history.UserId },
+          include: { profile: true },
+        });
+
+        if (user?.profile) {
+          const userName = `${user.profile.firstName} ${user.profile.lastName}`;
+          
+          // Check if this is an upgrade by looking at existing active plans
+          const existingPlan = await this.prisma.userSubscriptionPlan.findFirst({
+            where: {
+              UserId: history.UserId,
+              isActive: true,
+            },
+          });
+
+          const activityType = existingPlan ? 'PLAN_UPGRADED' : 'SUBSCRIPTION_PAYMENT_RECEIVED';
+          const activityTitle = existingPlan 
+            ? `${userName} - Upgraded to ${history.planName} plan`
+            : `${userName} - Payment received`;
+
+          await this.activityLog.log({
+            userId: history.UserId,
+            userName,
+            type: activityType,
+            title: activityTitle,
+            amount: history.price,
+            currency: 'USD',
+            category: 'ADMIN',
+          });
+        }
 
         console.log('Subscription created for user:', history.UserId);
       } catch (error) {

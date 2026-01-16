@@ -8,7 +8,10 @@ import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('user-dashboard')
 export class DashboardController {
-  constructor(private readonly dashboardService: DashboardService, private readonly report: ReportsService) { }
+  constructor(
+    private readonly dashboardService: DashboardService,
+    private readonly report: ReportsService,
+  ) {}
 
   @Get('dashboard-data')
   @Roles('USER')
@@ -17,7 +20,14 @@ export class DashboardController {
     return await this.dashboardService.dashboardData(user.sub);
   }
 
-  @Get("monthly-income-expense")
+  @Get('recent-activities')
+  @Roles('USER')
+  @ApiOperation({ summary: 'Get recent activities ( USER only )' })
+  async getRecentActivities(@User() user: jwtPayload) {
+    return await this.dashboardService.getRecentActivities(user.sub);
+  }
+
+  @Get('monthly-income-expense')
   @Roles('USER')
   @ApiOperation({ summary: 'Get monthly income expense ( USER only )' })
   async monthlyIncomeExpense(@User() user: jwtPayload) {

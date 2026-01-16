@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { UpdateInvoiceDto } from './dto/update-invoice.dto';
@@ -8,6 +7,7 @@ import { SmtpMailService } from 'src/config/smtp-mail/smtp-mail.service';
 import { invoiceEmailTemplate } from './invoice-email.template';
 import Stripe from 'stripe';
 import { NotFoundAppException } from 'src/common/app-exceptions';
+import { ActivityLogService } from 'src/common/activity-log/activity-log.service';
 
 @Injectable()
 export class InvoicesService {
@@ -16,6 +16,7 @@ export class InvoicesService {
   constructor(
     private prisma: PrismaService,
     private mail: SmtpMailService,
+    private activityLog: ActivityLogService,
   ) {
     this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
       apiVersion: '2025-12-15.clover',
@@ -85,11 +86,10 @@ export class InvoicesService {
         addressAndContactInfo,
         issueDate,
         dueDate,
-        isPaymentLinkIncluded,
         ...invoiceData
       } = createInvoiceDto;
 
-      let isPaid: boolean = !isPaymentLinkIncluded;
+      let isPaid: boolean = !createInvoiceDto.isPaymentLinkIncluded;
 
       const invoice = await this.prisma.invoice.findFirst({
         where: {
@@ -119,7 +119,7 @@ export class InvoicesService {
           isPaid = false;
         } else {
           // Future due date - true if no payment link, false if payment link included
-          isPaid = !isPaymentLinkIncluded;
+          isPaid = !createInvoiceDto.isPaymentLinkIncluded;
         }
       }
 
@@ -154,7 +154,7 @@ export class InvoicesService {
       });
 
       let session: any;
-      if (isPaymentLinkIncluded && dueDateObj && dueDateObj > new Date()) {
+      if (createInvoiceDto.isPaymentLinkIncluded && dueDateObj && dueDateObj > new Date()) {
         session = await this.stripe.checkout.sessions.create({
           customer_email: createInvoiceDto.email,
           line_items: [
@@ -192,9 +192,27 @@ export class InvoicesService {
         invoiceEmailTemplate({
           ...newInvoice,
           mobilePaymentLink:
-            isPaymentLinkIncluded && session ? session.url : null,
+            createInvoiceDto.isPaymentLinkIncluded && session ? session.url : null,
         }),
       );
+
+      // Log activity
+      const user = await this.prisma.user.findUnique({
+        where: { id: userId },
+        include: { profile: true, email: true },
+      });
+
+      await this.activityLog.log({
+        userId,
+        userName: user?.profile ? `${user.profile.firstName || ''} ${user.profile.lastName || ''}`.trim() : undefined,
+        userEmail: user?.email?.email,
+        type: 'INVOICE_SENT',
+        title: `Invoice ${newInvoice.invoiceNo} sent to ${newInvoice.companyName}`,
+        description: `Amount: €${newInvoice.totalAmount}`,
+        amount: newInvoice.totalAmount,
+        currency: 'EUR',
+        category: 'USER',
+      });
 
       return cResponseData({
         message: 'Invoice created successfully',
@@ -218,9 +236,7 @@ export class InvoicesService {
         serviceAndItems,
         businessDatas,
         addressAndContactInfo,
-        issueDate,
         dueDate,
-        isPaymentLinkIncluded,
         ...invoiceData
       } = dto;
 
@@ -260,7 +276,6 @@ export class InvoicesService {
       }
 
       // Convert date strings to Date objects
-      const issueDateObj = new Date(issueDate);
       const dueDateObj = dueDate ? new Date(dueDate) : null;
 
       const newInvoice = await this.prisma.invoice.create({
@@ -268,7 +283,7 @@ export class InvoicesService {
           userId,
           ...invoiceData,
           invoiceNo: invoiceNumber,
-          issueDate: issueDateObj,
+          issueDate: new Date(dto.issueDate),
           dueDate: dueDateObj,
           AddressAndContactInfo: addressAndContactInfo,
           serviceAndItems: {
@@ -596,9 +611,7 @@ export class InvoicesService {
         serviceAndItems,
         businessDatas,
         addressAndContactInfo,
-        issueDate,
         dueDate,
-        isPaymentLinkIncluded,
         ...invoiceData
       } = updateInvoiceDto;
 

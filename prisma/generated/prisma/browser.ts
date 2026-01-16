@@ -38,6 +38,11 @@ export type Transaction = Prisma.TransactionModel
  */
 export type AccountantRequest = Prisma.AccountantRequestModel
 /**
+ * Model ActivityLog
+ * 
+ */
+export type ActivityLog = Prisma.ActivityLogModel
+/**
  * Model EmailTemplate
  * 
  */

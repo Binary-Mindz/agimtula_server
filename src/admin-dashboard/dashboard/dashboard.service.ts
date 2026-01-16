@@ -1,12 +1,13 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
+import { formatDistanceToNow } from 'date-fns';
 
 @Injectable()
 export class DashboardService {
   constructor(private prisma: PrismaService) {}
 
-  async getData() {
+  async getData(): Promise<ReturnType<typeof cResponseData>> {
     try {
       const firstDayOfThisMonth = new Date(
         new Date().getFullYear(),
@@ -205,6 +206,42 @@ export class DashboardService {
       console.error('Dashboard data error:', error);
       throw new HttpException(
         'Failed to fetch dashboard data',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async getRecentActivities(
+    limit = 5,
+  ): Promise<ReturnType<typeof cResponseData>> {
+    try {
+      const activities = await this.prisma.activityLog.findMany({
+        where: {
+          category: { in: ['USER', 'SYSTEM'] },
+        },
+        orderBy: { createdAt: 'desc' },
+        take: limit,
+      });
+
+      const formattedActivities = activities.map((activity) => ({
+        userName: activity.userName || 'Someone',
+        description: activity.title,
+        timeAgo: formatDistanceToNow(new Date(activity.createdAt as Date), {
+          addSuffix: true,
+        }),
+        amount: activity.amount,
+        currency: activity.currency,
+      }));
+
+      return cResponseData({
+        success: true,
+        message: 'Recent activities fetched successfully',
+        data: formattedActivities,
+      });
+    } catch (error) {
+      console.error('Get recent activities error:', error);
+      throw new HttpException(
+        'Failed to fetch recent activities',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import {
   ConflictException,
   HttpException,
@@ -9,16 +8,15 @@ import {
 } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import * as imaps from 'imap-simple';
-import { simpleParser } from 'mailparser';
-// import { CreateImapApiDto } from './dto/create-imap-api.dto';
+import { simpleParser, Source } from 'mailparser';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { cResponseData } from 'src/common/cResponse';
 import { Response } from 'express';
 import axios from 'axios';
 import * as FormData from 'form-data';
-
 import { Invoice } from 'prisma/generated/prisma/client';
 import { ExtractedInvoicePayload } from './dto/extracted-invoice.dto';
+import { ActivityLogService } from 'src/common/activity-log/activity-log.service';
 
 const INVOICE_SUBJECT_KEYWORDS = [
   'invoice',
@@ -53,7 +51,8 @@ export interface ImapClient {
 export class ImapApisService implements OnModuleInit, OnModuleDestroy {
   constructor(
     private schedulerRegistry: SchedulerRegistry,
-    private prisma: PrismaService, // Your DB service
+    private prisma: PrismaService,
+    private activityLog: ActivityLogService,
   ) {}
 
   private async imapClient({ host, port, username, password }: ImapClient) {
@@ -301,7 +300,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
         );
 
         for (const msg of messages) {
-          const parsed = await simpleParser(msg.parts[0].body);
+          const parsed = await simpleParser(msg.parts[0].body as Source);
 
           const from = parsed.from?.value?.[0]?.address?.toLowerCase() || '';
 
@@ -391,6 +390,23 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
             });
 
             createdInvoices.push(created);
+
+            // Log missing attachment warning
+            const user = await this.prisma.user.findUnique({
+              where: { id: userId },
+              include: { email: true },
+            });
+
+            if (user?.email) {
+              await this.activityLog.log({
+                userEmail: user.email.email,
+                type: 'INVOICE_MISSING_ATTACHMENT',
+                title: `Invoice created without attachment from ${from}`,
+                description: `Subject: ${parsed.subject}`,
+                category: 'SYSTEM',
+                level: 'WARNING',
+              });
+            }
           }
         }
       }

@@ -214,6 +214,17 @@ export class WebhookController {
             currency: 'USD',
             category: 'ADMIN',
           });
+
+          // Log to user activities
+          await this.activityLog.log({
+            userId: history.UserId,
+            userName,
+            type: activityType,
+            title: existingPlan ? `Upgraded to ${history.planName} plan` : 'Payment received',
+            amount: history.price,
+            currency: 'USD',
+            category: 'USER',
+          });
         }
 
         console.log('Subscription created for user:', history.UserId);

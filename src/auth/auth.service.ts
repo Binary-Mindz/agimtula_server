@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   BadRequestException,
   ConflictException,
@@ -45,7 +44,7 @@ export class AuthService {
     private jwt: JwtService,
     private mail: SmtpMailService,
     private redis: RedisServiceService,
-  ) { }
+  ) {}
 
   private async setRedisValue<T>(key: string, value: T, ttl: number) {
     await this.redis.set(key, JSON.stringify(value), 'EX', ttl);
@@ -83,7 +82,9 @@ export class AuthService {
       });
 
       if (isUser) {
-        this.logger.warn(`Registration attempt with existing email: ${dto.email}`);
+        this.logger.warn(
+          `Registration attempt with existing email: ${dto.email}`,
+        );
         throw new ConflictException('User already exists with this email');
       }
 
@@ -117,7 +118,10 @@ export class AuthService {
         data: { email: dto.email },
       });
     } catch (error) {
-      this.logger.error(`Failed to send registration OTP to ${dto.email}: ${error.message}`, error.stack);
+      this.logger.error(
+        `Failed to send registration OTP to ${dto.email}: ${error.message}`,
+        error.stack,
+      );
       throw new BadRequestException(error.message || 'Failed to send OTP');
     }
   }
@@ -148,7 +152,9 @@ export class AuthService {
       if (payload.code !== dto.code) {
         payload.attempts += 1;
         await this.setRedisValue(redisKey, payload, 300);
-        this.logger.warn(`Invalid OTP attempt for email: ${dto.email}. Attempts: ${payload.attempts}/3`);
+        this.logger.warn(
+          `Invalid OTP attempt for email: ${dto.email}. Attempts: ${payload.attempts}/3`,
+        );
         throw new BadRequestException(
           `Invalid OTP code. ${3 - payload.attempts} attempts remaining.`,
         );
@@ -169,7 +175,9 @@ export class AuthService {
         },
       });
     } catch (error) {
-      this.logger.error(`OTP verification failed for ${dto.email}: ${error.message}`);
+      this.logger.error(
+        `OTP verification failed for ${dto.email}: ${error.message}`,
+      );
       throw new BadRequestException(error.message || 'OTP verification failed');
     }
   }
@@ -224,7 +232,9 @@ export class AuthService {
 
       await this.redis.del(tokenKey);
 
-      this.logger.log(`User registered successfully: ${user.id} - ${dto.email}`);
+      this.logger.log(
+        `User registered successfully: ${user.id} - ${dto.email}`,
+      );
       return cResponseData({
         message: 'User registered successfully',
         data: {
@@ -235,7 +245,10 @@ export class AuthService {
         },
       });
     } catch (error) {
-      this.logger.error(`Registration completion failed for ${dto.email}: ${error.message}`, error.stack);
+      this.logger.error(
+        `Registration completion failed for ${dto.email}: ${error.message}`,
+        error.stack,
+      );
       throw new BadRequestException(
         error.message || 'Failed to complete registration',
       );
@@ -300,7 +313,9 @@ export class AuthService {
           };
 
           await this.setRedisValue(redisKey, payload, 300);
-          this.logger.debug(`2FA code generated and stored for: ${user.email.email}`);
+          this.logger.debug(
+            `2FA code generated and stored for: ${user.email.email}`,
+          );
         }
 
         await this.mail.sendMail(
@@ -332,7 +347,9 @@ export class AuthService {
         role: user.role,
       });
 
-      this.logger.log(`User logged in successfully: ${user.id} - ${user.email.email}`);
+      this.logger.log(
+        `User logged in successfully: ${user.id} - ${user.email.email}`,
+      );
       return cResponseData({
         success: true,
         message: 'Login successful',
@@ -347,7 +364,10 @@ export class AuthService {
         },
       });
     } catch (error) {
-      this.logger.error(`Login failed for ${loginDto.email}: ${error.message}`, error.stack);
+      this.logger.error(
+        `Login failed for ${loginDto.email}: ${error.message}`,
+        error.stack,
+      );
       throw new BadRequestException(error.message || 'Login failed');
     }
   }
@@ -375,7 +395,9 @@ export class AuthService {
       if (payload.code !== code) {
         payload.attempts += 1;
         await this.setRedisValue(redisKey, payload, 300);
-        this.logger.warn(`Invalid 2FA code for: ${email}. Attempts: ${payload.attempts}/5`);
+        this.logger.warn(
+          `Invalid 2FA code for: ${email}. Attempts: ${payload.attempts}/5`,
+        );
         throw new ForbiddenException('Invalid OTP');
       }
 
@@ -387,7 +409,9 @@ export class AuthService {
       });
 
       if (!user || !user.email) {
-        this.logger.error(`User not found after 2FA verification: ${payload.userId}`);
+        this.logger.error(
+          `User not found after 2FA verification: ${payload.userId}`,
+        );
         throw new UnauthorizedException('User not found');
       }
 
@@ -410,7 +434,9 @@ export class AuthService {
         },
       });
     } catch (error) {
-      this.logger.error(`2FA verification failed for ${dto.email}: ${error.message}`);
+      this.logger.error(
+        `2FA verification failed for ${dto.email}: ${error.message}`,
+      );
       if (
         error instanceof ForbiddenException ||
         error instanceof UnauthorizedException
@@ -460,7 +486,9 @@ export class AuthService {
         message: 'Password updated successfully',
       });
     } catch (error) {
-      this.logger.error(`Password update failed for user ${userId}: ${error.message}`);
+      this.logger.error(
+        `Password update failed for user ${userId}: ${error.message}`,
+      );
       if (
         error instanceof UnauthorizedException ||
         error instanceof ForbiddenException
@@ -488,7 +516,10 @@ export class AuthService {
         message: 'Account deleted successfully',
       });
     } catch (error) {
-      this.logger.error(`Account deletion failed for user ${userId}: ${error.message}`, error.stack);
+      this.logger.error(
+        `Account deletion failed for user ${userId}: ${error.message}`,
+        error.stack,
+      );
       throw new BadRequestException('Failed to delete account');
     }
   }
@@ -523,14 +554,19 @@ export class AuthService {
         throw new BadRequestException('User Updation Failed');
       }
 
-      this.logger.log(`Profile picture updated successfully for user: ${userId}`);
+      this.logger.log(
+        `Profile picture updated successfully for user: ${userId}`,
+      );
       return cResponseData({
         success: true,
         message: 'Profile picture updated successfully',
         data: user,
       });
     } catch (error) {
-      this.logger.error(`Profile picture update failed for user ${userId}: ${error.message}`, error.stack);
+      this.logger.error(
+        `Profile picture update failed for user ${userId}: ${error.message}`,
+        error.stack,
+      );
       if (
         error instanceof NotFoundException ||
         error instanceof BadRequestException
@@ -557,13 +593,18 @@ export class AuthService {
         },
       });
 
-      this.logger.log(`Profile picture removed successfully for user: ${userId}`);
+      this.logger.log(
+        `Profile picture removed successfully for user: ${userId}`,
+      );
       return cResponseData({
         success: true,
         message: 'Profile picture removed successfully',
       });
     } catch (error) {
-      this.logger.error(`Profile picture removal failed for user ${userId}: ${error.message}`, error.stack);
+      this.logger.error(
+        `Profile picture removal failed for user ${userId}: ${error.message}`,
+        error.stack,
+      );
       throw new BadRequestException('Failed to remove profile picture');
     }
   }
@@ -596,7 +637,10 @@ export class AuthService {
         message: 'Profile updated successfully',
       });
     } catch (error) {
-      this.logger.error(`Profile update failed for user ${userId}: ${error.message}`, error.stack);
+      this.logger.error(
+        `Profile update failed for user ${userId}: ${error.message}`,
+        error.stack,
+      );
       if (error instanceof BadRequestException) {
         throw error;
       }
@@ -634,17 +678,13 @@ export class AuthService {
         data: user,
       });
     } catch (error) {
-      this.logger.error(`Failed to get profile for user ${userId}: ${error.message}`);
+      this.logger.error(
+        `Failed to get profile for user ${userId}: ${error.message}`,
+      );
       if (error instanceof NotFoundException) {
         throw error;
       }
       throw new BadRequestException('Failed to get profile');
     }
   }
-
-
-
-
-
-
 }

@@ -8,7 +8,9 @@ import { PrismaService } from 'src/config/database/prisma.service';
 export class SubscriptionsService {
   constructor(private prisma: PrismaService) {}
 
-  async subscriptionsDashboardGraph(): Promise<ReturnType<typeof cResponseData>> {
+  async subscriptionsDashboardGraph(): Promise<
+    ReturnType<typeof cResponseData>
+  > {
     try {
       const result = await this.prisma.userSubscriptionPlanHistory.findMany({
         where: {
@@ -139,7 +141,9 @@ export class SubscriptionsService {
     }
   }
 
-  async createSubscription(dto: CreateSubscriptionPlanDto): Promise<ReturnType<typeof cResponseData>> {
+  async createSubscription(
+    dto: CreateSubscriptionPlanDto,
+  ): Promise<ReturnType<typeof cResponseData>> {
     try {
       const plan = await this.prisma.subscriptionPlan.create({
         data: {
@@ -246,7 +250,9 @@ export class SubscriptionsService {
     }
   }
 
-  async getSubscriptionPlan(id: string): Promise<ReturnType<typeof cResponseData>> {
+  async getSubscriptionPlan(
+    id: string,
+  ): Promise<ReturnType<typeof cResponseData>> {
     try {
       if (!id) {
         throw new HttpException(
@@ -304,7 +310,9 @@ export class SubscriptionsService {
     }
   }
 
-  async deleteSubscription(id: string): Promise<ReturnType<typeof cResponseData>> {
+  async deleteSubscription(
+    id: string,
+  ): Promise<ReturnType<typeof cResponseData>> {
     try {
       if (!id) {
         throw new HttpException(

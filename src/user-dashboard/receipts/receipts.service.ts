@@ -105,7 +105,7 @@ export class ReceiptsService {
         throw new NotFoundAppException('Category not found');
       }
 
-      const { vendor, amount, date, category, notes, receiptImage } = dto;
+      const { vendor, amount, date, category, notes } = dto;
 
       const rec = await this.prisma.receipt.create({
         data: {
@@ -113,7 +113,6 @@ export class ReceiptsService {
           amount,
           date,
           categoryId: category,
-          receiptFileUrl: receiptImage,
           userId,
           notes: notes,
         },
@@ -214,6 +213,16 @@ export class ReceiptsService {
     try {
       if (!id) {
         throw new HttpException('Receipt ID is required', HttpStatus.BAD_REQUEST);
+      }
+
+      const categoryId = await this.prisma.receiptCategory.findUnique({
+        where: {
+          id:dto.category
+        }
+      })
+
+      if (!categoryId      ) {
+        throw new HttpException('Category not found', HttpStatus.NOT_FOUND);
       }
 
       const existing = await this.prisma.receipt.findUnique({

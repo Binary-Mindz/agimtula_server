@@ -245,6 +245,8 @@ export class InvoicesService {
         businessDatas,
         addressAndContactInfo,
         dueDate,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        isPaymentLinkIncluded,
         ...invoiceData
       } = dto;
 
@@ -362,7 +364,6 @@ export class InvoicesService {
         this.prisma.invoice.findMany({
           where: {
             ...query,
-            isDrafted: false,
             userId,
           },
           skip,
@@ -372,7 +373,6 @@ export class InvoicesService {
         this.prisma.invoice.count({
           where: {
             ...query,
-            isDrafted: false,
             userId,
           },
         }),

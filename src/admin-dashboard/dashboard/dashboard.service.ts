@@ -19,6 +19,7 @@ export class DashboardService {
         new Date().getMonth() + 1,
         0,
       );
+  
 
       const lastMonthsFirstDate = new Date(
         new Date().getFullYear(),
@@ -48,7 +49,6 @@ export class DashboardService {
         activeSubscriptionsLastMonth,
         lastSixMonthsData,
         lastSixMonthsUsers,
-        activeUsers,
       ] = await Promise.all([
         this.prisma.user.count({
           where: {
@@ -168,17 +168,6 @@ export class DashboardService {
           },
           select: { created_at: true },
         }),
-        this.prisma.user.findMany({
-          where: {
-            created_at: {
-              gte: lastSixMonths,
-            },
-            isDeleted: false,
-            role: 'USER',
-            status: true,
-          },
-          select: { created_at: true },
-        }),
       ]);
 
       let subscriptionAmount = 0;
@@ -219,50 +208,35 @@ export class DashboardService {
         }
       });
 
-      const userMonthlyData: {
-        month: string;
-        userCount: number;
-      }[] = [];
+      const firstHalfData: { month: string; userCount: number }[] = [];
+      const secondHalfData: { month: string; userCount: number }[] = [];
 
       lastSixMonthsUsers.forEach((item) => {
-        const month = item.created_at.getMonth() + 1;
-        const year = item.created_at.getFullYear();
+        const date = new Date(item.created_at);
+        const day = date.getDate();
+        const month = date.getMonth() + 1;
+        const year = date.getFullYear();
         const monthYear = `${year}-${month}`;
 
-        const existingMonth = userMonthlyData.find(
-          (m) => m.month === monthYear,
-        );
-
-        if (existingMonth) {
-          existingMonth.userCount += 1;
+        if (day <= 15) {
+          const existing = firstHalfData.find((m) => m.month === monthYear);
+          if (existing) {
+            existing.userCount += 1;
+          } else {
+            firstHalfData.push({ month: monthYear, userCount: 1 });
+          }
         } else {
-          userMonthlyData.push({ month: monthYear, userCount: 1 });
+          const existing = secondHalfData.find((m) => m.month === monthYear);
+          if (existing) {
+            existing.userCount += 1;
+          } else {
+            secondHalfData.push({ month: monthYear, userCount: 1 });
+          }
         }
       });
 
-      const activeUsersMonthlyData: {
-        month: string;
-        activeUserCount: number;
-      }[] = [];
-
-      activeUsers.forEach((item) => {
-        const month = item.created_at.getMonth() + 1;
-        const year = item.created_at.getFullYear();
-        const monthYear = `${year}-${month}`;
-
-        const existingMonth = activeUsersMonthlyData.find(
-          (m) => m.month === monthYear,
-        );
-
-        if (existingMonth) {
-          existingMonth.activeUserCount += 1;
-        } else {
-          activeUsersMonthlyData.push({
-            month: monthYear,
-            activeUserCount: 1,
-          });
-        }
-      });
+      const monthlyTotalUser = firstHalfData;
+      const thisMonthTotalActiveUser = secondHalfData;
 
       const userGrowthPercentage = previousMonthsUser > 0
         ? Math.round(((thisMonthsUser - previousMonthsUser) / previousMonthsUser) * 100)
@@ -286,8 +260,8 @@ export class DashboardService {
           activeSubscriptionsCount,
           subscriptionGrowthPercentage,
           revenueTrend: monthlyData,
-          monthlyTotalUser: userMonthlyData,
-          thisMonthTotalActiveUser: activeUsersMonthlyData,
+          monthlyTotalUser,
+          thisMonthTotalActiveUser,
         },
       });
     } catch (error) {

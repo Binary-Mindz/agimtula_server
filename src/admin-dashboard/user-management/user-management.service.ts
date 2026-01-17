@@ -23,7 +23,11 @@ export class UserManagementService {
   ) {
     try {
       const skip = (page - 1) * limit;
-      const where: any = {};
+      const where: any = {
+        role: {
+          not:"ADMIN"
+        }
+      };
 
       // Search filter
       if (search) {
@@ -260,10 +264,7 @@ export class UserManagementService {
 
   async updateStatus(userId: string, status: boolean) {
     try {
-      if (!userId) {
-        throw new HttpException('User ID is required', HttpStatus.BAD_REQUEST);
-      }
-
+   
       const user = await this.prisma.user.findUnique({
         where: { id: userId, isDeleted: false },
         select: { status: true },
@@ -300,10 +301,7 @@ export class UserManagementService {
 
   async updateRole(userId: string, role: 'USER' | 'ACCOUNTANT') {
     try {
-      if (!userId) {
-        throw new HttpException('User ID is required', HttpStatus.BAD_REQUEST);
-      }
-
+    
       const user = await this.prisma.user.findUnique({
         where: { id: userId, isDeleted: false },
       });
@@ -373,6 +371,7 @@ export class UserManagementService {
         where: { id: userId, isDeleted: false },
       });
 
+
       if (!user) {
         throw new HttpException('User not found', HttpStatus.NOT_FOUND);
       }
@@ -384,36 +383,89 @@ export class UserManagementService {
         },
       });
 
-      // Log admin action
-      const deletedUser = await this.prisma.user.findUnique({
-        where: { id: userId },
-        include: { profile: true, email: true },
-      });
-
-      if (deletedUser?.profile) {
-        const userName = `${deletedUser.profile.firstName} ${deletedUser.profile.lastName}`;
-        await this.activityLog.log({
-          userName,
-          userEmail: deletedUser.email?.email,
-          type: 'USER_DELETED_BY_ADMIN',
-          title: `Admin deleted user: ${userName}`,
-          category: 'ADMIN',
-        });
-      }
-
-      return cResponseData({
+      const response = cResponseData({
         success: true,
+        data: {
+          message:"User deleted"
+        },
         message: 'User deleted successfully',
       });
+    
+      return response;
     } catch (error) {
+      console.error('Delete account error:', error);
       if (error instanceof HttpException) {
         throw error;
       }
-      console.error('Delete account error:', error);
       throw new HttpException(
         'Failed to delete user',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
+    }
+  }
+
+  async getUserData(userId: string) {
+    try {
+
+      const isUser = await this.prisma.user.findFirst({
+        where: {
+          id: userId, isDeleted: false
+        }
+      })
+      if (!isUser) {
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND)
+      }
+
+      const user = await this.prisma.user.findUnique({
+        where: {
+          id: userId,
+          
+        }
+        , select: {
+          role: true,
+          status: true,
+          profile: {
+            select: {
+              firstName: true,
+              lastName: true,
+              phone: true,
+            }
+          },
+          businessInfo: {
+            select: {
+              companyName: true,
+              address: true,
+            }
+          },
+          email: {
+            select: {
+              email: true
+            }
+          }
+        }
+      })
+
+
+      const data = {
+        firstName: user?.profile?.firstName,
+        lastName: user?.profile?.lastName,
+        phone: user?.profile?.phone,
+        companyName: user?.businessInfo?.companyName,
+        address: user?.businessInfo?.address,
+        email: user?.email?.email,
+        role: user?.role,
+        status: user?.status,
+      }
+
+      return cResponseData({
+        message:"User data fetched successfully",
+        data
+      })
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error
+      }
+      throw new HttpException('Failed to fetch user data', HttpStatus.INTERNAL_SERVER_ERROR,)
     }
   }
 }

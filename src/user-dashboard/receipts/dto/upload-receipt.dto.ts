@@ -10,13 +10,6 @@ import {
 import { Type } from 'class-transformer';
 
 export class UploadReceiptDto {
-  @ApiProperty({
-    description: 'Base64 encoded receipt image string',
-    example: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD...',
-  })
-  @IsString()
-  @IsNotEmpty({ message: 'Receipt image is required' })
-  receiptImage: string;
 
   @ApiProperty({
     description: 'Vendor or merchant name (auto-filled by OCR, but editable)',

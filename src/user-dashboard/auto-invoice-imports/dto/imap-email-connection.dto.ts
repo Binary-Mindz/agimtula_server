@@ -45,7 +45,7 @@ export class ImapEmailConnectionDto {
     required: true,
     type: Number,
     description: 'I-map port of the user',
-    example: 63478,
+    example: 993,
   })
   @Max(65535)
   @IsNotEmpty({ message: 'I-map port should not be empty' })

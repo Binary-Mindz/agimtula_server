@@ -6,6 +6,7 @@ import { CreateInvoiceAutoSyncDto } from './dto/create-invoice-auto-sync.dto';
 import { InvoiceAutoSyncIntervalService } from './invoiceAutoSyncInterval.service';
 import { urlPrefix } from '../url-prefix';
 import { ApiOperation } from '@nestjs/swagger';
+import { Public } from 'src/decorators/public.decorator';
 
 @Controller(`${urlPrefix}/subscriptions`)
 export class AdminSubscriptionsController {
@@ -29,7 +30,7 @@ export class AdminSubscriptionsController {
   }
 
   @Get('plans')
-  @Roles('ADMIN', 'USER')
+  @Public()
   @ApiOperation({ summary: 'Get subscription plans ( ADMIN, USER )' })
   getSubscriptionPlans() {
     return this.subscriptionsService.getSubscriptionPlans();

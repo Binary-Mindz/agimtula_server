@@ -4,6 +4,7 @@ import { cResponseData } from 'src/common/cResponse';
 import { TransactionQueryDto } from './dto/TransactionQueryDto';
 import { TransactionStatus } from 'prisma/generated/prisma/enums';
 import { NotFoundAppException } from 'src/common/app-exceptions';
+import { formatDistanceToNow } from 'date-fns';
 
 @Injectable()
 export class AccountantDashboardService {
@@ -12,7 +13,10 @@ export class AccountantDashboardService {
   async fetchAccountantDashboardData(accId: string) {
     try {
       if (!accId) {
-        throw new HttpException('Accountant ID is required', HttpStatus.BAD_REQUEST);
+        throw new HttpException(
+          'Accountant ID is required',
+          HttpStatus.BAD_REQUEST,
+        );
       }
 
       const clients = await this.prisma.user.findMany({
@@ -45,7 +49,7 @@ export class AccountantDashboardService {
           where: {
             userId: { in: clientIds },
             invoiceSource: 'EMAIL',
-            haveAttachment: false,
+            haveAttachment: true,
             createdAt: {
               gte: new Date(new Date().setDate(new Date().getDate() - 7)),
             },
@@ -227,6 +231,57 @@ export class AccountantDashboardService {
       console.error('Find all transactions error:', error);
       throw new HttpException(
         'Failed to retrieve transactions',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async getRecentActivities(accountantId: string, limit = 5) {
+    try {
+      if (!accountantId) {
+        throw new HttpException(
+          'Accountant ID is required',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const clients = await this.prisma.user.findMany({
+        where: {
+          accountantId,
+          isDeleted: false,
+          role: 'USER',
+        },
+        select: { id: true },
+      });
+
+      const clientIds = clients.map((client) => client.id);
+
+      const activities = await this.prisma.activityLog.findMany({
+        where: {
+          userId: { in: clientIds },
+          category: 'USER',
+        },
+        orderBy: { createdAt: 'desc' },
+        take: limit,
+      });
+
+      const formattedActivities = activities.map((activity) => ({
+        userName: activity.userName || 'Client',
+        description: activity.title,
+        timeAgo: formatDistanceToNow(new Date(activity.createdAt as Date), {
+          addSuffix: true,
+        }),
+        amount: activity.amount,
+        currency: activity.currency,
+      }));
+
+      return cResponseData({
+        data: formattedActivities,
+      });
+    } catch (error) {
+      console.error('Get recent activities error:', error);
+      throw new HttpException(
+        'Failed to fetch recent activities',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

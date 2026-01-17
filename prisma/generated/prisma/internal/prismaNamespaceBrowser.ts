@@ -55,6 +55,7 @@ export const ModelName = {
   Mileage: 'Mileage',
   Transaction: 'Transaction',
   AccountantRequest: 'AccountantRequest',
+  ActivityLog: 'ActivityLog',
   EmailTemplate: 'EmailTemplate',
   FinancialDocument: 'FinancialDocument',
   imapConfiguration: 'imapConfiguration',
@@ -174,6 +175,25 @@ export const AccountantRequestScalarFieldEnum = {
 } as const
 
 export type AccountantRequestScalarFieldEnum = (typeof AccountantRequestScalarFieldEnum)[keyof typeof AccountantRequestScalarFieldEnum]
+
+
+export const ActivityLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  userName: 'userName',
+  userEmail: 'userEmail',
+  type: 'type',
+  title: 'title',
+  description: 'description',
+  amount: 'amount',
+  currency: 'currency',
+  category: 'category',
+  level: 'level',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+} as const
+
+export type ActivityLogScalarFieldEnum = (typeof ActivityLogScalarFieldEnum)[keyof typeof ActivityLogScalarFieldEnum]
 
 
 export const EmailTemplateScalarFieldEnum = {
@@ -656,6 +676,14 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: 'DbNull',
+  JsonNull: 'JsonNull'
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const JsonNullValueInput = {

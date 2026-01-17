@@ -4,9 +4,10 @@ import { UserAutoInvoiceImportsController } from './auto-invoice-imports.control
 import { ManageConnectionService } from './manage-connection.service';
 import { ImapApisModule } from 'src/imap-apis/imap-apis.module';
 import { ImapSyncService } from './imap-sync.service';
+import { ActivityLogModule } from 'src/common/activity-log/activity-log.module';
 
 @Module({
-  imports: [ImapApisModule],
+  imports: [ImapApisModule, ActivityLogModule],
   controllers: [UserAutoInvoiceImportsController],
   providers: [
     AutoInvoiceImportsService,

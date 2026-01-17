@@ -6,17 +6,30 @@ import { PrismaService } from 'src/config/database/prisma.service';
 export class SupplierImportsService {
   constructor(private prisma: PrismaService) {}
 
-  async getActivity() {
+  async getActivity(): Promise<ReturnType<typeof cResponseData>> {
     try {
-      const [totalUser, totalImapConnection] = await Promise.all([
-        this.prisma.user.count({ where: { role: 'USER', isDeleted: false } }),
-        this.prisma.imapConfiguration.count(),
-      ]);
+      const [totalUser, totalImapConnection, failedImapImports] =
+        await Promise.all([
+          this.prisma.user.count({ where: { role: 'USER', isDeleted: false } }),
+          this.prisma.imapConfiguration.count({
+            where: {
+              connect: true,
+              connectionStatus: 'CONNECTED',
+            },
+          }),
+          this.prisma.invoice.count({
+            where: {
+              invoiceSource: 'EMAIL',
+              haveAttachment: false,
+            },
+          }),
+        ]);
 
       return cResponseData({
         data: {
           totalUser: totalUser || 0,
           totalImapConnection: totalImapConnection || 0,
+          failedImapImports: failedImapImports || 0,
         },
         message: 'Supplier import activity data fetched successfully',
       });
@@ -29,7 +42,7 @@ export class SupplierImportsService {
     }
   }
 
-  async getRecentUsers() {
+  async getRecentUsers(): Promise<ReturnType<typeof cResponseData>> {
     try {
       const recentUsers = await this.prisma.user.findMany({
         where: { role: 'USER', isDeleted: false },
@@ -44,14 +57,56 @@ export class SupplierImportsService {
         orderBy: { created_at: 'desc' },
       });
 
+      const data = recentUsers.map((recentUser) => ({
+        id: recentUser.id,
+        name: `${recentUser.profile?.firstName || ''} ${recentUser.profile?.lastName || ''}`,
+        role: recentUser.role,
+        email: recentUser.email,
+        createdAt: recentUser.created_at,
+      }));
+
       return cResponseData({
-        data: recentUsers,
+        data: data,
         message: 'Recent users fetched successfully',
       });
     } catch (error) {
       console.error('Get recent users error:', error);
       throw new HttpException(
         'Failed to fetch recent users',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async getSystemLogs(limit = 5): Promise<ReturnType<typeof cResponseData>> {
+    try {
+      const logs = await this.prisma.activityLog.findMany({
+        where: {
+          category: 'SYSTEM',
+        },
+        orderBy: { createdAt: 'desc' },
+        take: limit,
+      });
+
+      const formattedLogs = logs.map((log) => ({
+        time: new Date(log.createdAt as Date).toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit',
+        }),
+        message: log.title,
+        level: log.level.toLowerCase(),
+        details: log.description,
+      }));
+
+      return cResponseData({
+        success: true,
+        message: 'System logs fetched successfully',
+        data: formattedLogs,
+      });
+    } catch (error) {
+      console.error('Get system logs error:', error);
+      throw new HttpException(
+        'Failed to fetch system logs',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

@@ -43,10 +43,7 @@ export class AccountantDashboardService {
       });
 
       const enrichedActivities = activities.map((activity) => {
-        const userInfo = activity.userId
-          ? userMap.get(activity.userId as string)
-          : null;
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        const userInfo = activity.userId ? userMap.get(activity.userId) : null;
         return {
           ...activity,
           userName: activity.userName || userInfo?.name || null,

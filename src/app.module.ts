@@ -27,6 +27,7 @@ import { ReceiptExpenseModule } from './accountant-dashboard/accountants/receipt
 import { VatOverviewModule } from './accountant-dashboard/accountants/vat-overview/vat-overview.module';
 import { ClientsModule } from './accountant-dashboard/accountants/clients/clients.module';
 import { ReportsModule } from './accountant-dashboard/accountants/reports/reports.module';
+import { JobsModule } from './jobs/jobs.module';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { ReportsModule } from './accountant-dashboard/accountants/reports/report
     VatOverviewModule,
     ClientsModule,
     ReportsModule,
+    JobsModule,
   ],
   providers: [
     {

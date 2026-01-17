@@ -145,6 +145,17 @@ export class SubscriptionsService {
     dto: CreateSubscriptionPlanDto,
   ): Promise<ReturnType<typeof cResponseData>> {
     try {
+
+      const subscriptionPlan = await this.prisma.subscriptionPlan.findFirst({
+        where: {
+          planName:dto.planName
+        }
+      })
+      if (subscriptionPlan) {
+        throw new HttpException('Subscription plan already exists', HttpStatus.CONFLICT);
+      }
+      
+      
       const plan = await this.prisma.subscriptionPlan.create({
         data: {
           planName: dto.planName,
@@ -175,7 +186,9 @@ export class SubscriptionsService {
         data: plan,
       });
     } catch (error) {
-      console.error('Create subscription error:', error);
+      if (error instanceof HttpException) {
+        throw error;
+      } 
       throw new HttpException(
         'Failed to create subscription plan',
         HttpStatus.INTERNAL_SERVER_ERROR,

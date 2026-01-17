@@ -28,9 +28,6 @@ export class CronConfigService implements OnModuleInit {
       await this.setupCronForUser(sub.UserId);
     }
 
-    console.log(
-      `Initialized cron jobs for ${activeSubscriptions.length} users`,
-    );
   }
 
   async setupCronForUser(userId: string) {
@@ -39,7 +36,6 @@ export class CronConfigService implements OnModuleInit {
     });
 
     if (!subscription) {
-      console.log(`No active subscription for user ${userId}`);
       return;
     }
 
@@ -49,12 +45,10 @@ export class CronConfigService implements OnModuleInit {
     });
 
     if (!imapConfig) {
-      console.log(`No connected IMAP configuration for user ${userId}`);
       return;
     }
 
     if (!imapConfig?.sync || !imapConfig.realtimeImapChecking) {
-      console.log(`Sync disabled or no interval set for user ${userId}`);
       return;
     }
 
@@ -65,9 +59,7 @@ export class CronConfigService implements OnModuleInit {
       !selectedIntervalId ||
       !allowedIntervalIds.includes(selectedIntervalId)
     ) {
-      console.log(
-        `Interval not allowed in subscription plan for user ${userId}`,
-      );
+ 
       return;
     }
 
@@ -90,7 +82,6 @@ export class CronConfigService implements OnModuleInit {
     this.schedulerRegistry.addCronJob(jobName, job as any);
     job.start();
 
-    console.log(`Cron job ${jobName} created with schedule: ${cronTime}`);
   }
 
   async runSyncJob(userId: string) {
@@ -156,7 +147,6 @@ export class CronConfigService implements OnModuleInit {
           },
         });
       }
-      console.error(`Sync job failed for user ${userId}:`, error);
     }
   }
 

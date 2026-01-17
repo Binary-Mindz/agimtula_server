@@ -126,8 +126,16 @@ export class InvoicesService {
       const newInvoice = await this.prisma.invoice.create({
         data: {
           userId,
-          ...invoiceData,
           invoiceNo: invoiceNumber,
+          type: invoiceData.type,
+          companyName: invoiceData.companyName,
+          email: invoiceData.email,
+          projectInformation: invoiceData.projectInformation,
+          projectDescription: invoiceData.projectDescription,
+          vat: invoiceData.vat,
+          subTotal: invoiceData.subTotal,
+          totalAmount: invoiceData.totalAmount,
+          additionalNote: invoiceData.additionalNote,
           issueDate: issueDateObj,
           dueDate: dueDateObj,
           AddressAndContactInfo: addressAndContactInfo,

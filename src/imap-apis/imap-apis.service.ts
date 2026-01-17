@@ -279,16 +279,54 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
       });
       if (!imapConfig) return [];
 
-      const connection = await this.imapClient({
-        host: imapConfig.host || 'imap.gmail.com',
-        port: Number(process.env.MAIL_PORT || 993),
-        username: imapConfig.username,
-        password: imapConfig.password,
-      });
+      let connection;
+      try {
+        connection = await this.imapClient({
+          host: imapConfig.host || 'imap.gmail.com',
+          port: Number(process.env.MAIL_PORT || 993),
+          username: imapConfig.username,
+          password: imapConfig.password,
+        });
+      } catch (authError: any) {
+        console.error(`IMAP authentication failed for user ${userId}:`, authError.message);
+        
+        // Update IMAP config to mark as failed
+        await this.prisma.imapConfiguration.update({
+          where: { id: imapConfig.id },
+          data: {
+            connectionStatus: 'FAILED',
+            connect: false,
+            sync: false,
+          },
+        });
+
+        // Log the authentication failure
+        const user = await this.prisma.user.findUnique({
+          where: { id: userId },
+          include: { email: true },
+        });
+
+        if (user?.email) {
+          await this.activityLog.log({
+            userId,
+            userEmail: user.email.email,
+            type: 'IMAP_AUTH_FAILED',
+            title: 'IMAP authentication failed',
+            description: `Invalid credentials for ${imapConfig.username}`,
+            category: 'SYSTEM',
+            level: 'ERROR',
+          });
+        }
+
+        // Return empty array instead of throwing error
+        return [];
+      }
 
       await connection.openBox('INBOX');
 
       const createdInvoices: Invoice[] = [];
+
+      try {
 
       for (const keyword of INVOICE_SUBJECT_KEYWORDS) {
         const messages = await connection.search(
@@ -411,7 +449,15 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
         }
       }
 
-      connection.end();
+      } catch (emailError) {
+        console.error(`Error processing emails for user ${userId}:`, emailError);
+        // Continue execution, don't fail the entire sync
+      } finally {
+        if (connection) {
+          connection.end();
+        }
+      }
+      
       return createdInvoices;
     } catch (error) {
       console.error(error);

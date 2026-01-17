@@ -12,10 +12,12 @@ import { AuthGuard } from './guard/auth.guard';
 import { ModuleAccessGuard } from './guard/module-access.guard';
 import { PermissionGuard } from './guard/permission.guard';
 import { PermissionManagementController } from './permission-management/permission-management.controller';
+import { ActivityLogModule } from 'src/common/activity-log/activity-log.module';
 
 @Module({
   imports: [
     SmtpMailModule,
+    ActivityLogModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET as string,
       signOptions: { expiresIn: '1h' },

@@ -2,15 +2,20 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { LogTripDto } from './dto/log-trip.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { cResponseData } from 'src/common/cResponse';
+import { ActivityLogService } from 'src/common/activity-log/activity-log.service';
 
 @Injectable()
 export class MileageService {
-  constructor(private prisma: PrismaService) { }
+  constructor(
+    private prisma: PrismaService,
+    private activityLog: ActivityLogService,
+  ) {}
 
   async logTrip(userId: string, dto: LogTripDto) {
     try {
       const userExists = await this.prisma.user.findUnique({
         where: { id: userId, isDeleted: false },
+        include: { profile: true, email: true },
       });
 
       if (!userExists) {
@@ -33,6 +38,19 @@ export class MileageService {
           notes: dto.notes,
           userId: userId,
         },
+      });
+
+      // Log trip activity
+      await this.activityLog.log({
+        userId,
+        userName: `${userExists.profile?.firstName || ''} ${userExists.profile?.lastName || ''}`.trim(),
+        userEmail: userExists.email?.email,
+        type: 'TRIP_LOGGED',
+        title: `Trip logged: ${dto.startLocation} → ${dto.endLocation} (${dto.distance} km)`,
+        description: `${dto.tripType} trip - ${dto.vehicle}`,
+        amount: dto.distance * 0.6,
+        currency: 'EUR',
+        category: 'USER',
       });
 
       return cResponseData({

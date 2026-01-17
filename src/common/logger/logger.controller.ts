@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { LoggerService } from './logger.service';
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { QueryLoggerDto } from './dto/logquery.dto';

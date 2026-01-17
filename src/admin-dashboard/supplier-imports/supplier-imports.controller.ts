@@ -7,7 +7,7 @@ import { ApiOperation } from '@nestjs/swagger';
 export class SupplierImportsController {
   constructor(
     private readonly supplierImportsService: SupplierImportsService,
-  ) { }
+  ) {}
 
   @Get('activity')
   @Roles('ADMIN')
@@ -21,5 +21,12 @@ export class SupplierImportsController {
   @ApiOperation({ summary: 'Get recent users ( ADMIN only )' })
   async getRecentUsers() {
     return this.supplierImportsService.getRecentUsers();
+  }
+
+  @Get('system-logs')
+  @Roles('ADMIN')
+  @ApiOperation({ summary: 'Get system logs ( ADMIN only )' })
+  async getSystemLogs() {
+    return this.supplierImportsService.getSystemLogs();
   }
 }

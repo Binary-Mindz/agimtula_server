@@ -5,11 +5,12 @@ import { CronConfigService } from './cronConfig.service';
 import { ImapApisController } from './imap-apis.controller';
 import { TransactionService } from 'src/user-dashboard/bank-transaction/transaction.service';
 import { ActivityLogModule } from 'src/common/activity-log/activity-log.module';
+import { StripeService } from 'src/user-dashboard/payment/stripe.service';
 
 @Module({
   imports: [ScheduleModule.forRoot(), ActivityLogModule],
   controllers: [ImapApisController],
-  providers: [ImapApisService, CronConfigService, TransactionService],
+  providers: [ImapApisService, CronConfigService, TransactionService,StripeService],
   exports: [ImapApisService, CronConfigService],
 })
 export class ImapApisModule {}

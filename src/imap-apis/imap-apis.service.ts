@@ -75,12 +75,23 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
     // const imapUserActive = await this.prisma.user.findMany({
     //   where: {
     //     email: { isNot: null },
-    //     userSubscriptionPlan: {
-    //       subscriptionPlanPaymentStatus: {
-    //         paymentStatus: 'PAID',
+    //     OR: [
+    //       {
+    //         userSubscriptionPlan: {
+    //           subscriptionPlanPaymentStatus: {
+    //             paymentStatus: 'PAID',
+    //           },
+    //           expiredAt: { gt: new Date() },
+    //         },
     //       },
-    //       expiredAt: { gt: new Date() },
-    //     },
+    //       {
+    //         userSubscriptionPlan: {
+    //           subscriptionPlan: { name: { contains: 'FREE' } },
+    //           isActive: true,
+    //         },
+    //       },
+    //       { userSubscriptionPlan: null },
+    //     ],
     //     imapConfigurations: {
     //       connect: true,
     //       sync: true,
@@ -106,27 +117,28 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
     const imapUserActive = await this.prisma.user.findMany({
       where: {
         email: { isNot: null },
-        userSubscriptionPlan: {
-          subscriptionPlanPaymentStatus: {
-            paymentStatus: 'PAID',
-          },
-          expiredAt: { gt: new Date() },
-        },
       },
       select: {
+        id: true,
         profile: { select: { firstName: true, lastName: true } },
         imapConfigurations: true,
+        userSubscriptionPlan: {
+          where: {
+            isActive: true,
+            expiredAt: { gt: new Date() },
+          },
+        },
       },
     });
 
     const redisDataSet = {
-      user_Name: `${imapUserActive[0].profile?.firstName} ${imapUserActive[0].profile?.lastName}`,
-      email: imapUserActive[0].imapConfigurations?.username,
-      status: imapUserActive[0].imapConfigurations?.connect
+      user_Name: `${imapUserActive[0]?.profile?.firstName} ${imapUserActive[0]?.profile?.lastName}`,
+      email: imapUserActive[0]?.imapConfigurations?.username,
+      status: imapUserActive[0]?.imapConfigurations?.connect
         ? 'Connected'
         : 'Not Connected',
       lastSync: null,
-      importedToday: `${0} ${imapUserActive[0].imapConfigurations?.connect ? 'Active' : ''}`,
+      importedToday: `${0} ${imapUserActive[0]?.imapConfigurations?.connect ? 'Active' : ''}`,
       error: null,
     };
 
@@ -180,6 +192,64 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
     );
   }
 
+  private async checkUserAccess(userId: string): Promise<{
+    hasAccess: boolean;
+    subscriptionStatus: 'ACTIVE' | 'TRIAL' | 'EXPIRED' | 'NONE';
+    remainingDays?: number;
+    planName?: string;
+  }> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        userSubscriptionPlan: {
+          where: {
+            isActive: true,
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      return { hasAccess: false, subscriptionStatus: 'NONE' };
+    }
+
+    const subscription = user.userSubscriptionPlan;
+
+    // No subscription - no access (removed grace period)
+    if (!subscription) {
+      return { hasAccess: false, subscriptionStatus: 'NONE' };
+    }
+
+    // Has subscription - check if active and not expired
+    const now = new Date();
+    const isExpired = subscription.expiredAt <= now;
+
+    if (isExpired) {
+      return { hasAccess: false, subscriptionStatus: 'EXPIRED' };
+    }
+
+    // Calculate remaining days
+    const remainingDays = Math.ceil((subscription.expiredAt.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+    
+    // Check if it's a trial by looking at payment history
+    const subscriptionHistory = await this.prisma.userSubscriptionPlanHistory.findFirst({
+      where: { UserId: userId },
+      orderBy: { createdAt: 'desc' },
+      include: { subscriptionPlanPaymentStatus: true }
+    });
+    
+    // It's a trial if payment status is not PAID or has freeTrialDays
+    const isTrial = subscriptionHistory?.subscriptionPlanPaymentStatus?.paymentStatus !== 'PAID' ||
+                   (subscriptionHistory?.freeTrialDays && subscriptionHistory.freeTrialDays > 0);
+
+    return {
+      hasAccess: true,
+      subscriptionStatus: isTrial ? 'TRIAL' : 'ACTIVE',
+      remainingDays,
+      planName: subscription.planName
+    };
+  }
+
   private parseEuropeanDate(dateStr?: string | null): Date | null {
     if (!dateStr) return null;
 
@@ -219,58 +289,53 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
         );
       }
 
-      const user = await this.prisma.user.findFirst({
-        where: {
-          id: userId,
-          userSubscriptionPlan: {
-            subscriptionPlanPaymentStatus: {
-              paymentStatus: 'PAID',
-            },
-            expiredAt: { gt: new Date() },
-          },
-        },
-      });
+      const userAccess = await this.checkUserAccess(userId);
 
-      if (!user) {
-        throw new HttpException(
-          'User not found or expired subscription',
-          HttpStatus.BAD_REQUEST,
-        );
+      if (!userAccess.hasAccess) {
+        const message = userAccess.subscriptionStatus === 'EXPIRED' 
+          ? 'Your subscription has expired. Please renew to continue using IMAP services.'
+          : userAccess.subscriptionStatus === 'NONE'
+          ? 'No active subscription found. Please subscribe to use IMAP services.'
+          : 'Access denied';
+          
+        throw new HttpException(message, HttpStatus.FORBIDDEN);
       }
 
-      // Check invoice limit
-      const subscription = await this.prisma.userSubscriptionPlan.findFirst({
-        where: { UserId: userId, isActive: true },
-      });
-
-      if (subscription && subscription.isLimitedInvoicePerMonth) {
-        const currentMonth = new Date();
-        const startOfMonth = new Date(
-          currentMonth.getFullYear(),
-          currentMonth.getMonth(),
-          1,
-        );
-        const endOfMonth = new Date(
-          currentMonth.getFullYear(),
-          currentMonth.getMonth() + 1,
-          0,
-        );
-
-        const invoiceCount = await this.prisma.invoice.count({
-          where: {
-            userId,
-            createdAt: {
-              gte: startOfMonth,
-              lte: endOfMonth,
-            },
-          },
+      // Check invoice limits based on subscription
+      if (userAccess.subscriptionStatus === 'ACTIVE') {
+        const subscription = await this.prisma.userSubscriptionPlan.findFirst({
+          where: { UserId: userId, isActive: true },
         });
 
-        if (invoiceCount >= subscription.perMonthInvoiceCount) {
-          throw new HttpException(
-            `Monthly invoice limit reached (${subscription.perMonthInvoiceCount}). Upgrade your plan.`,
-            HttpStatus.FORBIDDEN,
+        if (subscription?.isLimitedInvoicePerMonth) {
+          const currentMonth = new Date();
+          const startOfMonth = new Date(
+            currentMonth.getFullYear(),
+            currentMonth.getMonth(),
+            1,
           );
+          const endOfMonth = new Date(
+            currentMonth.getFullYear(),
+            currentMonth.getMonth() + 1,
+            0,
+          );
+
+          const invoiceCount = await this.prisma.invoice.count({
+            where: {
+              userId,
+              createdAt: {
+                gte: startOfMonth,
+                lte: endOfMonth,
+              },
+            },
+          });
+
+          if (invoiceCount >= subscription.perMonthInvoiceCount) {
+            throw new HttpException(
+              `Monthly invoice limit reached (${subscription.perMonthInvoiceCount}). Upgrade your plan.`,
+              HttpStatus.FORBIDDEN,
+            );
+          }
         }
       }
 
@@ -279,16 +344,54 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
       });
       if (!imapConfig) return [];
 
-      const connection = await this.imapClient({
-        host: imapConfig.host || 'imap.gmail.com',
-        port: Number(process.env.MAIL_PORT || 993),
-        username: imapConfig.username,
-        password: imapConfig.password,
-      });
+      let connection;
+      try {
+        connection = await this.imapClient({
+          host: imapConfig.host || 'imap.gmail.com',
+          port: Number(process.env.MAIL_PORT || 993),
+          username: imapConfig.username,
+          password: imapConfig.password,
+        });
+      } catch (authError: any) {
+        console.error(`IMAP authentication failed for user ${userId}:`, authError.message);
+        
+        // Update IMAP config to mark as failed
+        await this.prisma.imapConfiguration.update({
+          where: { id: imapConfig.id },
+          data: {
+            connectionStatus: 'FAILED',
+            connect: false,
+            sync: false,
+          },
+        });
+
+        // Log the authentication failure
+        const user = await this.prisma.user.findUnique({
+          where: { id: userId },
+          include: { email: true },
+        });
+
+        if (user?.email) {
+          await this.activityLog.log({
+            userId,
+            userEmail: user.email.email,
+            type: 'IMAP_AUTH_FAILED',
+            title: 'IMAP authentication failed',
+            description: `Invalid credentials for ${imapConfig.username}`,
+            category: 'SYSTEM',
+            level: 'ERROR',
+          });
+        }
+
+        // Return empty array instead of throwing error
+        return [];
+      }
 
       await connection.openBox('INBOX');
 
       const createdInvoices: Invoice[] = [];
+
+      try {
 
       for (const keyword of INVOICE_SUBJECT_KEYWORDS) {
         const messages = await connection.search(
@@ -411,7 +514,15 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
         }
       }
 
-      connection.end();
+      } catch (emailError) {
+        console.error(`Error processing emails for user ${userId}:`, emailError);
+        // Continue execution, don't fail the entire sync
+      } finally {
+        if (connection) {
+          connection.end();
+        }
+      }
+      
       return createdInvoices;
     } catch (error) {
       console.error(error);

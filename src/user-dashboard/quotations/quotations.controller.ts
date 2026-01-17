@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ValidationPipe, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query,  UseGuards } from '@nestjs/common';
 import { QuotationsService } from './quotations.service';
 import { CreateQuotationDto } from './dto/create-quotation.dto';
 import { UpdateQuotationDto } from './dto/update-quotation.dto';
@@ -28,12 +28,15 @@ export class QuotationsController {
 
   @Get()
   @Roles('USER')
+  @HasModuleAccess('quotations')
+
   @ApiOperation({ summary: 'Get all quotations ( USER )' })
   async findAll(@Query() query: QueryQuotationDto) {
     return await this.quotationsService.findAll(query);
   }
 
   @Get(':id')
+  @HasModuleAccess('quotations')
   @Roles('USER')
   @ApiOperation({ summary: 'Get single quotation ( USER )' })
   async findOne(@Param('id') id: string) {
@@ -41,6 +44,7 @@ export class QuotationsController {
   }
 
   @Patch(':id')
+  @HasModuleAccess('quotations')
   @Roles('USER')
   @ApiOperation({ summary: 'Update quotation ( USER )' })
   update(@Param('id') id: string, @Body() updateQuotationDto: UpdateQuotationDto) {
@@ -48,6 +52,7 @@ export class QuotationsController {
   }
 
   @Delete(':id')
+  @HasModuleAccess('quotations')
   @Roles('USER')
   @ApiOperation({ summary: 'Delete quotation ( USER )' })
   remove(@Param('id') id: string) {

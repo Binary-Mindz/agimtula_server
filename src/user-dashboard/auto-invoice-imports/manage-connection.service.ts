@@ -26,8 +26,8 @@ export class ManageConnectionService {
         port: dto.imap_port,
         tls: true,
         tlsOptions: { rejectUnauthorized: false },
-        connTimeout: 10_000,
-        authTimeout: 10_000,
+        connTimeout: 20_000,
+        authTimeout: 20_000,
       });
       imap.once('ready', () => {
         imap.end();
@@ -44,20 +44,21 @@ export class ManageConnectionService {
   }
 
   private async selectedInvoiceTimeSyncData(userId: string) {
+    // Allow both paid and trial users to access sync intervals
     const selTime = await this.prisma.userSubscriptionPlan.findFirst({
       where: {
         UserId: userId,
-        subscriptionPlanPaymentStatus: {
-          paymentStatus: 'PAID',
-        },
+        isActive: true,
         expiredAt: {
-          gte: new Date(Date.now()),
+          gte: new Date(),
         },
       },
       select: {
         realtimeImapChecking: true,
       },
     });
+    
+    // If no subscription, return empty array (will show all options as unselected)
     if (!selTime?.realtimeImapChecking) return [];
     return selTime?.realtimeImapChecking;
   }
@@ -127,38 +128,77 @@ export class ManageConnectionService {
 
   async setImapConfiguration(userId: string, dto: ImapEmailConnectionDto) {
     try {
-      const subscription = await this.prisma.userSubscriptionPlan.findFirst({
-        where: {
-          UserId: userId,
-          subscriptionPlanPaymentStatus: {
-            paymentStatus: 'PAID',
-          },
-        },
+      // Check user access - must have active subscription or be in trial period
+      const user = await this.prisma.user.findUnique({
+        where: { id: userId },
         include: {
-          subscriptionPlanPaymentStatus: true,
+          userSubscriptionPlan: {
+            where: {
+              isActive: true,
+            },
+          },
         },
       });
 
-      if (!subscription) {
-        throw new ValidationException('Active subscription required');
+      if (!user) {
+        throw new ValidationException('User not found');
       }
 
-      const isExpired = subscription.expiredAt < new Date(Date.now());
-      if (isExpired) {
-        throw new ValidationException('Subscription expired');
-      }
-
-      let isConnected = false;
-
-      if (dto.connect === true) {
-        try {
-          await this.testConnection(dto);
-          isConnected = true;
-        } catch (err: any) {
-          console.error('IMAP test failed:', err?.message);
-          isConnected = false;
+      const subscription = user.userSubscriptionPlan;
+      let hasAccess = false;
+      let accessType = 'NONE';
+      
+      if (subscription) {
+        // Has subscription - check if active and not expired
+        const now = new Date();
+        const isActive = subscription.isActive;
+        const isNotExpired = subscription.expiredAt > now;
+        
+        if (isActive && isNotExpired) {
+          hasAccess = true;
+          // Check if it's a trial by looking at payment status or creation date
+          const subscriptionHistory = await this.prisma.userSubscriptionPlanHistory.findFirst({
+            where: { UserId: userId },
+            orderBy: { createdAt: 'desc' },
+            include: { subscriptionPlanPaymentStatus: true }
+          });
+          
+          // It's a trial if:
+          // 1. Payment status is not PAID, OR
+          // 2. Has freeTrialDays > 0 in history
+          const isTrial = subscriptionHistory?.subscriptionPlanPaymentStatus?.paymentStatus !== 'PAID' ||
+                         (subscriptionHistory?.freeTrialDays && subscriptionHistory.freeTrialDays > 0);
+          
+          accessType = isTrial ? 'TRIAL' : 'PAID';
         }
       }
+      
+      // No grace period for users without subscription
+      // They must either have active subscription or trial
+      if (!hasAccess) {
+        throw new ValidationException(
+          'IMAP configuration requires an active subscription or trial. Please subscribe to a plan to continue.'
+        );
+      }
+
+      // Log access attempt for monitoring
+      console.log(`IMAP configuration access: User ${userId}, Type: ${accessType}`);
+
+      // Validate and fix port - Gmail IMAP uses 993
+      const validPort = dto.imap_port;
+      
+      let isConnected = false;
+      try {
+        await this.testConnection({
+          ...dto,
+          imap_port: validPort
+        });
+        isConnected = true;
+      } catch (err: any) {
+        console.error('IMAP test failed:', err?.message);
+        isConnected = false;
+      }
+     
 
       let validRealtimeId: string | null = null;
       if (dto.realtimeImapCheckingId) {
@@ -177,19 +217,6 @@ export class ManageConnectionService {
         validRealtimeId = dto.realtimeImapCheckingId;
       }
 
-      const imapConnectService = {};
-      if (dto.connect === false) {
-        imapConnectService['connect'] = false;
-        imapConnectService['sync'] = false;
-        imapConnectService['emailNotifications'] = false;
-      }
-      if (dto.connect === true) {
-        imapConnectService['connect'] = true;
-        imapConnectService['sync'] = dto.automatic_Sync || false;
-        imapConnectService['emailNotifications'] =
-          dto.emailNotifications || false;
-      }
-
       const c = await this.prisma.imapConfiguration.upsert({
         where: {
           userId: userId,
@@ -198,22 +225,24 @@ export class ManageConnectionService {
           username: dto.imap_username,
           password: dto.imap_app_password,
           host: dto.imap_server,
-          port: dto.imap_port,
+          port: validPort,
           realtimeImapCheckingId: validRealtimeId || null,
           connectionStatus: isConnected ? 'CONNECTED' : 'FAILED',
-          ...imapConnectService,
-          connect: isConnected ? true : false,
+          connect: isConnected,
+          sync: isConnected ? (dto.automatic_Sync || false) : false,
+          emailNotifications: isConnected ? (dto.emailNotifications || false) : false,
         },
         create: {
           username: dto.imap_username,
           password: dto.imap_app_password,
           host: dto.imap_server,
-          port: dto.imap_port,
+          port: validPort,
           realtimeImapCheckingId: validRealtimeId || null,
           connectionStatus: isConnected ? 'CONNECTED' : 'FAILED',
           userId: userId,
-          ...imapConnectService,
-          connect: isConnected ? true : false,
+          connect: isConnected,
+          sync: isConnected ? (dto.automatic_Sync || false) : false,
+          emailNotifications: isConnected ? (dto.emailNotifications || false) : false,
         },
       });
 

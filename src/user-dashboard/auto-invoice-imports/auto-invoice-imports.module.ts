@@ -5,9 +5,10 @@ import { ManageConnectionService } from './manage-connection.service';
 import { ImapApisModule } from 'src/imap-apis/imap-apis.module';
 import { ImapSyncService } from './imap-sync.service';
 import { ActivityLogModule } from 'src/common/activity-log/activity-log.module';
+import { ImapSystemMonitorModule } from 'src/admin-dashboard/imap-system-monitor/imap-system-monitor.module';
 
 @Module({
-  imports: [ImapApisModule, ActivityLogModule],
+  imports: [ImapApisModule, ActivityLogModule, ImapSystemMonitorModule],
   controllers: [UserAutoInvoiceImportsController],
   providers: [
     AutoInvoiceImportsService,

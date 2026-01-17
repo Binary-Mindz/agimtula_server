@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -91,8 +92,8 @@ export class AdminUserManagementController {
     name: 'userId',
     type: String,
   })
-  updateStatus(@Param() userId: string, @Body() status: boolean) {
-    return this.userManagementService.updateStatus(userId, status);
+  updateStatus(@Param('userId') userId: string, @Body() body: { status: boolean }) {
+    return this.userManagementService.updateStatus(userId, body.status);
   }
 
   @Patch('updateRole/:id')
@@ -111,9 +112,10 @@ export class AdminUserManagementController {
   @ApiParam({
     name: 'id',
     type: String,
+    required:true
   })
-  updateRole(@Param() id: string, @Body() role: 'USER' | 'ACCOUNTANT') {
-    return this.userManagementService.updateRole(id, role);
+  updateRole(@Param('id') id: string, @Body() body: { role: 'USER' | 'ACCOUNTANT' }) {
+    return this.userManagementService.updateRole(id, body.role);
   }
 
   @Get('get-plans')
@@ -122,13 +124,27 @@ export class AdminUserManagementController {
     return this.userManagementService.getPlans();
   }
 
-  @Patch('deleteAccount/:userId')
+  @Delete('deleteAccount/:userId')
   @Roles('ADMIN')
-  @ApiParam({
+    @ApiParam({
     name: 'userId',
     type: String,
+    required:true
   })
-  deleteAccount(@Param() userId: string) {
-    return this.userManagementService.deleteAccount(userId);
+ async deleteAccount(@Param('userId') userId:string) {
+    return await this.userManagementService.deleteAccount(userId);
   }
+
+    @Get("user-data/:userId")
+  @Roles("ADMIN")
+    @ApiParam({
+    name: "userId",
+    type: String,
+    required:true
+    })
+    
+  async getUserData(@Param('userId')userId:string){
+    return await this.userManagementService.getUserData(userId)
+  }
+    
 }

@@ -3,6 +3,7 @@ import { CreateSubscriptionPlanDto } from './dto/create-subscription.dto';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
+import { UpdateSubscriptionDto } from './dto/update-subscription.dto';
 
 @Injectable()
 export class SubscriptionsService {
@@ -171,7 +172,7 @@ export class SubscriptionsService {
                 setupFee: packageItem.setupFee,
                 freeTrialDays: packageItem.freeTrialDays,
                 billingPeriod: packageItem.billingPeriod,
-                stripePriceId: `price_${Date.now()}_${packageItem.billingPeriod}`, // Placeholder Stripe price ID
+                stripePriceId: `PLACEHOLDER_${Date.now()}_${packageItem.billingPeriod}`,
               })),
             },
           },
@@ -365,7 +366,70 @@ export class SubscriptionsService {
     }
   }
 
-  updateSubscription(id: string, dto: any) {
-    return { id, dto };
+async updateSubscription(id: string, dto: UpdateSubscriptionDto) {
+    try {
+      const isSubscription = await this.prisma.subscriptionPlan.findUnique({
+        where: { id },
+        include: { packagePricing: true }
+      });
+
+      if (!isSubscription) {
+        throw new HttpException("Subscription not found", HttpStatus.NOT_FOUND);
+      }
+
+      // Update subscription plan
+      await this.prisma.subscriptionPlan.update({
+        where: { id },
+        data: {
+          planName: dto.planName,
+          isActive: dto.isActive,
+          description: dto.description,
+        },
+      });
+
+      // Update package pricing if provided
+      if (dto.packagePricingDto && dto.packagePricingDto.length > 0) {
+        // Delete existing package pricing
+        await this.prisma.packagePricing.deleteMany({
+          where: { SubscriptionPlanId: id }
+        });
+
+        // Create new package pricing
+        await this.prisma.packagePricing.createMany({
+          data: dto.packagePricingDto.map((packageItem) => ({
+            SubscriptionPlanId: id,
+            perMonthInvoiceCount: dto.perMonthInvoiceCount,
+            planFeatures: dto.planFeatures,
+            invoiceAutoSyncIntervalIds: dto.invoiceAutoSyncIntervalIds,
+            price: packageItem.price,
+            setupFee: packageItem.setupFee,
+            freeTrialDays: packageItem.freeTrialDays,
+            billingPeriod: packageItem.billingPeriod,
+            stripePriceId: `PLACEHOLDER_${Date.now()}_${packageItem.billingPeriod}`,
+          })),
+        });
+      }
+
+      // Get updated plan with pricing
+      const finalPlan = await this.prisma.subscriptionPlan.findUnique({
+        where: { id },
+        include: { packagePricing: true }
+      });
+
+      return cResponseData({
+        message: 'Subscription plan updated successfully',
+        data: finalPlan,
+      });
+
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      console.error('Update subscription error:', error);
+      throw new HttpException(
+        'Failed to update subscription plan',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

@@ -17,4 +17,12 @@ export class UserReportsController {
   async getReportSummury(@User() user: jwtPayload) {
     return await this.reportsService.getReportData(user.sub);
   }
+
+  @Get('financial-summary')
+  @Roles('USER')
+  @ApiOperation({ summary: 'Get comprehensive financial summary ( USER only )' })
+  @ApiResponse({ status: 200, description: 'Financial summary retrieved successfully' })
+  async getFinancialSummary(@User() user: jwtPayload) {
+    return await this.reportsService.getFinancialSummary(user.sub);
+  }
 }

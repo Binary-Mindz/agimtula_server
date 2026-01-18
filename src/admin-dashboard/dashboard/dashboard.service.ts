@@ -288,7 +288,7 @@ export class DashboardService {
       const formattedActivities = activities.map((activity) => ({
         userName: activity.userName || 'Someone',
         description: activity.title,
-        timeAgo: formatDistanceToNow(new Date(activity.createdAt as Date), {
+        timeAgo: formatDistanceToNow(new Date(activity.createdAt ), {
           addSuffix: true,
         }),
         amount: activity.amount,

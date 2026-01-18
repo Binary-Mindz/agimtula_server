@@ -31,7 +31,7 @@ import {
   UpdateProfileDto,
   UpdateProfilePicDto,
 } from './dto/update-profile.dto';
-import { EnableTwoFADto, VerifyTwoFADto } from './dto/two-fa.dto';
+import {  VerifyTwoFADto } from './dto/two-fa.dto';
 import { UploadImageDto } from './dto/upload-image.dto';
 import { TwoFAService } from './2fa.service';
 
@@ -125,9 +125,9 @@ export class AuthController {
     );
   }
 
-  @HttpCode(204)
+  @HttpCode(200)
   @ApiOperation({ summary: 'Delete account ( USER, ADMIN, ACCOUNTANT )' })
-  @ApiResponse({ status: 204, description: 'Account deleted successfully' })
+  @ApiResponse({ status: 200, description: 'Account deleted successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @Delete('delete-account')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
@@ -245,8 +245,8 @@ export class AuthController {
   @ApiResponse({ status: 400, description: 'Invalid request data' })
   @Post('2fa')
   @Roles('USER', 'ADMIN', 'ACCOUNTANT')
-  async enable2FA(@User() user: jwtPayload, @Body() dto: EnableTwoFADto) {
-    return await this.twoFAService.sendTwoFACode(user.sub, dto);
+  async enable2FA(@User() user: jwtPayload) {
+    return await this.twoFAService.sendTwoFACode(user.sub);
   }
 
   @HttpCode(200)

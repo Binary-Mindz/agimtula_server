@@ -46,6 +46,10 @@ export class PaymentService {
         );
       }
 
+
+      let freeTrialDay = 0;
+      plan.packagePricing.map(p => freeTrialDay = p.freeTrialDays || 0);
+
       const pricing = plan.packagePricing[0];
       if (!pricing) {
         throw new ValidationException(
@@ -92,6 +96,41 @@ export class PaymentService {
           subscriptionPlanPaymentStatus: true,
         },
       });
+
+      // If free trial, activate immediately
+      if (freeTrialDay > 0) {
+        const trialEndDate = new Date();
+        trialEndDate.setDate(trialEndDate.getDate() + freeTrialDay);
+
+        await this.prisma.userSubscriptionPlan.create({
+          data: {
+            UserId: userId,
+            planName: plan.planName,
+            isLimitedInvoicePerMonth: pricing.isLimitedInvoicePerMonth,
+            perMonthInvoiceCount: pricing.perMonthInvoiceCount,
+            realtimeImapChecking: pricing.invoiceAutoSyncIntervalIds,
+            isActive: true,
+            expiredAt: trialEndDate,
+            subscriptionPlanPaymentStatusId: payment.subscriptionPlanPaymentStatus?.id || '',
+            price: pricing.price,
+          }
+        });
+
+        // Enable IMAP sync for trial
+        await this.prisma.imapConfiguration.updateMany({
+          where: { userId },
+          data: { 
+            sync: true,
+            connect: true,
+            connectionStatus: 'CONNECTED'
+          }
+        });
+
+        return cResponseData({
+          message: 'Free trial activated successfully',
+          data: { trialDays: freeTrialDay, expiredAt: trialEndDate }
+        });
+      }
 
       let stripePrice: Stripe.Response<Stripe.Price>;
 

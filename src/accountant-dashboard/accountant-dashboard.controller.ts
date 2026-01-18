@@ -20,11 +20,11 @@ export class AccountantDashboardController {
     );
   }
 
-  @Get('recent-activities')
+  @Get('activity-feed')
   @Roles('ACCOUNTANT')
-  @ApiOperation({ summary: 'Get recent activities ( ACCOUNTANT )' })
-  async getRecentActivities(@User() user: jwtPayload) {
-    return await this.accountantDashboardService.getRecentActivities(user.sub);
+  @ApiOperation({ summary: 'Get activity feed ( ACCOUNTANT )' })
+  async getActivityFeed(@User() user: jwtPayload) {
+    return await this.accountantDashboardService.getActivityFeed(user.sub);
   }
 
   @Get(':userId')

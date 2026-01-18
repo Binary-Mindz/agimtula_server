@@ -27,6 +27,7 @@ import { VatOverviewModule } from './accountant-dashboard/accountants/vat-overvi
 import { ClientsModule } from './accountant-dashboard/accountants/clients/clients.module';
 import { ReportsModule } from './accountant-dashboard/accountants/reports/reports.module';
 import { DashboardModule } from './admin-dashboard/dashboard/dashboard.module';
+import { JobsModule } from './jobs/jobs.module';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { DashboardModule } from './admin-dashboard/dashboard/dashboard.module';
     VatOverviewModule,
     ClientsModule,
     ReportsModule,
+    JobsModule,
   ],
   providers: [
     {

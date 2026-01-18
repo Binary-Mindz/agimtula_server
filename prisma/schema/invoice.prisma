@@ -22,6 +22,8 @@ model Invoice {
     stripeSessionId       String?
     stripePaymentIntentId String?
 
+    currency String @default("EUR")
+
     additionalNote String?
     businessDatas  BusinessData[]
     vendor         String?

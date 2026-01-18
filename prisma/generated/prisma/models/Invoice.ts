@@ -58,6 +58,7 @@ export type InvoiceMinAggregateOutputType = {
   paidAt: Date | null
   stripeSessionId: string | null
   stripePaymentIntentId: string | null
+  currency: string | null
   additionalNote: string | null
   vendor: string | null
   invoiceSource: $Enums.InvoiceSource | null
@@ -88,6 +89,7 @@ export type InvoiceMaxAggregateOutputType = {
   paidAt: Date | null
   stripeSessionId: string | null
   stripePaymentIntentId: string | null
+  currency: string | null
   additionalNote: string | null
   vendor: string | null
   invoiceSource: $Enums.InvoiceSource | null
@@ -118,6 +120,7 @@ export type InvoiceCountAggregateOutputType = {
   paidAt: number
   stripeSessionId: number
   stripePaymentIntentId: number
+  currency: number
   additionalNote: number
   vendor: number
   invoiceSource: number
@@ -162,6 +165,7 @@ export type InvoiceMinAggregateInputType = {
   paidAt?: true
   stripeSessionId?: true
   stripePaymentIntentId?: true
+  currency?: true
   additionalNote?: true
   vendor?: true
   invoiceSource?: true
@@ -192,6 +196,7 @@ export type InvoiceMaxAggregateInputType = {
   paidAt?: true
   stripeSessionId?: true
   stripePaymentIntentId?: true
+  currency?: true
   additionalNote?: true
   vendor?: true
   invoiceSource?: true
@@ -222,6 +227,7 @@ export type InvoiceCountAggregateInputType = {
   paidAt?: true
   stripeSessionId?: true
   stripePaymentIntentId?: true
+  currency?: true
   additionalNote?: true
   vendor?: true
   invoiceSource?: true
@@ -339,6 +345,7 @@ export type InvoiceGroupByOutputType = {
   paidAt: Date | null
   stripeSessionId: string | null
   stripePaymentIntentId: string | null
+  currency: string
   additionalNote: string | null
   vendor: string | null
   invoiceSource: $Enums.InvoiceSource
@@ -392,6 +399,7 @@ export type InvoiceWhereInput = {
   paidAt?: Prisma.DateTimeNullableFilter<"Invoice"> | Date | string | null
   stripeSessionId?: Prisma.StringNullableFilter<"Invoice"> | string | null
   stripePaymentIntentId?: Prisma.StringNullableFilter<"Invoice"> | string | null
+  currency?: Prisma.StringFilter<"Invoice"> | string
   additionalNote?: Prisma.StringNullableFilter<"Invoice"> | string | null
   vendor?: Prisma.StringNullableFilter<"Invoice"> | string | null
   invoiceSource?: Prisma.EnumInvoiceSourceFilter<"Invoice"> | $Enums.InvoiceSource
@@ -424,6 +432,7 @@ export type InvoiceOrderByWithRelationInput = {
   paidAt?: Prisma.SortOrderInput | Prisma.SortOrder
   stripeSessionId?: Prisma.SortOrderInput | Prisma.SortOrder
   stripePaymentIntentId?: Prisma.SortOrderInput | Prisma.SortOrder
+  currency?: Prisma.SortOrder
   additionalNote?: Prisma.SortOrderInput | Prisma.SortOrder
   vendor?: Prisma.SortOrderInput | Prisma.SortOrder
   invoiceSource?: Prisma.SortOrder
@@ -459,6 +468,7 @@ export type InvoiceWhereUniqueInput = Prisma.AtLeast<{
   paidAt?: Prisma.DateTimeNullableFilter<"Invoice"> | Date | string | null
   stripeSessionId?: Prisma.StringNullableFilter<"Invoice"> | string | null
   stripePaymentIntentId?: Prisma.StringNullableFilter<"Invoice"> | string | null
+  currency?: Prisma.StringFilter<"Invoice"> | string
   additionalNote?: Prisma.StringNullableFilter<"Invoice"> | string | null
   vendor?: Prisma.StringNullableFilter<"Invoice"> | string | null
   invoiceSource?: Prisma.EnumInvoiceSourceFilter<"Invoice"> | $Enums.InvoiceSource
@@ -491,6 +501,7 @@ export type InvoiceOrderByWithAggregationInput = {
   paidAt?: Prisma.SortOrderInput | Prisma.SortOrder
   stripeSessionId?: Prisma.SortOrderInput | Prisma.SortOrder
   stripePaymentIntentId?: Prisma.SortOrderInput | Prisma.SortOrder
+  currency?: Prisma.SortOrder
   additionalNote?: Prisma.SortOrderInput | Prisma.SortOrder
   vendor?: Prisma.SortOrderInput | Prisma.SortOrder
   invoiceSource?: Prisma.SortOrder
@@ -529,6 +540,7 @@ export type InvoiceScalarWhereWithAggregatesInput = {
   paidAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Invoice"> | Date | string | null
   stripeSessionId?: Prisma.StringNullableWithAggregatesFilter<"Invoice"> | string | null
   stripePaymentIntentId?: Prisma.StringNullableWithAggregatesFilter<"Invoice"> | string | null
+  currency?: Prisma.StringWithAggregatesFilter<"Invoice"> | string
   additionalNote?: Prisma.StringNullableWithAggregatesFilter<"Invoice"> | string | null
   vendor?: Prisma.StringNullableWithAggregatesFilter<"Invoice"> | string | null
   invoiceSource?: Prisma.EnumInvoiceSourceWithAggregatesFilter<"Invoice"> | $Enums.InvoiceSource
@@ -559,6 +571,7 @@ export type InvoiceCreateInput = {
   paidAt?: Date | string | null
   stripeSessionId?: string | null
   stripePaymentIntentId?: string | null
+  currency?: string
   additionalNote?: string | null
   vendor?: string | null
   invoiceSource?: $Enums.InvoiceSource
@@ -591,6 +604,7 @@ export type InvoiceUncheckedCreateInput = {
   paidAt?: Date | string | null
   stripeSessionId?: string | null
   stripePaymentIntentId?: string | null
+  currency?: string
   additionalNote?: string | null
   vendor?: string | null
   invoiceSource?: $Enums.InvoiceSource
@@ -623,6 +637,7 @@ export type InvoiceUpdateInput = {
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   stripeSessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   additionalNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   invoiceSource?: Prisma.EnumInvoiceSourceFieldUpdateOperationsInput | $Enums.InvoiceSource
@@ -655,6 +670,7 @@ export type InvoiceUncheckedUpdateInput = {
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   stripeSessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   additionalNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   invoiceSource?: Prisma.EnumInvoiceSourceFieldUpdateOperationsInput | $Enums.InvoiceSource
@@ -687,6 +703,7 @@ export type InvoiceCreateManyInput = {
   paidAt?: Date | string | null
   stripeSessionId?: string | null
   stripePaymentIntentId?: string | null
+  currency?: string
   additionalNote?: string | null
   vendor?: string | null
   invoiceSource?: $Enums.InvoiceSource
@@ -717,6 +734,7 @@ export type InvoiceUpdateManyMutationInput = {
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   stripeSessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   additionalNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   invoiceSource?: Prisma.EnumInvoiceSourceFieldUpdateOperationsInput | $Enums.InvoiceSource
@@ -747,6 +765,7 @@ export type InvoiceUncheckedUpdateManyInput = {
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   stripeSessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   additionalNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   invoiceSource?: Prisma.EnumInvoiceSourceFieldUpdateOperationsInput | $Enums.InvoiceSource
@@ -777,6 +796,7 @@ export type InvoiceCountOrderByAggregateInput = {
   paidAt?: Prisma.SortOrder
   stripeSessionId?: Prisma.SortOrder
   stripePaymentIntentId?: Prisma.SortOrder
+  currency?: Prisma.SortOrder
   additionalNote?: Prisma.SortOrder
   vendor?: Prisma.SortOrder
   invoiceSource?: Prisma.SortOrder
@@ -813,6 +833,7 @@ export type InvoiceMaxOrderByAggregateInput = {
   paidAt?: Prisma.SortOrder
   stripeSessionId?: Prisma.SortOrder
   stripePaymentIntentId?: Prisma.SortOrder
+  currency?: Prisma.SortOrder
   additionalNote?: Prisma.SortOrder
   vendor?: Prisma.SortOrder
   invoiceSource?: Prisma.SortOrder
@@ -843,6 +864,7 @@ export type InvoiceMinOrderByAggregateInput = {
   paidAt?: Prisma.SortOrder
   stripeSessionId?: Prisma.SortOrder
   stripePaymentIntentId?: Prisma.SortOrder
+  currency?: Prisma.SortOrder
   additionalNote?: Prisma.SortOrder
   vendor?: Prisma.SortOrder
   invoiceSource?: Prisma.SortOrder
@@ -920,6 +942,7 @@ export type InvoiceCreateWithoutBusinessDatasInput = {
   paidAt?: Date | string | null
   stripeSessionId?: string | null
   stripePaymentIntentId?: string | null
+  currency?: string
   additionalNote?: string | null
   vendor?: string | null
   invoiceSource?: $Enums.InvoiceSource
@@ -951,6 +974,7 @@ export type InvoiceUncheckedCreateWithoutBusinessDatasInput = {
   paidAt?: Date | string | null
   stripeSessionId?: string | null
   stripePaymentIntentId?: string | null
+  currency?: string
   additionalNote?: string | null
   vendor?: string | null
   invoiceSource?: $Enums.InvoiceSource
@@ -998,6 +1022,7 @@ export type InvoiceUpdateWithoutBusinessDatasInput = {
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   stripeSessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   additionalNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   invoiceSource?: Prisma.EnumInvoiceSourceFieldUpdateOperationsInput | $Enums.InvoiceSource
@@ -1029,6 +1054,7 @@ export type InvoiceUncheckedUpdateWithoutBusinessDatasInput = {
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   stripeSessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   additionalNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   invoiceSource?: Prisma.EnumInvoiceSourceFieldUpdateOperationsInput | $Enums.InvoiceSource
@@ -1060,6 +1086,7 @@ export type InvoiceCreateWithoutServiceAndItemsInput = {
   paidAt?: Date | string | null
   stripeSessionId?: string | null
   stripePaymentIntentId?: string | null
+  currency?: string
   additionalNote?: string | null
   vendor?: string | null
   invoiceSource?: $Enums.InvoiceSource
@@ -1091,6 +1118,7 @@ export type InvoiceUncheckedCreateWithoutServiceAndItemsInput = {
   paidAt?: Date | string | null
   stripeSessionId?: string | null
   stripePaymentIntentId?: string | null
+  currency?: string
   additionalNote?: string | null
   vendor?: string | null
   invoiceSource?: $Enums.InvoiceSource
@@ -1138,6 +1166,7 @@ export type InvoiceUpdateWithoutServiceAndItemsInput = {
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   stripeSessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   additionalNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   invoiceSource?: Prisma.EnumInvoiceSourceFieldUpdateOperationsInput | $Enums.InvoiceSource
@@ -1169,6 +1198,7 @@ export type InvoiceUncheckedUpdateWithoutServiceAndItemsInput = {
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   stripeSessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
   additionalNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   invoiceSource?: Prisma.EnumInvoiceSourceFieldUpdateOperationsInput | $Enums.InvoiceSource
@@ -1240,6 +1270,7 @@ export type InvoiceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   paidAt?: boolean
   stripeSessionId?: boolean
   stripePaymentIntentId?: boolean
+  currency?: boolean
   additionalNote?: boolean
   vendor?: boolean
   invoiceSource?: boolean
@@ -1273,6 +1304,7 @@ export type InvoiceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   paidAt?: boolean
   stripeSessionId?: boolean
   stripePaymentIntentId?: boolean
+  currency?: boolean
   additionalNote?: boolean
   vendor?: boolean
   invoiceSource?: boolean
@@ -1303,6 +1335,7 @@ export type InvoiceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   paidAt?: boolean
   stripeSessionId?: boolean
   stripePaymentIntentId?: boolean
+  currency?: boolean
   additionalNote?: boolean
   vendor?: boolean
   invoiceSource?: boolean
@@ -1333,6 +1366,7 @@ export type InvoiceSelectScalar = {
   paidAt?: boolean
   stripeSessionId?: boolean
   stripePaymentIntentId?: boolean
+  currency?: boolean
   additionalNote?: boolean
   vendor?: boolean
   invoiceSource?: boolean
@@ -1343,7 +1377,7 @@ export type InvoiceSelectScalar = {
   createdAt?: boolean
 }
 
-export type InvoiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "invoiceNo" | "userId" | "imapConfigurationId" | "issueDate" | "dueDate" | "type" | "companyName" | "email" | "AddressAndContactInfo" | "projectInformation" | "projectDescription" | "vat" | "subTotal" | "totalAmount" | "isPaid" | "paidAt" | "stripeSessionId" | "stripePaymentIntentId" | "additionalNote" | "vendor" | "invoiceSource" | "haveAttachment" | "attachmentUrl" | "isDrafted" | "previewedByAccountant" | "createdAt", ExtArgs["result"]["invoice"]>
+export type InvoiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "invoiceNo" | "userId" | "imapConfigurationId" | "issueDate" | "dueDate" | "type" | "companyName" | "email" | "AddressAndContactInfo" | "projectInformation" | "projectDescription" | "vat" | "subTotal" | "totalAmount" | "isPaid" | "paidAt" | "stripeSessionId" | "stripePaymentIntentId" | "currency" | "additionalNote" | "vendor" | "invoiceSource" | "haveAttachment" | "attachmentUrl" | "isDrafted" | "previewedByAccountant" | "createdAt", ExtArgs["result"]["invoice"]>
 export type InvoiceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   serviceAndItems?: boolean | Prisma.Invoice$serviceAndItemsArgs<ExtArgs>
   businessDatas?: boolean | Prisma.Invoice$businessDatasArgs<ExtArgs>
@@ -1378,6 +1412,7 @@ export type $InvoicePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     paidAt: Date | null
     stripeSessionId: string | null
     stripePaymentIntentId: string | null
+    currency: string
     additionalNote: string | null
     vendor: string | null
     invoiceSource: $Enums.InvoiceSource
@@ -1830,6 +1865,7 @@ export interface InvoiceFieldRefs {
   readonly paidAt: Prisma.FieldRef<"Invoice", 'DateTime'>
   readonly stripeSessionId: Prisma.FieldRef<"Invoice", 'String'>
   readonly stripePaymentIntentId: Prisma.FieldRef<"Invoice", 'String'>
+  readonly currency: Prisma.FieldRef<"Invoice", 'String'>
   readonly additionalNote: Prisma.FieldRef<"Invoice", 'String'>
   readonly vendor: Prisma.FieldRef<"Invoice", 'String'>
   readonly invoiceSource: Prisma.FieldRef<"Invoice", 'InvoiceSource'>

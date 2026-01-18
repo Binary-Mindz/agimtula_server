@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { SubscriptionsService } from './subscriptions.service';
 import { CreateSubscriptionPlanDto } from './dto/create-subscription.dto';
 import { Roles } from 'src/decorators/roles.decorator';
@@ -7,6 +7,7 @@ import { InvoiceAutoSyncIntervalService } from './invoiceAutoSyncInterval.servic
 import { urlPrefix } from '../url-prefix';
 import { ApiOperation } from '@nestjs/swagger';
 import { Public } from 'src/decorators/public.decorator';
+import { UpdateSubscriptionDto } from './dto/update-subscription.dto';
 
 @Controller(`${urlPrefix}/subscriptions`)
 export class AdminSubscriptionsController {
@@ -48,6 +49,13 @@ export class AdminSubscriptionsController {
   @ApiOperation({ summary: 'Delete subscription plan ( ADMIN only )' })
   deleteSubscriptionPlan(@Param('id') id: string) {
     return this.subscriptionsService.deleteSubscription(id);
+  }
+
+  @Patch('update/:id')
+  @Roles("ADMIN")
+    @ApiOperation({ summary: 'Update subscription plan ( ADMIN only )' })
+  updateSubscriptionPlan(@Param('id') id: string, @Body() dto: UpdateSubscriptionDto) {
+    return this.subscriptionsService.updateSubscription(id, dto);
   }
 
   //  here are invoice auto-sync interval endpoints

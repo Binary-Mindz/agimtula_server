@@ -37,4 +37,11 @@ export class AdminReportsAndAnalyticsController {
   async platformHealth() {
     return await this.reportsAndAnalyticsService.platformHealth();
   }
+
+  @Get('admin-analytics')
+  @Roles('ADMIN')
+  @ApiOperation({ summary: 'Get comprehensive admin analytics ( ADMIN only )' })
+  async getAdminAnalytics() {
+    return await this.reportsAndAnalyticsService.getAdminAnalytics();
+  }
 }

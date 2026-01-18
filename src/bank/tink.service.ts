@@ -296,9 +296,7 @@ export class TinkService {
     }
   }
 
-  parseTransactionAmount(transaction: Transaction): {
-    amount: number;
-    currency: string;
+  parseTransactionAmount(transaction: Transaction): {    amount: number;    currency: string;
   } {
     try {
       const { unscaledValue, scale } = transaction.amount.value;

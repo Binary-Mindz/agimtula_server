@@ -196,15 +196,15 @@ export type SubscriptionPlanOrderByWithRelationInput = {
 
 export type SubscriptionPlanWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  planName?: string
   AND?: Prisma.SubscriptionPlanWhereInput | Prisma.SubscriptionPlanWhereInput[]
   OR?: Prisma.SubscriptionPlanWhereInput[]
   NOT?: Prisma.SubscriptionPlanWhereInput | Prisma.SubscriptionPlanWhereInput[]
-  planName?: Prisma.StringFilter<"SubscriptionPlan"> | string
   isActive?: Prisma.BoolFilter<"SubscriptionPlan"> | boolean
   description?: Prisma.StringNullableFilter<"SubscriptionPlan"> | string | null
   createdAt?: Prisma.DateTimeFilter<"SubscriptionPlan"> | Date | string
   packagePricing?: Prisma.PackagePricingListRelationFilter
-}, "id" | "id">
+}, "id" | "id" | "planName">
 
 export type SubscriptionPlanOrderByWithAggregationInput = {
   id?: Prisma.SortOrder

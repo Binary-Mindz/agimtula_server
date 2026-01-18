@@ -126,8 +126,16 @@ export class InvoicesService {
       const newInvoice = await this.prisma.invoice.create({
         data: {
           userId,
-          ...invoiceData,
           invoiceNo: invoiceNumber,
+          type: invoiceData.type,
+          companyName: invoiceData.companyName,
+          email: invoiceData.email,
+          projectInformation: invoiceData.projectInformation,
+          projectDescription: invoiceData.projectDescription,
+          vat: invoiceData.vat,
+          subTotal: invoiceData.subTotal,
+          totalAmount: invoiceData.totalAmount,
+          additionalNote: invoiceData.additionalNote,
           issueDate: issueDateObj,
           dueDate: dueDateObj,
           AddressAndContactInfo: addressAndContactInfo,
@@ -237,6 +245,8 @@ export class InvoicesService {
         businessDatas,
         addressAndContactInfo,
         dueDate,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        isPaymentLinkIncluded,
         ...invoiceData
       } = dto;
 
@@ -354,7 +364,6 @@ export class InvoicesService {
         this.prisma.invoice.findMany({
           where: {
             ...query,
-            isDrafted: false,
             userId,
           },
           skip,
@@ -364,7 +373,6 @@ export class InvoicesService {
         this.prisma.invoice.count({
           where: {
             ...query,
-            isDrafted: false,
             userId,
           },
         }),

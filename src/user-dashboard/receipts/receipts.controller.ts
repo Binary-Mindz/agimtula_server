@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { ReceiptsService } from './receipts.service';
 import { UploadReceiptDto } from './dto/upload-receipt.dto';
-import { ApiBody, ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/roles.decorator';
 import { User } from 'src/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
@@ -117,32 +117,30 @@ export class UserReceiptsController {
     );
   }
 
-  @Patch('update-receipt')
+  @Patch('update-receipt/:id')
   @Roles('USER')
-  @ApiBody({
-    schema: {
-      properties: {
-        id: { type: 'string' },
-        vendor: { type: 'string' },
-        amount: { type: 'number' },
-        date: { type: 'string' },
-        category: { type: 'string' },
-        notes: { type: 'string' },
-      },
-    },
+  @ApiParam({
+      name: "id",
+      description: "Update receipt",
+      type:String
   })
   @ApiResponse({ status: 200, description: 'Receipt updated successfully' })
   @ApiResponse({ status: 404, description: 'Receipt not found' })
   @ApiOperation({ summary: 'Update receipt data ( USER only )' })
-  async updateReceipt(@Body('id') id: string, @Body() dto: UpdateReceiptDto) {
+  async updateReceipt(@Param('id') id: string, @Body() dto: UpdateReceiptDto) {
     return await this.receiptsService.updateReceiptsData(id, dto);
   }
 
-  @Delete('delete-receipt')
+  @Delete('delete-receipt/:id')
   @Roles('USER')
   @ApiOperation({ summary: 'Delete receipt ( USER only )' })
   @ApiResponse({ status: 204, description: 'Receipt deleted successfully' })
   @ApiResponse({ status: 404, description: 'Receipt not found' })
+  @ApiParam({
+    name: "id",
+    description: "Delete receipt",
+    type:String
+    })
   async deleteReceipt(@Param('id') id: string) {
     return await this.receiptsService.deleteReceiptsData(id);
   }

@@ -3,12 +3,12 @@ import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
 
 @Injectable()
-export class SupplierImportsService {
+export class ReportsService {
   constructor(private prisma: PrismaService) {}
 
   async getActivity(): Promise<ReturnType<typeof cResponseData>> {
     try {
-      const [totalUser, totalImapConnection, failedImapImports] =
+      const [totalUser, totalImapConnection, failedImapImports,totalPendingIssues] =
         await Promise.all([
           this.prisma.user.count({ where: { role: 'USER', isDeleted: false } }),
           this.prisma.imapConfiguration.count({
@@ -23,6 +23,11 @@ export class SupplierImportsService {
               haveAttachment: false,
             },
           }),
+          this.prisma.supportTicket.count({
+            where: {
+              resolvedAt:null
+            }
+          })
         ]);
 
       return cResponseData({
@@ -30,6 +35,7 @@ export class SupplierImportsService {
           totalUser: totalUser || 0,
           totalImapConnection: totalImapConnection || 0,
           failedImapImports: failedImapImports || 0,
+          totalPendingIssues:totalPendingIssues || 0
         },
         message: 'Supplier import activity data fetched successfully',
       });
@@ -89,7 +95,7 @@ export class SupplierImportsService {
       });
 
       const formattedLogs = logs.map((log) => ({
-        time: new Date(log.createdAt as Date).toLocaleTimeString('en-US', {
+        time: new Date(log.createdAt).toLocaleTimeString('en-US', {
           hour: '2-digit',
           minute: '2-digit',
         }),

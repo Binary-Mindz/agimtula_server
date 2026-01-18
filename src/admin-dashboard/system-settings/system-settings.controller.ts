@@ -1,23 +1,22 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
+  Controller,
   Patch,
-  Param,
-  Delete,
+  
 } from '@nestjs/common';
 import { SystemSettingsService } from './system-settings.service';
-import { CreateEmailTemplateDto } from './dto/create-email-template.dto';
 import { Roles } from 'src/decorators/roles.decorator';
-import { TestDto } from './dto/test-dto';
-import { Public } from 'src/decorators/public.decorator';
-import { ApiOperation } from '@nestjs/swagger';
+import { UpdateVatRulesDto } from './dto/update-vat-rules.dto';
+// import { CreateEmailTemplateDto } from './dto/create-email-template.dto';
+// import { Roles } from 'src/decorators/roles.decorator';
+// import { TestDto } from './dto/test-dto';
+// import { Public } from 'src/decorators/public.decorator';
+// import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('system-settings')
 export class SystemSettingsController {
   constructor(private readonly systemSettingsService: SystemSettingsService) { }
-
+ /**Email Template 
   @Post('create-email-template')
   @Roles('ADMIN')
   @ApiOperation({ summary: 'Create email template ( ADMIN only )' })
@@ -54,5 +53,14 @@ export class SystemSettingsController {
   @ApiOperation({ summary: 'Test email ( PUBLIC )' })
   async testEmail(@Body() dto: TestDto) {
     return await this.systemSettingsService.testApi(dto);
+  }
+  */
+
+  /** Vat rules */
+
+  @Patch("update-vat-rules")
+  @Roles("ADMIN")
+  updateVatRules(@Body() dto: UpdateVatRulesDto) {
+    return this.systemSettingsService.updateVatRules(dto);
   }
 }

@@ -1,17 +1,21 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { CreateEmailTemplateDto } from './dto/create-email-template.dto';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
+import { UpdateVatRulesDto } from './dto/update-vat-rules.dto';
 import { cResponseData } from 'src/common/cResponse';
-import { TestDto } from './dto/test-dto';
-import { SmtpMailService } from 'src/config/smtp-mail/smtp-mail.service';
-import { render } from 'src/common/emailRenderer';
+// import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+// import { CreateEmailTemplateDto } from './dto/create-email-template.dto';
+// import { cResponseData } from 'src/common/cResponse';
+// import { TestDto } from './dto/test-dto';
+// import { render } from 'src/common/emailRenderer';
+// import { SmtpMailService } from 'src/config/smtp-mail/smtp-mail.service';
 
 @Injectable()
 export class SystemSettingsService {
   constructor(
     private prisma: PrismaService,
-    private mail: SmtpMailService,
+    // private mail: SmtpMailService,
   ) {}
+/** Email Template
 
   async create(dto: CreateEmailTemplateDto) {
     try {
@@ -166,6 +170,45 @@ export class SystemSettingsService {
       console.error('Test email error:', error);
       throw new HttpException(
         'Failed to send test email',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+*/
+  
+  /** Vat Rules */
+
+  async updateVatRules(dto: UpdateVatRulesDto) {
+    try {
+      const updatedRules: any[] = [];
+      
+      for (const rule of dto.vatRules) {
+        const existing = await this.prisma.vatRate.findFirst({
+          where: { code: rule.countryCode }
+        });
+
+        if (existing) {
+          const updated = await this.prisma.vatRate.update({
+            where: { id: existing.id },
+            data: {
+              standardRate: rule.standardRate ?? existing.standardRate,
+              reducedRate: rule.reducedRate ?? existing.reducedRate,
+            },
+          });
+          updatedRules.push(updated);
+        }
+      }
+
+      return cResponseData({
+        message: "Updated vat rules",
+        data: updatedRules
+      })
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error
+      }
+      throw new HttpException(
+        'Failed to update vat rules',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

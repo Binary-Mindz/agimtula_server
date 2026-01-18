@@ -85,7 +85,8 @@ export const ModelName = {
   invoiceAutoSyncInterval: 'invoiceAutoSyncInterval',
   SupportTicket: 'SupportTicket',
   User: 'User',
-  Email: 'Email'
+  Email: 'Email',
+  VatRate: 'VatRate'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -639,6 +640,8 @@ export const SupportTicketScalarFieldEnum = {
   priority: 'priority',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
+  viewed: 'viewed',
+  viewedAt: 'viewedAt',
   resolvedAt: 'resolvedAt'
 } as const
 
@@ -669,6 +672,18 @@ export const EmailScalarFieldEnum = {
 } as const
 
 export type EmailScalarFieldEnum = (typeof EmailScalarFieldEnum)[keyof typeof EmailScalarFieldEnum]
+
+
+export const VatRateScalarFieldEnum = {
+  id: 'id',
+  country: 'country',
+  code: 'code',
+  standardRate: 'standardRate',
+  reducedRate: 'reducedRate',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VatRateScalarFieldEnum = (typeof VatRateScalarFieldEnum)[keyof typeof VatRateScalarFieldEnum]
 
 
 export const SortOrder = {

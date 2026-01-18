@@ -29,6 +29,13 @@ export class SupportTicketsController {
     return await this.supportTicketsService.createTicket(user.sub, dto);
   }
 
+  @Get('ticket-data')
+  @Roles('ADMIN')
+  @ApiOperation({ summary: 'Get ticket data (ADMIN only)' })
+  async getTicketData() {
+    return await this.supportTicketsService.getTicketData();
+  }
+
   @Get()
   @Roles('ADMIN')
   @ApiOperation({ summary: 'List support tickets (ADMIN only)' })
@@ -61,5 +68,13 @@ export class SupportTicketsController {
     @Body() dto: UpdateSupportTicketStatusDto,
   ) {
     return await this.supportTicketsService.updateStatus(id, dto);
+  }
+
+  @Patch('mark-as-view/:id')
+  @Roles('ADMIN')
+    @ApiParam({ name: 'id', required: true })
+  @ApiOperation({ summary: 'Mark ticket as view (ADMIN only)' })
+  async markAsView(@Param('id') ticketId:string) {
+    return await this.supportTicketsService.markAsView(ticketId);
   }
 }

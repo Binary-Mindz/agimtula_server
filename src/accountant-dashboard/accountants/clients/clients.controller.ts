@@ -8,6 +8,12 @@ import { jwtPayload } from 'src/auth/types/jwt-payload';
 export class ClientsController {
   constructor(private readonly clientsService: ClientsService) { }
 
+  @Get('client-data')
+  @Roles('ACCOUNTANT')
+  async getClientsData(@User() user: jwtPayload) {
+    return await this.clientsService.clientsData(user.sub);
+  }
+
   @Get('')
   @Roles('ACCOUNTANT')
   async getClients(@User() user: jwtPayload) {

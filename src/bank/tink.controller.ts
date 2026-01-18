@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-redundant-type-constituents */
-
 import { Controller, Get, Query, Post, Body, HttpStatus, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { TinkService } from './tink.service';

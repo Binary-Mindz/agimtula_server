@@ -212,3 +212,8 @@ export type User = Prisma.UserModel
  * 
  */
 export type Email = Prisma.EmailModel
+/**
+ * Model VatRate
+ * 
+ */
+export type VatRate = Prisma.VatRateModel

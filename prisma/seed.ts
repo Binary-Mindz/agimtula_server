@@ -2,6 +2,7 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient, UserRole } from './generated/prisma/client';
 import * as bcrypt from 'bcrypt';
 import 'dotenv/config';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
 function createPrismaClient(): PrismaClient {
   const connectionString = process.env.DATABASE_URL;
@@ -111,6 +112,42 @@ async function seedPermissions() {
   }
 
   console.log('✅ Modules seeded successfully');
+}
+
+async function vatRules() {
+  try {
+    const vatRules = [
+      { country: 'Netherlands', code: 'NL', standardRate: 0, reducedRate: 0 },
+      { country: 'Belgium', code: 'BE', standardRate: 0, reducedRate: 0 },
+      { country: 'Germany', code: 'DE', standardRate: 0, reducedRate: 0 },
+      { country: 'France', code: 'FR', standardRate: 0, reducedRate: 0 },
+    ];
+
+    for (const rule of vatRules) {
+      const existing = await prisma.vatRate.findFirst({
+        where: { code: rule.code }
+      });
+
+      if (existing) {
+        await prisma.vatRate.update({
+          where: { id: existing.id },
+          data: rule,
+        });
+      } else {
+        await prisma.vatRate.create({
+          data: rule,
+        });
+      }
+    }
+
+    console.log('✅ VAT rules seeded successfully');
+  } catch (error) {
+    if (error instanceof HttpException) {
+      throw error
+    }
+
+    throw new HttpException("Failed to make vat rules",HttpStatus.INTERNAL_SERVER_ERROR)
+  }
 }
 
 async function seedRolePermissions() {
@@ -223,6 +260,7 @@ async function main() {
 
   await seedSuperAdmin();
   await seedPermissions();
+  await vatRules();
   await seedRolePermissions();
   console.log('🎉 Seeding completed successfully');
 }

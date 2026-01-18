@@ -418,7 +418,8 @@ export const ModelName = {
   invoiceAutoSyncInterval: 'invoiceAutoSyncInterval',
   SupportTicket: 'SupportTicket',
   User: 'User',
-  Email: 'Email'
+  Email: 'Email',
+  VatRate: 'VatRate'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -434,7 +435,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "bank" | "mileage" | "transaction" | "accountantRequest" | "activityLog" | "emailTemplate" | "financialDocument" | "imapConfiguration" | "imapSyncHistory" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "invoice" | "businessData" | "serviceAndItem" | "loggers" | "module" | "roleModulePermission" | "profile" | "forgetPass" | "twoFA" | "language" | "quotation" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "supportTicket" | "user" | "email"
+    modelProps: "bank" | "mileage" | "transaction" | "accountantRequest" | "activityLog" | "emailTemplate" | "financialDocument" | "imapConfiguration" | "imapSyncHistory" | "userSubscriptionPlan" | "userSubscriptionPlanHistory" | "subscriptionPlanPaymentStatus" | "invoice" | "businessData" | "serviceAndItem" | "loggers" | "module" | "roleModulePermission" | "profile" | "forgetPass" | "twoFA" | "language" | "quotation" | "receipt" | "receiptCategory" | "businessInfo" | "paymentMethod" | "invoiceLayout" | "notificationSetting" | "subscriptionPlan" | "packagePricing" | "invoiceAutoSyncInterval" | "supportTicket" | "user" | "email" | "vatRate"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3028,6 +3029,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    VatRate: {
+      payload: Prisma.$VatRatePayload<ExtArgs>
+      fields: Prisma.VatRateFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.VatRateFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VatRatePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.VatRateFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VatRatePayload>
+        }
+        findFirst: {
+          args: Prisma.VatRateFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VatRatePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.VatRateFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VatRatePayload>
+        }
+        findMany: {
+          args: Prisma.VatRateFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VatRatePayload>[]
+        }
+        create: {
+          args: Prisma.VatRateCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VatRatePayload>
+        }
+        createMany: {
+          args: Prisma.VatRateCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.VatRateCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VatRatePayload>[]
+        }
+        delete: {
+          args: Prisma.VatRateDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VatRatePayload>
+        }
+        update: {
+          args: Prisma.VatRateUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VatRatePayload>
+        }
+        deleteMany: {
+          args: Prisma.VatRateDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.VatRateUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.VatRateUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VatRatePayload>[]
+        }
+        upsert: {
+          args: Prisma.VatRateUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VatRatePayload>
+        }
+        aggregate: {
+          args: Prisma.VatRateAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVatRate>
+        }
+        groupBy: {
+          args: Prisma.VatRateGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VatRateGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.VatRateCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VatRateCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -3602,6 +3677,8 @@ export const SupportTicketScalarFieldEnum = {
   priority: 'priority',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
+  viewed: 'viewed',
+  viewedAt: 'viewedAt',
   resolvedAt: 'resolvedAt'
 } as const
 
@@ -3632,6 +3709,18 @@ export const EmailScalarFieldEnum = {
 } as const
 
 export type EmailScalarFieldEnum = (typeof EmailScalarFieldEnum)[keyof typeof EmailScalarFieldEnum]
+
+
+export const VatRateScalarFieldEnum = {
+  id: 'id',
+  country: 'country',
+  code: 'code',
+  standardRate: 'standardRate',
+  reducedRate: 'reducedRate',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VatRateScalarFieldEnum = (typeof VatRateScalarFieldEnum)[keyof typeof VatRateScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -4146,6 +4235,7 @@ export type GlobalOmitConfig = {
   supportTicket?: Prisma.SupportTicketOmit
   user?: Prisma.UserOmit
   email?: Prisma.EmailOmit
+  vatRate?: Prisma.VatRateOmit
 }
 
 /* Types for Logging */

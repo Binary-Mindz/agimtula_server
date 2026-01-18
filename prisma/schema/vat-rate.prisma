@@ -1,0 +1,10 @@
+model VatRate {
+    id String @id @unique @default(ulid())
+
+    country      String @unique
+    code         String @unique
+    standardRate Int    @default(0)
+    reducedRate  Int    @default(0)
+
+    updatedAt DateTime @updatedAt
+}

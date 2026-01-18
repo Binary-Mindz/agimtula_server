@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { CreateSubscriptionPlanDto } from './dto/create-subscription.dto';
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, UnauthorizedException } from '@nestjs/common';
 import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { UpdateSubscriptionDto } from './dto/update-subscription.dto';
@@ -118,6 +118,7 @@ export class SubscriptionsService {
       }, monthlyTotalRevenue);
 
       const subscriptionPlans = subscriptionPlanList.map((plan) => ({
+        id:plan.id,
         packagePricing: plan.packagePricing.map((packageItem) => ({
           billingPeriod: packageItem.billingPeriod,
           price: Number((packageItem.price + packageItem.setupFee).toFixed(2)),
@@ -256,7 +257,10 @@ export class SubscriptionsService {
         })),
       });
     } catch (error) {
-      console.error('Get subscription plans error:', error);
+      if (error instanceof UnauthorizedException || error instanceof HttpException) {
+        throw error;
+      }
+
       throw new HttpException(
         'Failed to get subscription plans',
         HttpStatus.INTERNAL_SERVER_ERROR,

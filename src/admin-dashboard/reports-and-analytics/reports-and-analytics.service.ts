@@ -138,6 +138,99 @@ export class ReportsAndAnalyticsService {
     }
   }
 
+  async platformHealth() {
+    try {
+      const now = new Date();
+
+      // Get all users with role USER
+      const [
+        totalUsers,
+        activeUsers,
+        usersWithActiveSubscriptions,
+        usersWithRenewedSubscriptions,
+        totalPayments,
+        successfulPayments,
+      ] = await Promise.all([
+        this.prisma.user.count({
+          where: {
+            role: 'USER',
+            isDeleted: false,
+          },
+        }),
+        this.prisma.user.count({
+          where: {
+            role: 'USER',
+            status: true,
+            isDeleted: false,
+          },
+        }),
+        this.prisma.userSubscriptionPlan.count({
+          where: {
+            isActive: true,
+            expiredAt: {
+              gt: now,
+            },
+            user: {
+              role: 'USER',
+              isDeleted: false,
+            },
+          },
+        }),
+        this.prisma.user.count({
+          where: {
+            role: 'USER',
+            isDeleted: false,
+            userSubscriptionPlanHistory: {
+              some: {},
+            },
+          },
+        }),
+        this.prisma.subscriptionPlanPaymentStatus.count({}),
+        this.prisma.subscriptionPlanPaymentStatus.count({
+          where: {
+            paymentStatus: 'PAID',
+          },
+        }),
+      ]);
+
+      // Calculate percentages
+      const activeUsersPercentage =
+        totalUsers > 0 ? (activeUsers / totalUsers) * 100 : 0;
+
+      // Subscription Retention 1: Active subscriptions out of total users
+      const subscriptionRetentionPercentage =
+        totalUsers > 0 ? (usersWithActiveSubscriptions / totalUsers) * 100 : 0;
+
+      // Subscription Retention 2: Active subscriptions out of users who have ever subscribed
+      const subscriptionRetentionFromSubscribers =
+        usersWithRenewedSubscriptions > 0
+          ? (usersWithActiveSubscriptions / usersWithRenewedSubscriptions) * 100
+          : 0;
+
+      const paymentSuccessRate =
+        totalPayments > 0 ? (successfulPayments / totalPayments) * 100 : 0;
+
+      return cResponseData({
+        data: {
+          activeUsers: Number(activeUsersPercentage.toFixed(2)),
+          subscriptionRetention: Number(
+            subscriptionRetentionPercentage.toFixed(2),
+          ),
+          subscriptionRetentionFromSubscribers: Number(
+            subscriptionRetentionFromSubscribers.toFixed(2),
+          ),
+          paymentSuccessRate: Number(paymentSuccessRate.toFixed(2)),
+        },
+      });
+    } catch (error) {
+      console.error('Platform health error:', error);
+      throw new HttpException(
+        'Failed to fetch platform health data',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   async getAdminAnalytics() {
     try {
       const currentYear = new Date().getFullYear();
@@ -442,98 +535,5 @@ export class ReportsAndAnalyticsService {
       currentMonthRevenue,
       lastMonthRevenue
     };
-  }
-
-  async platformHealth() {
-    try {
-      const now = new Date();
-
-      // Get all users with role USER
-      const [
-        totalUsers,
-        activeUsers,
-        usersWithActiveSubscriptions,
-        usersWithRenewedSubscriptions,
-        totalPayments,
-        successfulPayments,
-      ] = await Promise.all([
-        this.prisma.user.count({
-          where: {
-            role: 'USER',
-            isDeleted: false,
-          },
-        }),
-        this.prisma.user.count({
-          where: {
-            role: 'USER',
-            status: true,
-            isDeleted: false,
-          },
-        }),
-        this.prisma.userSubscriptionPlan.count({
-          where: {
-            isActive: true,
-            expiredAt: {
-              gt: now,
-            },
-            user: {
-              role: 'USER',
-              isDeleted: false,
-            },
-          },
-        }),
-        this.prisma.user.count({
-          where: {
-            role: 'USER',
-            isDeleted: false,
-            userSubscriptionPlanHistory: {
-              some: {},
-            },
-          },
-        }),
-        this.prisma.subscriptionPlanPaymentStatus.count({}),
-        this.prisma.subscriptionPlanPaymentStatus.count({
-          where: {
-            paymentStatus: 'PAID',
-          },
-        }),
-      ]);
-
-      // Calculate percentages
-      const activeUsersPercentage =
-        totalUsers > 0 ? (activeUsers / totalUsers) * 100 : 0;
-
-      // Subscription Retention 1: Active subscriptions out of total users
-      const subscriptionRetentionPercentage =
-        totalUsers > 0 ? (usersWithActiveSubscriptions / totalUsers) * 100 : 0;
-
-      // Subscription Retention 2: Active subscriptions out of users who have ever subscribed
-      const subscriptionRetentionFromSubscribers =
-        usersWithRenewedSubscriptions > 0
-          ? (usersWithActiveSubscriptions / usersWithRenewedSubscriptions) * 100
-          : 0;
-
-      const paymentSuccessRate =
-        totalPayments > 0 ? (successfulPayments / totalPayments) * 100 : 0;
-
-      return cResponseData({
-        data: {
-          activeUsers: Number(activeUsersPercentage.toFixed(2)),
-          subscriptionRetention: Number(
-            subscriptionRetentionPercentage.toFixed(2),
-          ),
-          subscriptionRetentionFromSubscribers: Number(
-            subscriptionRetentionFromSubscribers.toFixed(2),
-          ),
-          paymentSuccessRate: Number(paymentSuccessRate.toFixed(2)),
-        },
-      });
-    } catch (error) {
-      console.error('Platform health error:', error);
-      throw new HttpException(
-        'Failed to fetch platform health data',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
   }
 }

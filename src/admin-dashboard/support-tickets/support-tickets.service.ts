@@ -1,5 +1,7 @@
 import {
   BadRequestException,
+  HttpException,
+  HttpStatus,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -31,10 +33,6 @@ export class SupportTicketsService {
             lastName: true,
           },
         },
-      },
-      where: {
-        isDeleted: false,
-        status: true,
       },
     },
   } as const;
@@ -79,6 +77,70 @@ export class SupportTicketsService {
     }
   }
 
+  async getTicketData() {
+    try {
+      const [openTickets,inProgress,resolvedToday,lastSevenDay] = await Promise.all([
+        this.prisma.supportTicket.count({
+          where: {
+            status:"OPEN"
+          }
+        }),
+        this.prisma.supportTicket.count({
+          where: {
+            status:"IN_PROGRESS"
+          }
+        }),
+        this.prisma.supportTicket.count({
+          where: {
+            status:"RESOLVED",
+            resolvedAt:{
+              gte:new Date(new Date().setHours(0,0,0,0))
+            }
+          }
+        }),
+        this.prisma.supportTicket.findMany({
+          where: {
+            createdAt:{
+              gte: new Date(new Date().setDate(new Date().getDate()-7))
+            },
+            viewed:true
+          }
+        })
+      ])
+
+      const avgResponseTimeLastSevenDay = (() => {
+        if (lastSevenDay.length === 0) return 0;
+
+        const totalResponseMs = lastSevenDay.reduce((acc, ticket) => {
+          const created = new Date(ticket.createdAt).getTime();
+          const viewed = new Date(ticket.viewedAt as Date).getTime();
+          const diff = viewed - created;
+          return acc + (diff > 0 ? diff : 0);
+        }, 0);
+
+        const avgMs = totalResponseMs / lastSevenDay.length;
+        return avgMs / (1000 * 60 * 60);
+      })();
+      
+      return cResponseData({
+        message: "Support data fetched",
+        data: {
+          openTickets, inProgress, resolvedToday, avgResponseTimeLastSevenDay
+        }
+      })
+
+
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error
+      }
+      throw new HttpException(
+        'Failed to fetch support tickets stats',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   async getTickets(query: SupportTicketQueryDto) {
     try {
       const {
@@ -110,7 +172,7 @@ export class SupportTicketsService {
         if (to) where.createdAt.lte = new Date(to);
       }
 
-      const [tickets, total] = await this.prisma.$transaction([
+      const [tickets, total] = await Promise.all([
         this.prisma.supportTicket.findMany({
           where,
           include: this.ticketInclude,
@@ -121,6 +183,7 @@ export class SupportTicketsService {
         this.prisma.supportTicket.count({ where }),
       ]);
 
+  
       return {
         ...cResponseData({
           data: tickets,
@@ -132,8 +195,12 @@ export class SupportTicketsService {
         totalPages: Math.ceil(total / limit),
       };
     } catch (error) {
-      console.error(error);
-      throw new BadRequestException('Failed to fetch support tickets');
+      console.error('Get tickets error:', error);
+      if (error instanceof HttpException) throw error;
+      throw new HttpException(
+        'Failed to fetch support tickets',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -220,6 +287,40 @@ export class SupportTicketsService {
     } catch (error) {
       console.error(error);
       throw new BadRequestException('Failed to update support ticket status');
+    }
+  }
+
+  async markAsView(ticketId:string) {
+    try {
+      const haveTicket = await this.prisma.supportTicket.findUnique({
+        where: {
+          id:ticketId
+        }
+      })
+
+      if (!haveTicket) {
+        throw new NotFoundException('Support ticket not found')
+      }
+
+      const updatedTicket = await this.prisma.supportTicket.update({
+        where: {
+          id:ticketId
+        },
+        data: {
+          viewedAt: new Date(),
+          viewed:true
+        }
+      })
+
+      return cResponseData({
+        data:updatedTicket,
+        message:'Mark as view success'
+      })
+    } catch (error) {
+      if (error instanceof HttpException || error instanceof NotFoundException) {
+        throw error
+      }
+      throw new HttpException('Mark as view false',HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 }

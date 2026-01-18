@@ -45,6 +45,8 @@ export type SupportTicketMinAggregateOutputType = {
   priority: $Enums.SupportTicketPriority | null
   createdAt: Date | null
   updatedAt: Date | null
+  viewed: boolean | null
+  viewedAt: Date | null
   resolvedAt: Date | null
 }
 
@@ -59,6 +61,8 @@ export type SupportTicketMaxAggregateOutputType = {
   priority: $Enums.SupportTicketPriority | null
   createdAt: Date | null
   updatedAt: Date | null
+  viewed: boolean | null
+  viewedAt: Date | null
   resolvedAt: Date | null
 }
 
@@ -73,6 +77,8 @@ export type SupportTicketCountAggregateOutputType = {
   priority: number
   createdAt: number
   updatedAt: number
+  viewed: number
+  viewedAt: number
   resolvedAt: number
   _all: number
 }
@@ -97,6 +103,8 @@ export type SupportTicketMinAggregateInputType = {
   priority?: true
   createdAt?: true
   updatedAt?: true
+  viewed?: true
+  viewedAt?: true
   resolvedAt?: true
 }
 
@@ -111,6 +119,8 @@ export type SupportTicketMaxAggregateInputType = {
   priority?: true
   createdAt?: true
   updatedAt?: true
+  viewed?: true
+  viewedAt?: true
   resolvedAt?: true
 }
 
@@ -125,6 +135,8 @@ export type SupportTicketCountAggregateInputType = {
   priority?: true
   createdAt?: true
   updatedAt?: true
+  viewed?: true
+  viewedAt?: true
   resolvedAt?: true
   _all?: true
 }
@@ -226,6 +238,8 @@ export type SupportTicketGroupByOutputType = {
   priority: $Enums.SupportTicketPriority
   createdAt: Date
   updatedAt: Date
+  viewed: boolean
+  viewedAt: Date | null
   resolvedAt: Date | null
   _count: SupportTicketCountAggregateOutputType | null
   _avg: SupportTicketAvgAggregateOutputType | null
@@ -263,6 +277,8 @@ export type SupportTicketWhereInput = {
   priority?: Prisma.EnumSupportTicketPriorityFilter<"SupportTicket"> | $Enums.SupportTicketPriority
   createdAt?: Prisma.DateTimeFilter<"SupportTicket"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"SupportTicket"> | Date | string
+  viewed?: Prisma.BoolFilter<"SupportTicket"> | boolean
+  viewedAt?: Prisma.DateTimeNullableFilter<"SupportTicket"> | Date | string | null
   resolvedAt?: Prisma.DateTimeNullableFilter<"SupportTicket"> | Date | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
@@ -278,6 +294,8 @@ export type SupportTicketOrderByWithRelationInput = {
   priority?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  viewed?: Prisma.SortOrder
+  viewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   resolvedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
@@ -296,6 +314,8 @@ export type SupportTicketWhereUniqueInput = Prisma.AtLeast<{
   priority?: Prisma.EnumSupportTicketPriorityFilter<"SupportTicket"> | $Enums.SupportTicketPriority
   createdAt?: Prisma.DateTimeFilter<"SupportTicket"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"SupportTicket"> | Date | string
+  viewed?: Prisma.BoolFilter<"SupportTicket"> | boolean
+  viewedAt?: Prisma.DateTimeNullableFilter<"SupportTicket"> | Date | string | null
   resolvedAt?: Prisma.DateTimeNullableFilter<"SupportTicket"> | Date | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "ticketNumber" | "ticketCode">
@@ -311,6 +331,8 @@ export type SupportTicketOrderByWithAggregationInput = {
   priority?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  viewed?: Prisma.SortOrder
+  viewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   resolvedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.SupportTicketCountOrderByAggregateInput
   _avg?: Prisma.SupportTicketAvgOrderByAggregateInput
@@ -333,6 +355,8 @@ export type SupportTicketScalarWhereWithAggregatesInput = {
   priority?: Prisma.EnumSupportTicketPriorityWithAggregatesFilter<"SupportTicket"> | $Enums.SupportTicketPriority
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"SupportTicket"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"SupportTicket"> | Date | string
+  viewed?: Prisma.BoolWithAggregatesFilter<"SupportTicket"> | boolean
+  viewedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"SupportTicket"> | Date | string | null
   resolvedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"SupportTicket"> | Date | string | null
 }
 
@@ -346,6 +370,8 @@ export type SupportTicketCreateInput = {
   priority?: $Enums.SupportTicketPriority
   createdAt?: Date | string
   updatedAt?: Date | string
+  viewed?: boolean
+  viewedAt?: Date | string | null
   resolvedAt?: Date | string | null
   user: Prisma.UserCreateNestedOneWithoutSupportTicketsInput
 }
@@ -361,6 +387,8 @@ export type SupportTicketUncheckedCreateInput = {
   priority?: $Enums.SupportTicketPriority
   createdAt?: Date | string
   updatedAt?: Date | string
+  viewed?: boolean
+  viewedAt?: Date | string | null
   resolvedAt?: Date | string | null
 }
 
@@ -373,6 +401,8 @@ export type SupportTicketUpdateInput = {
   priority?: Prisma.EnumSupportTicketPriorityFieldUpdateOperationsInput | $Enums.SupportTicketPriority
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  viewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutSupportTicketsNestedInput
 }
@@ -388,6 +418,8 @@ export type SupportTicketUncheckedUpdateInput = {
   priority?: Prisma.EnumSupportTicketPriorityFieldUpdateOperationsInput | $Enums.SupportTicketPriority
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  viewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -402,6 +434,8 @@ export type SupportTicketCreateManyInput = {
   priority?: $Enums.SupportTicketPriority
   createdAt?: Date | string
   updatedAt?: Date | string
+  viewed?: boolean
+  viewedAt?: Date | string | null
   resolvedAt?: Date | string | null
 }
 
@@ -414,6 +448,8 @@ export type SupportTicketUpdateManyMutationInput = {
   priority?: Prisma.EnumSupportTicketPriorityFieldUpdateOperationsInput | $Enums.SupportTicketPriority
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  viewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -428,6 +464,8 @@ export type SupportTicketUncheckedUpdateManyInput = {
   priority?: Prisma.EnumSupportTicketPriorityFieldUpdateOperationsInput | $Enums.SupportTicketPriority
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  viewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -442,6 +480,8 @@ export type SupportTicketCountOrderByAggregateInput = {
   priority?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  viewed?: Prisma.SortOrder
+  viewedAt?: Prisma.SortOrder
   resolvedAt?: Prisma.SortOrder
 }
 
@@ -460,6 +500,8 @@ export type SupportTicketMaxOrderByAggregateInput = {
   priority?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  viewed?: Prisma.SortOrder
+  viewedAt?: Prisma.SortOrder
   resolvedAt?: Prisma.SortOrder
 }
 
@@ -474,6 +516,8 @@ export type SupportTicketMinOrderByAggregateInput = {
   priority?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  viewed?: Prisma.SortOrder
+  viewedAt?: Prisma.SortOrder
   resolvedAt?: Prisma.SortOrder
 }
 
@@ -551,6 +595,8 @@ export type SupportTicketCreateWithoutUserInput = {
   priority?: $Enums.SupportTicketPriority
   createdAt?: Date | string
   updatedAt?: Date | string
+  viewed?: boolean
+  viewedAt?: Date | string | null
   resolvedAt?: Date | string | null
 }
 
@@ -564,6 +610,8 @@ export type SupportTicketUncheckedCreateWithoutUserInput = {
   priority?: $Enums.SupportTicketPriority
   createdAt?: Date | string
   updatedAt?: Date | string
+  viewed?: boolean
+  viewedAt?: Date | string | null
   resolvedAt?: Date | string | null
 }
 
@@ -607,6 +655,8 @@ export type SupportTicketScalarWhereInput = {
   priority?: Prisma.EnumSupportTicketPriorityFilter<"SupportTicket"> | $Enums.SupportTicketPriority
   createdAt?: Prisma.DateTimeFilter<"SupportTicket"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"SupportTicket"> | Date | string
+  viewed?: Prisma.BoolFilter<"SupportTicket"> | boolean
+  viewedAt?: Prisma.DateTimeNullableFilter<"SupportTicket"> | Date | string | null
   resolvedAt?: Prisma.DateTimeNullableFilter<"SupportTicket"> | Date | string | null
 }
 
@@ -620,6 +670,8 @@ export type SupportTicketCreateManyUserInput = {
   priority?: $Enums.SupportTicketPriority
   createdAt?: Date | string
   updatedAt?: Date | string
+  viewed?: boolean
+  viewedAt?: Date | string | null
   resolvedAt?: Date | string | null
 }
 
@@ -632,6 +684,8 @@ export type SupportTicketUpdateWithoutUserInput = {
   priority?: Prisma.EnumSupportTicketPriorityFieldUpdateOperationsInput | $Enums.SupportTicketPriority
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  viewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -645,6 +699,8 @@ export type SupportTicketUncheckedUpdateWithoutUserInput = {
   priority?: Prisma.EnumSupportTicketPriorityFieldUpdateOperationsInput | $Enums.SupportTicketPriority
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  viewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -658,6 +714,8 @@ export type SupportTicketUncheckedUpdateManyWithoutUserInput = {
   priority?: Prisma.EnumSupportTicketPriorityFieldUpdateOperationsInput | $Enums.SupportTicketPriority
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  viewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  viewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -674,6 +732,8 @@ export type SupportTicketSelect<ExtArgs extends runtime.Types.Extensions.Interna
   priority?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  viewed?: boolean
+  viewedAt?: boolean
   resolvedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["supportTicket"]>
@@ -689,6 +749,8 @@ export type SupportTicketSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   priority?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  viewed?: boolean
+  viewedAt?: boolean
   resolvedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["supportTicket"]>
@@ -704,6 +766,8 @@ export type SupportTicketSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   priority?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  viewed?: boolean
+  viewedAt?: boolean
   resolvedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["supportTicket"]>
@@ -719,10 +783,12 @@ export type SupportTicketSelectScalar = {
   priority?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  viewed?: boolean
+  viewedAt?: boolean
   resolvedAt?: boolean
 }
 
-export type SupportTicketOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ticketNumber" | "ticketCode" | "userId" | "subject" | "description" | "status" | "priority" | "createdAt" | "updatedAt" | "resolvedAt", ExtArgs["result"]["supportTicket"]>
+export type SupportTicketOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ticketNumber" | "ticketCode" | "userId" | "subject" | "description" | "status" | "priority" | "createdAt" | "updatedAt" | "viewed" | "viewedAt" | "resolvedAt", ExtArgs["result"]["supportTicket"]>
 export type SupportTicketInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -749,6 +815,8 @@ export type $SupportTicketPayload<ExtArgs extends runtime.Types.Extensions.Inter
     priority: $Enums.SupportTicketPriority
     createdAt: Date
     updatedAt: Date
+    viewed: boolean
+    viewedAt: Date | null
     resolvedAt: Date | null
   }, ExtArgs["result"]["supportTicket"]>
   composites: {}
@@ -1184,6 +1252,8 @@ export interface SupportTicketFieldRefs {
   readonly priority: Prisma.FieldRef<"SupportTicket", 'SupportTicketPriority'>
   readonly createdAt: Prisma.FieldRef<"SupportTicket", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"SupportTicket", 'DateTime'>
+  readonly viewed: Prisma.FieldRef<"SupportTicket", 'Boolean'>
+  readonly viewedAt: Prisma.FieldRef<"SupportTicket", 'DateTime'>
   readonly resolvedAt: Prisma.FieldRef<"SupportTicket", 'DateTime'>
 }
     

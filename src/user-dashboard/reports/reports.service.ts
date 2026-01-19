@@ -197,37 +197,17 @@ export class ReportsService {
       const yearStart = new Date(currentYear, 0, 1);
 
       const [
-        manualInvoiceStats,
-        emailInvoiceStats,
         receiptStats,
         mileageStats,
         transactionStats,
-        recentInvoices,
         recentReceipts,
         recentMileages,
-        manualVatSummary,
-        emailVatSummary
       ] = await Promise.all([
-        // Manual Invoice statistics (INCOME)
-        this.prisma.invoice.aggregate({
-          where: { userId, invoiceSource: 'MANUAL', createdAt: { gte: yearStart } },
-          _sum: { totalAmount: true, vat: true, subTotal: true },
-          _count: true,
-        }),
-        
-        // Email Invoice statistics (EXPENSE)
-        this.prisma.invoice.aggregate({
-          where: { userId, invoiceSource: 'EMAIL', createdAt: { gte: yearStart } },
-          _sum: { totalAmount: true, vat: true, subTotal: true },
-          _count: true,
-        }),
-        
         // Receipt statistics
         this.prisma.receipt.aggregate({
           where: { userId, date: { gte: yearStart } },
           _sum: { amount: true },
           _count: true,
-          
         }),
         
         // Mileage statistics
@@ -243,22 +223,6 @@ export class ReportsService {
           _sum: { amount: true },
           _count: true,
         }).catch(() => ({ _sum: { amount: 0 }, _count: 0 })),
-        
-        // Recent invoices
-        this.prisma.invoice.findMany({
-          where: { userId },
-          orderBy: { createdAt: 'desc' },
-          take: 5,
-          select: {
-            id: true,
-            invoiceNo: true,
-            companyName: true,
-            totalAmount: true,
-            isPaid: true,
-            createdAt: true,
-            invoiceSource: true
-          }
-        }),
         
         // Recent receipts
         this.prisma.receipt.findMany({
@@ -289,74 +253,21 @@ export class ReportsService {
             createdAt: true,
           }
         }),
-        
-        // VAT summary for manual invoices (INCOME)
-        this.prisma.invoice.groupBy({
-          by: ['isPaid'],
-          where: { userId, invoiceSource: 'MANUAL', createdAt: { gte: yearStart } },
-          _sum: { vat: true, totalAmount: true }
-        }),
-        
-        // VAT summary for email invoices (EXPENSE)
-        this.prisma.invoice.groupBy({
-          by: ['isPaid'],
-          where: { userId, invoiceSource: 'EMAIL', createdAt: { gte: yearStart } },
-          _sum: { vat: true, totalAmount: true }
-        })
       ]);
 
-      // Calculate totals with proper classification
-      const totalIncome = manualInvoiceStats._sum.totalAmount || 0; // Manual invoices = Income
-      const emailExpenses = emailInvoiceStats._sum.totalAmount || 0; // Email invoices = Expense
+      // Calculate totals without invoice data
       const receiptExpenses = receiptStats._sum.amount || 0;
       const mileageExpenses = mileageStats._sum.amount || 0;
-      const totalExpenses = emailExpenses + receiptExpenses + mileageExpenses;
+      const totalExpenses = receiptExpenses + mileageExpenses;
       
-      const totalVAT = (manualInvoiceStats._sum.vat || 0) + (emailInvoiceStats._sum.vat || 0);
-      const netIncome = totalIncome - totalExpenses;
-      
-      // Separate paid vs unpaid for manual invoices (income)
-      const paidIncome = manualVatSummary.find(v => v.isPaid)?._sum.totalAmount || 0;
-      const unpaidIncome = manualVatSummary.find(v => !v.isPaid)?._sum.totalAmount || 0;
-      
-      // Email invoice expenses
-      const paidEmailExpenses = emailVatSummary.find(v => v.isPaid)?._sum.totalAmount || 0;
-      const unpaidEmailExpenses = emailVatSummary.find(v => !v.isPaid)?._sum.totalAmount || 0;
-
       return cResponseData({
         success: true,
         message: 'Financial summary retrieved successfully',
         data: {
           overview: {
-            totalIncome,
             totalExpenses,
-            netIncome,
-            profitMargin: totalIncome > 0 ? ((netIncome / totalIncome) * 100).toFixed(2) : '0.00',
-            
-          },
-          
-          incomeVsExpenses: {
-            income: {
-              total: totalIncome,
-              paid: paidIncome,
-              pending: unpaidIncome,
-              count: manualInvoiceStats._count
-            },
-            expenses: {
-              emailInvoices: emailExpenses,
-              receipts: receiptExpenses,
-              mileage: mileageExpenses,
-              total: totalExpenses,
-              count: emailInvoiceStats._count + receiptStats._count + mileageStats._count
-            }
-          },
-          
-          vatAndTax: {
-            totalVAT,
-            deductibleExpenses: totalExpenses,
-            taxableIncome: totalIncome - totalVAT,
-            vatOnPaid: (manualVatSummary.find(v => v.isPaid)?._sum.vat || 0) + (emailVatSummary.find(v => v.isPaid)?._sum.vat || 0),
-            vatOnUnpaid: (manualVatSummary.find(v => !v.isPaid)?._sum.vat || 0) + (emailVatSummary.find(v => !v.isPaid)?._sum.vat || 0)
+            receiptExpenses,
+            mileageExpenses,
           },
           
           travelAndReimbursements: {
@@ -374,38 +285,15 @@ export class ReportsService {
             averagePerReceipt: receiptStats._count > 0 
               ? ((receiptStats._sum.amount || 0) / receiptStats._count).toFixed(2) 
               : '0.00',
-            
-          },
-          
-          invoiceRevenue: {
-            manualInvoices: {
-              totalRevenue: totalIncome,
-              paidAmount: paidIncome,
-              pendingAmount: unpaidIncome,
-              count: manualInvoiceStats._count,
-              averageValue: manualInvoiceStats._count > 0 
-                ? (totalIncome / manualInvoiceStats._count).toFixed(2) 
-                : '0.00'
-            },
-            emailInvoices: {
-              totalExpenses: emailExpenses,
-              paidAmount: paidEmailExpenses,
-              pendingAmount: unpaidEmailExpenses,
-              count: emailInvoiceStats._count,
-              averageValue: emailInvoiceStats._count > 0 
-                ? (emailExpenses / emailInvoiceStats._count).toFixed(2) 
-                : '0.00'
-            }
           },
           
           recentActivity: {
-            invoices: recentInvoices,
             receipts: recentReceipts,
             mileages: recentMileages
           },
           
           summary: {
-            totalTransactions: manualInvoiceStats._count + emailInvoiceStats._count + receiptStats._count + mileageStats._count + (transactionStats._count || 0),
+            totalTransactions: receiptStats._count + mileageStats._count + (transactionStats._count || 0),
             dataRange: `${yearStart.toISOString().split('T')[0]} to ${new Date().toISOString().split('T')[0]}`,
             lastUpdated: new Date().toISOString()
           }

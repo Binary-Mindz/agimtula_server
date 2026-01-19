@@ -213,4 +213,22 @@ export class SystemSettingsService {
       );
     }
   }
+
+  async getVatRules() {
+    try {
+      const vatRules = await this.prisma.vatRate.findMany()
+
+      return cResponseData({
+        data:vatRules
+      })
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error
+      }
+      throw new HttpException(
+        'Failed to get vat rules',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }

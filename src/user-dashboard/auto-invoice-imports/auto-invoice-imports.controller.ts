@@ -28,6 +28,18 @@ export class UserAutoInvoiceImportsController {
     private readonly imapSyncService: ImapSyncService,
   ) {}
 
+  @Get("my-subscription")
+  @Roles("USER")
+  async getMySubscription(@User() user: jwtPayload) {
+    return await this.autoInvoiceImportsService.mySubscriptionPlan(user.sub);
+  }
+
+  @Get("available-sync-intervals")
+    @Roles("USER")
+    async availableSyncIntervals(@User() user: jwtPayload) {
+      return await this.autoInvoiceImportsService.availableSyncIntervals(user.sub);
+    }
+
   // get invoice Auto Sync Interval data
   @Get('get-imap-configuration')
   @Roles('USER')

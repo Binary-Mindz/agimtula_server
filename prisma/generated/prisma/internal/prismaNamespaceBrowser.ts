@@ -270,6 +270,7 @@ export const ImapSyncHistoryScalarFieldEnum = {
   invoicesFound: 'invoicesFound',
   invoicesCreated: 'invoicesCreated',
   errorMessage: 'errorMessage',
+  errorCount: 'errorCount',
   syncType: 'syncType',
   createdAt: 'createdAt'
 } as const

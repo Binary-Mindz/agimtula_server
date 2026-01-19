@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
 
@@ -33,8 +32,8 @@ export class ActivityLogService {
   }
 
   // Get activities by category
-   getActivities(category: string, limit = 50) {
-    return this.prisma.activityLog.findMany({
+   async getActivities(category: string, limit = 50) {
+    return await this.prisma.activityLog.findMany({
       where: { category },
       orderBy: { createdAt: 'desc' },
       take: limit,
@@ -42,8 +41,8 @@ export class ActivityLogService {
   }
 
   // Get user's activities
-   getUserActivities(userId: string, limit = 20) {
-    return this.prisma.activityLog.findMany({
+   async getUserActivities(userId: string, limit = 20) {
+    return await this.prisma.activityLog.findMany({
       where: { userId, category: 'USER' },
       orderBy: { createdAt: 'desc' },
       take: limit,

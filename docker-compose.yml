@@ -41,24 +41,24 @@ services:
       - redis
     env_file:
       - .env
-    # environment:
-    #   NODE_ENV: development
-    #   PORT: 3000
-    #   DATABASE_URL: postgres://postgres:password@db:5432/db_name?schema=public
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DATABASE_URL: postgres://postgres:password@db:5435/db_name?schema=public
 
-    #   # Seed admin user
-    #   SUPER_ADMIN_EMAIL: admin@example.com
-    #   SUPER_ADMIN_PASSWORD: adminpassword
-    #   SUPER_ADMIN_USERNAME: ADMIN
+      # Seed admin user
+      SUPER_ADMIN_EMAIL: admin@example.com
+      SUPER_ADMIN_PASSWORD: adminpassword
+      SUPER_ADMIN_USERNAME: ADMIN
 
-    #   # JWT Secret
-    #   JWT_SECRET: your_jwt_secret_key_here
+      # JWT Secret
+      JWT_SECRET: your_jwt_secret_key_here
     ports:
       - '${PORT}:${PORT}'
     command: pnpm run start:dev
-    # volumes:
-    #   - .:/usr/src/app
-    #   - /usr/src/app/node_modules
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
 
 volumes:
   db_data:

@@ -2,9 +2,10 @@ import { Controller, Get } from '@nestjs/common';
 import { ReportsAndAnalyticsService } from './reports-and-analytics.service';
 import { Roles } from 'src/decorators/roles.decorator';
 import { urlPrefix } from '../url-prefix';
-import { ApiOperation } from '@nestjs/swagger';
-
+import { ApiOperation } from '@nestjs/swagger'; 
+import { HasModuleAccess } from 'src/decorators/module-access.decorator';
 @Controller(`${urlPrefix}/reports-and-analytics`)
+@HasModuleAccess('reports')
 export class AdminReportsAndAnalyticsController {
   constructor(
     private readonly reportsAndAnalyticsService: ReportsAndAnalyticsService,

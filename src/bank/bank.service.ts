@@ -62,7 +62,7 @@ export class BankService {
     }
   }
 
-  // 2️⃣ Create User + Authorization Grant + build consent (Link) URL
+ 
   async createUser() {
     try {
       this.logger.log('Starting Tink user creation process');

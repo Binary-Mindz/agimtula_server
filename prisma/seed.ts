@@ -101,6 +101,7 @@ async function seedPermissions() {
     { name: 'sales_invoices', displayName: 'Sales Invoices' },
     { name: 'expenses', displayName: 'Receipts / Expenses' },
     { name: 'vat_overview', displayName: 'VAT Overview' },
+    { name: 'purchase_management', displayName: 'Purchase Management' }
   ];
 
   for (const mod of modules) {
@@ -225,6 +226,7 @@ async function seedRolePermissions() {
     'bank_transactions',
     'vat_overview',
     'profile',
+    'purchase_management',
   ];
 
   const accountantModuleObjects = allModules.filter((m) =>

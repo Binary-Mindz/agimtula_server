@@ -4,8 +4,11 @@ import { User } from 'src/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 import { Roles } from 'src/decorators/roles.decorator';
 import { ApiOperation, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { HasModuleAccess } from 'src/decorators/module-access.decorator';
 
 @Controller('purchase-management')
+@HasModuleAccess('purchase_management')
+
 export class PurchaseManagementController {
   constructor(
     private readonly purchaseManagementService: PurchaseManagementService,

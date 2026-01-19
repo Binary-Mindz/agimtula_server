@@ -126,6 +126,9 @@ export class ImapSyncService {
 
       console.log('Found invoices:', newInvoices.length);
 
+      // Count invoices missing attachments
+      const missingAttachmentCount = newInvoices.filter(invoice => !invoice.haveAttachment).length;
+
       const syncCompletedAt = new Date();
 
       // Update sync history with results
@@ -136,6 +139,7 @@ export class ImapSyncService {
           status: newInvoices.length > 0 ? 'SUCCESS' : 'SUCCESS',
           invoicesFound: newInvoices.length,
           invoicesCreated: newInvoices.length,
+          errorCount: missingAttachmentCount,
         },
       });
 

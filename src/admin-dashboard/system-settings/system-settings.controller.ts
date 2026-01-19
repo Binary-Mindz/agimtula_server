@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Patch,
   
 } from '@nestjs/common';
@@ -62,5 +63,11 @@ export class SystemSettingsController {
   @Roles("ADMIN")
   updateVatRules(@Body() dto: UpdateVatRulesDto) {
     return this.systemSettingsService.updateVatRules(dto);
+  }
+
+  @Get('vat-rates')
+  @Roles("ADMIN")
+  async getVatRules() {
+    return await this.systemSettingsService.getVatRules();
   }
 }

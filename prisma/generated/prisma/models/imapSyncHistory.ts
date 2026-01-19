@@ -29,11 +29,13 @@ export type AggregateImapSyncHistory = {
 export type ImapSyncHistoryAvgAggregateOutputType = {
   invoicesFound: number | null
   invoicesCreated: number | null
+  errorCount: number | null
 }
 
 export type ImapSyncHistorySumAggregateOutputType = {
   invoicesFound: number | null
   invoicesCreated: number | null
+  errorCount: number | null
 }
 
 export type ImapSyncHistoryMinAggregateOutputType = {
@@ -45,6 +47,7 @@ export type ImapSyncHistoryMinAggregateOutputType = {
   invoicesFound: number | null
   invoicesCreated: number | null
   errorMessage: string | null
+  errorCount: number | null
   syncType: $Enums.SyncType | null
   createdAt: Date | null
 }
@@ -58,6 +61,7 @@ export type ImapSyncHistoryMaxAggregateOutputType = {
   invoicesFound: number | null
   invoicesCreated: number | null
   errorMessage: string | null
+  errorCount: number | null
   syncType: $Enums.SyncType | null
   createdAt: Date | null
 }
@@ -71,6 +75,7 @@ export type ImapSyncHistoryCountAggregateOutputType = {
   invoicesFound: number
   invoicesCreated: number
   errorMessage: number
+  errorCount: number
   syncType: number
   createdAt: number
   _all: number
@@ -80,11 +85,13 @@ export type ImapSyncHistoryCountAggregateOutputType = {
 export type ImapSyncHistoryAvgAggregateInputType = {
   invoicesFound?: true
   invoicesCreated?: true
+  errorCount?: true
 }
 
 export type ImapSyncHistorySumAggregateInputType = {
   invoicesFound?: true
   invoicesCreated?: true
+  errorCount?: true
 }
 
 export type ImapSyncHistoryMinAggregateInputType = {
@@ -96,6 +103,7 @@ export type ImapSyncHistoryMinAggregateInputType = {
   invoicesFound?: true
   invoicesCreated?: true
   errorMessage?: true
+  errorCount?: true
   syncType?: true
   createdAt?: true
 }
@@ -109,6 +117,7 @@ export type ImapSyncHistoryMaxAggregateInputType = {
   invoicesFound?: true
   invoicesCreated?: true
   errorMessage?: true
+  errorCount?: true
   syncType?: true
   createdAt?: true
 }
@@ -122,6 +131,7 @@ export type ImapSyncHistoryCountAggregateInputType = {
   invoicesFound?: true
   invoicesCreated?: true
   errorMessage?: true
+  errorCount?: true
   syncType?: true
   createdAt?: true
   _all?: true
@@ -222,6 +232,7 @@ export type ImapSyncHistoryGroupByOutputType = {
   invoicesFound: number
   invoicesCreated: number
   errorMessage: string | null
+  errorCount: number | null
   syncType: $Enums.SyncType
   createdAt: Date
   _count: ImapSyncHistoryCountAggregateOutputType | null
@@ -258,6 +269,7 @@ export type imapSyncHistoryWhereInput = {
   invoicesFound?: Prisma.IntFilter<"imapSyncHistory"> | number
   invoicesCreated?: Prisma.IntFilter<"imapSyncHistory"> | number
   errorMessage?: Prisma.StringNullableFilter<"imapSyncHistory"> | string | null
+  errorCount?: Prisma.IntNullableFilter<"imapSyncHistory"> | number | null
   syncType?: Prisma.EnumSyncTypeFilter<"imapSyncHistory"> | $Enums.SyncType
   createdAt?: Prisma.DateTimeFilter<"imapSyncHistory"> | Date | string
   imapConfiguration?: Prisma.XOR<Prisma.ImapConfigurationScalarRelationFilter, Prisma.imapConfigurationWhereInput>
@@ -272,6 +284,7 @@ export type imapSyncHistoryOrderByWithRelationInput = {
   invoicesFound?: Prisma.SortOrder
   invoicesCreated?: Prisma.SortOrder
   errorMessage?: Prisma.SortOrderInput | Prisma.SortOrder
+  errorCount?: Prisma.SortOrderInput | Prisma.SortOrder
   syncType?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   imapConfiguration?: Prisma.imapConfigurationOrderByWithRelationInput
@@ -289,6 +302,7 @@ export type imapSyncHistoryWhereUniqueInput = Prisma.AtLeast<{
   invoicesFound?: Prisma.IntFilter<"imapSyncHistory"> | number
   invoicesCreated?: Prisma.IntFilter<"imapSyncHistory"> | number
   errorMessage?: Prisma.StringNullableFilter<"imapSyncHistory"> | string | null
+  errorCount?: Prisma.IntNullableFilter<"imapSyncHistory"> | number | null
   syncType?: Prisma.EnumSyncTypeFilter<"imapSyncHistory"> | $Enums.SyncType
   createdAt?: Prisma.DateTimeFilter<"imapSyncHistory"> | Date | string
   imapConfiguration?: Prisma.XOR<Prisma.ImapConfigurationScalarRelationFilter, Prisma.imapConfigurationWhereInput>
@@ -303,6 +317,7 @@ export type imapSyncHistoryOrderByWithAggregationInput = {
   invoicesFound?: Prisma.SortOrder
   invoicesCreated?: Prisma.SortOrder
   errorMessage?: Prisma.SortOrderInput | Prisma.SortOrder
+  errorCount?: Prisma.SortOrderInput | Prisma.SortOrder
   syncType?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.imapSyncHistoryCountOrderByAggregateInput
@@ -324,6 +339,7 @@ export type imapSyncHistoryScalarWhereWithAggregatesInput = {
   invoicesFound?: Prisma.IntWithAggregatesFilter<"imapSyncHistory"> | number
   invoicesCreated?: Prisma.IntWithAggregatesFilter<"imapSyncHistory"> | number
   errorMessage?: Prisma.StringNullableWithAggregatesFilter<"imapSyncHistory"> | string | null
+  errorCount?: Prisma.IntNullableWithAggregatesFilter<"imapSyncHistory"> | number | null
   syncType?: Prisma.EnumSyncTypeWithAggregatesFilter<"imapSyncHistory"> | $Enums.SyncType
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"imapSyncHistory"> | Date | string
 }
@@ -336,6 +352,7 @@ export type imapSyncHistoryCreateInput = {
   invoicesFound?: number
   invoicesCreated?: number
   errorMessage?: string | null
+  errorCount?: number | null
   syncType?: $Enums.SyncType
   createdAt?: Date | string
   imapConfiguration: Prisma.imapConfigurationCreateNestedOneWithoutSyncHistoryInput
@@ -350,6 +367,7 @@ export type imapSyncHistoryUncheckedCreateInput = {
   invoicesFound?: number
   invoicesCreated?: number
   errorMessage?: string | null
+  errorCount?: number | null
   syncType?: $Enums.SyncType
   createdAt?: Date | string
 }
@@ -362,6 +380,7 @@ export type imapSyncHistoryUpdateInput = {
   invoicesFound?: Prisma.IntFieldUpdateOperationsInput | number
   invoicesCreated?: Prisma.IntFieldUpdateOperationsInput | number
   errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  errorCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   syncType?: Prisma.EnumSyncTypeFieldUpdateOperationsInput | $Enums.SyncType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   imapConfiguration?: Prisma.imapConfigurationUpdateOneRequiredWithoutSyncHistoryNestedInput
@@ -376,6 +395,7 @@ export type imapSyncHistoryUncheckedUpdateInput = {
   invoicesFound?: Prisma.IntFieldUpdateOperationsInput | number
   invoicesCreated?: Prisma.IntFieldUpdateOperationsInput | number
   errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  errorCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   syncType?: Prisma.EnumSyncTypeFieldUpdateOperationsInput | $Enums.SyncType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -389,6 +409,7 @@ export type imapSyncHistoryCreateManyInput = {
   invoicesFound?: number
   invoicesCreated?: number
   errorMessage?: string | null
+  errorCount?: number | null
   syncType?: $Enums.SyncType
   createdAt?: Date | string
 }
@@ -401,6 +422,7 @@ export type imapSyncHistoryUpdateManyMutationInput = {
   invoicesFound?: Prisma.IntFieldUpdateOperationsInput | number
   invoicesCreated?: Prisma.IntFieldUpdateOperationsInput | number
   errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  errorCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   syncType?: Prisma.EnumSyncTypeFieldUpdateOperationsInput | $Enums.SyncType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -414,6 +436,7 @@ export type imapSyncHistoryUncheckedUpdateManyInput = {
   invoicesFound?: Prisma.IntFieldUpdateOperationsInput | number
   invoicesCreated?: Prisma.IntFieldUpdateOperationsInput | number
   errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  errorCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   syncType?: Prisma.EnumSyncTypeFieldUpdateOperationsInput | $Enums.SyncType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -437,6 +460,7 @@ export type imapSyncHistoryCountOrderByAggregateInput = {
   invoicesFound?: Prisma.SortOrder
   invoicesCreated?: Prisma.SortOrder
   errorMessage?: Prisma.SortOrder
+  errorCount?: Prisma.SortOrder
   syncType?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -444,6 +468,7 @@ export type imapSyncHistoryCountOrderByAggregateInput = {
 export type imapSyncHistoryAvgOrderByAggregateInput = {
   invoicesFound?: Prisma.SortOrder
   invoicesCreated?: Prisma.SortOrder
+  errorCount?: Prisma.SortOrder
 }
 
 export type imapSyncHistoryMaxOrderByAggregateInput = {
@@ -455,6 +480,7 @@ export type imapSyncHistoryMaxOrderByAggregateInput = {
   invoicesFound?: Prisma.SortOrder
   invoicesCreated?: Prisma.SortOrder
   errorMessage?: Prisma.SortOrder
+  errorCount?: Prisma.SortOrder
   syncType?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -468,6 +494,7 @@ export type imapSyncHistoryMinOrderByAggregateInput = {
   invoicesFound?: Prisma.SortOrder
   invoicesCreated?: Prisma.SortOrder
   errorMessage?: Prisma.SortOrder
+  errorCount?: Prisma.SortOrder
   syncType?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -475,6 +502,7 @@ export type imapSyncHistoryMinOrderByAggregateInput = {
 export type imapSyncHistorySumOrderByAggregateInput = {
   invoicesFound?: Prisma.SortOrder
   invoicesCreated?: Prisma.SortOrder
+  errorCount?: Prisma.SortOrder
 }
 
 export type imapSyncHistoryCreateNestedManyWithoutImapConfigurationInput = {
@@ -523,6 +551,14 @@ export type EnumSyncStatusFieldUpdateOperationsInput = {
   set?: $Enums.SyncStatus
 }
 
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type EnumSyncTypeFieldUpdateOperationsInput = {
   set?: $Enums.SyncType
 }
@@ -535,6 +571,7 @@ export type imapSyncHistoryCreateWithoutImapConfigurationInput = {
   invoicesFound?: number
   invoicesCreated?: number
   errorMessage?: string | null
+  errorCount?: number | null
   syncType?: $Enums.SyncType
   createdAt?: Date | string
 }
@@ -547,6 +584,7 @@ export type imapSyncHistoryUncheckedCreateWithoutImapConfigurationInput = {
   invoicesFound?: number
   invoicesCreated?: number
   errorMessage?: string | null
+  errorCount?: number | null
   syncType?: $Enums.SyncType
   createdAt?: Date | string
 }
@@ -589,6 +627,7 @@ export type imapSyncHistoryScalarWhereInput = {
   invoicesFound?: Prisma.IntFilter<"imapSyncHistory"> | number
   invoicesCreated?: Prisma.IntFilter<"imapSyncHistory"> | number
   errorMessage?: Prisma.StringNullableFilter<"imapSyncHistory"> | string | null
+  errorCount?: Prisma.IntNullableFilter<"imapSyncHistory"> | number | null
   syncType?: Prisma.EnumSyncTypeFilter<"imapSyncHistory"> | $Enums.SyncType
   createdAt?: Prisma.DateTimeFilter<"imapSyncHistory"> | Date | string
 }
@@ -601,6 +640,7 @@ export type imapSyncHistoryCreateManyImapConfigurationInput = {
   invoicesFound?: number
   invoicesCreated?: number
   errorMessage?: string | null
+  errorCount?: number | null
   syncType?: $Enums.SyncType
   createdAt?: Date | string
 }
@@ -613,6 +653,7 @@ export type imapSyncHistoryUpdateWithoutImapConfigurationInput = {
   invoicesFound?: Prisma.IntFieldUpdateOperationsInput | number
   invoicesCreated?: Prisma.IntFieldUpdateOperationsInput | number
   errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  errorCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   syncType?: Prisma.EnumSyncTypeFieldUpdateOperationsInput | $Enums.SyncType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -625,6 +666,7 @@ export type imapSyncHistoryUncheckedUpdateWithoutImapConfigurationInput = {
   invoicesFound?: Prisma.IntFieldUpdateOperationsInput | number
   invoicesCreated?: Prisma.IntFieldUpdateOperationsInput | number
   errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  errorCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   syncType?: Prisma.EnumSyncTypeFieldUpdateOperationsInput | $Enums.SyncType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -637,6 +679,7 @@ export type imapSyncHistoryUncheckedUpdateManyWithoutImapConfigurationInput = {
   invoicesFound?: Prisma.IntFieldUpdateOperationsInput | number
   invoicesCreated?: Prisma.IntFieldUpdateOperationsInput | number
   errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  errorCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   syncType?: Prisma.EnumSyncTypeFieldUpdateOperationsInput | $Enums.SyncType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -652,6 +695,7 @@ export type imapSyncHistorySelect<ExtArgs extends runtime.Types.Extensions.Inter
   invoicesFound?: boolean
   invoicesCreated?: boolean
   errorMessage?: boolean
+  errorCount?: boolean
   syncType?: boolean
   createdAt?: boolean
   imapConfiguration?: boolean | Prisma.imapConfigurationDefaultArgs<ExtArgs>
@@ -666,6 +710,7 @@ export type imapSyncHistorySelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   invoicesFound?: boolean
   invoicesCreated?: boolean
   errorMessage?: boolean
+  errorCount?: boolean
   syncType?: boolean
   createdAt?: boolean
   imapConfiguration?: boolean | Prisma.imapConfigurationDefaultArgs<ExtArgs>
@@ -680,6 +725,7 @@ export type imapSyncHistorySelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   invoicesFound?: boolean
   invoicesCreated?: boolean
   errorMessage?: boolean
+  errorCount?: boolean
   syncType?: boolean
   createdAt?: boolean
   imapConfiguration?: boolean | Prisma.imapConfigurationDefaultArgs<ExtArgs>
@@ -694,11 +740,12 @@ export type imapSyncHistorySelectScalar = {
   invoicesFound?: boolean
   invoicesCreated?: boolean
   errorMessage?: boolean
+  errorCount?: boolean
   syncType?: boolean
   createdAt?: boolean
 }
 
-export type imapSyncHistoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "imapConfigurationId" | "syncStartedAt" | "syncCompletedAt" | "status" | "invoicesFound" | "invoicesCreated" | "errorMessage" | "syncType" | "createdAt", ExtArgs["result"]["imapSyncHistory"]>
+export type imapSyncHistoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "imapConfigurationId" | "syncStartedAt" | "syncCompletedAt" | "status" | "invoicesFound" | "invoicesCreated" | "errorMessage" | "errorCount" | "syncType" | "createdAt", ExtArgs["result"]["imapSyncHistory"]>
 export type imapSyncHistoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   imapConfiguration?: boolean | Prisma.imapConfigurationDefaultArgs<ExtArgs>
 }
@@ -723,6 +770,7 @@ export type $imapSyncHistoryPayload<ExtArgs extends runtime.Types.Extensions.Int
     invoicesFound: number
     invoicesCreated: number
     errorMessage: string | null
+    errorCount: number | null
     syncType: $Enums.SyncType
     createdAt: Date
   }, ExtArgs["result"]["imapSyncHistory"]>
@@ -1157,6 +1205,7 @@ export interface imapSyncHistoryFieldRefs {
   readonly invoicesFound: Prisma.FieldRef<"imapSyncHistory", 'Int'>
   readonly invoicesCreated: Prisma.FieldRef<"imapSyncHistory", 'Int'>
   readonly errorMessage: Prisma.FieldRef<"imapSyncHistory", 'String'>
+  readonly errorCount: Prisma.FieldRef<"imapSyncHistory", 'Int'>
   readonly syncType: Prisma.FieldRef<"imapSyncHistory", 'SyncType'>
   readonly createdAt: Prisma.FieldRef<"imapSyncHistory", 'DateTime'>
 }

@@ -1,6 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
-import { ImapEmailConnectionDto } from './dto/imap-email-connection.dto';
-import { ValidationException } from 'src/common/app-exceptions';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { cResponseData } from 'src/common/cResponse';
 import { formatDistanceToNow } from 'date-fns';
@@ -9,14 +7,81 @@ import { formatDistanceToNow } from 'date-fns';
 export class AutoInvoiceImportsService {
   constructor(private prisma: PrismaService) {}
 
-  updateImapConnection(data: ImapEmailConnectionDto) {
-    if (!data) {
-      throw new ValidationException('Invalid IMAP connection data');
+
+
+  async mySubscriptionPlan(id: string) {
+    try {
+      const haveSubscriptionPlan = await this.prisma.userSubscriptionPlan.findFirst({
+        where: {
+          UserId: id,
+          isActive: true,
+        },
+        include: {
+          subscriptionPlanPaymentStatus: true,
+          user: {
+            select:{id:true,email:true,profile:true}
+          },
+
+        }
+
+      })
+
+      if (!haveSubscriptionPlan) {
+        throw new HttpException("You're not a subscriber", HttpStatus.BAD_REQUEST)
+      }
+
+      return cResponseData({
+        data: haveSubscriptionPlan
+      })
+
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException('Failed to fetch subscription plan', 500);
     }
-    return {
-      message: 'IMAP connection updated successfully',
-      data,
-    };
+  }
+
+  async availableSyncIntervals(id: string) {
+    try {
+      const subscription = await this.prisma.userSubscriptionPlan.findFirst({
+        where: {
+          UserId: id,
+          isActive: true,
+        },
+      });
+
+      if (!subscription) {
+        throw new HttpException("You're not a subscriber", HttpStatus.BAD_REQUEST);
+      }
+
+      const intervalIds = subscription.realtimeImapChecking;
+      
+      const intervals = await this.prisma.invoiceAutoSyncInterval.findMany({
+        where: {
+          id: {
+            in: intervalIds
+          }
+        },
+        select: {
+          id: true,
+          title: true,
+          cronTime: true,
+          interval: true,
+          description: true
+        }
+      });
+
+      return cResponseData({
+        message: 'Available sync intervals fetched successfully',
+        data: intervals
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException('Failed to fetch available sync intervals', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   async autoInvoiceRetrivalDashboard(userId: string) {
@@ -206,6 +271,7 @@ export class AutoInvoiceImportsService {
           timeAgo: formatDistanceToNow(new Date(data.createdAt ), {
             addSuffix: true,
           }),
+          success: data.errorCount && data.errorCount >0?data.errorCount:"success"
         })),
       });
     } catch (error) {

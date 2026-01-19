@@ -577,14 +577,6 @@ export type userSubscriptionPlanUpdaterealtimeImapCheckingInput = {
   push?: string | string[]
 }
 
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type userSubscriptionPlanCreateNestedOneWithoutSubscriptionPlanPaymentStatusInput = {
   create?: Prisma.XOR<Prisma.userSubscriptionPlanCreateWithoutSubscriptionPlanPaymentStatusInput, Prisma.userSubscriptionPlanUncheckedCreateWithoutSubscriptionPlanPaymentStatusInput>
   connectOrCreate?: Prisma.userSubscriptionPlanCreateOrConnectWithoutSubscriptionPlanPaymentStatusInput

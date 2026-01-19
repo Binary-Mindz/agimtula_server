@@ -36,6 +36,7 @@ model imapSyncHistory {
   invoicesFound       Int               @default(0)
   invoicesCreated     Int               @default(0)
   errorMessage        String?
+  errorCount          Int?              @default(0)
   syncType            SyncType          @default(MANUAL)
   createdAt           DateTime          @default(now())
 

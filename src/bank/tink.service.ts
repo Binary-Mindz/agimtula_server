@@ -82,7 +82,7 @@ export class TinkService {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-
+      console.log('getbankname: ', {res});
       if (res.ok) {
         const bankData = await res.json();
         const bankName = bankData.displayName || 'Tink Bank';

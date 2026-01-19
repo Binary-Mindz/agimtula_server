@@ -9,14 +9,14 @@ export class BankDataController {
 
   @Get()
   @Public()
-  @ApiOperation({ summary: 'Get all banks ( PUBLIC )' })
+  @ApiOperation({ summary: 'Get all banks (PUBLIC)' })
   async getAllBanks() {
     return await this.bankDataService.getAllBanks();
   }
 
   @Get(':id')
   @Public()
-  @ApiOperation({ summary: 'Get bank by ID ( PUBLIC )' })
+  @ApiOperation({ summary: 'Get bank by ID (PUBLIC)' })
   async getBankById(@Param('id') id: string) {
     return await this.bankDataService.getBankById(id);
   }

@@ -493,7 +493,7 @@ export class AuthService {
 
       const hashedPass = await bcrypt.hash(newPassword, 10);
 
-      await this.prisma.user.update({
+    const data =   await this.prisma.user.update({
         where: { id: userId },
         data: {
           password: hashedPass,
@@ -504,6 +504,7 @@ export class AuthService {
       return cResponseData({
         success: true,
         message: 'Password updated successfully',
+        data: data,
       });
     } catch (error) {
       this.logger.error(
@@ -655,6 +656,7 @@ export class AuthService {
       return cResponseData({
         success: true,
         message: 'Profile updated successfully',
+        data: user,
       });
     } catch (error) {
       this.logger.error(
@@ -683,6 +685,7 @@ export class AuthService {
           },
           profile: true,
           businessInfo: true,
+          role: true,
         },
       });
 

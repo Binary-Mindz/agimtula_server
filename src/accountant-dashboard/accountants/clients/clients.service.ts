@@ -185,9 +185,11 @@ export class ClientsService {
           name: `${client.profile?.firstName} ${client.profile?.lastName}`,
           companyName: client.businessInfo?.companyName,
           vatNumber: client.businessInfo?.vatNumber,
-          lastActivity:formatDistanceToNow(new Date(lastActivity?.createdAt  as Date), {
-              addSuffix: true,
-            }),
+          lastActivity: lastActivity?.createdAt 
+            ? formatDistanceToNow(new Date(lastActivity.createdAt), {
+                addSuffix: true,
+              })
+            : 'No activity',
           id: client.id,
           pendingItems: invoice,
           status: client.status
@@ -204,10 +206,7 @@ export class ClientsService {
        if (error instanceof HttpException) {
         throw error
       }
-      throw new HttpException(
-        'Failed to fetch clients',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+     console.error(error);
     }
   }
 }

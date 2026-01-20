@@ -5,8 +5,12 @@ import { User } from 'src/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 // import { TransactionQueryDto } from './dto/TransactionQueryDto';
 import { ApiOperation } from '@nestjs/swagger';
+import { HasModuleAccess } from 'src/decorators/module-access.decorator';
+
+
 
 @Controller('accountant-dashboard')
+@HasModuleAccess('dashboard')
 export class AccountantDashboardController {
   constructor(
     private readonly accountantDashboardService: AccountantDashboardService,

@@ -7,6 +7,7 @@ import { jwtPayload } from 'src/auth/types/jwt-payload';
 import { ApiOperation, ApiParam } from '@nestjs/swagger';
 
 @Controller('accountant-settings')
+// @HasMo
 export class AccountantSettingsController {
   constructor(
     private readonly accountantSettingsService: AccountantSettingsService,

@@ -6,6 +6,7 @@ import {
   Logger,
   NotFoundException,
   UnauthorizedException,
+  InternalServerErrorException
 } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
 import * as bcrypt from 'bcrypt';
@@ -493,7 +494,7 @@ export class AuthService {
 
       const hashedPass = await bcrypt.hash(newPassword, 10);
 
-      await this.prisma.user.update({
+    const data =   await this.prisma.user.update({
         where: { id: userId },
         data: {
           password: hashedPass,
@@ -504,6 +505,7 @@ export class AuthService {
       return cResponseData({
         success: true,
         message: 'Password updated successfully',
+        data: data,
       });
     } catch (error) {
       this.logger.error(
@@ -571,7 +573,7 @@ export class AuthService {
 
       if (!user) {
         this.logger.error(`Profile picture update failed for user: ${userId}`);
-        throw new BadRequestException('User Updation Failed');
+        throw new NotFoundException('User not found');
       }
 
       this.logger.log(
@@ -593,7 +595,7 @@ export class AuthService {
       ) {
         throw error;
       }
-      throw new BadRequestException('Failed to update profile picture');
+      throw new InternalServerErrorException('Failed to update profile picture');
     }
   }
 
@@ -655,6 +657,7 @@ export class AuthService {
       return cResponseData({
         success: true,
         message: 'Profile updated successfully',
+        data: user,
       });
     } catch (error) {
       this.logger.error(
@@ -683,6 +686,7 @@ export class AuthService {
           },
           profile: true,
           businessInfo: true,
+          role: true,
         },
       });
 

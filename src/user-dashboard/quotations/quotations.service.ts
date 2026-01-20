@@ -18,7 +18,7 @@ export class QuotationsService {
           clientPhone: createQuotationDto.clientPhone,
           date: new Date(createQuotationDto.date),
           amount: createQuotationDto.amount,
-          status: createQuotationDto.status,
+          status: createQuotationDto.status ,
           senderId: userId,
         },
       });

@@ -12,7 +12,7 @@ export class BankService {
     process.env.TINK_CLIENT_ID || 'b84ee12c366a4eaf97b1c376dd25934d';
   private clientSecret =
     process.env.TINK_CLIENT_SECRET || '8e7c162045fa44738ca5ab88b1164f7a';
-  private redirectUri = 'http://localhost:3000/callback'; // must match Tink Console exactly
+  private redirectUri = process.env.TINK_REDIRECT_URI || 'http://localhost:5000/bank/tink/callback'; // must match Tink Console exactly
 
   // Scopes for app token
   private appScopes = ['authorization:grant', 'user:create'];

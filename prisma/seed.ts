@@ -227,6 +227,8 @@ async function seedRolePermissions() {
     'vat_overview',
     'profile',
     'purchase_management',
+    'bank_integration_monitor',
+    "imap_system_monitor"
   ];
 
   const accountantModuleObjects = allModules.filter((m) =>

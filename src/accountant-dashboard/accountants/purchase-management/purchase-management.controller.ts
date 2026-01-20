@@ -8,7 +8,6 @@ import { HasModuleAccess } from 'src/decorators/module-access.decorator';
 
 @Controller('purchase-management')
 @HasModuleAccess('purchase_management')
-
 export class PurchaseManagementController {
   constructor(
     private readonly purchaseManagementService: PurchaseManagementService,

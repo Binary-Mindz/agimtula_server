@@ -33,7 +33,7 @@ import {
 } from './dto/update-profile.dto';
 import {  VerifyTwoFADto } from './dto/two-fa.dto';
 import { UploadImageDto } from './dto/upload-image.dto';
-import { TwoFAService } from './2fa.service';
+import { TwoFAService } from './2fa.service'; 
 
 @Controller('auth')
 export class AuthController {
@@ -50,6 +50,7 @@ export class AuthController {
     status: 400,
     description: 'Validation failed or email exists',
   })
+  
   @Public()
   @Post('registration/send-otp')
   async sendRegistrationOtp(
@@ -58,6 +59,7 @@ export class AuthController {
     return await this.authService.sendRegistrationOtp(dto);
   }
 
+  
   @HttpCode(200)
   @ApiOperation({ summary: 'Verify registration OTP ( PUBLIC )' })
   @ApiResponse({ status: 200, description: 'OTP verified successfully' })

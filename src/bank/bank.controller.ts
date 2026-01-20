@@ -10,7 +10,8 @@ import {
   Logger,
   HttpStatus,
   UseGuards,
-} from '@nestjs/common';
+  Res,
+} from '@nestjs/common'; 
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiTags,
@@ -18,7 +19,6 @@ import {
   ApiBody,
   ApiOperation,
   ApiResponse,
-  ApiQuery,
 } from '@nestjs/swagger';
 import { BankStatementService } from './bank-statement.service';
 import { TinkService } from './tink.service';
@@ -26,12 +26,11 @@ import { UploadBankStatementDto } from './dto/upload-bank-statement.dto';
 import {
   ConnectBankDto,
   ConnectBankResponseDto,
-  TinkCallbackResponseDto,
-  TinkErrorResponseDto,
-  ExchangeTokenDto,
-  GetTransactionsDto,
-  TokenResponseDto,
+  TinkErrorResponseDto, 
+  GetTransactionsDto, 
   TransactionResponseDto,
+  TokenResponseDto,
+  ExchangeTokenDto,
 } from './dto/tink.dto';
 import { Roles } from 'src/decorators/roles.decorator';
 import { UserRole } from 'prisma/generated/prisma/enums';
@@ -40,6 +39,7 @@ import { User } from 'src/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
 import { AuthGuard } from 'src/auth/guard/auth.guard';
 import { ActivityLogService } from 'src/common/activity-log/activity-log.service';
+import { TinkCallbackSwagger } from './dto/tink-callback'; 
 
 @ApiTags('Bank Management')
 @Controller('bank')
@@ -54,7 +54,7 @@ export class BankController {
     this.logger.log('BankController initialized');
   }
 
-  // ==================== BANK STATEMENT UPLOAD ====================
+  // ====================Previous BANK STATEMENT UPLOAD Block start ====================
 
   @Post('statement/upload')
   @Roles(UserRole.USER)
@@ -115,8 +115,12 @@ export class BankController {
       throw new BadRequestException(`Failed to process file: ${error.message}`);
     }
   }
+  // ====================Previous BANK STATEMENT UPLOAD Block end ====================
 
-  // ==================== TINK BANK INTEGRATION ====================
+
+
+
+  // ==================== TINK BANK INTEGRATION start ====================
 
   @Post('tink/connect')
   @Public()
@@ -133,53 +137,32 @@ export class BankController {
     const market = dto.market || 'NL';
     const locale = dto.locale || 'en_US';
 
-    const clientId =
-      process.env.TINK_CLIENT_ID || 'b84ee12c366a4eaf97b1c376dd25934d';
-    const redirectUri =
-      process.env.TINK_REDIRECT_URI || 'http://localhost:3000/callback';
+    const clientId =process.env.TINK_CLIENT_ID 
+    const redirectUri =process.env.REDIRECT_URI 
+    if (!clientId || !redirectUri) {
+      this.logger.error('Tink client ID or redirect URI is not configured in .env');
+      throw new BadRequestException(
+        'Tink integration is not properly configured in .env',
+      );
+    }
 
     const authorizationUrl = `https://link.tink.com/1.0/transactions/connect-accounts?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&market=${market}&locale=${locale}`;
     
     this.logger.log(`Generating Tink connection URL for user: ${user?.sub || 'anonymous'}`);
 
     return {
-      authorizationUrl,
       message: 'Open this URL in your browser to connect your bank account',
+      authorizationUrl,
       redirectUri,
     };
   }
 
+  // ==================== TINK BANK INTEGRATION Callback  ====================
   @Get('tink/callback')
   @Public()
   @ApiOperation({ summary: 'Tink OAuth callback handler ( PUBLIC )' })
-  @ApiQuery({
-    name: 'code',
-    required: true,
-    description: 'Authorization code from Tink OAuth',
-    example: 'abc123def456',
-  })
-  @ApiQuery({
-    name: 'credentialsId',
-    required: false,
-    description: 'Credentials ID from Tink',
-    example: 'cred_12345',
-  })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Transactions fetched successfully',
-    type: TinkCallbackResponseDto,
-  })
-  @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
-    description: 'Missing authorization code',
-    type: TinkErrorResponseDto,
-  })
-  @ApiResponse({
-    status: HttpStatus.INTERNAL_SERVER_ERROR,
-    description: 'Error during token exchange or transaction fetch',
-    type: TinkErrorResponseDto,
-  })
-  async tinkCallback(@Query('code') code: string) {
+  @TinkCallbackSwagger()
+  async tinkCallback(@Query('code') code: string, @Res() res: any) {
     if (!code) {
       return {
         error: 'Missing authorization code',
@@ -191,7 +174,9 @@ export class BankController {
       const tokenData = await this.tinkService.exchangeToken(code);
       const accessToken = tokenData.access_token;
       this.logger.log('Tink callback processed successfully');
-      return accessToken;
+      console.log({accessToken});
+      return res.redirect(`http://localhost:3001/tink/success?accessToken=${accessToken}`);
+ 
     } catch (err: unknown) {
       this.logger.error('Tink callback error:', err);
       return {
@@ -258,8 +243,7 @@ export class BankController {
         transactions,
         dto.accessToken,
       );
-      
-      // this.logger.log(`Stored ${savedData?.length || 0} transactions for user: ${user.sub}`);
+       
       return savedData;
     } catch (err: unknown) {
       this.logger.error('Failed to store transactions:', err);
@@ -288,7 +272,6 @@ export class BankController {
     try {
       const accounts =
         await this.tinkService.fetchConnectedAccounts(accessToken);
-      // this.logger.log(`Fetched ${accounts?.length || 0} connected accounts`);
       return accounts;
     } catch (err: unknown) {
       this.logger.error('Failed to fetch connected accounts:', err);

@@ -209,7 +209,7 @@ export class ExchangeTokenDto {
 export class GetTransactionsDto {
   @ApiProperty({
     description: 'Tink access token',
-    example: 'eyJhbGciOiJFUzI1NiIsImtpZCI6ImJjMD...',
+    example: 'eyJhbGciOiJFUzI1NiIsImtpZCI6ImJjMD',
     required: true,
   })
   @IsNotEmpty()

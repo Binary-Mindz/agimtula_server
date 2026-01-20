@@ -58,6 +58,7 @@ export class AuthController {
     return await this.authService.sendRegistrationOtp(dto);
   }
 
+  
   @HttpCode(200)
   @ApiOperation({ summary: 'Verify registration OTP ( PUBLIC )' })
   @ApiResponse({ status: 200, description: 'OTP verified successfully' })

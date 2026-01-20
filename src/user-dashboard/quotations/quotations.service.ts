@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, NotFoundException, InternalServerErrorException } from '@nestjs/common';
 import { CreateQuotationDto } from './dto/create-quotation.dto';
 import { UpdateQuotationDto } from './dto/update-quotation.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
@@ -11,6 +11,16 @@ export class QuotationsService {
 
   async create(createQuotationDto: CreateQuotationDto, userId: string) {
     try {
+      const userExists = await this.prisma.user.findUnique({
+        where: { id: userId },
+      });
+
+      if (!userExists) {
+        throw new NotFoundException('User not found');
+      }
+
+
+
       const quotation = await this.prisma.quotation.create({
         data: {
           clientName: createQuotationDto.clientName,
@@ -29,14 +39,11 @@ export class QuotationsService {
         data: quotation,
       });
     } catch (error) {
-      if (error instanceof HttpException) {
+      if (error instanceof HttpException || error instanceof NotFoundException) {
         throw error;
       }
-      console.error('Create quotation error:', error);
-      throw new HttpException(
-        'Failed to create quotation',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException('Internal server error while creating quotation');
+                                                         
     }
   }
 
@@ -124,7 +131,7 @@ export class QuotationsService {
       });
 
       if (!quotationExists) {
-        throw new HttpException('Quotation not found', HttpStatus.NOT_FOUND);
+        throw new NotFoundException('Quotation not found');
       }
 
       const updatedQuotation = await this.prisma.quotation.update({
@@ -147,14 +154,11 @@ export class QuotationsService {
         data: updatedQuotation,
       });
     } catch (error) {
-      if (error instanceof HttpException) {
+      if (error instanceof HttpException || error instanceof NotFoundException) {
         throw error;
       }
-      console.error('Update quotation error:', error);
-      throw new HttpException(
-        'Failed to update quotation',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException('Internal server error while updating quotation');
+    
     }
   }
 

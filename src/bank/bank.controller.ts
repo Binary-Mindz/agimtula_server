@@ -136,7 +136,7 @@ export class BankController {
     const clientId =
       process.env.TINK_CLIENT_ID || 'b84ee12c366a4eaf97b1c376dd25934d';
     const redirectUri =
-      process.env.TINK_REDIRECT_URI || 'http://localhost:3000/callback';
+      process.env.TINK_REDIRECT_URI || 'http://localhost:5000/bank/tink/callback';
 
     const authorizationUrl = `https://link.tink.com/1.0/transactions/connect-accounts?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&market=${market}&locale=${locale}`;
     
@@ -258,8 +258,7 @@ export class BankController {
         transactions,
         dto.accessToken,
       );
-      
-      // this.logger.log(`Stored ${savedData?.length || 0} transactions for user: ${user.sub}`);
+       
       return savedData;
     } catch (err: unknown) {
       this.logger.error('Failed to store transactions:', err);

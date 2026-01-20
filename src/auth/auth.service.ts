@@ -6,6 +6,7 @@ import {
   Logger,
   NotFoundException,
   UnauthorizedException,
+  InternalServerErrorException
 } from '@nestjs/common';
 import { PrismaService } from 'src/config/database/prisma.service';
 import * as bcrypt from 'bcrypt';
@@ -572,7 +573,7 @@ export class AuthService {
 
       if (!user) {
         this.logger.error(`Profile picture update failed for user: ${userId}`);
-        throw new BadRequestException('User Updation Failed');
+        throw new NotFoundException('User not found');
       }
 
       this.logger.log(
@@ -594,7 +595,7 @@ export class AuthService {
       ) {
         throw error;
       }
-      throw new BadRequestException('Failed to update profile picture');
+      throw new InternalServerErrorException('Failed to update profile picture');
     }
   }
 

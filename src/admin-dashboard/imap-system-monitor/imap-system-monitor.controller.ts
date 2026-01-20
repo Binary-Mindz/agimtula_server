@@ -2,8 +2,11 @@ import { Controller, Get, Param, Patch, Query } from '@nestjs/common';
 import { ImapSystemMonitorService } from './imap-system-monitor.service';
 import { Roles } from 'src/decorators/roles.decorator';
 import { ApiOperation, ApiQuery } from '@nestjs/swagger';
+import { HasModuleAccess } from 'src/decorators/module-access.decorator';
+
 
 @Controller('imap-system-monitor')
+@HasModuleAccess('imap_system_monitor')
 export class ImapSystemMonitorController {
   constructor(
     private readonly imapSystemMonitorService: ImapSystemMonitorService,

@@ -28,24 +28,7 @@ const INVOICE_SUBJECT_KEYWORDS = [
   'billing',
 ];
 
-export interface TransactionRow {
-  date: string;
-  description: string;
-  category?: string;
-  amount: number;
-  currency: string;
-  status: 'MATCHED' | 'UNMATCHED';
-  linkedInvoiceId?: string;
-  attachments?: string[];
-  from?: string;
-}
 
-export interface ImapClient {
-  host: string;
-  port: number;
-  username: string;
-  password: string;
-}
 
 @Injectable()
 export class ImapApisService implements OnModuleInit, OnModuleDestroy {
@@ -104,12 +87,12 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
 
   async onModuleDestroy() {
     // Clean up cron jobs
-    // const jobs = this.schedulerRegistry.getCronJobs();
-    // for (const jobName of jobs.keys()) {
-    //   const job = this.schedulerRegistry.getCronJob(jobName);
-    //   job.stop();
-    //   this.schedulerRegistry.deleteCronJob(jobName);
-    // }
+    const jobs = this.schedulerRegistry.getCronJobs();
+    for (const jobName of jobs.keys()) {
+      const job = this.schedulerRegistry.getCronJob(jobName);
+      job.stop();
+      this.schedulerRegistry.deleteCronJob(jobName);
+    }
   }
 
   // user imap connection list test
@@ -634,4 +617,22 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
     );
   }
+}
+export interface TransactionRow {
+  date: string;
+  description: string;
+  category?: string;
+  amount: number;
+  currency: string;
+  status: 'MATCHED' | 'UNMATCHED';
+  linkedInvoiceId?: string;
+  attachments?: string[];
+  from?: string;
+}
+
+export interface ImapClient {
+  host: string;
+  port: number;
+  username: string;
+  password: string;
 }

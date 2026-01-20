@@ -1,4 +1,3 @@
-// @ts-check
 import eslint from '@eslint/js';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
@@ -33,6 +32,7 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-assignment': 'off',
       'prettier/prettier': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unused-vars': 'warn'
     },
   },
 );

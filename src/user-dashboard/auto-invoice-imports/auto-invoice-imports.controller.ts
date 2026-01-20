@@ -13,8 +13,7 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { ManageConnectionService } from './manage-connection.service';
 import { User } from 'src/decorators/user.decorator';
 import { jwtPayload } from 'src/auth/types/jwt-payload';
-import { urlPrefix } from '../url-prefix';
-import { ImapApisService } from 'src/imap-apis/imap-apis.service';
+import { urlPrefix } from '../url-prefix'; 
 import { ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { ImapSyncService } from './imap-sync.service';
 import { cResponseData } from 'src/common/cResponse';
@@ -23,8 +22,7 @@ import { cResponseData } from 'src/common/cResponse';
 export class UserAutoInvoiceImportsController {
   constructor(
     private readonly autoInvoiceImportsService: AutoInvoiceImportsService,
-    private readonly manageConnectionService: ManageConnectionService,
-    private readonly imapApisService: ImapApisService,
+    private readonly manageConnectionService: ManageConnectionService, 
     private readonly imapSyncService: ImapSyncService,
   ) {}
 

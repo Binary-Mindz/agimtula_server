@@ -350,3 +350,7 @@ export class CronConfigService implements OnModuleInit {
     }
   }
 }
+
+
+
+// http://localhost:3001/tink/success?accessToken=

@@ -7,7 +7,7 @@ import { cResponseData } from 'src/common/cResponse';
 export class BankService {
   private readonly logger = new Logger(BankService.name);
 
-  // NOTE: move these to process.env in production and rotate if leaked.
+ 
   private clientId =
     process.env.TINK_CLIENT_ID || 'b84ee12c366a4eaf97b1c376dd25934d';
   private clientSecret =
@@ -31,7 +31,7 @@ export class BankService {
     this.logger.debug(`Redirect URI: ${this.redirectUri}`);
   }
 
-  // 1️⃣ Get App Token (client_credentials)
+ 
   async getAppToken(): Promise<any> {
     try {
       this.logger.log('Requesting app token from Tink API');

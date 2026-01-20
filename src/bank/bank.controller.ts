@@ -287,7 +287,6 @@ export class BankController {
     try {
       const accounts =
         await this.tinkService.fetchConnectedAccounts(accessToken);
-      // this.logger.log(`Fetched ${accounts?.length || 0} connected accounts`);
       return accounts;
     } catch (err: unknown) {
       this.logger.error('Failed to fetch connected accounts:', err);

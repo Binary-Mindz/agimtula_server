@@ -29,7 +29,6 @@ export class QuotationsController {
   @Get()
   @Roles('USER')
   @HasModuleAccess('quotations')
-
   @ApiOperation({ summary: 'Get all quotations ( USER )' })
   async findAll(@Query() query: QueryQuotationDto) {
     return await this.quotationsService.findAll(query);

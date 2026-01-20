@@ -220,7 +220,7 @@ export class GetTransactionsDto {
 export class TokenResponseDto {
   @ApiProperty({
     description: 'Access token',
-    example: 'eyJhbGciOiJFUzI1NiIsImtpZCI6ImJjMD...',
+    example: 'eyJhbGciOiJFUzI1NiIsImtpZCI6ImJjMD',
   })
   access_token: string;
 

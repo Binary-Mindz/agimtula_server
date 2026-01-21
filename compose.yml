@@ -3,9 +3,6 @@ services:
     image: postgres:16
     container_name: agimtula_db
     restart: always
-    profiles:
-      - dev
-      - prod
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
@@ -19,9 +16,6 @@ services:
     image: redis:7
     container_name: agimtula_redis
     restart: always
-    profiles:
-      - dev
-      - prod
     ports:
       - '6370:6379'
     volumes:
@@ -31,11 +25,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: agimtula:latest
+    image: imranwebstudio/agimtula_server:latest
     container_name: agimtula_app
     restart: always
-    profiles:
-      - prod
     depends_on:
       - db
       - redis

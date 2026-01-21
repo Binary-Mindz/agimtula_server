@@ -166,7 +166,7 @@ export class QuotationsService {
     try {
       if (!id) {
         throw new HttpException('Quotation ID is required', HttpStatus.BAD_REQUEST);
-      }
+      } 
 
       const quotationExists = await this.prisma.quotation.findUnique({
         where: { id },

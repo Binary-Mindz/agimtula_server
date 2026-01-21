@@ -1,5 +1,5 @@
 model quotation {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
 
   clientName  String
   clientEmail String
@@ -18,8 +18,5 @@ model quotation {
 
 enum deliveryStatus {
   SENT
-  DELIVERED
-  VIEWED
-  ACCEPTED
-  REJECTED
+  DRAFT
 }

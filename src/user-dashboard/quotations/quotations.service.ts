@@ -4,10 +4,12 @@ import { UpdateQuotationDto } from './dto/update-quotation.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { cResponseData } from 'src/common/cResponse';
 import { QueryQuotationDto } from './dto/QueryQuotationDto';
+import { SmtpMailService } from 'src/config/smtp-mail/smtp-mail.service';
+import { quotationEmailTemplate } from 'src/common/email-templates/quotation-email-template';
 
 @Injectable()
 export class QuotationsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService,private readonly mail:SmtpMailService) {}
 
   async create(createQuotationDto: CreateQuotationDto, userId: string) {
     try {
@@ -19,8 +21,6 @@ export class QuotationsService {
         throw new NotFoundException('User not found');
       }
 
-
-
       const quotation = await this.prisma.quotation.create({
         data: {
           clientName: createQuotationDto.clientName,
@@ -28,10 +28,27 @@ export class QuotationsService {
           clientPhone: createQuotationDto.clientPhone,
           date: new Date(createQuotationDto.date),
           amount: createQuotationDto.amount,
-          status: createQuotationDto.status ,
+          status: "SENT" ,
           senderId: userId,
         },
       });
+
+      const html = quotationEmailTemplate({
+        clientName: quotation.clientName,
+        amount: quotation.amount,
+        quotationId: quotation.id,
+        date: quotation.date,
+        appUrl: process.env.FRONTEND_URL!,
+        logoUrl: 'https://res.cloudinary.com/do7dsop94/image/upload/v1769020717/Frame_2147226279_vkzimt.png',
+      });
+
+      await this.mail.sendMail(
+        quotation.clientEmail,
+        "You've received a new quotation from ExpoInvoice",
+        html,
+      );
+
+      await this.mail.sendMail(createQuotationDto.clientEmail,"You've a new quotation from ExpoInvoice",html)
 
       return cResponseData({
         success: true,
@@ -47,6 +64,87 @@ export class QuotationsService {
     }
   }
 
+  async saveToDraft(dto: CreateQuotationDto,userId:string) {
+    try {
+      const quotation = await this.prisma.quotation.create({
+        data: {
+          clientName: dto.clientName,
+          clientEmail: dto.clientEmail,
+          clientPhone: dto.clientPhone,
+          date: new Date(dto.date),
+          amount: dto.amount,
+          status: "DRAFT" ,
+          senderId: userId,
+        }
+      })
+
+       return cResponseData({
+        success: true,
+        message: 'Quotation created successfully',
+        data: quotation,
+       });
+      
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      throw new HttpException("Failed to save to draft", HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
+  async draftToSent(id:string) {
+    try {
+
+      const quotation = await this.prisma.quotation.findUnique({
+        where: {
+          id:id
+        }
+      })
+
+      if(!quotation) {
+        throw new HttpException("Quotation not found", HttpStatus.NOT_FOUND)
+      }
+
+
+      const updatedData = await this.prisma.quotation.update({
+        where: {
+          id:id
+        }, data: {
+          status:"SENT"
+        }
+      })
+
+      const html = quotationEmailTemplate({
+        clientName: quotation.clientName,
+        amount: quotation.amount,
+        quotationId: quotation.id,
+        date: quotation.date,
+        appUrl: process.env.FRONTEND_URL!,
+        logoUrl: 'https://res.cloudinary.com/do7dsop94/image/upload/v1769020717/Frame_2147226279_vkzimt.png',
+      });
+
+      await this.mail.sendMail(
+        quotation.clientEmail,
+        "You've received a new quotation from ExpoInvoice",
+        html,
+      );
+
+      await this.mail.sendMail(quotation.clientEmail,"You've a new quotation from ExpoInvoice",html)
+
+      return cResponseData({
+        message: "Draft quotation sent successfully",
+        data:updatedData
+      })
+
+    } catch (error) {
+      if (error instanceof HttpException) {
+       throw error 
+      }
+      throw new HttpException("Failed to send quotation", HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
   async findAll(query: QueryQuotationDto) {
     try {
       const data = await this.prisma.quotation.findMany({
@@ -57,9 +155,7 @@ export class QuotationsService {
               mode: 'insensitive',
             },
           }),
-          ...(query.status && {
-            status: query.status,
-          }),
+        
           ...(query.amount && {
             amount: Number(query.amount),
           }),
@@ -89,7 +185,7 @@ export class QuotationsService {
     }
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     try {
       if (!id) {
         throw new HttpException('Quotation ID is required', HttpStatus.BAD_REQUEST);
@@ -120,7 +216,7 @@ export class QuotationsService {
     }
   }
 
-  async update(id: number, updateQuotationDto: UpdateQuotationDto) {
+  async update(id: string, updateQuotationDto: UpdateQuotationDto) {
     try {
       if (!id) {
         throw new HttpException('Quotation ID is required', HttpStatus.BAD_REQUEST);
@@ -144,7 +240,6 @@ export class QuotationsService {
             date: new Date(updateQuotationDto.date),
           }),
           amount: updateQuotationDto.amount,
-          status: updateQuotationDto.status,
         },
       });
 
@@ -162,7 +257,7 @@ export class QuotationsService {
     }
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     try {
       if (!id) {
         throw new HttpException('Quotation ID is required', HttpStatus.BAD_REQUEST);

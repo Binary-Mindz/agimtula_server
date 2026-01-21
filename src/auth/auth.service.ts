@@ -23,6 +23,8 @@ import { VerifyRegistrationOtpDto } from './dto/verify-registration-otp.dto';
 import { CompleteRegistrationDto } from './dto/complete-registration.dto';
 import * as crypto from 'crypto';
 import { ActivityLogService } from 'src/common/activity-log/activity-log.service';
+import { welcomeEmailTemplate } from 'src/common/email-templates/welcomeEmailTemplate';
+import { otpEmailTemplate } from 'src/common/email-templates/otpEmailTemplate';
 
 interface Login2FAPayload {
   userId: string;
@@ -103,6 +105,19 @@ export class AuthService {
 
       await this.setRedisValue(redisKey, payload, 300);
       this.logger.debug(`OTP stored in Redis for email: ${dto.email}`);
+
+      await this.mail.sendMail(
+        dto.email,
+        `ExpoInvoice Registration code`,
+        otpEmailTemplate({
+          name: dto.email.split('@')[0] || 'User',
+          otp:code.toString() ,
+          purpose: "Registration Verification",
+          appUrl: process.env.FRONTEND_URL!,
+          logoUrl: `https://res.cloudinary.com/do7dsop94/image/upload/v1769020717/Frame_2147226279_vkzimt.png`,
+        })
+      );
+
 
       await this.mail.sendMail(
         dto.email,
@@ -234,6 +249,19 @@ export class AuthService {
       });
 
       await this.redis.del(tokenKey);
+
+      await this.mail.sendMail(
+        user.email?.email as string,
+        'Welcome to ExpoInvoice 🚀',
+        welcomeEmailTemplate({
+          name: user.profile?.firstName+' ' + user.profile?.lastName,
+          appUrl: process.env.FRONTEND_URL!,
+          logoUrl:
+            'https://res.cloudinary.com/do7dsop94/image/upload/v1769020717/Frame_2147226279_vkzimt.png',
+        }),
+      );
+
+
 
       // Log user registration for admin
       await this.activityLog.log({

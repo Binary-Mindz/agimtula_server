@@ -9,7 +9,7 @@ import { QueryQuotationDto } from './dto/QueryQuotationDto';
 import { HasModuleAccess } from 'src/decorators/module-access.decorator';
 import { ModuleAccessGuard } from 'src/auth/guard/module-access.guard';
 import { AuthGuard } from 'src/auth/guard/auth.guard';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiParam } from '@nestjs/swagger';
 
 @Controller('quotations')
 @UseGuards(AuthGuard, ModuleAccessGuard)
@@ -26,6 +26,25 @@ export class QuotationsController {
     return await this.quotationsService.create(createQuotationDto, user.sub);
   }
 
+  @Post('save-to-draft')
+  @Roles("USER")
+  @HasModuleAccess('quotations')
+  @ApiOperation({ summary: 'Save to draft ( USER )' })
+  async saveToDraft(@Body() dto: CreateQuotationDto, @User() user: jwtPayload) {
+    return await this.quotationsService.saveToDraft(dto, user.sub);
+  }
+
+  @Patch('draft-to-sent/:id')
+  @Roles("USER")
+  @ApiOperation({ summary: 'Draft to sent ( USER )' })
+  @ApiParam({
+    name: "id",type:String,required:true
+  })
+  @HasModuleAccess('quotations')
+  async draftToSent(@Param('id') id: string) {
+    return await this.quotationsService.draftToSent(id);
+  }
+
   @Get()
   @Roles('USER')
   @HasModuleAccess('quotations')
@@ -39,7 +58,7 @@ export class QuotationsController {
   @Roles('USER')
   @ApiOperation({ summary: 'Get single quotation ( USER )' })
   async findOne(@Param('id') id: string) {
-    return await this.quotationsService.findOne(+id);
+    return await this.quotationsService.findOne(id);
   }
 
   @Patch(':id')
@@ -47,7 +66,7 @@ export class QuotationsController {
   @Roles('USER')
   @ApiOperation({ summary: 'Update quotation ( USER )' })
   update(@Param('id') id: string, @Body() updateQuotationDto: UpdateQuotationDto) {
-    return this.quotationsService.update(+id, updateQuotationDto);
+    return this.quotationsService.update(id, updateQuotationDto);
   }
 
   @Delete(':id')
@@ -55,6 +74,6 @@ export class QuotationsController {
   @Roles('USER')
   @ApiOperation({ summary: 'Delete quotation ( USER )' })
   remove(@Param('id') id: string) {
-    return this.quotationsService.remove(+id);
+    return this.quotationsService.remove(id);
   }
 }

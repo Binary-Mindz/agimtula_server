@@ -107,10 +107,7 @@ export type TwoFAPurpose = (typeof TwoFAPurpose)[keyof typeof TwoFAPurpose]
 
 export const deliveryStatus = {
   SENT: 'SENT',
-  DELIVERED: 'DELIVERED',
-  VIEWED: 'VIEWED',
-  ACCEPTED: 'ACCEPTED',
-  REJECTED: 'REJECTED'
+  DRAFT: 'DRAFT'
 } as const
 
 export type deliveryStatus = (typeof deliveryStatus)[keyof typeof deliveryStatus]

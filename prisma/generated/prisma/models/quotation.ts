@@ -27,17 +27,15 @@ export type AggregateQuotation = {
 }
 
 export type QuotationAvgAggregateOutputType = {
-  id: number | null
   amount: number | null
 }
 
 export type QuotationSumAggregateOutputType = {
-  id: number | null
   amount: number | null
 }
 
 export type QuotationMinAggregateOutputType = {
-  id: number | null
+  id: string | null
   clientName: string | null
   clientEmail: string | null
   clientPhone: string | null
@@ -50,7 +48,7 @@ export type QuotationMinAggregateOutputType = {
 }
 
 export type QuotationMaxAggregateOutputType = {
-  id: number | null
+  id: string | null
   clientName: string | null
   clientEmail: string | null
   clientPhone: string | null
@@ -78,12 +76,10 @@ export type QuotationCountAggregateOutputType = {
 
 
 export type QuotationAvgAggregateInputType = {
-  id?: true
   amount?: true
 }
 
 export type QuotationSumAggregateInputType = {
-  id?: true
   amount?: true
 }
 
@@ -214,7 +210,7 @@ export type quotationGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 export type QuotationGroupByOutputType = {
-  id: number
+  id: string
   clientName: string
   clientEmail: string
   clientPhone: string
@@ -250,7 +246,7 @@ export type quotationWhereInput = {
   AND?: Prisma.quotationWhereInput | Prisma.quotationWhereInput[]
   OR?: Prisma.quotationWhereInput[]
   NOT?: Prisma.quotationWhereInput | Prisma.quotationWhereInput[]
-  id?: Prisma.IntFilter<"quotation"> | number
+  id?: Prisma.StringFilter<"quotation"> | string
   clientName?: Prisma.StringFilter<"quotation"> | string
   clientEmail?: Prisma.StringFilter<"quotation"> | string
   clientPhone?: Prisma.StringFilter<"quotation"> | string
@@ -278,7 +274,7 @@ export type quotationOrderByWithRelationInput = {
 }
 
 export type quotationWhereUniqueInput = Prisma.AtLeast<{
-  id?: number
+  id?: string
   AND?: Prisma.quotationWhereInput | Prisma.quotationWhereInput[]
   OR?: Prisma.quotationWhereInput[]
   NOT?: Prisma.quotationWhereInput | Prisma.quotationWhereInput[]
@@ -316,7 +312,7 @@ export type quotationScalarWhereWithAggregatesInput = {
   AND?: Prisma.quotationScalarWhereWithAggregatesInput | Prisma.quotationScalarWhereWithAggregatesInput[]
   OR?: Prisma.quotationScalarWhereWithAggregatesInput[]
   NOT?: Prisma.quotationScalarWhereWithAggregatesInput | Prisma.quotationScalarWhereWithAggregatesInput[]
-  id?: Prisma.IntWithAggregatesFilter<"quotation"> | number
+  id?: Prisma.StringWithAggregatesFilter<"quotation"> | string
   clientName?: Prisma.StringWithAggregatesFilter<"quotation"> | string
   clientEmail?: Prisma.StringWithAggregatesFilter<"quotation"> | string
   clientPhone?: Prisma.StringWithAggregatesFilter<"quotation"> | string
@@ -329,6 +325,7 @@ export type quotationScalarWhereWithAggregatesInput = {
 }
 
 export type quotationCreateInput = {
+  id?: string
   clientName: string
   clientEmail: string
   clientPhone: string
@@ -341,7 +338,7 @@ export type quotationCreateInput = {
 }
 
 export type quotationUncheckedCreateInput = {
-  id?: number
+  id?: string
   clientName: string
   clientEmail: string
   clientPhone: string
@@ -354,6 +351,7 @@ export type quotationUncheckedCreateInput = {
 }
 
 export type quotationUpdateInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   clientName?: Prisma.StringFieldUpdateOperationsInput | string
   clientEmail?: Prisma.StringFieldUpdateOperationsInput | string
   clientPhone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -366,7 +364,7 @@ export type quotationUpdateInput = {
 }
 
 export type quotationUncheckedUpdateInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   clientName?: Prisma.StringFieldUpdateOperationsInput | string
   clientEmail?: Prisma.StringFieldUpdateOperationsInput | string
   clientPhone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -379,7 +377,7 @@ export type quotationUncheckedUpdateInput = {
 }
 
 export type quotationCreateManyInput = {
-  id?: number
+  id?: string
   clientName: string
   clientEmail: string
   clientPhone: string
@@ -392,6 +390,7 @@ export type quotationCreateManyInput = {
 }
 
 export type quotationUpdateManyMutationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   clientName?: Prisma.StringFieldUpdateOperationsInput | string
   clientEmail?: Prisma.StringFieldUpdateOperationsInput | string
   clientPhone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -403,7 +402,7 @@ export type quotationUpdateManyMutationInput = {
 }
 
 export type quotationUncheckedUpdateManyInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   clientName?: Prisma.StringFieldUpdateOperationsInput | string
   clientEmail?: Prisma.StringFieldUpdateOperationsInput | string
   clientPhone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -429,7 +428,6 @@ export type quotationCountOrderByAggregateInput = {
 }
 
 export type quotationAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
   amount?: Prisma.SortOrder
 }
 
@@ -460,7 +458,6 @@ export type quotationMinOrderByAggregateInput = {
 }
 
 export type quotationSumOrderByAggregateInput = {
-  id?: Prisma.SortOrder
   amount?: Prisma.SortOrder
 }
 
@@ -521,6 +518,7 @@ export type quotationUncheckedUpdateManyWithoutSenderNestedInput = {
 }
 
 export type quotationCreateWithoutSenderInput = {
+  id?: string
   clientName: string
   clientEmail: string
   clientPhone: string
@@ -532,7 +530,7 @@ export type quotationCreateWithoutSenderInput = {
 }
 
 export type quotationUncheckedCreateWithoutSenderInput = {
-  id?: number
+  id?: string
   clientName: string
   clientEmail: string
   clientPhone: string
@@ -573,7 +571,7 @@ export type quotationScalarWhereInput = {
   AND?: Prisma.quotationScalarWhereInput | Prisma.quotationScalarWhereInput[]
   OR?: Prisma.quotationScalarWhereInput[]
   NOT?: Prisma.quotationScalarWhereInput | Prisma.quotationScalarWhereInput[]
-  id?: Prisma.IntFilter<"quotation"> | number
+  id?: Prisma.StringFilter<"quotation"> | string
   clientName?: Prisma.StringFilter<"quotation"> | string
   clientEmail?: Prisma.StringFilter<"quotation"> | string
   clientPhone?: Prisma.StringFilter<"quotation"> | string
@@ -586,7 +584,7 @@ export type quotationScalarWhereInput = {
 }
 
 export type quotationCreateManySenderInput = {
-  id?: number
+  id?: string
   clientName: string
   clientEmail: string
   clientPhone: string
@@ -598,6 +596,7 @@ export type quotationCreateManySenderInput = {
 }
 
 export type quotationUpdateWithoutSenderInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   clientName?: Prisma.StringFieldUpdateOperationsInput | string
   clientEmail?: Prisma.StringFieldUpdateOperationsInput | string
   clientPhone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -609,7 +608,7 @@ export type quotationUpdateWithoutSenderInput = {
 }
 
 export type quotationUncheckedUpdateWithoutSenderInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   clientName?: Prisma.StringFieldUpdateOperationsInput | string
   clientEmail?: Prisma.StringFieldUpdateOperationsInput | string
   clientPhone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -621,7 +620,7 @@ export type quotationUncheckedUpdateWithoutSenderInput = {
 }
 
 export type quotationUncheckedUpdateManyWithoutSenderInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   clientName?: Prisma.StringFieldUpdateOperationsInput | string
   clientEmail?: Prisma.StringFieldUpdateOperationsInput | string
   clientPhone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -706,7 +705,7 @@ export type $quotationPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     sender: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: number
+    id: string
     clientName: string
     clientEmail: string
     clientPhone: string
@@ -1140,7 +1139,7 @@ export interface Prisma__quotationClient<T, Null = never, ExtArgs extends runtim
  * Fields of the quotation model
  */
 export interface quotationFieldRefs {
-  readonly id: Prisma.FieldRef<"quotation", 'Int'>
+  readonly id: Prisma.FieldRef<"quotation", 'String'>
   readonly clientName: Prisma.FieldRef<"quotation", 'String'>
   readonly clientEmail: Prisma.FieldRef<"quotation", 'String'>
   readonly clientPhone: Prisma.FieldRef<"quotation", 'String'>

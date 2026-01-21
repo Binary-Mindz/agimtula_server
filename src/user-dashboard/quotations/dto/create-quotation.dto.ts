@@ -1,13 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsEnum, IsNotEmpty, IsNumber, IsPhoneNumber, IsDateString } from 'class-validator';
-
-export enum DeliveryStatus {
-  SENT = 'SENT',
-  DELIVERED = 'DELIVERED',
-  VIEWED = 'VIEWED',
-  ACCEPTED = 'ACCEPTED',
-  REJECTED = 'REJECTED',
-}
+import { IsEmail, IsNotEmpty, IsNumber, IsPhoneNumber, IsDateString } from 'class-validator';
 
 export class CreateQuotationDto {
   @ApiProperty({
@@ -44,12 +36,4 @@ export class CreateQuotationDto {
   })
   @IsNumber()
   amount: number;
-
-  @ApiProperty({
-    enum: DeliveryStatus,
-    default: DeliveryStatus.SENT,
-    description: 'Quotation delivery status',
-  })
-  @IsEnum(DeliveryStatus)
-  status: DeliveryStatus;
 }

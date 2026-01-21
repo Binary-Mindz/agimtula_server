@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { QuotationsService } from './quotations.service';
 import { QuotationsController } from './quotations.controller';
+import { SmtpMailService } from 'src/config/smtp-mail/smtp-mail.service';
 
 @Module({
   controllers: [QuotationsController],
-  providers: [QuotationsService],
+  providers: [QuotationsService,SmtpMailService],
 })
 export class QuotationsModule {}

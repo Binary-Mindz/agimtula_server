@@ -1,7 +1,7 @@
 import { Controller, Get, Param, Patch, Query } from '@nestjs/common';
 import { ImapSystemMonitorService } from './imap-system-monitor.service';
 import { Roles } from 'src/decorators/roles.decorator';
-import { ApiOperation, ApiQuery } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { HasModuleAccess } from 'src/decorators/module-access.decorator';
 
 
@@ -43,13 +43,24 @@ export class ImapSystemMonitorController {
   @Get('connection/:id')
   @Roles('ADMIN')
   @ApiOperation({ summary: 'Get connection by ID (Admin only)' })
+  @ApiParam({name:"id",type:String})
   async getConnectionById(@Param('id') id: string) {
     return await this.imapSystemMonitorService.getConnectionById(id);
+  }
+
+
+  @Patch('connect/:id')
+  @Roles('ADMIN')
+  @ApiOperation({ summary: 'Disconnect user IMAP (Admin only)' })
+  @ApiParam({name:"id",type:String})
+  async connectUser(@Param('id') id: string) {
+    return await this.imapSystemMonitorService.connectUser(id);
   }
 
   @Patch('disconnect/:id')
   @Roles('ADMIN')
   @ApiOperation({ summary: 'Disconnect user IMAP (Admin only)' })
+  @ApiParam({name:"id",type:String})
   async disconnectUser(@Param('id') id: string) {
     return await this.imapSystemMonitorService.disconnectUser(id);
   }

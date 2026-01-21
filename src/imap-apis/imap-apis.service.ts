@@ -19,9 +19,11 @@ import { ExtractedInvoicePayload } from './dto/extracted-invoice.dto';
 import { ActivityLogService } from 'src/common/activity-log/activity-log.service';
 
 const INVOICE_SUBJECT_KEYWORDS = [
-  'invoice',
-  'factuur',
-  'kpn',
+  'invoice ',
+  'Invoice ',
+  "INVOICE ",
+  'factuur ',
+  'kpn ',
   'KPN',
   'rekening',
   'payment',
@@ -54,7 +56,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
 
   async onModuleInit() {
     // await this.readEmailByAccountTest()
-    // await this.loadCronJobsFromDB();
+    // aw ait this.loadCronJobsFromDB();
     // const imapUserActive = await this.prisma.user.findMany({
     //   where: {
     //     email: { isNot: null },
@@ -90,7 +92,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
     const jobs = this.schedulerRegistry.getCronJobs();
     for (const jobName of jobs.keys()) {
       const job = this.schedulerRegistry.getCronJob(jobName);
-      job.stop();
+      await job.stop();
       this.schedulerRegistry.deleteCronJob(jobName);
     }
   }

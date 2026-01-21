@@ -1,6 +1,5 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsOptional, IsString, IsEnum, IsNumber, IsDateString } from 'class-validator';
-import { DeliveryStatus } from './create-quotation.dto';
+import { IsOptional, IsString, IsNumber, IsDateString } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class QueryQuotationDto {
@@ -20,8 +19,4 @@ export class QueryQuotationDto {
   @IsNumber()
   amount?: number;
 
-  @ApiPropertyOptional({ enum: DeliveryStatus })
-  @IsOptional()
-  @IsEnum(DeliveryStatus)
-  status?: DeliveryStatus;
 }

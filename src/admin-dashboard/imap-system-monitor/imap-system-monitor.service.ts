@@ -1,16 +1,13 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { formatDistanceToNow } from 'date-fns';
 import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { ActivityLogService } from 'src/common/activity-log/activity-log.service';
-import { ImapSystemMonitorGateway } from './imap-system-monitor.gateway';
-
 @Injectable()
 export class ImapSystemMonitorService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly activityLog: ActivityLogService,
-    private readonly gateway: ImapSystemMonitorGateway,
   ) {}
 
   async getImapConnectionData() {
@@ -39,8 +36,13 @@ export class ImapSystemMonitorService {
         this.prisma.imapSyncHistory.findFirst({
           select: {
             syncCompletedAt: true,
+            syncStartedAt: true,
           },
-
+          where: {
+            syncCompletedAt: {
+              not: null
+            }
+          },
           orderBy: {
             createdAt: 'desc',
           },
@@ -55,7 +57,14 @@ export class ImapSystemMonitorService {
       ]);
 
       if (!lastInvoiceSynced?.syncCompletedAt) {
-        return { syncCompletedAt: null };
+        return cResponseData({
+          data: {
+            totalConnectionCount,
+            totalActiveSyncCount,
+            lastSynced: 'Never synced',
+            errorCount,
+          },
+        });
       }
 
       const lastSyncedAgo = formatDistanceToNow(
@@ -111,7 +120,7 @@ export class ImapSystemMonitorService {
           },
         },
         where:
-          connection !== 'all'
+          connection && connection !== 'all'
             ? {
                 connectionStatus:
                   connection === 'connected' ? 'CONNECTED' : 'FAILED',
@@ -141,7 +150,7 @@ export class ImapSystemMonitorService {
             email: con.user.email?.email,
             status: con.connectionStatus,
             lastSync:
-              con.connectionStatus === 'FAILED'
+              con.connectionStatus === 'FAILED' || !con.syncHistory[0]
                 ? 'never'
                 : formatDistanceToNow(
                     new Date(con.syncHistory[0].syncCompletedAt as Date),
@@ -233,7 +242,7 @@ export class ImapSystemMonitorService {
         isConnected: connection.connect,
         isSyncEnabled: connection.sync,
         lastSync:
-          connection.connectionStatus === 'FAILED'
+          connection.connectionStatus === 'FAILED' || !connection.syncHistory[0]
             ? 'never'
             : formatDistanceToNow(
                 new Date(connection.syncHistory[0].syncCompletedAt as Date),
@@ -256,6 +265,67 @@ export class ImapSystemMonitorService {
     }
   }
 
+  async connectUser(id: string) {
+    try {
+      const connection = await this.prisma.imapConfiguration.findUnique({
+        where: { id },
+        include: {
+          user: {
+            include: {
+              profile: true,
+              email: true,
+            },
+          },
+        },
+      });
+
+      if (!connection) {
+        throw new HttpException('Connection not found', 404);
+      }
+
+
+      
+      if (connection.connect=== true) {
+        return cResponseData({
+          message: "Already connected",
+          data:connection.id
+        })
+      }
+
+       await this.prisma.imapConfiguration.update({
+        where: { id },
+        data: {
+          connect: true,
+          sync: true,
+          connectionStatus: "CONNECTED",
+        },
+       });
+      
+      
+      const userName = `${connection.user.profile?.firstName} ${connection.user.profile?.lastName}`;
+
+      await this.activityLog.log({
+        userName,
+        userEmail: connection.user.email?.email,
+        type: 'IMAP_CONNECTED',
+        title: `Admin connected IMAP for ${userName}`,
+        category: 'ADMIN',
+      });
+
+      return cResponseData({
+        message: 'User connected successfully',
+        data: connection.id ,
+      });
+      
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      throw new HttpException("Connection failed", HttpStatus.BAD_REQUEST)
+    }
+  }
+
   async disconnectUser(id: string) {
     try {
       const connection = await this.prisma.imapConfiguration.findUnique({
@@ -272,6 +342,13 @@ export class ImapSystemMonitorService {
 
       if (!connection) {
         throw new HttpException('Connection not found', 404);
+      }
+
+      if (connection.connect === false) {
+        return cResponseData({
+          message: "Already disconnected",
+          data:connection.id
+        })
       }
 
       await this.prisma.imapConfiguration.update({
@@ -295,6 +372,7 @@ export class ImapSystemMonitorService {
 
       return cResponseData({
         message: 'User disconnected successfully',
+        data: { id: connection.id },
       });
     } catch (error) {
       if (error instanceof HttpException) {
@@ -348,14 +426,6 @@ export class ImapSystemMonitorService {
       return cResponseData({ data });
     } catch {
       throw new HttpException('Failed to fetch recent imports', 400);
-    }
-  }
-
-  notifyInvoiceImport(invoiceData: any) {
-    if (this.gateway) {
-      this.gateway.emitInvoiceImport(invoiceData);
-    } else {
-      console.error('Gateway instance is null!');
     }
   }
 }

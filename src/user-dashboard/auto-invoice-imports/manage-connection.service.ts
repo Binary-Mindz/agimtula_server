@@ -17,7 +17,7 @@ export class ManageConnectionService {
     private cronConfigService: CronConfigService,
   ) {}
 
-  private async testConnection(dto: ImapEmailConnectionDto) {
+  async testConnection(dto: ImapEmailConnectionDto) {
     return new Promise((resolve, reject) => {
       const imap = new Imap({
         user: dto.imap_username,

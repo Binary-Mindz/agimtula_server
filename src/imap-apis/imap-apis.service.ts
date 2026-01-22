@@ -48,7 +48,7 @@ export class ImapApisService implements OnModuleInit, OnModuleDestroy {
         host,
         port,
         tls: true,
-        authTimeout: 10000,
+        authTimeout: 20000,
         tlsOptions: { rejectUnauthorized: false },
       },
     });

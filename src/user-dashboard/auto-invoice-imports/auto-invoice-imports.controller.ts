@@ -32,12 +32,15 @@ export class UserAutoInvoiceImportsController {
     return await this.autoInvoiceImportsService.mySubscriptionPlan(user.sub);
   }
 
+
   @Get("available-sync-intervals")
     @Roles("USER")
     async availableSyncIntervals(@User() user: jwtPayload) {
       return await this.autoInvoiceImportsService.availableSyncIntervals(user.sub);
     }
 
+  
+  
   // get invoice Auto Sync Interval data
   @Get('get-imap-configuration')
   @Roles('USER')
@@ -48,6 +51,12 @@ export class UserAutoInvoiceImportsController {
   })
   async getImapConfiguration(@User() user: jwtPayload) {
     return await this.manageConnectionService.getImapConfiguration(user.sub);
+  }
+
+  @Post('test-connection')
+  @Roles("USER")
+  async testConnection(@Body() data: ImapEmailConnectionDto) {
+    return await this.manageConnectionService.testConnection(data);
   }
 
   // imap configuration

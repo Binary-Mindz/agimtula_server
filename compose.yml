@@ -48,9 +48,7 @@ services:
     ports:
       - '${PORT}:${PORT}'
     command: pnpm run start:dev
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
+
 
 volumes:
   db_data:

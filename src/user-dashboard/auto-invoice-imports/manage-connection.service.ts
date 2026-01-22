@@ -18,29 +18,47 @@ export class ManageConnectionService {
   ) {}
 
   async testConnection(dto: ImapEmailConnectionDto) {
-    return new Promise((resolve, reject) => {
-      const imap = new Imap({
-        user: dto.imap_username,
-        password: dto.imap_app_password,
-        host: dto.imap_server,
-        port: dto.imap_port,
-        tls: true,
-        tlsOptions: { rejectUnauthorized: false },
-        connTimeout: 20_000,
-        authTimeout: 20_000,
-      });
-      imap.once('ready', () => {
-        imap.end();
-        resolve(true);
+    try {
+      await new Promise((resolve, reject) => {
+        const imap = new Imap({
+          user: dto.imap_username,
+          password: dto.imap_app_password,
+          host: dto.imap_server,
+          port: dto.imap_port,
+          tls: true,
+          tlsOptions: { rejectUnauthorized: false },
+          connTimeout: 20_000,
+          authTimeout: 20_000,
+        });
+        
+        imap.once('ready', () => {
+          imap.end();
+          resolve(true);
+        });
+
+        imap.once('error', (err) => {
+          reject(new HttpException(
+            `IMAP connection failed: ${err.message || 'Invalid credentials'}`,
+            HttpStatus.BAD_REQUEST
+          ));
+        });
+
+        imap.connect();
       });
 
-      imap.once('error', (err) => {
-        // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
-        reject(err);
-      });
-
-      imap.connect();
-    });
+      return cResponseData({
+        message: "I-map data is correct",
+        data: dto.imap_username
+      })
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(
+        'IMAP connection test failed',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 
   private async selectedInvoiceTimeSyncData(userId: string) {

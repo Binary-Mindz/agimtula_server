@@ -3,11 +3,14 @@ import { formatDistanceToNow } from 'date-fns';
 import { cResponseData } from 'src/common/cResponse';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { ActivityLogService } from 'src/common/activity-log/activity-log.service';
+import { ImapApisService } from 'src/imap-apis/imap-apis.service';
+
 @Injectable()
 export class ImapSystemMonitorService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly activityLog: ActivityLogService,
+    private  readonly imapApisService:ImapApisService
   ) {}
 
   async getImapConnectionData() {
@@ -126,6 +129,9 @@ export class ImapSystemMonitorService {
                   connection === 'connected' ? 'CONNECTED' : 'FAILED',
               }
             : undefined,
+        orderBy: {
+          created_at:"desc"
+        }
       });
 
       const data = await Promise.all(
@@ -283,8 +289,6 @@ export class ImapSystemMonitorService {
         throw new HttpException('Connection not found', 404);
       }
 
-
-      
       if (connection.connect=== true) {
         return cResponseData({
           message: "Already connected",

@@ -4,7 +4,7 @@ import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { cResponseData } from 'src/common/cResponse';
 import { SmtpMailService } from 'src/config/smtp-mail/smtp-mail.service';
-import { invoiceEmailTemplate } from './invoice-email.template';
+import { invoiceEmailTemplate } from 'src/common/email-templates/invoiceEmailTemplate';
 import Stripe from 'stripe';
 import { NotFoundAppException } from 'src/common/app-exceptions';
 import { ActivityLogService } from 'src/common/activity-log/activity-log.service';
@@ -198,10 +198,24 @@ export class InvoicesService {
         createInvoiceDto.email,
         `Invoice #${newInvoice.invoiceNo}`,
         invoiceEmailTemplate({
-          ...newInvoice,
-          mobilePaymentLink:
-            createInvoiceDto.isPaymentLinkIncluded && session ? session.url : null,
-        }),
+          clientName: newInvoice.companyName,
+          invoiceNumber: newInvoice.invoiceNo,
+          amount: newInvoice.totalAmount,
+          currency: 'EUR',
+          dueDate: newInvoice.dueDate || new Date(),
+          issueDate: newInvoice.issueDate,
+          companyName: 'ExpoInvoice',
+          items: newInvoice.serviceAndItems.map(item => ({
+            description: item.description,
+            quantity: item.qty,
+            unitPrice: item.rate,
+            total: item.totalAmount
+          })),
+          paymentLink: createInvoiceDto.isPaymentLinkIncluded && session ? session.url : undefined,
+          notes: newInvoice.additionalNote || undefined,
+          appUrl: process.env.FRONTEND_URL!,
+          logoUrl: 'https://res.cloudinary.com/do7dsop94/image/upload/v1769020717/Frame_2147226279_vkzimt.png'
+        })
       );
 
       // Log activity
@@ -510,13 +524,33 @@ export class InvoicesService {
         });
 
         // Send email with payment link
+        const invoiceWithItems = await this.prisma.invoice.findUnique({
+          where: { id },
+          include: { serviceAndItems: true }
+        });
+        
         await this.mail.sendMail(
           draft.email,
           `Invoice #${draft.invoiceNo}`,
           invoiceEmailTemplate({
-            ...draft,
-            mobilePaymentLink: session.url,
-          }),
+            clientName: draft.companyName,
+            invoiceNumber: draft.invoiceNo,
+            amount: draft.totalAmount,
+            currency: 'EUR',
+            dueDate: draft.dueDate || new Date(),
+            issueDate: draft.issueDate,
+            companyName: 'ExpoInvoice',
+            items: invoiceWithItems?.serviceAndItems.map(item => ({
+              description: item.description,
+              quantity: item.qty,
+              unitPrice: item.rate,
+              total: item.totalAmount
+            })) || [],
+            paymentLink: session.url,
+            notes: draft.additionalNote || undefined,
+            appUrl: process.env.FRONTEND_URL!,
+            logoUrl: 'https://res.cloudinary.com/do7dsop94/image/upload/v1769020717/Frame_2147226279_vkzimt.png'
+          })
         );
       }
 

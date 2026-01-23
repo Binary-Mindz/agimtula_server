@@ -19,6 +19,7 @@ import {
   NotFoundAppException,
   ValidationException,
 } from 'src/common/app-exceptions';
+import { otpEmailTemplate } from 'src/common/email-templates/otpEmailTemplate';
 
 @Injectable()
 export class ForgetPasswordService {
@@ -97,13 +98,14 @@ export class ForgetPasswordService {
       this.logger.log(`Sending forget password email to ${email}`);
       await this.mail.sendMail(
         email,
-        'Forget Password Code',
-        `
-          <h3>AuthSystem</h3>
-          <p>Your email verification code:</p>
-          <h2>${otp}</h2>
-          <p>This code is valid for 5 minutes.</p>
-        `,
+        'Password Reset Code',
+        otpEmailTemplate({
+          name: email.split('@')[0] || 'User',
+          otp: otp.toString(),
+          purpose: "Password Reset",
+          appUrl: process.env.FRONTEND_URL!,
+          logoUrl: `https://res.cloudinary.com/do7dsop94/image/upload/v1769020717/Frame_2147226279_vkzimt.png`,
+        })
       );
 
       this.logger.log(`Forget password OTP sent successfully to ${email}`);

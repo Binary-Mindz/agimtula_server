@@ -111,23 +111,11 @@ export class AuthService {
         `ExpoInvoice Registration code`,
         otpEmailTemplate({
           name: dto.email.split('@')[0] || 'User',
-          otp:code.toString() ,
+          otp: code.toString(),
           purpose: "Registration Verification",
           appUrl: process.env.FRONTEND_URL!,
           logoUrl: `https://res.cloudinary.com/do7dsop94/image/upload/v1769020717/Frame_2147226279_vkzimt.png`,
         })
-      );
-
-
-      await this.mail.sendMail(
-        dto.email,
-        'Your Registration OTP Code',
-        `
-        <h3>Registration Verification</h3>
-        <p>Your 6-digit verification code:</p>
-        <h2>${code}</h2>
-        <p>This code expires in 5 minutes.</p>
-      `,
       );
 
       this.logger.log(`Registration OTP sent successfully to: ${dto.email}`);
@@ -367,16 +355,17 @@ export class AuthService {
           );
         }
 
-        await this.mail.sendMail(
-          user.email.email,
-          'Your 2FA Verification Code',
-          `
-        <h3>Login Verification</h3>
-        <p>Your 6-digit verification code:</p>
-        <h2>${payload.code}</h2>
-        <p>This code expires in 5 minutes.</p>
-      `,
-        );
+      await this.mail.sendMail(
+        user.email.email,
+        'Your 2FA Verification Code',
+        otpEmailTemplate({
+          name: user.profile?.firstName || user.email.email.split('@')[0] || 'User',
+          otp: payload.code.toString(),
+          purpose: "Login Verification",
+          appUrl: process.env.FRONTEND_URL!,
+          logoUrl: `https://res.cloudinary.com/do7dsop94/image/upload/v1769020717/Frame_2147226279_vkzimt.png`,
+        })
+      );
 
         this.logger.log(`2FA code sent to: ${user.email.email}`);
         return cResponseData({

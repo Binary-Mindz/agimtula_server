@@ -47,7 +47,7 @@ RUN chmod +x /app/entrypoint.sh
 # Expose port
 EXPOSE 3000
 
-ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT ["/app/entrypoint.sh"]
 # Default command
 CMD ["pnpm", "run", "start:dev"]
 

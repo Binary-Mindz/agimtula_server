@@ -1,0 +1,27 @@
+{
+  "default_branch": "main",
+  "branches": [
+    "Ridoy",
+    "copilot/vscode-mjrp8vkn-cved",
+    "dev",
+    "main",
+    "shariar",
+    "sharif780"
+  ],
+  "parent": {
+    "Ridoy": "main",
+    "copilot/vscode-mjrp8vkn-cved": "main",
+    "dev": "main",
+    "main": null,
+    "shariar": "main",
+    "sharif780": "main"
+  },
+  "order": [
+    "main",
+    "Ridoy",
+    "copilot/vscode-mjrp8vkn-cved",
+    "dev",
+    "shariar",
+    "sharif780"
+  ]
+}
